@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 | 수강후기 관리</title>
+    <style>
+        :root {
+            --navy: #172554;
+            --orange: #f97316;
+            --gray-bg: #f8f9fa;
+            --gray-line: #e5e7eb;
+            --text-body: #374151;
+            --text-sub: #6b7280;
+        }
+        * { box-sizing:border-box; }
+        body {
+            margin:0; font-family:'Noto Sans KR',sans-serif;
+            background:#f4f6fb; color:var(--text-body);
+            min-height:100vh;
+        }
+        .page-wrap { max-width:1200px; margin:0 auto; padding:36px 24px 60px; }
+        h1 { margin:0 0 10px; font-size:2rem; color:var(--navy); }
+        p.lead { margin:0 0 26px; color:var(--text-sub); line-height:1.8; }
+        .top-bar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:24px; }
+        .top-bar button, .top-bar select { border:1px solid var(--gray-line); border-radius:10px; padding:10px 16px; font-size:0.95rem; }
+        .top-bar button { background:var(--orange); color:#fff; cursor:pointer; }
+        .top-bar button:hover { background:#dc6f10; }
+        .note { margin-top:18px; font-size:0.92rem; color:var(--text-sub); }
+        .status-bar { margin-bottom:26px; padding:18px 20px; border-radius:16px; background:#fff; border:1px solid var(--gray-line); }
+        .status-bar span { font-weight:700; color:var(--navy); }
+        table { width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--gray-line); }
+        th, td { padding:14px 12px; border-bottom:1px solid var(--gray-line); text-align:left; vertical-align:top; }
+        th { background:#f8f9fa; color:var(--text-sub); font-weight:700; }
+        td small { display:block; color:var(--text-sub); margin-top:6px; }
+        .badge { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-size:0.85rem; font-weight:700; }
+        .badge.pending { background:#fff7eb; color:#c2410c; }
+        .badge.approved { background:#ecfdf5; color:#166534; }
+        .badge.hidden { background:#fef2f2; color:#991b1b; }
+        .btn-group { display:flex; flex-wrap:wrap; gap:8px; }
+        .btn { border:none; border-radius:10px; padding:8px 12px; font-size:0.9rem; cursor:pointer; }
+        .btn.approve { background:#166534; color:#fff; }
+        .btn.hide { background:#991b1b; color:#fff; }
+        .btn.disabled { opacity:.55; cursor:not-allowed; }
+        .empty { padding:36px; text-align:center; color:var(--text-sub); }
+        @media (max-width:860px) {
+            th, td { padding:12px 10px; }
+            .top-bar { flex-direction:column; align-items:flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrap">
+        <h1>수강후기 관리자</h1>
+        <p class="lead">Google 스프레드시트에 저장된 수강후기를 확인하고, 승인 / 숨김 상태를 관리할 수 있는 관리자 페이지입니다.</p>
+        <div class="top-bar">
+            <button id="refreshBtn" type="button">새로고침</button>
+            <select id="statusFilter">
+                <option value="">전체 상태</option>
+                <option value="pending">대기중</option>
+                <option value="approved">승인</option>
+                <option value="hidden">숨김</option>
+            </select>
+        </div>
+        <div class="status-bar" id="adminStatus"><span>준비 완료</span> 데이터를 불러오려면 새로고침 버튼을 누르세요.</div>
+        <div id="reviewsContainer"></div>
+        <p class="note">※ 이 페이지는 별도 인증이 없으므로 내부 관리자용으로만 사용하세요.</p>
+    </div>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzy1Qb1k1k_HMwYrQTHoGPbhWFs0r9J6bC6iGkvL0o7SEaJwQr4d72tZKATbIdTvojWnQ/exec";
+        const refreshBtn = document.getElementById('refreshBtn');
+        const statusFilter = document.getElementById('statusFilter');
+        const statusBar = document.getElementById('adminStatus');
+        const reviewsContainer = document.getElementById('reviewsContainer');
+
+        refreshBtn.addEventListener('click', loadReviews);
+        statusFilter.addEventListener('change', loadReviews);
+
+        async function loadReviews() {
+            const filter = statusFilter.value;
+            setStatus('데이터를 불러오는 중입니다...', 'pending');
+            try {
+                const params = new URLSearchParams({ action: 'fetch' });
+                if (filter) params.set('status', filter);
+                const res = await fetch(`${GOOGLE_SCRIPT_URL}?${params.toString()}`);
+                const json = await res.json();
+                if (json.status !== 'success') throw new Error(json.message || '데이터를 불러오지 못했습니다.');
+                renderReviews(json.reviews || []);
+                setStatus(`총 ${json.reviews.length}건 조회됨.`, 'approved');
+            } catch (error) {
+                setStatus(`오류: ${error.message}`, 'hidden');
+                reviewsContainer.innerHTML = `<div class="empty">데이터를 가져오는 데 실패했습니다.</div>`;
+            }
+        }
+
+        function setStatus(message, type) {
+            statusBar.innerHTML = `<span>${message}</span>`;
+            statusBar.style.borderColor = type === 'approved' ? '#d1fae5' : type === 'hidden' ? '#fecaca' : '#e5e7eb';
+            statusBar.style.background = type === 'approved' ? '#ecfdf5' : type === 'hidden' ? '#fef2f2' : '#fff';
+        }
+
+        function renderReviews(rows) {
+            if (!rows.length) {
+                reviewsContainer.innerHTML = '<div class="empty">조건에 맞는 후기가 없습니다.</div>';
+                return;
+            }
+            const rowsHtml = rows.map(row => {
+                const note = row.age ? `<small>연령대: ${escapeHtml(row.age)}</small>` : '';
+                const email = row.email ? `<small>이메일: ${escapeHtml(row.email)}</small>` : '';
+                return `
+                    <tr>
+                        <td>${escapeHtml(row.name || '익명')}</td>
+                        <td>${escapeHtml(row.course)}</td>
+                        <td>${escapeHtml(row.content)}</td>
+                        <td>${escapeHtml(row.timestamp)}</td>
+                        <td><span class="badge ${row.status}">${escapeHtml(row.status || 'pending')}</span></td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn approve ${row.status === 'approved' ? 'disabled' : ''}" data-row="${row.rowIndex}" data-status="approved" ${row.status === 'approved' ? 'disabled' : ''}>승인</button>
+                                <button class="btn hide ${row.status === 'hidden' ? 'disabled' : ''}" data-row="${row.rowIndex}" data-status="hidden" ${row.status === 'hidden' ? 'disabled' : ''}>숨김</button>
+                            </div>
+                            ${note}
+                            ${email}
+                        </td>
+                    </tr>`;
+            }).join('');
+
+            reviewsContainer.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>작성자</th>
+                            <th>수강 과정</th>
+                            <th>후기 내용</th>
+                            <th>등록일</th>
+                            <th>상태</th>
+                            <th>관리</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>`;
+
+            reviewsContainer.querySelectorAll('button[data-row]').forEach(button => {
+                button.addEventListener('click', () => updateStatus(button.dataset.row, button.dataset.status));
+            });
+        }
+
+        async function updateStatus(rowIndex, newStatus) {
+            setStatus('상태를 변경 중입니다...', 'pending');
+            try {
+                const form = new FormData();
+                form.append('action', 'update');
+                form.append('row', rowIndex);
+                form.append('status', newStatus);
+                const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: form });
+                const json = await res.json();
+                if (json.status !== 'success') throw new Error(json.message || '상태 변경에 실패했습니다.');
+                setStatus(`행 ${rowIndex} 상태를 '${newStatus}'로 변경했습니다.`, 'approved');
+                loadReviews();
+            } catch (error) {
+                setStatus(`오류: ${error.message}`, 'hidden');
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        loadReviews();
+    </script>
+</body>
+</html>
