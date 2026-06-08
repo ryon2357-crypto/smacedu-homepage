@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강의 — 스마트미디어아트센터</title>
+    <meta name="description" content="스마트미디어아트센터의 무료·유료 강의를 만나보세요. 스마트폰 사진, AI, SNS, 출판 등 다양한 온라인 강의를 제공합니다.">
+    <link rel="icon" href="images/logo1.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy:        #172554;
+            --navy-mid:    #1e3a8a;
+            --orange:      #f97316;
+            --orange-dk:   #ea6b0c;
+            --orange-lt:   #fff7ed;
+            --orange-soft: #ffedd5;
+            --white:       #ffffff;
+            --gray-bg:     #f8f9fa;
+            --gray-line:   #e5e7eb;
+            --text-head:   #172554;
+            --text-body:   #374151;
+            --text-sub:    #6b7280;
+        }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
+        body { background:var(--white); color:var(--text-body); font-family:'Noto Sans KR',sans-serif; line-height:1.65; overflow-x:hidden; }
+        .container { max-width:1140px; margin:0 auto; }
+        .tag-chip { display:inline-block; background:var(--orange-lt); color:var(--orange); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:5px 14px; border-radius:100px; margin-bottom:14px; }
+        .sec-title { font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:800; letter-spacing:-.8px; line-height:1.25; color:var(--text-head); }
+        .sec-desc { margin-top:14px; font-size:1rem; color:var(--text-sub); line-height:1.85; max-width:520px; margin-left:auto; margin-right:auto; }
+        .sec-head { text-align:center; margin-bottom:56px; }
+        .orange-bar { width:44px; height:4px; background:var(--orange); border-radius:2px; margin:16px auto 0; }
+        .reveal { opacity:0; transform:translateY(22px); transition:opacity .65s ease,transform .65s ease; }
+        .reveal.on { opacity:1; transform:none; }
+        .sec { padding:80px 40px; }
+        .sec-white { background:var(--white); }
+        .sec-gray  { background:var(--gray-bg); }
+
+        /* ── NAV ── */
+        nav { position:fixed; top:0; left:0; right:0; z-index:999; height:96px; display:flex; align-items:center; justify-content:space-between; padding:0 48px; background:rgba(255,255,255,.96); backdrop-filter:blur(14px); border-bottom:1px solid transparent; transition:border-color .3s,box-shadow .3s; }
+        nav.scrolled { border-color:var(--gray-line); box-shadow:0 2px 16px rgba(0,0,0,.07); }
+        .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; flex-shrink:0; }
+        .logo-img { height:72px; width:auto; display:block; object-fit:contain; }
+        .nav-brand-block { display:flex; flex-direction:column; gap:6px; justify-content:center; }
+        .nav-brand-name { font-size:24px; font-weight:700; color:#172554; letter-spacing:-.4px; white-space:nowrap; line-height:1; }
+        .nav-brand-sub  { font-size:13px; font-weight:500; color:#64748B; letter-spacing:.1px; white-space:nowrap; line-height:1; }
+        .nav-links { display:flex; gap:26px; list-style:none; align-items:center; }
+        .nav-links a { text-decoration:none; color:var(--text-body); font-size:13.5px; font-weight:500; transition:color .2s; white-space:nowrap; }
+        .nav-links a:hover { color:var(--orange); }
+        .nav-links .active a { color:var(--orange); font-weight:700; }
+        .nav-links .cta a { padding:9px 22px; background:var(--orange); color:#fff; border-radius:8px; font-weight:700; transition:background .2s,transform .2s; }
+        .nav-links .cta a:hover { background:var(--orange-dk); transform:translateY(-1px); }
+        .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:6px; }
+        .hamburger span { display:block; width:22px; height:2.5px; background:var(--navy); border-radius:2px; transition:all .28s ease; }
+        .mob-menu { display:none; position:fixed; top:82px; left:0; right:0; z-index:998; background:#fff; border-bottom:1px solid var(--gray-line); box-shadow:0 8px 24px rgba(0,0,0,.09); }
+        .mob-menu.open { display:block; }
+        .mob-menu ul { list-style:none; }
+        .mob-menu ul li a { display:block; padding:15px 36px; color:var(--text-body); text-decoration:none; font-size:15px; border-bottom:1px solid var(--gray-line); transition:all .2s; }
+        .mob-menu ul li a:hover { color:var(--orange); padding-left:48px; background:var(--orange-lt); }
+
+        /* ── PAGE HERO ── */
+        .page-hero { background:var(--navy); padding:148px 40px 72px; text-align:center; position:relative; overflow:hidden; }
+        .page-hero::before { content:''; position:absolute; top:-120px; left:-100px; width:420px; height:420px; background:radial-gradient(circle,rgba(249,115,22,.14) 0%,transparent 65%); border-radius:50%; }
+        .page-hero::after  { content:''; position:absolute; bottom:-80px; right:-60px; width:340px; height:340px; background:radial-gradient(circle,rgba(99,102,241,.1) 0%,transparent 65%); border-radius:50%; }
+        .page-hero-inner { position:relative; z-index:1; }
+        .page-hero-badge { display:inline-block; background:rgba(249,115,22,.15); border:1px solid rgba(249,115,22,.38); color:#fdba74; padding:6px 20px; border-radius:100px; font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:20px; }
+        .page-hero h1 { font-size:clamp(2rem,5vw,3.4rem); font-weight:900; letter-spacing:-1.2px; line-height:1.2; color:#fff; margin-bottom:14px; }
+        .page-hero h1 .accent { color:var(--orange); }
+        .page-hero p { font-size:1.05rem; color:rgba(255,255,255,.65); line-height:1.85; }
+
+        /* ── FILTER TABS ── */
+        .tab-bar { display:flex; gap:10px; justify-content:center; margin-bottom:48px; flex-wrap:wrap; }
+        .tab-btn { padding:10px 26px; border-radius:100px; border:1.5px solid var(--gray-line); background:var(--white); color:var(--text-sub); font-size:.9rem; font-weight:600; cursor:pointer; font-family:inherit; transition:all .2s; }
+        .tab-btn:hover { border-color:var(--orange); color:var(--orange); }
+        .tab-btn.active { background:var(--orange); border-color:var(--orange); color:#fff; }
+
+        /* ── SECTION DIVIDER ── */
+        .section-label { display:flex; align-items:center; gap:16px; margin-bottom:28px; }
+        .section-label-badge { display:inline-flex; align-items:center; gap:8px; padding:8px 20px; border-radius:100px; font-size:.85rem; font-weight:700; letter-spacing:.5px; flex-shrink:0; }
+        .section-label-badge.free { background:#ecfdf5; color:#166534; }
+        .section-label-badge.paid { background:#fff7ed; color:var(--orange); }
+        .section-label hr { flex:1; border:none; border-top:1.5px solid var(--gray-line); }
+        .section-label-count { font-size:.82rem; color:var(--text-sub); flex-shrink:0; }
+
+        /* ── LECTURE GRID ── */
+        .lecture-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:24px; margin-bottom:56px; }
+
+        /* ── FREE CARD ── */
+        .lc { background:var(--white); border:1px solid var(--gray-line); border-radius:16px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.05); transition:all .3s; }
+        .lc:hover { box-shadow:0 12px 40px rgba(0,0,0,.1); transform:translateY(-4px); }
+        .yt-wrap { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; background:#000; }
+        .yt-wrap iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; }
+        .lc-body { padding:22px 24px; }
+        .lc-badges { display:flex; gap:8px; align-items:center; margin-bottom:10px; }
+        .badge-free { display:inline-block; background:#ecfdf5; color:#166534; font-size:.75rem; font-weight:700; padding:3px 10px; border-radius:100px; }
+        .badge-paid { display:inline-block; background:#fff7ed; color:var(--orange); font-size:.75rem; font-weight:700; padding:3px 10px; border-radius:100px; }
+        .badge-cat  { display:inline-block; background:var(--gray-bg); color:var(--text-sub); font-size:.75rem; font-weight:600; padding:3px 10px; border-radius:100px; }
+        .lc-title { font-size:1rem; font-weight:700; color:var(--text-head); margin-bottom:8px; line-height:1.45; }
+        .lc-desc  { font-size:.855rem; color:var(--text-sub); line-height:1.7; margin-bottom:14px; }
+        .lc-meta  { display:flex; gap:14px; font-size:.8rem; color:var(--text-sub); }
+        .lc-meta span { display:flex; align-items:center; gap:4px; }
+
+        /* ── PAID CARD ── */
+        .lc-paid { border-color: #fdba74; }
+        .lc-thumb { position:relative; height:180px; overflow:hidden; background:var(--navy); display:flex; align-items:center; justify-content:center; }
+        .lc-thumb img { width:100%; height:100%; object-fit:cover; opacity:.55; }
+        .lc-thumb-placeholder { display:flex; flex-direction:column; align-items:center; gap:10px; }
+        .lc-thumb-placeholder .icon { font-size:2.8rem; }
+        .lc-thumb-placeholder p { color:rgba(255,255,255,.6); font-size:.85rem; }
+        .lock-overlay { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; background:linear-gradient(135deg,rgba(23,37,84,.78),rgba(30,58,138,.68)); }
+        .lock-icon { font-size:2.2rem; }
+        .lock-text { color:rgba(255,255,255,.85); font-size:.82rem; font-weight:600; letter-spacing:.3px; }
+        .lc-price-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+        .lc-price { font-size:1.25rem; font-weight:800; color:var(--navy); }
+        .lc-price-orig { font-size:.85rem; color:var(--text-sub); text-decoration:line-through; margin-left:6px; font-weight:400; }
+        .buy-btn {
+            display:block; width:100%;
+            padding:13px 0; text-align:center;
+            background:var(--orange); color:#fff;
+            border-radius:10px; font-size:.95rem; font-weight:700;
+            text-decoration:none; font-family:inherit;
+            transition:background .2s,transform .25s,box-shadow .25s;
+        }
+        .buy-btn:hover { background:var(--orange-dk); transform:translateY(-2px); box-shadow:0 8px 24px rgba(249,115,22,.35); }
+        .pay-methods { display:flex; gap:8px; margin-top:10px; justify-content:center; flex-wrap:wrap; }
+        .pay-chip { font-size:.75rem; color:var(--text-sub); background:var(--gray-bg); padding:4px 10px; border-radius:6px; }
+        .pay-notice { font-size:.78rem; color:var(--text-sub); text-align:center; margin-top:10px; line-height:1.6; }
+
+        /* ── PROCESS BANNER ── */
+        .process-banner { background:var(--navy); border-radius:20px; padding:40px 48px; color:#fff; }
+        .process-banner h3 { font-size:1.25rem; font-weight:800; margin-bottom:32px; text-align:center; }
+        .process-steps { display:flex; align-items:flex-start; justify-content:center; gap:0; flex-wrap:wrap; }
+        .step { text-align:center; flex:1; min-width:140px; padding:0 12px; position:relative; }
+        .step:not(:last-child)::after { content:'→'; position:absolute; right:-8px; top:22px; font-size:1.2rem; color:rgba(255,255,255,.4); }
+        .step-num { display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; background:var(--orange); font-size:1.1rem; font-weight:900; margin-bottom:12px; }
+        .step p { font-size:.85rem; color:rgba(255,255,255,.75); line-height:1.65; }
+        .step strong { display:block; color:#fff; font-size:.92rem; margin-bottom:4px; }
+
+        /* ── FOOTER ── */
+        footer { background:var(--navy); padding:52px 48px 36px; }
+        .foot-grid { max-width:1140px; margin:0 auto; display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:40px; margin-bottom:40px; }
+        .logo-img-footer { height:80px; width:auto; object-fit:contain; display:block; margin-bottom:16px; }
+        .foot-brand p { font-size:.9rem; color:rgba(255,255,255,.55); line-height:1.9; max-width:400px; word-break:keep-all; }
+        .foot-col h4 { font-size:.76rem; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.45); margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,.08); }
+        .foot-col ul { list-style:none; display:flex; flex-direction:column; gap:12px; }
+        .foot-col ul li a { text-decoration:none; color:rgba(255,255,255,.62); font-size:.92rem; transition:color .2s; }
+        .foot-col ul li a:hover { color:var(--orange); }
+        .foot-bottom { max-width:1140px; margin:0 auto; padding-top:24px; border-top:1px solid rgba(255,255,255,.1); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+        .foot-bottom p { font-size:.84rem; color:rgba(255,255,255,.36); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width:1040px) {
+            .nav-links { display:none; }
+            .hamburger { display:flex; }
+            .foot-grid { grid-template-columns:1fr 1fr; gap:28px; }
+        }
+        @media (max-width:720px) {
+            nav { padding:0 20px; height:70px; }
+            .logo-img { height:48px; }
+            .nav-brand-name { font-size:16px; }
+            .nav-brand-sub { display:none; }
+            .page-hero { padding:128px 20px 56px; }
+            .sec { padding:56px 20px; }
+            .process-banner { padding:28px 22px; }
+            .process-steps { flex-direction:column; align-items:center; gap:20px; }
+            .step:not(:last-child)::after { content:'↓'; right:auto; left:50%; top:auto; bottom:-20px; transform:translateX(-50%); }
+            footer { padding:44px 20px 30px; }
+            .foot-grid { grid-template-columns:1fr; gap:24px; }
+            .foot-bottom { flex-direction:column; text-align:center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══════ NAV ══════ -->
+<nav id="nav">
+    <a href="index.html#home" class="nav-logo">
+        <img src="images/logo1.png" alt="스마트미디어아트센터" class="logo-img">
+        <div class="nav-brand-block">
+            <span class="nav-brand-name">스마트미디어아트센터</span>
+            <span class="nav-brand-sub">배움의 문턱을 낮추다</span>
+        </div>
+    </a>
+    <ul class="nav-links">
+        <li><a href="index.html#home">HOME</a></li>
+        <li><a href="index.html#about">대표소개</a></li>
+        <li><a href="index.html#instructors">강사진</a></li>
+        <li><a href="index.html#courses">교육과정</a></li>
+        <li><a href="index.html#certification">자격증</a></li>
+        <li class="active"><a href="lectures.html">강의</a></li>
+        <li><a href="reviews.html">수강후기</a></li>
+        <li><a href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener">팀채팅</a></li>
+        <li><a href="https://cafe.naver.com/elsnap7" target="_blank" rel="noopener">커뮤니티 1</a></li>
+        <li><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener">커뮤니티 2</a></li>
+        <li class="cta"><a href="index.html#lecture-request">출강·수강 문의</a></li>
+    </ul>
+    <div class="hamburger" id="hbg"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mob-menu" id="mob">
+    <ul>
+        <li><a href="index.html#home"          onclick="closeMob()">HOME</a></li>
+        <li><a href="index.html#about"         onclick="closeMob()">대표소개</a></li>
+        <li><a href="index.html#instructors"   onclick="closeMob()">강사진</a></li>
+        <li><a href="index.html#courses"       onclick="closeMob()">교육과정</a></li>
+        <li><a href="index.html#certification" onclick="closeMob()">자격증</a></li>
+        <li><a href="lectures.html"            onclick="closeMob()">강의</a></li>
+        <li><a href="reviews.html"             onclick="closeMob()">수강후기</a></li>
+        <li><a href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener" onclick="closeMob()">팀채팅</a></li>
+        <li><a href="https://cafe.naver.com/elsnap7"  target="_blank" rel="noopener" onclick="closeMob()">커뮤니티 1</a></li>
+        <li><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener" onclick="closeMob()">커뮤니티 2</a></li>
+        <li><a href="index.html#lecture-request" onclick="closeMob()">출강·수강 문의</a></li>
+    </ul>
+</div>
+
+
+<!-- ══════ PAGE HERO ══════ -->
+<div class="page-hero">
+    <div class="page-hero-inner">
+        <span class="page-hero-badge">LECTURE</span>
+        <h1>온라인 <span class="accent">강의</span></h1>
+        <p>언제 어디서나 스마트폰 하나로 배울 수 있습니다.<br>무료 강의로 시작하고, 프리미엄 강의로 한 단계 더 나아가세요.</p>
+    </div>
+</div>
+
+
+<!-- ══════ 무료 강의 ══════ -->
+<section class="sec sec-white" id="free">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="tag-chip">FREE LECTURE</span>
+            <h2 class="sec-title">무료 강의</h2>
+            <div class="orange-bar"></div>
+            <p class="sec-desc">누구나 무료로 시청할 수 있는 강의입니다. 지금 바로 재생해보세요.</p>
+        </div>
+
+        <div class="lecture-grid" id="freeGrid">
+
+            <!-- ────────────────────────────────────────────────
+                 무료 강의 카드 추가 방법:
+                 1. 아래 카드 블록을 복사합니다.
+                 2. src="..." 안의 VIDEO_ID 를 유튜브 영상 ID로 교체합니다.
+                    예: https://www.youtube.com/watch?v=abcd1234  →  VIDEO_ID = abcd1234
+                 3. 제목·설명·카테고리·시간을 수정합니다.
+            ──────────────────────────────────────────────── -->
+
+            <div class="lc reveal">
+                <div class="yt-wrap">
+                    <!-- TODO: VIDEO_ID 를 실제 유튜브 영상 ID로 교체하세요 -->
+                    <iframe src="https://www.youtube.com/embed/VIDEO_ID_1"
+                            title="스마트폰 사진 기초 — 빛을 읽는 법"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen loading="lazy"></iframe>
+                </div>
+                <div class="lc-body">
+                    <div class="lc-badges">
+                        <span class="badge-free">무료</span>
+                        <span class="badge-cat">스마트폰 사진</span>
+                    </div>
+                    <h3 class="lc-title">스마트폰 사진 기초 — 빛을 읽는 법</h3>
+                    <p class="lc-desc">자연광·역광·실내광 상황별 최적 설정과 노출 보정 방법을 알려드립니다.</p>
+                    <div class="lc-meta">
+                        <span>⏱ 15분</span>
+                        <span>📱 초급</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lc reveal">
+                <div class="yt-wrap">
+                    <!-- TODO: VIDEO_ID 를 실제 유튜브 영상 ID로 교체하세요 -->
+                    <iframe src="https://www.youtube.com/embed/VIDEO_ID_2"
+                            title="AI 메이커스 맛보기 — ChatGPT로 콘텐츠 만들기"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen loading="lazy"></iframe>
+                </div>
+                <div class="lc-body">
+                    <div class="lc-badges">
+                        <span class="badge-free">무료</span>
+                        <span class="badge-cat">AI 메이커스</span>
+                    </div>
+                    <h3 class="lc-title">AI 메이커스 맛보기 — ChatGPT로 콘텐츠 만들기</h3>
+                    <p class="lc-desc">AI 도구를 활용해 블로그 글·SNS 카피·이미지를 30분 안에 완성하는 실전 팁.</p>
+                    <div class="lc-meta">
+                        <span>⏱ 20분</span>
+                        <span>💡 입문</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lc reveal">
+                <div class="yt-wrap">
+                    <!-- TODO: VIDEO_ID 를 실제 유튜브 영상 ID로 교체하세요 -->
+                    <iframe src="https://www.youtube.com/embed/VIDEO_ID_3"
+                            title="SNS 마케팅 첫걸음 — 계정 세팅 A to Z"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen loading="lazy"></iframe>
+                </div>
+                <div class="lc-body">
+                    <div class="lc-badges">
+                        <span class="badge-free">무료</span>
+                        <span class="badge-cat">SNS</span>
+                    </div>
+                    <h3 class="lc-title">SNS 마케팅 첫걸음 — 계정 세팅 A to Z</h3>
+                    <p class="lc-desc">인스타그램·블로그·유튜브 채널을 처음 시작할 때 꼭 해야 할 기본 세팅을 정리했습니다.</p>
+                    <div class="lc-meta">
+                        <span>⏱ 18분</span>
+                        <span>📣 초급</span>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /freeGrid -->
+    </div>
+</section>
+
+
+<!-- ══════ 유료 강의 ══════ -->
+<section class="sec sec-gray" id="paid">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="tag-chip">PREMIUM LECTURE</span>
+            <h2 class="sec-title">유료 강의</h2>
+            <div class="orange-bar"></div>
+            <p class="sec-desc">결제 완료 후 이메일로 영상 링크를 보내드립니다. 한 번 구매하면 반복 시청 가능합니다.</p>
+        </div>
+
+        <div class="lecture-grid" id="paidGrid">
+
+            <!-- ────────────────────────────────────────────────
+                 유료 강의 카드 추가 방법:
+                 1. 아래 카드 블록을 복사합니다.
+                 2. href="PAYMENT_LINK_HERE" 를 토스/카카오페이 결제 링크로 교체합니다.
+                    - 토스: https://business.toss.im → 결제링크 생성
+                    - 카카오페이: https://biz.kakaopay.com → 결제링크 생성
+                 3. 제목·설명·가격·카테고리를 수정합니다.
+            ──────────────────────────────────────────────── -->
+
+            <div class="lc lc-paid reveal">
+                <div class="lc-thumb">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                        <span class="lock-text">구매 후 시청 가능</span>
+                    </div>
+                    <div class="lc-thumb-placeholder">
+                        <span class="icon">📷</span>
+                        <p>스마트폰 사진 심화</p>
+                    </div>
+                </div>
+                <div class="lc-body">
+                    <div class="lc-badges">
+                        <span class="badge-paid">유료</span>
+                        <span class="badge-cat">스마트폰 사진</span>
+                    </div>
+                    <h3 class="lc-title">스마트폰 사진 심화 — 인물·음식·풍경 촬영 마스터</h3>
+                    <p class="lc-desc">포트폴리오 수준의 사진을 스마트폰으로 찍는 12강 완성 과정. 편집 앱 활용법 포함.</p>
+                    <div class="lc-meta" style="margin-bottom:18px;">
+                        <span>⏱ 총 5시간</span>
+                        <span>📘 초·중급</span>
+                        <span>🎬 12강</span>
+                    </div>
+                    <div class="lc-price-row">
+                        <div>
+                            <span class="lc-price">₩59,000</span>
+                            <span class="lc-price-orig">₩89,000</span>
+                        </div>
+                        <span style="font-size:.78rem;color:#ef4444;font-weight:700;">34% 할인</span>
+                    </div>
+                    <!-- TODO: PAYMENT_LINK_HERE 를 실제 결제 링크로 교체하세요 -->
+                    <a href="PAYMENT_LINK_HERE" target="_blank" rel="noopener" class="buy-btn">구매하기</a>
+                    <div class="pay-methods">
+                        <span class="pay-chip">💛 카카오페이</span>
+                        <span class="pay-chip">💙 토스</span>
+                        <span class="pay-chip">💳 카드</span>
+                    </div>
+                    <p class="pay-notice">결제 완료 후 입력하신 이메일로<br>영상 링크가 발송됩니다 (영업일 기준 1일 이내)</p>
+                </div>
+            </div>
+
+            <div class="lc lc-paid reveal">
+                <div class="lc-thumb">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                        <span class="lock-text">구매 후 시청 가능</span>
+                    </div>
+                    <div class="lc-thumb-placeholder">
+                        <span class="icon">🤖</span>
+                        <p>AI 메이커스 완성 과정</p>
+                    </div>
+                </div>
+                <div class="lc-body">
+                    <div class="lc-badges">
+                        <span class="badge-paid">유료</span>
+                        <span class="badge-cat">AI 메이커스</span>
+                    </div>
+                    <h3 class="lc-title">AI 메이커스 완성 과정 — ChatGPT·Midjourney·영상 AI 전부</h3>
+                    <p class="lc-desc">텍스트 AI부터 이미지·영상 생성 AI까지, 실무에 바로 쓸 수 있는 AI 툴 활용 완전판.</p>
+                    <div class="lc-meta" style="margin-bottom:18px;">
+                        <span>⏱ 총 8시간</span>
+                        <span>📘 입문~중급</span>
+                        <span>🎬 20강</span>
+                    </div>
+                    <div class="lc-price-row">
+                        <div>
+                            <span class="lc-price">₩79,000</span>
+                            <span class="lc-price-orig">₩120,000</span>
+                        </div>
+                        <span style="font-size:.78rem;color:#ef4444;font-weight:700;">34% 할인</span>
+                    </div>
+                    <!-- TODO: PAYMENT_LINK_HERE 를 실제 결제 링크로 교체하세요 -->
+                    <a href="PAYMENT_LINK_HERE" target="_blank" rel="noopener" class="buy-btn">구매하기</a>
+                    <div class="pay-methods">
+                        <span class="pay-chip">💛 카카오페이</span>
+                        <span class="pay-chip">💙 토스</span>
+                        <span class="pay-chip">💳 카드</span>
+                    </div>
+                    <p class="pay-notice">결제 완료 후 입력하신 이메일로<br>영상 링크가 발송됩니다 (영업일 기준 1일 이내)</p>
+                </div>
+            </div>
+
+            <div class="lc lc-paid reveal">
+                <div class="lc-thumb">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                        <span class="lock-text">구매 후 시청 가능</span>
+                    </div>
+                    <div class="lc-thumb-placeholder">
+                        <span class="icon">📚</span>
+                        <p>출판 전문가 과정</p>
+                    </div>
+                </div>
+                <div class="lc-body">
+                    <div class="lc-badges">
+                        <span class="badge-paid">유료</span>
+                        <span class="badge-cat">출판</span>
+                    </div>
+                    <h3 class="lc-title">나만의 책 출판하기 — 기획부터 전자책 출간까지</h3>
+                    <p class="lc-desc">원고 기획, 교정, 표지 디자인, 전자책 등록까지 독립 출판 전 과정을 혼자 완성하는 실전 강의.</p>
+                    <div class="lc-meta" style="margin-bottom:18px;">
+                        <span>⏱ 총 6시간</span>
+                        <span>📘 초·중급</span>
+                        <span>🎬 15강</span>
+                    </div>
+                    <div class="lc-price-row">
+                        <div>
+                            <span class="lc-price">₩69,000</span>
+                            <span class="lc-price-orig">₩99,000</span>
+                        </div>
+                        <span style="font-size:.78rem;color:#ef4444;font-weight:700;">30% 할인</span>
+                    </div>
+                    <!-- TODO: PAYMENT_LINK_HERE 를 실제 결제 링크로 교체하세요 -->
+                    <a href="PAYMENT_LINK_HERE" target="_blank" rel="noopener" class="buy-btn">구매하기</a>
+                    <div class="pay-methods">
+                        <span class="pay-chip">💛 카카오페이</span>
+                        <span class="pay-chip">💙 토스</span>
+                        <span class="pay-chip">💳 카드</span>
+                    </div>
+                    <p class="pay-notice">결제 완료 후 입력하신 이메일로<br>영상 링크가 발송됩니다 (영업일 기준 1일 이내)</p>
+                </div>
+            </div>
+
+        </div><!-- /paidGrid -->
+
+        <!-- 구매 프로세스 안내 -->
+        <div class="process-banner reveal">
+            <h3>🛒 유료 강의 구매 방법</h3>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <strong>강의 선택</strong>
+                    <p>원하는 강의의<br>구매하기 클릭</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <strong>결제</strong>
+                    <p>카카오페이·토스·<br>카드로 결제</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <strong>이메일 수신</strong>
+                    <p>영업일 1일 이내<br>영상 링크 발송</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <strong>무제한 시청</strong>
+                    <p>링크로 언제든지<br>반복 시청 가능</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+    <div class="foot-grid">
+        <div class="foot-brand">
+            <a href="index.html#home">
+                <img src="images/logo1.png" alt="스마트미디어아트센터" class="logo-img-footer">
+            </a>
+            <p>배움의 문턱을 낮추고, 쉽게 가르치고, 아낌없이 나누고,<br>함께 성장하는 교육 공간입니다.</p>
+        </div>
+        <div class="foot-col">
+            <h4>바로가기</h4>
+            <ul>
+                <li><a href="index.html#about">센터장 소개</a></li>
+                <li><a href="index.html#instructors">강사진</a></li>
+                <li><a href="index.html#courses">교육과정</a></li>
+                <li><a href="index.html#certification">강사양성·자격증</a></li>
+            </ul>
+        </div>
+        <div class="foot-col">
+            <h4>더보기</h4>
+            <ul>
+                <li><a href="lectures.html">강의</a></li>
+                <li><a href="reviews.html">수강후기</a></li>
+                <li><a href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener">팀채팅</a></li>
+                <li><a href="https://cafe.naver.com/elsnap7"  target="_blank" rel="noopener">커뮤니티 1</a></li>
+                <li><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener">커뮤니티 2</a></li>
+            </ul>
+        </div>
+        <div class="foot-col">
+            <h4>연락처</h4>
+            <ul>
+                <li><a href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener">카카오 오픈채팅</a></li>
+                <li><a href="https://blog.naver.com/elanvital7"       target="_blank" rel="noopener">네이버 블로그</a></li>
+                <li><a href="https://www.instagram.com/elanvital7/"   target="_blank" rel="noopener">인스타그램</a></li>
+                <li><a href="https://www.youtube.com/channel/UC59f-okz-UWLR-Hz4LQBtLA" target="_blank" rel="noopener">유튜브</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="foot-bottom">
+        <p>© 2026 스마트미디어아트센터. All rights reserved.</p>
+        <p>
+            <a href="terms.html"   style="color:rgba(255,255,255,.36);text-decoration:none;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(255,255,255,.36)'">이용약관</a>
+            ·
+            <a href="privacy.html" style="color:rgba(255,255,255,.36);text-decoration:none;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(255,255,255,.36)'">개인정보처리방침</a>
+        </p>
+    </div>
+</footer>
+
+
+<script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); });
+
+    const hbg = document.getElementById('hbg');
+    const mob = document.getElementById('mob');
+    hbg.addEventListener('click', () => {
+        mob.classList.toggle('open');
+        const s = hbg.querySelectorAll('span');
+        if (mob.classList.contains('open')) {
+            s[0].style.cssText = 'transform:translateY(7px) rotate(45deg)';
+            s[1].style.cssText = 'opacity:0';
+            s[2].style.cssText = 'transform:translateY(-7px) rotate(-45deg)';
+        } else { s.forEach(x => x.style.cssText = ''); }
+    });
+    function closeMob() {
+        mob.classList.remove('open');
+        hbg.querySelectorAll('span').forEach(x => x.style.cssText = '');
+    }
+
+    const ro = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+</script>
+
+</body>
+</html>
