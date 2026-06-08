@@ -182,17 +182,6 @@
             font-size: .9rem; color: var(--text-sub); margin-bottom: 32px;
         }
 
-        /* 별점 */
-        .star-group { display: flex; flex-direction: row-reverse; gap: 4px; justify-content: flex-end; margin-bottom: 4px; }
-        .star-group input { display: none; }
-        .star-group label {
-            font-size: 2rem; cursor: pointer; color: #d1d5db;
-            transition: color .15s;
-        }
-        .star-group input:checked ~ label,
-        .star-group label:hover,
-        .star-group label:hover ~ label { color: var(--orange); }
-
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 28px; }
         .form-group { display: flex; flex-direction: column; gap: 7px; }
         .form-group.full { grid-column: 1 / -1; }
@@ -413,16 +402,16 @@
             <form id="reviewForm" novalidate>
                 <div class="form-grid">
 
-                    <div class="form-group full">
-                        <label class="form-label">별점 <span class="req">*</span></label>
-                        <div class="star-group" id="starGroup">
-                            <input type="radio" id="s5" name="rating" value="5"><label for="s5">★</label>
-                            <input type="radio" id="s4" name="rating" value="4"><label for="s4">★</label>
-                            <input type="radio" id="s3" name="rating" value="3"><label for="s3">★</label>
-                            <input type="radio" id="s2" name="rating" value="2"><label for="s2">★</label>
-                            <input type="radio" id="s1" name="rating" value="1"><label for="s1">★</label>
-                        </div>
-                        <p style="font-size:.8rem; color:var(--text-sub);">별을 클릭해 별점을 선택해주세요</p>
+                    <div class="form-group">
+                        <label class="form-label" for="reviewRating">별점 <span class="req">*</span></label>
+                        <select id="reviewRating" name="rating" class="form-select">
+                            <option value="">선택해주세요</option>
+                            <option value="5">★★★★★ &nbsp;5점 — 최고예요!</option>
+                            <option value="4">★★★★☆ &nbsp;4점 — 좋았어요</option>
+                            <option value="3">★★★☆☆ &nbsp;3점 — 괜찮았어요</option>
+                            <option value="2">★★☆☆☆ &nbsp;2점 — 보통이에요</option>
+                            <option value="1">★☆☆☆☆ &nbsp;1점 — 아쉬웠어요</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -555,6 +544,7 @@
 
 <script>
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzy1Qb1k1k_HMwYrQTHoGPbhWFs0r9J6bC6iGkvL0o7SEaJwQr4d72tZKATbIdTvojWnQ/exec";
+    const SHEET_ID = "18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I";
 
     /* NAV 스크롤 */
     const nav = document.getElementById('nav');
@@ -589,17 +579,6 @@
 
     loadReviews();
 
-    /* 별점 텍스트 피드백 */
-    const starLabels = { 1:'😢 아쉬웠어요', 2:'😐 보통이에요', 3:'🙂 괜찮았어요', 4:'😊 좋았어요', 5:'🌟 최고예요!' };
-    document.querySelectorAll('.star-group input').forEach(input => {
-        input.addEventListener('change', () => {
-            const hint = document.querySelector('.star-group + p');
-            hint.textContent = starLabels[input.value] || '별을 클릭해 별점을 선택해주세요';
-            hint.style.color = 'var(--orange)';
-            hint.style.fontWeight = '700';
-        });
-    });
-
     /* 후기 건수 */
     let reviewCount = 0;
     function updateCount() {
@@ -629,30 +608,77 @@
         return card;
     }
 
-    /* 서버에서 승인된 후기 로드 */
+    /* 열 레이블 → 필드명 매핑 */
+    function detectCols(cols) {
+        const map = {};
+        cols.forEach((col, i) => {
+            const lbl = (col.label || '').toLowerCase();
+            if (/별점|rating|평점|점수/.test(lbl))          map.rating  = i;
+            else if (/이름|name|닉네임/.test(lbl))           map.name    = i;
+            else if (/수강|과정|course/.test(lbl))           map.course  = i;
+            else if (/연령|나이|age/.test(lbl))              map.age     = i;
+            else if (/후기|내용|content|review/.test(lbl))   map.content = i;
+            else if (/상태|status/.test(lbl))                map.status  = i;
+        });
+        return map;
+    }
+
+    /* Google Sheets gviz API로 직접 로드 (시트가 "링크 공유" 상태일 때 동작) */
+    async function loadFromSheet() {
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('gviz ' + res.status);
+        const text = await res.text();
+        const json = JSON.parse(text.replace(/^[^(]*\(/, '').replace(/\);\s*$/, ''));
+
+        const colMap = detectCols(json.table.cols);
+        const reviews = [];
+
+        json.table.rows.forEach(row => {
+            if (!row.c) return;
+            const get = k => {
+                if (colMap[k] === undefined) return '';
+                const cell = row.c[colMap[k]];
+                return (cell && cell.v !== null && cell.v !== undefined) ? String(cell.v) : '';
+            };
+            const status = get('status');
+            if (colMap.status !== undefined && status && status !== 'approved') return;
+            const name = get('name'), content = get('content');
+            if (!name && !content) return;
+            reviews.push({ rating: get('rating') || '5', name: name || '익명', course: get('course'), age: get('age'), content });
+        });
+
+        return reviews;
+    }
+
+    /* 후기 로드 — gviz 우선, 실패 시 Apps Script 폴백 */
     async function loadReviews() {
         const grid = document.getElementById('reviewsGrid');
-        try {
-            const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=fetch&status=approved`);
-            const json = await res.json();
-            const loading = document.getElementById('reviewsLoading');
-            if (loading) loading.remove();
+        let reviews = null;
 
-            if (json.status === 'success' && json.reviews.length > 0) {
-                const sorted = json.reviews.slice().reverse();
-                sorted.forEach(r => {
-                    const card = buildCard(r, false);
-                    grid.appendChild(card);
-                    ro.observe(card);
-                });
-                reviewCount = json.reviews.length;
-                updateCount();
-            } else {
-                grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-sub);padding:40px 0;">아직 등록된 후기가 없습니다.</p>';
-            }
+        try {
+            reviews = await loadFromSheet();
         } catch {
-            const loading = document.getElementById('reviewsLoading');
-            if (loading) loading.textContent = '후기를 불러오지 못했습니다.';
+            try {
+                const res  = await fetch(`${GOOGLE_SCRIPT_URL}?action=fetch&status=approved`);
+                const json = await res.json();
+                if (json.status === 'success') reviews = json.reviews;
+            } catch { /* ignore */ }
+        }
+
+        const loading = document.getElementById('reviewsLoading');
+        if (loading) loading.remove();
+
+        if (reviews && reviews.length > 0) {
+            reviews.slice().reverse().forEach(r => {
+                const card = buildCard(r, false);
+                grid.appendChild(card);
+                ro.observe(card);
+            });
+            reviewCount = reviews.length;
+            updateCount();
+        } else {
+            grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-sub);padding:40px 0;">아직 등록된 후기가 없습니다.</p>';
         }
     }
 
@@ -672,8 +698,9 @@
 
     /* 폼 유효성 검사 */
     function validateReview() {
-        const rating = document.querySelector('input[name="rating"]:checked');
+        const rating = document.getElementById('reviewRating').value;
         if (!rating) {
+            document.getElementById('reviewRating').focus();
             showStatus('error', '별점을 선택해주세요.');
             return false;
         }
