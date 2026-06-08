@@ -596,7 +596,7 @@
         card.className = 't-card reveal' + (isNew ? ' new-review' : '');
         const initial = (data.name || '익명').charAt(0);
         card.innerHTML = `
-            <div class="stars">${starsHtml(parseInt(data.rating) || 5)}</div>
+            <div class="stars">${starsHtml(5)}</div>
             <p class="t-text">"${escapeHtml(data.content)}"</p>
             <div class="t-author">
                 <div class="avatar navy">${escapeHtml(initial)}</div>
@@ -645,7 +645,7 @@
             if (colMap.status !== undefined && status && status !== 'approved') return;
             const name = get('name'), content = get('content');
             if (!name && !content) return;
-            reviews.push({ rating: get('rating') || '5', name: name || '익명', course: get('course'), age: get('age'), content });
+            reviews.push({ rating: '5', name: name || '익명', course: get('course'), age: get('age'), content });
         });
 
         return reviews;
