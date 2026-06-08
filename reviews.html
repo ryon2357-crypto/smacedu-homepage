@@ -449,7 +449,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="reviewEmail">이메일 <span class="req">*</span></label>
-                        <input type="email" id="reviewEmail" name="email" class="form-input" placeholder="예: example@gmail.com">
+                        <input type="text" id="reviewEmail" name="email" class="form-input" placeholder="예: example@gmail.com">
                         <p class="form-notice" style="margin-top:6px;">이메일은 사이트에 공개되지 않으며, 행정용으로만 저장됩니다.</p>
                     </div>
 
@@ -710,11 +710,10 @@
             showStatus('error', '이름 또는 닉네임을 입력해주세요.');
             return false;
         }
-        const emailEl = document.getElementById('reviewEmail');
-        const email = emailEl.value.trim();
-        if (!email || !emailEl.checkValidity()) {
-            emailEl.focus();
-            showStatus('error', '유효한 이메일 주소를 입력해주세요.');
+        const email = document.getElementById('reviewEmail').value.trim();
+        if (!email) {
+            document.getElementById('reviewEmail').focus();
+            showStatus('error', '이메일을 입력해주세요.');
             return false;
         }
         const course = document.getElementById('reviewCourse').value;
