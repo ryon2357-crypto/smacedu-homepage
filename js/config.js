@@ -2,8 +2,8 @@
 // Supabase 계정 생성 후 아래 값을 교체하세요
 // Project Settings → API 에서 확인 가능
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const SUPABASE_URL      = 'YOUR_SUPABASE_URL'
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'
+const SUPABASE_URL      = 'https://tvlcybgptowhzhxzyppz.supabase.co'
+const SUPABASE_ANON_KEY = 'sb_publishable_lOxMNQ4JgUchl-1N3lVS6Q_ZviP-bS6'
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // 토스페이먼츠 클라이언트 키
