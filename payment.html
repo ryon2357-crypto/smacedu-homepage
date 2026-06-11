@@ -10,8 +10,7 @@
     <style>
         :root {
             --navy: #172554; --orange: #f97316; --orange-dk: #ea6b0c;
-            --orange-lt: #fff7ed; --orange-soft: #ffedd5;
-            --gray-bg: #f8f9fa; --gray-line: #e5e7eb;
+            --orange-lt: #fff7ed; --gray-bg: #f8f9fa; --gray-line: #e5e7eb;
             --text-body: #374151; --text-sub: #6b7280;
         }
         *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -26,7 +25,7 @@
 
         .layout {
             max-width: 900px; margin: 0 auto;
-            display: grid; grid-template-columns: 1fr 380px; gap: 28px;
+            display: grid; grid-template-columns: 1fr 360px; gap: 28px;
         }
         @media(max-width: 720px) {
             .layout { grid-template-columns: 1fr; }
@@ -38,7 +37,49 @@
             box-shadow: 0 4px 24px rgba(0,0,0,.07);
             padding: 32px;
         }
-        .panel h2 { font-size: 1.1rem; font-weight: 900; color: var(--navy); margin-bottom: 24px; }
+        .panel h2 { font-size: 1.1rem; font-weight: 900; color: var(--navy); margin-bottom: 28px; }
+
+        /* 단계 */
+        .steps { display: flex; flex-direction: column; gap: 28px; }
+        .step { display: flex; gap: 16px; }
+        .step-num {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: var(--navy); color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: .85rem; font-weight: 900; flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .step-title { font-size: .95rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+        .step-desc { font-size: .82rem; color: var(--text-sub); margin-top: 8px; line-height: 1.7; }
+
+        /* 계좌 박스 */
+        .bank-box {
+            background: var(--gray-bg); border-radius: 12px;
+            padding: 16px 20px; border: 1.5px solid var(--gray-line);
+        }
+        .bank-name { font-size: .8rem; color: var(--text-sub); margin-bottom: 4px; }
+        .bank-account {
+            font-size: 1.3rem; font-weight: 900; color: var(--navy);
+            letter-spacing: 1px; margin-bottom: 4px;
+        }
+        .bank-holder { font-size: .82rem; color: var(--text-sub); margin-bottom: 14px; }
+        .btn-copy {
+            width: 100%; padding: 10px; background: var(--navy); color: #fff;
+            border: none; border-radius: 8px; font-size: .85rem; font-weight: 700;
+            font-family: inherit; cursor: pointer; transition: background .2s;
+        }
+        .btn-copy:hover { background: #1e3a8a; }
+        .btn-copy.copied { background: #16a34a; }
+
+        /* 카카오 버튼 */
+        .btn-kakao {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 13px; background: #FEE500; color: #1a1300;
+            border: none; border-radius: 10px; font-size: .95rem; font-weight: 900;
+            font-family: inherit; cursor: pointer; text-decoration: none;
+            transition: background .2s;
+        }
+        .btn-kakao:hover { background: #f0d800; }
 
         /* 주문 요약 */
         .product-row {
@@ -52,37 +93,15 @@
         .product-thumb svg { width: 24px; height: 24px; }
         .product-name { font-size: .95rem; font-weight: 700; color: var(--navy); line-height: 1.4; }
         .product-desc { font-size: .8rem; color: var(--text-sub); margin-top: 3px; }
-
         .price-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: .9rem; }
         .price-row.total { padding-top: 16px; border-top: 1px solid var(--gray-line); margin-top: 10px; font-weight: 900; font-size: 1.05rem; color: var(--navy); }
         .price-row .label { color: var(--text-sub); }
-        .price-row .value { color: var(--text-body); }
         .price-row.total .value { color: var(--orange); font-size: 1.2rem; }
 
-        /* 결제 위젯 영역 */
-        #payment-method { margin-bottom: 0; }
-        #agreement { margin-top: 8px; }
-
-        .btn-pay {
-            width: 100%; padding: 16px; background: var(--orange); color: #fff;
-            border: none; border-radius: 12px; font-size: 1.05rem; font-weight: 900;
-            font-family: inherit; cursor: pointer; transition: background .2s;
-            margin-top: 20px;
-        }
-        .btn-pay:hover { background: var(--orange-dk); }
-        .btn-pay:disabled { background: #d1d5db; cursor: not-allowed; }
-
-        .msg { font-size: .85rem; text-align: center; margin-top: 12px; min-height: 20px; }
-        .msg.error { color: #ef4444; }
-
-        .loading {
-            text-align: center; padding: 40px 0;
-            font-size: .9rem; color: var(--text-sub);
-        }
         .spinner {
-            width: 32px; height: 32px; border: 3px solid var(--gray-line);
+            width: 28px; height: 28px; border: 3px solid var(--gray-line);
             border-top-color: var(--orange); border-radius: 50%;
-            animation: spin .7s linear infinite; margin: 0 auto 12px;
+            animation: spin .7s linear infinite; margin: 40px auto;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
@@ -93,20 +112,47 @@
     <a href="index.html"><img src="images/logo1.png" alt="스마트미디어아트센터"></a>
 </div>
 
-<div class="layout">
-    <!-- 결제 위젯 -->
+<div class="layout" id="layout" style="display:none;">
+    <!-- 결제 안내 -->
     <div class="panel">
-        <h2>결제 수단</h2>
-        <div id="widgetArea">
-            <div class="loading">
-                <div class="spinner"></div>
-                결제 수단을 불러오는 중...
+        <h2>결제 방법</h2>
+        <div class="steps">
+
+            <div class="step">
+                <div class="step-num">1</div>
+                <div style="flex:1;">
+                    <p class="step-title">아래 계좌로 이체해 주세요</p>
+                    <div class="bank-box">
+                        <p class="bank-name">신한은행</p>
+                        <p class="bank-account">110-050-892636</p>
+                        <p class="bank-holder">예금주 · 박성욱</p>
+                        <button class="btn-copy" id="copyBtn" onclick="copyAccount()">계좌번호 복사</button>
+                    </div>
+                    <p class="step-desc">이체 금액: <strong id="amountHint" style="color:var(--navy);"></strong><br>입금자명에 성함을 넣어주시면 빠르게 확인됩니다.</p>
+                </div>
             </div>
+
+            <div class="step">
+                <div class="step-num">2</div>
+                <div style="flex:1;">
+                    <p class="step-title">카카오 채팅으로 입금 사실을 알려주세요</p>
+                    <a href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener" class="btn-kakao">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#1a1300"><path d="M12 3C6.48 3 2 6.92 2 11.77c0 3.08 1.74 5.79 4.37 7.43L5.2 22.1c-.1.37.3.67.63.47l4.07-2.56c.69.1 1.4.16 2.1.16 5.52 0 10-3.92 10-8.77C22 6.92 17.52 3 12 3z"/></svg>
+                        카카오 채팅으로 알리기
+                    </a>
+                    <p class="step-desc">성함과 입금 금액을 남겨주시면 바로 확인해드립니다.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">3</div>
+                <div style="flex:1;">
+                    <p class="step-title">확인 후 시청 권한 드립니다</p>
+                    <p class="step-desc">입금 확인 즉시 영상 접근 권한을 드립니다.<br>보통 수 분 ~ 1시간 이내 처리됩니다.<br>(운영 시간 외에는 다음 날 오전 처리될 수 있습니다)</p>
+                </div>
+            </div>
+
         </div>
-        <div id="payment-method" style="display:none;"></div>
-        <div id="agreement"      style="display:none;"></div>
-        <button class="btn-pay" id="payBtn" style="display:none;">결제하기</button>
-        <p class="msg" id="msg"></p>
     </div>
 
     <!-- 주문 요약 -->
@@ -119,7 +165,7 @@
                 </svg>
             </div>
             <div>
-                <p class="product-name" id="productName">로딩 중...</p>
+                <p class="product-name" id="productName"></p>
                 <p class="product-desc">평생 소장 | 무제한 재생</p>
             </div>
         </div>
@@ -131,90 +177,56 @@
             <span>총 결제금액</span>
             <span class="value" id="totalDisplay">—</span>
         </div>
-
         <div style="margin-top: 24px; padding: 16px; background: var(--orange-lt); border-radius: 12px; font-size: .82rem; color: var(--text-sub); line-height: 1.8;">
-            ✅ 결제 완료 즉시 영상 시청 가능<br>
+            ✅ 확인 즉시 영상 시청 가능<br>
             ✅ 재생 횟수 제한 없음<br>
             ✅ 모바일 · PC 모두 지원
         </div>
     </div>
 </div>
 
+<div class="spinner" id="spinner"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="https://js.tosspayments.com/v2/standard"></script>
 <script src="js/config.js"></script>
 <script>
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-    const msg = document.getElementById('msg')
-    let widgets, currentUser
+    const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
     async function init() {
-        // 1. 로그인 확인
-        const { data: { session } } = await supabase.auth.getSession()
-        if (!session) {
-            location.href = 'login.html?redirect=payment.html'; return
-        }
-        currentUser = session.user
+        const { data: { session } } = await sbClient.auth.getSession()
+        if (!session) { location.href = 'login.html?redirect=payment.html'; return }
 
-        // 2. 이미 구매했으면 바로 이동
-        const { data: purchase } = await supabase
+        const { data: purchase } = await sbClient
             .from('purchases')
             .select('id')
-            .eq('user_id', currentUser.id)
+            .eq('user_id', session.user.id)
             .eq('product_id', PRODUCT.id)
             .eq('status', 'done')
             .maybeSingle()
 
         if (purchase) { location.href = 'replay.html'; return }
 
-        // 3. 상품 정보 표시
         const fmt = new Intl.NumberFormat('ko-KR').format(PRODUCT.price)
         document.getElementById('productName').textContent = PRODUCT.name
         document.getElementById('priceDisplay').textContent = fmt + '원'
         document.getElementById('totalDisplay').textContent = fmt + '원'
+        document.getElementById('amountHint').textContent = fmt + '원'
 
-        // 4. 토스페이먼츠 위젯 초기화
-        try {
-            const tossPayments = TossPayments(TOSS_CLIENT_KEY)
-            widgets = tossPayments.widgets({ customerKey: currentUser.id })
-
-            await widgets.setAmount({ currency: 'KRW', value: PRODUCT.price })
-            await widgets.renderPaymentMethods({ selector: '#payment-method', variantKey: 'DEFAULT' })
-            await widgets.renderAgreement({ selector: '#agreement', variantKey: 'AGREEMENT' })
-
-            document.getElementById('widgetArea').style.display = 'none'
-            document.getElementById('payment-method').style.display = 'block'
-            document.getElementById('agreement').style.display = 'block'
-            document.getElementById('payBtn').style.display = 'block'
-        } catch (err) {
-            document.getElementById('widgetArea').innerHTML =
-                '<p style="color:#ef4444;text-align:center;padding:20px;">결제 수단을 불러올 수 없습니다. 잠시 후 다시 시도해주세요.</p>'
-        }
+        document.getElementById('spinner').style.display = 'none'
+        document.getElementById('layout').style.display = 'grid'
     }
 
-    document.getElementById('payBtn').addEventListener('click', async () => {
-        const payBtn = document.getElementById('payBtn')
-        payBtn.disabled = true; payBtn.textContent = '결제 처리 중...'
-
-        const orderId = 'order_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8)
-
-        try {
-            await widgets.requestPayment({
-                orderId,
-                orderName: PRODUCT.name,
-                successUrl: window.location.origin + '/payment-success.html',
-                failUrl:    window.location.origin + '/payment-fail.html',
-                customerEmail: currentUser.email,
-                customerName:  currentUser.user_metadata?.full_name || '수강생'
-            })
-        } catch (err) {
-            if (err.code !== 'USER_CANCEL') {
-                msg.textContent = err.message || '결제 중 오류가 발생했습니다.'
-                msg.className = 'msg error'
-            }
-            payBtn.disabled = false; payBtn.textContent = '결제하기'
-        }
-    })
+    function copyAccount() {
+        navigator.clipboard.writeText('110-050-892636').then(() => {
+            const btn = document.getElementById('copyBtn')
+            btn.textContent = '복사 완료 ✓'
+            btn.classList.add('copied')
+            setTimeout(() => {
+                btn.textContent = '계좌번호 복사'
+                btn.classList.remove('copied')
+            }, 2000)
+        })
+    }
 
     init()
 </script>
