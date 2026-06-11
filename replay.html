@@ -428,55 +428,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="js/config.js"></script>
 <script>
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-    const overlay  = document.getElementById('accessCheck')
-
-    async function checkAccess() {
-        try {
-            const { data: { session }, error } = await supabase.auth.getSession()
-
-            if (error) { showGate(false); return }
-
-            // 네비게이션 사용자 영역 업데이트
-            const authArea = document.getElementById('navAuthArea')
-            if (session) {
-                authArea.innerHTML = `
-                    <div class="nav-user-area">
-                        <a href="mypage.html" class="btn-nav-mypage">마이페이지</a>
-                        <button class="btn-nav-logout" id="logoutBtn">로그아웃</button>
-                    </div>`
-                document.getElementById('logoutBtn').addEventListener('click', async () => {
-                    await supabase.auth.signOut(); location.href = 'index.html'
-                })
-            } else {
-                authArea.innerHTML = `<a href="login.html?redirect=replay.html" class="btn-nav-login">로그인</a>`
-            }
-
-            // 미로그인 → 결제 유도 화면
-            if (!session) {
-                showGate(false); return
-            }
-
-            // 구매 여부 확인
-            const { data: purchase } = await supabase
-                .from('purchases')
-                .select('id')
-                .eq('user_id', session.user.id)
-                .eq('product_id', PRODUCT.id)
-                .eq('status', 'done')
-                .maybeSingle()
-
-            if (!purchase) {
-                showGate(true, session.user.email); return
-            }
-
-            // 구매 확인 → 영상 표시
-            overlay.style.display = 'none'
-        } catch (err) {
-            console.error('접근 확인 오류:', err)
-            showGate(false)
-        }
-    }
+    const overlay = document.getElementById('accessCheck')
 
     function showGate(isLoggedIn, email) {
         const fmt = new Intl.NumberFormat('ko-KR').format(PRODUCT.price)
@@ -507,9 +459,58 @@
         const gateLogout = document.getElementById('gateLogout')
         if (gateLogout) {
             gateLogout.addEventListener('click', async () => {
-                await supabase.auth.signOut(); location.href = 'login.html?redirect=replay.html'
+                await sbClient.auth.signOut()
+                location.href = 'login.html?redirect=replay.html'
             })
         }
+    }
+
+    // 7초 안에 처리 안 되면 게이트 강제 표시
+    const loadingTimer = setTimeout(() => showGate(false), 7000)
+
+    let sbClient
+    try {
+        sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    } catch(e) {
+        clearTimeout(loadingTimer); showGate(false)
+    }
+
+    if (sbClient) {
+        sbClient.auth.getSession().then(({ data: { session }, error }) => {
+            clearTimeout(loadingTimer)
+
+            // 네비게이션 사용자 영역
+            const authArea = document.getElementById('navAuthArea')
+            if (session) {
+                authArea.innerHTML = `
+                    <div class="nav-user-area">
+                        <a href="mypage.html" class="btn-nav-mypage">마이페이지</a>
+                        <button class="btn-nav-logout" id="logoutBtn">로그아웃</button>
+                    </div>`
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    sbClient.auth.signOut().then(() => location.href = 'index.html')
+                })
+            } else {
+                if (authArea) authArea.innerHTML = `<a href="login.html?redirect=replay.html" class="btn-nav-login">로그인</a>`
+            }
+
+            if (error || !session) { showGate(false); return }
+
+            // 구매 여부 확인
+            sbClient.from('purchases').select('id')
+                .eq('user_id', session.user.id)
+                .eq('product_id', PRODUCT.id)
+                .eq('status', 'done')
+                .maybeSingle()
+                .then(({ data: purchase }) => {
+                    if (!purchase) { showGate(true, session.user.email); return }
+                    overlay.style.display = 'none'
+                })
+                .catch(() => showGate(true, session.user.email))
+        }).catch(() => {
+            clearTimeout(loadingTimer)
+            showGate(false)
+        })
     }
 
     /* NAV 스크롤 */
