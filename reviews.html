@@ -357,6 +357,7 @@
         <li><a href="https://cafe.naver.com/elsnap7" target="_blank" rel="noopener">커뮤니티 1</a></li>
         <li><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener">커뮤니티 2</a></li>
         <li class="cta"><a href="index.html#lecture-request">출강·수강 문의</a></li>
+        <li id="navAuthArea"></li>
     </ul>
     <div class="hamburger" id="hbg">
         <span></span><span></span><span></span>
@@ -544,9 +545,25 @@
 </footer>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
 <script>
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzy1Qb1k1k_HMwYrQTHoGPbhWFs0r9J6bC6iGkvL0o7SEaJwQr4d72tZKATbIdTvojWnQ/exec";
     const SHEET_ID = "18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I";
+
+    /* 네비게이션 로그인 상태 */
+    ;(async () => {
+        const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+        const { data: { session } } = await _sb.auth.getSession()
+        const area = document.getElementById('navAuthArea')
+        if (!area) return
+        if (session) {
+            area.innerHTML = `<div style="display:flex;align-items:center;gap:8px;"><a href="mypage.html" style="background:transparent;color:#374151;border:1.5px solid #e5e7eb;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;">마이페이지</a><button onclick="logoutRv()" style="background:transparent;color:#6b7280;border:none;font-size:12px;cursor:pointer;font-family:inherit;">로그아웃</button></div>`
+            window.logoutRv = async () => { await _sb.auth.signOut(); location.reload() }
+        } else {
+            area.innerHTML = `<a href="login.html?redirect=replay.html" style="background:#f97316;color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;">로그인</a>`
+        }
+    })()
 
     /* NAV 스크롤 */
     const nav = document.getElementById('nav');

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결제 — 스마트미디어아트센터</title>
+    <link rel="icon" href="images/logo1.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #172554; --orange: #f97316; --orange-dk: #ea6b0c;
+            --orange-lt: #fff7ed; --orange-soft: #ffedd5;
+            --gray-bg: #f8f9fa; --gray-line: #e5e7eb;
+            --text-body: #374151; --text-sub: #6b7280;
+        }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--gray-bg); min-height: 100vh;
+            padding: 40px 20px 80px;
+        }
+        .logo-wrap { text-align: center; margin-bottom: 36px; }
+        .logo-wrap a { display: inline-block; }
+        .logo-wrap img { height: 56px; width: auto; }
+
+        .layout {
+            max-width: 900px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 380px; gap: 28px;
+        }
+        @media(max-width: 720px) {
+            .layout { grid-template-columns: 1fr; }
+            .order-summary { order: -1; }
+        }
+
+        .panel {
+            background: #fff; border-radius: 20px;
+            box-shadow: 0 4px 24px rgba(0,0,0,.07);
+            padding: 32px;
+        }
+        .panel h2 { font-size: 1.1rem; font-weight: 900; color: var(--navy); margin-bottom: 24px; }
+
+        /* 주문 요약 */
+        .product-row {
+            display: flex; align-items: center; gap: 16px;
+            padding-bottom: 20px; border-bottom: 1px solid var(--gray-line); margin-bottom: 20px;
+        }
+        .product-thumb {
+            width: 72px; height: 48px; border-radius: 8px; background: var(--navy);
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .product-thumb svg { width: 24px; height: 24px; }
+        .product-name { font-size: .95rem; font-weight: 700; color: var(--navy); line-height: 1.4; }
+        .product-desc { font-size: .8rem; color: var(--text-sub); margin-top: 3px; }
+
+        .price-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: .9rem; }
+        .price-row.total { padding-top: 16px; border-top: 1px solid var(--gray-line); margin-top: 10px; font-weight: 900; font-size: 1.05rem; color: var(--navy); }
+        .price-row .label { color: var(--text-sub); }
+        .price-row .value { color: var(--text-body); }
+        .price-row.total .value { color: var(--orange); font-size: 1.2rem; }
+
+        /* 결제 위젯 영역 */
+        #payment-method { margin-bottom: 0; }
+        #agreement { margin-top: 8px; }
+
+        .btn-pay {
+            width: 100%; padding: 16px; background: var(--orange); color: #fff;
+            border: none; border-radius: 12px; font-size: 1.05rem; font-weight: 900;
+            font-family: inherit; cursor: pointer; transition: background .2s;
+            margin-top: 20px;
+        }
+        .btn-pay:hover { background: var(--orange-dk); }
+        .btn-pay:disabled { background: #d1d5db; cursor: not-allowed; }
+
+        .msg { font-size: .85rem; text-align: center; margin-top: 12px; min-height: 20px; }
+        .msg.error { color: #ef4444; }
+
+        .loading {
+            text-align: center; padding: 40px 0;
+            font-size: .9rem; color: var(--text-sub);
+        }
+        .spinner {
+            width: 32px; height: 32px; border: 3px solid var(--gray-line);
+            border-top-color: var(--orange); border-radius: 50%;
+            animation: spin .7s linear infinite; margin: 0 auto 12px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="logo-wrap">
+    <a href="index.html"><img src="images/logo1.png" alt="스마트미디어아트센터"></a>
+</div>
+
+<div class="layout">
+    <!-- 결제 위젯 -->
+    <div class="panel">
+        <h2>결제 수단</h2>
+        <div id="widgetArea">
+            <div class="loading">
+                <div class="spinner"></div>
+                결제 수단을 불러오는 중...
+            </div>
+        </div>
+        <div id="payment-method" style="display:none;"></div>
+        <div id="agreement"      style="display:none;"></div>
+        <button class="btn-pay" id="payBtn" style="display:none;">결제하기</button>
+        <p class="msg" id="msg"></p>
+    </div>
+
+    <!-- 주문 요약 -->
+    <div class="panel order-summary">
+        <h2>주문 정보</h2>
+        <div class="product-row">
+            <div class="product-thumb">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                </svg>
+            </div>
+            <div>
+                <p class="product-name" id="productName">로딩 중...</p>
+                <p class="product-desc">평생 소장 | 무제한 재생</p>
+            </div>
+        </div>
+        <div class="price-row">
+            <span class="label">정가</span>
+            <span class="value" id="priceDisplay">—</span>
+        </div>
+        <div class="price-row total">
+            <span>총 결제금액</span>
+            <span class="value" id="totalDisplay">—</span>
+        </div>
+
+        <div style="margin-top: 24px; padding: 16px; background: var(--orange-lt); border-radius: 12px; font-size: .82rem; color: var(--text-sub); line-height: 1.8;">
+            ✅ 결제 완료 즉시 영상 시청 가능<br>
+            ✅ 재생 횟수 제한 없음<br>
+            ✅ 모바일 · PC 모두 지원
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://js.tosspayments.com/v2/standard"></script>
+<script src="js/config.js"></script>
+<script>
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    const msg = document.getElementById('msg')
+    let widgets, currentUser
+
+    async function init() {
+        // 1. 로그인 확인
+        const { data: { session } } = await supabase.auth.getSession()
+        if (!session) {
+            location.href = 'login.html?redirect=payment.html'; return
+        }
+        currentUser = session.user
+
+        // 2. 이미 구매했으면 바로 이동
+        const { data: purchase } = await supabase
+            .from('purchases')
+            .select('id')
+            .eq('user_id', currentUser.id)
+            .eq('product_id', PRODUCT.id)
+            .eq('status', 'done')
+            .maybeSingle()
+
+        if (purchase) { location.href = 'replay.html'; return }
+
+        // 3. 상품 정보 표시
+        const fmt = new Intl.NumberFormat('ko-KR').format(PRODUCT.price)
+        document.getElementById('productName').textContent = PRODUCT.name
+        document.getElementById('priceDisplay').textContent = fmt + '원'
+        document.getElementById('totalDisplay').textContent = fmt + '원'
+
+        // 4. 토스페이먼츠 위젯 초기화
+        try {
+            const tossPayments = TossPayments(TOSS_CLIENT_KEY)
+            widgets = tossPayments.widgets({ customerKey: currentUser.id })
+
+            await widgets.setAmount({ currency: 'KRW', value: PRODUCT.price })
+            await widgets.renderPaymentMethods({ selector: '#payment-method', variantKey: 'DEFAULT' })
+            await widgets.renderAgreement({ selector: '#agreement', variantKey: 'AGREEMENT' })
+
+            document.getElementById('widgetArea').style.display = 'none'
+            document.getElementById('payment-method').style.display = 'block'
+            document.getElementById('agreement').style.display = 'block'
+            document.getElementById('payBtn').style.display = 'block'
+        } catch (err) {
+            document.getElementById('widgetArea').innerHTML =
+                '<p style="color:#ef4444;text-align:center;padding:20px;">결제 수단을 불러올 수 없습니다. 잠시 후 다시 시도해주세요.</p>'
+        }
+    }
+
+    document.getElementById('payBtn').addEventListener('click', async () => {
+        const payBtn = document.getElementById('payBtn')
+        payBtn.disabled = true; payBtn.textContent = '결제 처리 중...'
+
+        const orderId = 'order_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8)
+
+        try {
+            await widgets.requestPayment({
+                orderId,
+                orderName: PRODUCT.name,
+                successUrl: window.location.origin + '/payment-success.html',
+                failUrl:    window.location.origin + '/payment-fail.html',
+                customerEmail: currentUser.email,
+                customerName:  currentUser.user_metadata?.full_name || '수강생'
+            })
+        } catch (err) {
+            if (err.code !== 'USER_CANCEL') {
+                msg.textContent = err.message || '결제 중 오류가 발생했습니다.'
+                msg.className = 'msg error'
+            }
+            payBtn.disabled = false; payBtn.textContent = '결제하기'
+        }
+    })
+
+    init()
+</script>
+</body>
+</html>
