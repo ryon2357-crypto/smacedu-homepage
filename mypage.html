@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지 — 스마트미디어아트센터</title>
+    <link rel="icon" href="images/logo1.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #172554; --orange: #f97316; --orange-dk: #ea6b0c;
+            --orange-lt: #fff7ed; --gray-bg: #f8f9fa; --gray-line: #e5e7eb;
+            --text-body: #374151; --text-sub: #6b7280;
+        }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Noto Sans KR', sans-serif; background: var(--gray-bg); min-height: 100vh; }
+
+        /* NAV */
+        nav {
+            position: fixed; top:0; left:0; right:0; z-index:99;
+            height: 70px; background: rgba(255,255,255,.96); backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--gray-line);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 32px;
+        }
+        .nav-left { display:flex; align-items:center; gap:10px; text-decoration:none; }
+        .nav-left img { height: 44px; }
+        .nav-left span { font-size:15px; font-weight:700; color:var(--navy); }
+        .nav-right { display:flex; align-items:center; gap:12px; }
+        .nav-user { font-size:.85rem; color:var(--text-sub); }
+        .btn-logout {
+            padding:8px 16px; background:transparent; color:var(--text-sub);
+            border:1.5px solid var(--gray-line); border-radius:8px;
+            font-size:.85rem; font-family:inherit; cursor:pointer; transition:all .2s;
+        }
+        .btn-logout:hover { border-color:var(--navy); color:var(--navy); }
+
+        .main { max-width: 760px; margin: 0 auto; padding: 100px 20px 80px; }
+
+        .page-title { font-size: 1.6rem; font-weight: 900; color: var(--navy); margin-bottom: 6px; }
+        .page-sub { font-size: .9rem; color: var(--text-sub); margin-bottom: 36px; }
+
+        .panel {
+            background: #fff; border-radius: 20px;
+            box-shadow: 0 4px 24px rgba(0,0,0,.07);
+            padding: 28px 32px; margin-bottom: 20px;
+        }
+        .panel h2 { font-size: .9rem; font-weight: 700; color: var(--text-sub); letter-spacing: .8px; text-transform: uppercase; margin-bottom: 20px; }
+
+        /* 프로필 */
+        .profile-row { display:flex; align-items:center; gap:16px; }
+        .avatar {
+            width: 52px; height: 52px; border-radius: 50%;
+            background: var(--navy); color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; font-weight: 900; flex-shrink:0;
+        }
+        .profile-name { font-size: 1.05rem; font-weight: 900; color: var(--navy); }
+        .profile-email { font-size: .85rem; color: var(--text-sub); margin-top: 3px; }
+
+        /* 구매 내역 */
+        .purchase-item {
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+            padding: 16px 0; border-bottom: 1px solid var(--gray-line);
+        }
+        .purchase-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .purchase-info { flex: 1; }
+        .purchase-name { font-size: .95rem; font-weight: 700; color: var(--navy); }
+        .purchase-meta { font-size: .8rem; color: var(--text-sub); margin-top: 4px; }
+        .badge {
+            padding: 4px 12px; border-radius: 100px; font-size: .78rem; font-weight: 700;
+            flex-shrink: 0;
+        }
+        .badge.done { background: #dcfce7; color: #16a34a; }
+        .badge.pending { background: #fef9c3; color: #ca8a04; }
+
+        .btn-watch {
+            padding: 9px 18px; background: var(--orange); color: #fff;
+            border: none; border-radius: 8px; font-size: .85rem; font-weight: 700;
+            font-family: inherit; cursor: pointer; text-decoration: none;
+            transition: background .2s; flex-shrink: 0;
+        }
+        .btn-watch:hover { background: var(--orange-dk); }
+
+        .empty { text-align: center; padding: 40px 0; color: var(--text-sub); font-size: .9rem; }
+        .empty a { color: var(--orange); font-weight: 700; text-decoration: none; }
+
+        .spinner {
+            width: 28px; height: 28px; border: 3px solid var(--gray-line);
+            border-top-color: var(--orange); border-radius: 50%;
+            animation: spin .7s linear infinite; margin: 20px auto;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="nav-left">
+        <img src="images/logo1.png" alt="">
+        <span>스마트미디어아트센터</span>
+    </a>
+    <div class="nav-right">
+        <span class="nav-user" id="navEmail"></span>
+        <button class="btn-logout" id="logoutBtn">로그아웃</button>
+    </div>
+</nav>
+
+<div class="main">
+    <p class="page-title">마이페이지</p>
+    <p class="page-sub">구매한 강의를 확인하고 바로 시청하세요.</p>
+
+    <!-- 프로필 -->
+    <div class="panel">
+        <h2>내 계정</h2>
+        <div class="profile-row" id="profileRow">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <!-- 구매 내역 -->
+    <div class="panel">
+        <h2>구매한 강의</h2>
+        <div id="purchaseList">
+            <div class="spinner"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script>
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+    async function init() {
+        const { data: { session } } = await supabase.auth.getSession()
+        if (!session) { location.href = 'login.html?redirect=mypage.html'; return }
+
+        const user = session.user
+        const name = user.user_metadata?.full_name || user.email.split('@')[0]
+        const initial = name.charAt(0).toUpperCase()
+
+        document.getElementById('navEmail').textContent = user.email
+        document.getElementById('profileRow').innerHTML = `
+            <div class="avatar">${initial}</div>
+            <div>
+                <p class="profile-name">${name}</p>
+                <p class="profile-email">${user.email}</p>
+            </div>
+        `
+
+        // 구매 내역 조회
+        const { data: purchases, error } = await supabase
+            .from('purchases')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false })
+
+        const list = document.getElementById('purchaseList')
+
+        if (error || !purchases?.length) {
+            list.innerHTML = `
+                <div class="empty">
+                    아직 구매한 강의가 없습니다.<br><br>
+                    <a href="payment.html">강의 다시보기 구매하기 →</a>
+                </div>
+            `
+            return
+        }
+
+        const fmt = new Intl.NumberFormat('ko-KR')
+        list.innerHTML = purchases.map(p => {
+            const date = new Date(p.created_at).toLocaleDateString('ko-KR')
+            const isDone = p.status === 'done'
+            return `
+                <div class="purchase-item">
+                    <div class="purchase-info">
+                        <p class="purchase-name">${PRODUCT.name}</p>
+                        <p class="purchase-meta">${date} · ${fmt.format(p.amount)}원 · 주문번호: ${p.order_id}</p>
+                    </div>
+                    <span class="badge ${p.status}">${isDone ? '결제완료' : '처리중'}</span>
+                    ${isDone ? '<a href="replay.html" class="btn-watch">시청하기</a>' : ''}
+                </div>
+            `
+        }).join('')
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        await supabase.auth.signOut()
+        location.href = 'index.html'
+    })
+
+    init()
+</script>
+</body>
+</html>

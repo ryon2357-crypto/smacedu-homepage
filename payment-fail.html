@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결제 실패 — 스마트미디어아트센터</title>
+    <link rel="icon" href="images/logo1.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --navy:#172554; --orange:#f97316; --orange-dk:#ea6b0c; --gray-line:#e5e7eb; --text-sub:#6b7280; }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa;
+            min-height: 100vh; display:flex; align-items:center; justify-content:center; padding:40px 20px;
+        }
+        .card {
+            background:#fff; border-radius:20px; box-shadow:0 4px 32px rgba(0,0,0,.08);
+            padding:52px 44px; width:100%; max-width:440px; text-align:center;
+        }
+        .icon-wrap { width:72px; height:72px; border-radius:50%; background:#fee2e2; margin:0 auto 24px; display:flex; align-items:center; justify-content:center; }
+        h1 { font-size:1.5rem; font-weight:900; color:var(--navy); margin-bottom:10px; }
+        .sub { font-size:.9rem; color:var(--text-sub); line-height:1.7; margin-bottom:12px; }
+        .error-code { font-size:.8rem; color:#ef4444; background:#fee2e2; border-radius:8px; padding:8px 16px; display:inline-block; margin-bottom:28px; }
+        .btn-main { display:block; width:100%; padding:14px; background:var(--orange); color:#fff; border:none; border-radius:12px; font-size:1rem; font-weight:700; font-family:inherit; cursor:pointer; text-decoration:none; transition:background .2s; margin-bottom:12px; }
+        .btn-main:hover { background:var(--orange-dk); }
+        .btn-sub { display:block; width:100%; padding:12px; background:transparent; color:var(--text-sub); border:1.5px solid var(--gray-line); border-radius:12px; font-size:.9rem; font-weight:600; font-family:inherit; cursor:pointer; text-decoration:none; transition:border-color .2s, color .2s; }
+        .btn-sub:hover { border-color:var(--navy); color:var(--navy); }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="icon-wrap">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+    </div>
+    <h1>결제에 실패했습니다</h1>
+    <p class="sub">결제 처리 중 문제가 발생했습니다.<br>다시 시도하거나 다른 결제 수단을 이용해주세요.</p>
+    <p class="error-code" id="errorCode"></p>
+    <a href="payment.html" class="btn-main">다시 결제하기</a>
+    <a href="index.html"   class="btn-sub">홈으로 돌아가기</a>
+</div>
+<script>
+    const params = new URLSearchParams(location.search)
+    const code = params.get('code') || ''
+    const msg  = params.get('message') || ''
+    const el   = document.getElementById('errorCode')
+    if (code || msg) el.textContent = (code ? '[' + code + '] ' : '') + msg
+    else el.style.display = 'none'
+</script>
+</body>
+</html>

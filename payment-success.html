@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결제 완료 — 스마트미디어아트센터</title>
+    <link rel="icon" href="images/logo1.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #172554; --orange: #f97316; --orange-dk: #ea6b0c;
+            --orange-lt: #fff7ed; --gray-line: #e5e7eb;
+            --text-body: #374151; --text-sub: #6b7280;
+        }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #f8f9fa; min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            padding: 40px 20px;
+        }
+        .card {
+            background: #fff; border-radius: 20px;
+            box-shadow: 0 4px 32px rgba(0,0,0,.08);
+            padding: 52px 44px; width: 100%; max-width: 440px;
+            text-align: center;
+        }
+        .icon-wrap {
+            width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 24px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .icon-wrap.success { background: #dcfce7; }
+        .icon-wrap.error   { background: #fee2e2; }
+
+        h1 { font-size: 1.5rem; font-weight: 900; color: var(--navy); margin-bottom: 10px; }
+        .sub { font-size: .9rem; color: var(--text-sub); line-height: 1.7; margin-bottom: 32px; }
+
+        .info-box {
+            background: var(--orange-lt); border-radius: 12px;
+            padding: 16px 20px; margin-bottom: 28px;
+            text-align: left; font-size: .85rem; line-height: 1.9;
+            color: var(--text-body);
+        }
+        .info-row { display: flex; justify-content: space-between; gap: 12px; }
+        .info-row .lbl { color: var(--text-sub); flex-shrink: 0; }
+
+        .btn-main {
+            display: block; width: 100%; padding: 14px;
+            background: var(--orange); color: #fff;
+            border: none; border-radius: 12px; font-size: 1rem; font-weight: 700;
+            font-family: inherit; cursor: pointer; text-decoration: none;
+            transition: background .2s; margin-bottom: 12px;
+        }
+        .btn-main:hover { background: var(--orange-dk); }
+
+        .btn-sub {
+            display: block; width: 100%; padding: 12px;
+            background: transparent; color: var(--text-sub);
+            border: 1.5px solid var(--gray-line); border-radius: 12px;
+            font-size: .9rem; font-weight: 600; font-family: inherit;
+            cursor: pointer; text-decoration: none; transition: border-color .2s, color .2s;
+        }
+        .btn-sub:hover { border-color: var(--navy); color: var(--navy); }
+
+        .spinner {
+            width: 36px; height: 36px; border: 3px solid var(--gray-line);
+            border-top-color: var(--orange); border-radius: 50%;
+            animation: spin .7s linear infinite; margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-txt { font-size: .9rem; color: var(--text-sub); }
+
+        .error-msg { color: #ef4444; font-size: .85rem; margin: 12px 0; }
+    </style>
+</head>
+<body>
+
+<div class="card" id="card">
+    <div class="spinner"></div>
+    <p class="loading-txt">결제를 확인하는 중입니다...</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script>
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    const card = document.getElementById('card')
+    const params = new URLSearchParams(location.search)
+    const paymentKey = params.get('paymentKey')
+    const orderId    = params.get('orderId')
+    const amount     = params.get('amount')
+
+    async function confirm() {
+        if (!paymentKey || !orderId || !amount) {
+            showError('결제 정보가 올바르지 않습니다.'); return
+        }
+
+        const { data: { session } } = await supabase.auth.getSession()
+        if (!session) { location.href = 'login.html'; return }
+
+        const res = await fetch('/api/payment-confirm', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ paymentKey, orderId, amount: Number(amount), userId: session.user.id })
+        })
+        const data = await res.json()
+
+        if (!res.ok || !data.success) {
+            showError(data.error || '결제 확인 중 오류가 발생했습니다.'); return
+        }
+
+        const fmt = new Intl.NumberFormat('ko-KR').format(Number(amount))
+        card.innerHTML = `
+            <div class="icon-wrap success">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+            </div>
+            <h1>결제가 완료되었습니다!</h1>
+            <p class="sub">니콘 스쿨 온라인 강의 다시보기를<br>이용하실 수 있습니다.</p>
+            <div class="info-box">
+                <div class="info-row"><span class="lbl">주문번호</span><span>${orderId}</span></div>
+                <div class="info-row"><span class="lbl">결제금액</span><span>${fmt}원</span></div>
+                <div class="info-row"><span class="lbl">이메일</span><span>${session.user.email}</span></div>
+            </div>
+            <a href="replay.html" class="btn-main">강의 바로 시청하기 →</a>
+            <a href="mypage.html" class="btn-sub">마이페이지에서 확인</a>
+        `
+    }
+
+    function showError(msg) {
+        card.innerHTML = `
+            <div class="icon-wrap error">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </div>
+            <h1>결제 확인 실패</h1>
+            <p class="error-msg">${msg}</p>
+            <a href="payment.html" class="btn-main">다시 시도하기</a>
+            <a href="index.html"   class="btn-sub">홈으로 돌아가기</a>
+        `
+    }
+
+    confirm()
+</script>
+</body>
+</html>

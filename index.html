@@ -80,6 +80,14 @@
         }
         .reveal.on { opacity: 1; transform: none; }
 
+        /* ── NAV AUTH ── */
+        .btn-nav-login { background: var(--orange); color:#fff; border:none; padding:7px 14px; border-radius:8px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; text-decoration:none; white-space:nowrap; transition:background .2s; }
+        .btn-nav-login:hover { background: var(--orange-dk); }
+        .btn-nav-mypage { background:transparent; color:var(--text-body); border:1.5px solid var(--gray-line); padding:7px 14px; border-radius:8px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; text-decoration:none; white-space:nowrap; transition:all .2s; }
+        .btn-nav-mypage:hover { border-color:var(--navy); color:var(--navy); }
+        .btn-nav-logout { background:transparent; color:var(--text-sub); border:none; font-size:12px; font-family:inherit; cursor:pointer; padding:4px; }
+        .nav-user-area { display:flex; align-items:center; gap:8px; }
+
         /* ── NAV ── */
         nav {
             position: fixed; top:0; left:0; right:0; z-index:999;
@@ -921,6 +929,7 @@
         <li><a href="https://cafe.naver.com/elsnap7" target="_blank" rel="noopener">커뮤니티 1</a></li>
         <li><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener">커뮤니티 2</a></li>
         <li class="cta"><a href="#lecture-request">출강·수강 문의</a></li>
+        <li id="navAuthArea"></li>
     </ul>
     <div class="hamburger" id="hbg">
         <span></span><span></span><span></span>
@@ -1836,6 +1845,8 @@
 </footer>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
 <script>
     /* NAV 스크롤 */
     const nav = document.getElementById('nav');
@@ -1861,6 +1872,20 @@
         mob.classList.remove('open');
         hbg.querySelectorAll('span').forEach(x => x.style.cssText = '');
     }
+
+    /* 네비게이션 로그인 상태 표시 */
+    ;(async () => {
+        const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+        const { data: { session } } = await _sb.auth.getSession()
+        const area = document.getElementById('navAuthArea')
+        if (!area) return
+        if (session) {
+            area.innerHTML = `<div class="nav-user-area"><a href="mypage.html" class="btn-nav-mypage">마이페이지</a><button class="btn-nav-logout" id="idxLogout">로그아웃</button></div>`
+            document.getElementById('idxLogout').addEventListener('click', async () => { await _sb.auth.signOut(); location.reload() })
+        } else {
+            area.innerHTML = `<a href="login.html?redirect=replay.html" class="btn-nav-login">로그인</a>`
+        }
+    })()
 
     /* 스크롤 reveal */
     const ro = new IntersectionObserver(entries => {
