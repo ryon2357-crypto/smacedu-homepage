@@ -432,43 +432,50 @@
     const overlay  = document.getElementById('accessCheck')
 
     async function checkAccess() {
-        const { data: { session } } = await supabase.auth.getSession()
+        try {
+            const { data: { session }, error } = await supabase.auth.getSession()
 
-        // 네비게이션 사용자 영역 업데이트
-        const authArea = document.getElementById('navAuthArea')
-        if (session) {
-            authArea.innerHTML = `
-                <div class="nav-user-area">
-                    <a href="mypage.html" class="btn-nav-mypage">마이페이지</a>
-                    <button class="btn-nav-logout" id="logoutBtn">로그아웃</button>
-                </div>`
-            document.getElementById('logoutBtn').addEventListener('click', async () => {
-                await supabase.auth.signOut(); location.href = 'index.html'
-            })
-        } else {
-            authArea.innerHTML = `<a href="login.html?redirect=replay.html" class="btn-nav-login">로그인</a>`
+            if (error) { showGate(false); return }
+
+            // 네비게이션 사용자 영역 업데이트
+            const authArea = document.getElementById('navAuthArea')
+            if (session) {
+                authArea.innerHTML = `
+                    <div class="nav-user-area">
+                        <a href="mypage.html" class="btn-nav-mypage">마이페이지</a>
+                        <button class="btn-nav-logout" id="logoutBtn">로그아웃</button>
+                    </div>`
+                document.getElementById('logoutBtn').addEventListener('click', async () => {
+                    await supabase.auth.signOut(); location.href = 'index.html'
+                })
+            } else {
+                authArea.innerHTML = `<a href="login.html?redirect=replay.html" class="btn-nav-login">로그인</a>`
+            }
+
+            // 미로그인 → 결제 유도 화면
+            if (!session) {
+                showGate(false); return
+            }
+
+            // 구매 여부 확인
+            const { data: purchase } = await supabase
+                .from('purchases')
+                .select('id')
+                .eq('user_id', session.user.id)
+                .eq('product_id', PRODUCT.id)
+                .eq('status', 'done')
+                .maybeSingle()
+
+            if (!purchase) {
+                showGate(true, session.user.email); return
+            }
+
+            // 구매 확인 → 영상 표시
+            overlay.style.display = 'none'
+        } catch (err) {
+            console.error('접근 확인 오류:', err)
+            showGate(false)
         }
-
-        // 미로그인 → 결제 유도 화면
-        if (!session) {
-            showGate(false); return
-        }
-
-        // 구매 여부 확인
-        const { data: purchase } = await supabase
-            .from('purchases')
-            .select('id')
-            .eq('user_id', session.user.id)
-            .eq('product_id', PRODUCT.id)
-            .eq('status', 'done')
-            .maybeSingle()
-
-        if (!purchase) {
-            showGate(true, session.user.email); return
-        }
-
-        // 구매 확인 → 영상 표시
-        overlay.style.display = 'none'
     }
 
     function showGate(isLoggedIn, email) {
