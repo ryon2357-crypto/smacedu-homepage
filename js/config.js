@@ -18,5 +18,5 @@ const TOSS_CLIENT_KEY = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eo0'
 const PRODUCT = {
   id:    'nikon-school-replay',
   name:  '니콘 스쿨 온라인 강의 다시 보기',
-  price: 29000  // 원 (예: 29000 = 29,000원)
+  price: 4900
 }
