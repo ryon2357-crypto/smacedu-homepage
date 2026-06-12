@@ -111,11 +111,6 @@
         <p class="msg" id="msg"></p>
     </form>
 
-    <div class="notice">
-        가입 후 이메일 인증 링크가 발송됩니다.<br>
-        받은 메일함에서 인증 완료 후 로그인하세요.
-    </div>
-
     <div class="divider"><hr><span>이미 계정이 있으신가요?</span><hr></div>
     <p class="link-row"><a href="login.html">로그인하기</a></p>
 </div>
@@ -154,9 +149,9 @@
             showMsg(map[error.message] || error.message, 'error')
             btn.disabled = false; btn.textContent = '회원가입'
         } else {
-            showMsg('가입 완료! 이메일을 확인해 인증 링크를 클릭해주세요.', 'success')
-            btn.textContent = '이메일 확인 후 로그인'
-            setTimeout(() => location.href = 'login.html', 3000)
+            showMsg('가입 완료! 로그인 페이지로 이동합니다...', 'success')
+            btn.textContent = '가입 완료'
+            setTimeout(() => location.href = 'login.html', 2000)
         }
     })
 
