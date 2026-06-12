@@ -104,47 +104,69 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="js/config.js"></script>
 <script>
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-    const form    = document.getElementById('loginForm')
-    const btn     = document.getElementById('submitBtn')
-    const msg     = document.getElementById('msg')
+    const form     = document.getElementById('loginForm')
+    const btn      = document.getElementById('submitBtn')
+    const msg      = document.getElementById('msg')
     const redirect = new URLSearchParams(location.search).get('redirect') || 'replay.html'
-
-    // 이미 로그인된 경우 바로 이동
-    supabase.auth.getSession().then(({ data: { session } }) => {
-        if (session) location.href = redirect
-    })
-
-    form.addEventListener('submit', async e => {
-        e.preventDefault()
-        const email    = document.getElementById('email').value.trim()
-        const password = document.getElementById('password').value
-
-        if (!email || !password) {
-            showMsg('이메일과 비밀번호를 입력해주세요.', 'error'); return
-        }
-
-        btn.disabled = true; btn.textContent = '로그인 중...'
-        msg.className = 'msg'
-
-        const { error } = await supabase.auth.signInWithPassword({ email, password })
-
-        if (error) {
-            const map = {
-                'Invalid login credentials': '이메일 또는 비밀번호가 올바르지 않습니다.',
-                'Email not confirmed': '이메일 인증이 필요합니다. 받은 메일함을 확인해주세요.'
-            }
-            showMsg(map[error.message] || error.message, 'error')
-            btn.disabled = false; btn.textContent = '로그인'
-        } else {
-            showMsg('로그인 성공! 이동 중...', 'success')
-            setTimeout(() => location.href = redirect, 600)
-        }
-    })
 
     function showMsg(text, type) {
         msg.textContent = text
         msg.className = 'msg ' + type
+    }
+
+    // 폼 기본 제출 항상 막기
+    form.addEventListener('submit', function(e) { e.preventDefault() })
+
+    if (typeof window.supabase === 'undefined' || typeof window.supabase.createClient !== 'function') {
+        showMsg('서비스 초기화 실패. 페이지를 새로고침해주세요.', 'error')
+        btn.disabled = true
+    } else {
+        let client
+        try {
+            client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+        } catch(e) {
+            showMsg('초기화 오류: ' + e.message, 'error')
+            btn.disabled = true
+        }
+
+        if (client) {
+            // 이미 로그인된 경우 바로 이동
+            client.auth.getSession().then(function(res) {
+                if (res.data && res.data.session) location.href = redirect
+            })
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault()
+                const email    = document.getElementById('email').value.trim()
+                const password = document.getElementById('password').value
+
+                if (!email || !password) {
+                    showMsg('이메일과 비밀번호를 입력해주세요.', 'error'); return
+                }
+
+                btn.disabled = true; btn.textContent = '로그인 중...'
+                showMsg('', '')
+
+                try {
+                    const { error } = await client.auth.signInWithPassword({ email, password })
+
+                    if (error) {
+                        const map = {
+                            'Invalid login credentials': '이메일 또는 비밀번호가 올바르지 않습니다.',
+                            'Email not confirmed': '이메일 인증이 필요합니다. 받은 메일함을 확인해주세요.'
+                        }
+                        showMsg(map[error.message] || error.message, 'error')
+                        btn.disabled = false; btn.textContent = '로그인'
+                    } else {
+                        showMsg('로그인 성공! 이동 중...', 'success')
+                        setTimeout(function() { location.href = redirect }, 600)
+                    }
+                } catch(e) {
+                    showMsg('오류: ' + e.message, 'error')
+                    btn.disabled = false; btn.textContent = '로그인'
+                }
+            })
+        }
     }
 </script>
 </body>

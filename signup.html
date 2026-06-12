@@ -173,9 +173,10 @@
                         showMsg(map[error.message] || error.message, 'error')
                         btn.disabled = false; btn.textContent = '회원가입'
                     } else {
-                        showMsg('가입 완료! 로그인 페이지로 이동합니다...', 'success')
+                        msg.innerHTML = '가입 완료! <a href="login.html" style="color:#10b981;font-weight:700;">로그인하기 →</a>'
+                        msg.className = 'msg success'
                         btn.textContent = '가입 완료'
-                        setTimeout(function() { location.href = 'login.html' }, 2000)
+                        setTimeout(function() { location.href = 'login.html' }, 1500)
                     }
                 } catch(e) {
                     showMsg('오류: ' + e.message, 'error')
