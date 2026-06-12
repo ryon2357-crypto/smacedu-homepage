@@ -118,45 +118,71 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="js/config.js"></script>
 <script>
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
     const form = document.getElementById('signupForm')
     const btn  = document.getElementById('submitBtn')
     const msg  = document.getElementById('msg')
 
-    form.addEventListener('submit', async e => {
-        e.preventDefault()
-        const name  = document.getElementById('name').value.trim()
-        const email = document.getElementById('email').value.trim()
-        const pw    = document.getElementById('password').value
-        const pw2   = document.getElementById('password2').value
-
-        if (!name || !email || !pw) { showMsg('모든 항목을 입력해주세요.', 'error'); return }
-        if (pw.length < 8)          { showMsg('비밀번호는 8자 이상이어야 합니다.', 'error'); return }
-        if (pw !== pw2)             { showMsg('비밀번호가 일치하지 않습니다.', 'error'); return }
-
-        btn.disabled = true; btn.textContent = '가입 중...'
-
-        const { error } = await supabase.auth.signUp({
-            email, password: pw,
-            options: { data: { full_name: name } }
-        })
-
-        if (error) {
-            const map = {
-                'User already registered': '이미 가입된 이메일입니다. 로그인해주세요.',
-                'Password should be at least 6 characters': '비밀번호는 6자 이상이어야 합니다.'
-            }
-            showMsg(map[error.message] || error.message, 'error')
-            btn.disabled = false; btn.textContent = '회원가입'
-        } else {
-            showMsg('가입 완료! 로그인 페이지로 이동합니다...', 'success')
-            btn.textContent = '가입 완료'
-            setTimeout(() => location.href = 'login.html', 2000)
-        }
-    })
-
     function showMsg(text, type) {
         msg.textContent = text; msg.className = 'msg ' + type
+    }
+
+    // 폼 기본 제출 항상 막기
+    form.addEventListener('submit', function(e) { e.preventDefault(); })
+
+    // Supabase 라이브러리 로드 확인
+    if (typeof window.supabase === 'undefined' || typeof window.supabase.createClient !== 'function') {
+        showMsg('서비스 초기화 실패. 페이지를 새로고침해주세요.', 'error')
+        btn.disabled = true
+    } else {
+        let client
+        try {
+            client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+        } catch(initErr) {
+            showMsg('초기화 오류: ' + initErr.message, 'error')
+            btn.disabled = true
+        }
+
+        if (client) {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault()
+                const name  = document.getElementById('name').value.trim()
+                const email = document.getElementById('email').value.trim()
+                const pw    = document.getElementById('password').value
+                const pw2   = document.getElementById('password2').value
+
+                if (!name)         { showMsg('이름을 입력해주세요.', 'error'); return }
+                if (!email)        { showMsg('이메일을 입력해주세요.', 'error'); return }
+                if (!pw)           { showMsg('비밀번호를 입력해주세요.', 'error'); return }
+                if (pw.length < 8) { showMsg('비밀번호는 8자 이상이어야 합니다.', 'error'); return }
+                if (pw !== pw2)    { showMsg('비밀번호가 일치하지 않습니다.', 'error'); return }
+
+                btn.disabled = true; btn.textContent = '가입 중...'
+                showMsg('', '')
+
+                try {
+                    const { error } = await client.auth.signUp({
+                        email, password: pw,
+                        options: { data: { full_name: name } }
+                    })
+
+                    if (error) {
+                        const map = {
+                            'User already registered': '이미 가입된 이메일입니다. 로그인해주세요.',
+                            'Password should be at least 6 characters': '비밀번호는 6자 이상이어야 합니다.'
+                        }
+                        showMsg(map[error.message] || error.message, 'error')
+                        btn.disabled = false; btn.textContent = '회원가입'
+                    } else {
+                        showMsg('가입 완료! 로그인 페이지로 이동합니다...', 'success')
+                        btn.textContent = '가입 완료'
+                        setTimeout(function() { location.href = 'login.html' }, 2000)
+                    }
+                } catch(e) {
+                    showMsg('오류: ' + e.message, 'error')
+                    btn.disabled = false; btn.textContent = '회원가입'
+                }
+            })
+        }
     }
 </script>
 </body>
