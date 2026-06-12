@@ -131,67 +131,82 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="js/config.js"></script>
 <script>
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-
-    async function init() {
-        const { data: { session } } = await supabase.auth.getSession()
-        if (!session) { location.href = 'login.html?redirect=mypage.html'; return }
-
-        const user = session.user
-        const name = user.user_metadata?.full_name || user.email.split('@')[0]
-        const initial = name.charAt(0).toUpperCase()
-
-        document.getElementById('navEmail').textContent = user.email
-        document.getElementById('profileRow').innerHTML = `
-            <div class="avatar">${initial}</div>
-            <div>
-                <p class="profile-name">${name}</p>
-                <p class="profile-email">${user.email}</p>
-            </div>
-        `
-
-        // 구매 내역 조회
-        const { data: purchases, error } = await supabase
-            .from('purchases')
-            .select('*')
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false })
-
-        const list = document.getElementById('purchaseList')
-
-        if (error || !purchases?.length) {
-            list.innerHTML = `
-                <div class="empty">
-                    아직 구매한 강의가 없습니다.<br><br>
-                    <a href="payment.html">강의 다시보기 구매하기 →</a>
-                </div>
-            `
-            return
-        }
-
-        const fmt = new Intl.NumberFormat('ko-KR')
-        list.innerHTML = purchases.map(p => {
-            const date = new Date(p.created_at).toLocaleDateString('ko-KR')
-            const isDone = p.status === 'done'
-            return `
-                <div class="purchase-item">
-                    <div class="purchase-info">
-                        <p class="purchase-name">${PRODUCT.name}</p>
-                        <p class="purchase-meta">${date} · ${fmt.format(p.amount)}원 · 주문번호: ${p.order_id}</p>
-                    </div>
-                    <span class="badge ${p.status}">${isDone ? '결제완료' : '처리중'}</span>
-                    ${isDone ? '<a href="replay.html" class="btn-watch">시청하기</a>' : ''}
-                </div>
-            `
-        }).join('')
+    function showError(msg) {
+        document.getElementById('profileRow').innerHTML = '<p style="color:#ef4444;padding:20px 0">' + msg + '</p>'
+        document.getElementById('purchaseList').innerHTML = '<p style="color:#ef4444;padding:20px 0">' + msg + '</p>'
     }
 
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-        await supabase.auth.signOut()
+    async function init(client) {
+        try {
+            const { data: { session } } = await client.auth.getSession()
+            if (!session) { location.href = 'login.html?redirect=mypage.html'; return }
+
+            const user = session.user
+            const name = user.user_metadata?.full_name || user.email.split('@')[0]
+            const initial = name.charAt(0).toUpperCase()
+
+            document.getElementById('navEmail').textContent = user.email
+            document.getElementById('profileRow').innerHTML = `
+                <div class="avatar">${initial}</div>
+                <div>
+                    <p class="profile-name">${name}</p>
+                    <p class="profile-email">${user.email}</p>
+                </div>
+            `
+
+            const { data: purchases, error } = await client
+                .from('purchases')
+                .select('*')
+                .eq('user_id', user.id)
+                .order('created_at', { ascending: false })
+
+            const list = document.getElementById('purchaseList')
+
+            if (error || !purchases?.length) {
+                list.innerHTML = `
+                    <div class="empty">
+                        아직 구매한 강의가 없습니다.<br><br>
+                        <a href="payment.html">강의 다시보기 구매하기 →</a>
+                    </div>
+                `
+                return
+            }
+
+            const fmt = new Intl.NumberFormat('ko-KR')
+            list.innerHTML = purchases.map(p => {
+                const date = new Date(p.created_at).toLocaleDateString('ko-KR')
+                const isDone = p.status === 'done'
+                return `
+                    <div class="purchase-item">
+                        <div class="purchase-info">
+                            <p class="purchase-name">${PRODUCT.name}</p>
+                            <p class="purchase-meta">${date} · ${fmt.format(p.amount)}원 · 주문번호: ${p.order_id}</p>
+                        </div>
+                        <span class="badge ${p.status}">${isDone ? '결제완료' : '처리중'}</span>
+                        ${isDone ? '<a href="replay.html" class="btn-watch">시청하기</a>' : ''}
+                    </div>
+                `
+            }).join('')
+        } catch(e) {
+            showError('오류: ' + e.message)
+        }
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', async function() {
+        if (window._sbClient) await window._sbClient.auth.signOut()
         location.href = 'index.html'
     })
 
-    init()
+    if (typeof window.supabase === 'undefined' || typeof window.supabase.createClient !== 'function') {
+        showError('서비스 초기화 실패. 페이지를 새로고침해주세요.')
+    } else {
+        try {
+            window._sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+            init(window._sbClient)
+        } catch(e) {
+            showError('초기화 오류: ' + e.message)
+        }
+    }
 </script>
 </body>
 </html>
