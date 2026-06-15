@@ -3,171 +3,636 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>관리자 | 수강후기 관리</title>
+    <title>관리자 대시보드 | SMACEDU</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --navy: #172554;
+            --navy2: #1e3a8a;
             --orange: #f97316;
-            --gray-bg: #f8f9fa;
+            --orange-dk: #dc6f10;
+            --gray-bg: #f4f6fb;
             --gray-line: #e5e7eb;
-            --text-body: #374151;
-            --text-sub: #6b7280;
+            --text: #374151;
+            --sub: #6b7280;
+            --green: #16a34a;
+            --red: #dc2626;
+            --sidebar-w: 220px;
         }
-        * { box-sizing:border-box; }
-        body {
-            margin:0; font-family:'Noto Sans KR',sans-serif;
-            background:#f4f6fb; color:var(--text-body);
-            min-height:100vh;
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Noto Sans KR', sans-serif; background: var(--gray-bg); color: var(--text); min-height: 100vh; }
+
+        /* ── 인증 화면 ── */
+        #authScreen {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            min-height: 100vh; gap: 16px;
         }
-        .page-wrap { max-width:1200px; margin:0 auto; padding:36px 24px 60px; }
-        h1 { margin:0 0 10px; font-size:2rem; color:var(--navy); }
-        p.lead { margin:0 0 26px; color:var(--text-sub); line-height:1.8; }
-        .top-bar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:24px; }
-        .top-bar button, .top-bar select { border:1px solid var(--gray-line); border-radius:10px; padding:10px 16px; font-size:0.95rem; }
-        .top-bar button { background:var(--orange); color:#fff; cursor:pointer; }
-        .top-bar button:hover { background:#dc6f10; }
-        .note { margin-top:18px; font-size:0.92rem; color:var(--text-sub); }
-        .status-bar { margin-bottom:26px; padding:18px 20px; border-radius:16px; background:#fff; border:1px solid var(--gray-line); }
-        .status-bar span { font-weight:700; color:var(--navy); }
-        table { width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--gray-line); }
-        th, td { padding:14px 12px; border-bottom:1px solid var(--gray-line); text-align:left; vertical-align:top; }
-        th { background:#f8f9fa; color:var(--text-sub); font-weight:700; }
-        td small { display:block; color:var(--text-sub); margin-top:6px; }
-        .badge { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-size:0.85rem; font-weight:700; }
-        .badge.pending { background:#fff7eb; color:#c2410c; }
-        .badge.approved { background:#ecfdf5; color:#166534; }
-        .badge.hidden { background:#fef2f2; color:#991b1b; }
-        .btn-group { display:flex; flex-wrap:wrap; gap:8px; }
-        .btn { border:none; border-radius:10px; padding:8px 12px; font-size:0.9rem; cursor:pointer; }
-        .btn.approve { background:#166534; color:#fff; }
-        .btn.hide { background:#991b1b; color:#fff; }
-        .btn.disabled { opacity:.55; cursor:not-allowed; }
-        .empty { padding:36px; text-align:center; color:var(--text-sub); }
-        @media (max-width:860px) {
-            th, td { padding:12px 10px; }
-            .top-bar { flex-direction:column; align-items:flex-start; }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid var(--gray-line);
+            border-top-color: var(--orange);
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #authMsg { color: var(--sub); font-size: .95rem; text-align: center; line-height: 1.7; }
+
+        /* ── 레이아웃 ── */
+        #app { display: none; min-height: 100vh; }
+
+        /* 헤더 */
+        .adm-header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            height: 56px;
+            background: var(--navy);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px 0 16px;
+        }
+        .adm-logo { color: #fff; font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 10px; }
+        .adm-logo .dot { width: 8px; height: 8px; background: var(--orange); border-radius: 50%; }
+        .adm-user { display: flex; align-items: center; gap: 12px; }
+        .adm-email { font-size: .8rem; color: #93c5fd; }
+        .btn-logout {
+            background: transparent; border: 1px solid #3b82f6;
+            color: #93c5fd; padding: 4px 12px; border-radius: 7px;
+            font-size: .8rem; cursor: pointer; font-family: inherit;
+        }
+        .btn-logout:hover { background: rgba(59,130,246,.15); }
+
+        /* 사이드바 */
+        .adm-sidebar {
+            position: fixed; top: 56px; left: 0; bottom: 0;
+            width: var(--sidebar-w);
+            background: #fff;
+            border-right: 1px solid var(--gray-line);
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+        .nav-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 11px 20px;
+            font-size: .9rem; font-weight: 500;
+            color: var(--sub);
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all .15s;
+            user-select: none;
+        }
+        .nav-item:hover { background: var(--gray-bg); color: var(--text); }
+        .nav-item.active { color: var(--orange); border-left-color: var(--orange); background: #fff7ed; font-weight: 700; }
+        .nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+        .nav-divider { height: 1px; background: var(--gray-line); margin: 10px 20px; }
+
+        /* 메인 콘텐츠 */
+        .adm-main {
+            margin-left: var(--sidebar-w);
+            margin-top: 56px;
+            padding: 28px 28px 60px;
+            min-height: calc(100vh - 56px);
+        }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* 공통 */
+        .page-title { font-size: 1.4rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+        .page-desc { font-size: .88rem; color: var(--sub); margin-bottom: 24px; }
+
+        /* 통계 카드 */
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 28px; }
+        .stat-card {
+            background: #fff; border: 1px solid var(--gray-line);
+            border-radius: 14px; padding: 18px 20px;
+        }
+        .stat-card .lbl { font-size: .8rem; color: var(--sub); margin-bottom: 6px; }
+        .stat-card .val { font-size: 1.9rem; font-weight: 700; color: var(--navy); line-height: 1; }
+        .stat-card .val.orange { color: var(--orange); }
+        .stat-card .val.green  { color: var(--green); }
+        .stat-card .val.red    { color: var(--red); }
+
+        /* 섹션 박스 */
+        .box {
+            background: #fff; border: 1px solid var(--gray-line);
+            border-radius: 14px; overflow: hidden; margin-bottom: 20px;
+        }
+        .box-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--gray-line);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .box-title { font-size: .95rem; font-weight: 700; color: var(--navy); }
+        .box-body { padding: 0; }
+
+        /* 툴바 */
+        .toolbar {
+            display: flex; align-items: center; gap: 10px;
+            flex-wrap: wrap; padding: 16px 20px;
+            border-bottom: 1px solid var(--gray-line);
+        }
+        .search-wrap { position: relative; flex: 1; min-width: 200px; }
+        .search-wrap input {
+            width: 100%; padding: 8px 14px 8px 36px;
+            border: 1px solid var(--gray-line); border-radius: 8px;
+            font-size: .9rem; font-family: inherit; outline: none;
+        }
+        .search-wrap input:focus { border-color: var(--orange); }
+        .search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--sub); font-size: .9rem; pointer-events: none; }
+        .sel {
+            padding: 8px 12px; border: 1px solid var(--gray-line);
+            border-radius: 8px; font-family: inherit; font-size: .9rem;
+            background: #fff; cursor: pointer; outline: none;
+        }
+        .btn {
+            padding: 8px 16px; border: none; border-radius: 8px;
+            font-family: inherit; font-size: .88rem; font-weight: 500;
+            cursor: pointer; white-space: nowrap;
+        }
+        .btn-primary { background: var(--orange); color: #fff; }
+        .btn-primary:hover { background: var(--orange-dk); }
+        .btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+        .btn-approve { background: #15803d; color: #fff; }
+        .btn-approve:hover { background: #166534; }
+        .btn-hide    { background: #991b1b; color: #fff; }
+        .btn-hide:hover { background: #7f1d1d; }
+        .btn.disabled { opacity: .45; cursor: not-allowed; }
+
+        /* 테이블 */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--gray-line); font-size: .88rem; }
+        thead th { background: #f8f9fa; color: var(--sub); font-weight: 700; font-size: .8rem; white-space: nowrap; }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: #fafbff; }
+        .tbl-name { font-weight: 500; color: var(--navy); }
+        .tbl-sub  { font-size: .82rem; color: var(--sub); margin-top: 2px; }
+        .tbl-date { color: var(--sub); white-space: nowrap; }
+
+        /* 뱃지 */
+        .badge {
+            display: inline-block; padding: 3px 10px;
+            border-radius: 999px; font-size: .78rem; font-weight: 700; white-space: nowrap;
+        }
+        .badge.paid     { background: #ecfdf5; color: #15803d; }
+        .badge.unpaid   { background: #f3f4f6; color: #9ca3af; }
+        .badge.pending  { background: #fff7eb; color: #c2410c; }
+        .badge.approved { background: #ecfdf5; color: #166534; }
+        .badge.hidden   { background: #fef2f2; color: #991b1b; }
+
+        .empty-cell { text-align: center; padding: 40px; color: var(--sub); }
+        .mini-spin {
+            display: inline-block; width: 22px; height: 22px;
+            border: 3px solid var(--gray-line); border-top-color: var(--orange);
+            border-radius: 50%; animation: spin .7s linear infinite;
+        }
+        .tbl-footer { padding: 12px 20px; font-size: .82rem; color: var(--sub); border-top: 1px solid var(--gray-line); }
+
+        /* 대시보드 최근 목록 */
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .recent-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 20px; border-bottom: 1px solid var(--gray-line); font-size: .88rem;
+        }
+        .recent-item:last-child { border-bottom: none; }
+
+        /* 후기 내용 셀 */
+        .review-content { max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* 반응형 */
+        @media (max-width: 860px) {
+            .adm-sidebar { display: none; }
+            .adm-main { margin-left: 0; padding: 20px 16px 48px; }
+            .mob-tabs {
+                display: flex; gap: 0;
+                background: #fff; border-bottom: 1px solid var(--gray-line);
+                overflow-x: auto; position: sticky; top: 56px; z-index: 50;
+            }
+            .mob-tab {
+                flex: 1; min-width: 80px; padding: 12px 10px; text-align: center;
+                font-size: .8rem; font-weight: 500; color: var(--sub); cursor: pointer;
+                border-bottom: 2px solid transparent; white-space: nowrap;
+            }
+            .mob-tab.active { color: var(--orange); border-bottom-color: var(--orange); font-weight: 700; }
+            .dash-grid { grid-template-columns: 1fr; }
+        }
+        @media (min-width: 861px) {
+            .mob-tabs { display: none; }
         }
     </style>
 </head>
 <body>
-    <div class="page-wrap">
-        <h1>수강후기 관리자</h1>
-        <p class="lead">Google 스프레드시트에 저장된 수강후기를 확인하고, 승인 / 숨김 상태를 관리할 수 있는 관리자 페이지입니다.</p>
-        <div class="top-bar">
-            <button id="refreshBtn" type="button">새로고침</button>
-            <select id="statusFilter">
-                <option value="">전체 상태</option>
-                <option value="pending">대기중</option>
-                <option value="approved">승인</option>
-                <option value="hidden">숨김</option>
-            </select>
+
+<!-- ── 인증 화면 ── -->
+<div id="authScreen">
+    <div class="spinner"></div>
+    <div id="authMsg">인증 확인 중...</div>
+</div>
+
+<!-- ── 앱 ── -->
+<div id="app">
+
+    <header class="adm-header">
+        <div class="adm-logo"><div class="dot"></div>SMACEDU 관리자</div>
+        <div class="adm-user">
+            <span class="adm-email" id="adminEmail"></span>
+            <button class="btn-logout" id="logoutBtn">로그아웃</button>
         </div>
-        <div class="status-bar" id="adminStatus"><span>준비 완료</span> 데이터를 불러오려면 새로고침 버튼을 누르세요.</div>
-        <div id="reviewsContainer"></div>
-        <p class="note">※ 이 페이지는 별도 인증이 없으므로 내부 관리자용으로만 사용하세요.</p>
+    </header>
+
+    <!-- 사이드바 (데스크탑) -->
+    <aside class="adm-sidebar">
+        <div class="nav-item active" data-tab="dashboard"><span class="nav-icon">📊</span>대시보드</div>
+        <div class="nav-divider"></div>
+        <div class="nav-item" data-tab="members"><span class="nav-icon">👥</span>회원 관리</div>
+        <div class="nav-item" data-tab="reviews"><span class="nav-icon">💬</span>수강 후기</div>
+    </aside>
+
+    <!-- 모바일 탭 -->
+    <div class="mob-tabs">
+        <div class="mob-tab active" data-tab="dashboard">📊 대시보드</div>
+        <div class="mob-tab" data-tab="members">👥 회원</div>
+        <div class="mob-tab" data-tab="reviews">💬 후기</div>
     </div>
 
-    <script>
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzy1Qb1k1k_HMwYrQTHoGPbhWFs0r9J6bC6iGkvL0o7SEaJwQr4d72tZKATbIdTvojWnQ/exec";
-        const refreshBtn = document.getElementById('refreshBtn');
-        const statusFilter = document.getElementById('statusFilter');
-        const statusBar = document.getElementById('adminStatus');
-        const reviewsContainer = document.getElementById('reviewsContainer');
+    <main class="adm-main">
 
-        refreshBtn.addEventListener('click', loadReviews);
-        statusFilter.addEventListener('change', loadReviews);
+        <!-- ── 대시보드 탭 ── -->
+        <div class="tab-panel active" id="tab-dashboard">
+            <div class="page-title">대시보드</div>
+            <div class="page-desc">전체 현황을 한눈에 확인합니다.</div>
 
-        async function loadReviews() {
-            const filter = statusFilter.value;
-            setStatus('데이터를 불러오는 중입니다...', 'pending');
-            try {
-                const params = new URLSearchParams({ action: 'fetch' });
-                if (filter) params.set('status', filter);
-                const res = await fetch(`${GOOGLE_SCRIPT_URL}?${params.toString()}`);
-                const json = await res.json();
-                if (json.status !== 'success') throw new Error(json.message || '데이터를 불러오지 못했습니다.');
-                renderReviews(json.reviews || []);
-                setStatus(`총 ${json.reviews.length}건 조회됨.`, 'approved');
-            } catch (error) {
-                setStatus(`오류: ${error.message}`, 'hidden');
-                reviewsContainer.innerHTML = `<div class="empty">데이터를 가져오는 데 실패했습니다.</div>`;
-            }
+            <div class="stats">
+                <div class="stat-card"><div class="lbl">전체 회원</div><div class="val" id="ds-total">—</div></div>
+                <div class="stat-card"><div class="lbl">결제 완료</div><div class="val green" id="ds-paid">—</div></div>
+                <div class="stat-card"><div class="lbl">미결제</div><div class="val" id="ds-unpaid">—</div></div>
+                <div class="stat-card"><div class="lbl">총 결제 금액</div><div class="val orange" id="ds-revenue">—</div></div>
+                <div class="stat-card"><div class="lbl">전체 후기</div><div class="val" id="ds-reviews">—</div></div>
+                <div class="stat-card"><div class="lbl">승인 대기</div><div class="val red" id="ds-pending">—</div></div>
+            </div>
+
+            <div class="dash-grid">
+                <div class="box">
+                    <div class="box-header">
+                        <span class="box-title">최근 가입 회원</span>
+                        <span style="font-size:.8rem;color:var(--sub);cursor:pointer;" onclick="switchTab('members')">전체 보기 →</span>
+                    </div>
+                    <div id="recentMembers"><div class="empty-cell"><div class="mini-spin"></div></div></div>
+                </div>
+                <div class="box">
+                    <div class="box-header">
+                        <span class="box-title">최근 수강 후기</span>
+                        <span style="font-size:.8rem;color:var(--sub);cursor:pointer;" onclick="switchTab('reviews')">전체 보기 →</span>
+                    </div>
+                    <div id="recentReviews"><div class="empty-cell"><div class="mini-spin"></div></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── 회원 관리 탭 ── -->
+        <div class="tab-panel" id="tab-members">
+            <div class="page-title">회원 관리</div>
+            <div class="page-desc">가입한 전체 회원 목록과 결제 현황을 확인합니다.</div>
+
+            <div class="box">
+                <div class="toolbar">
+                    <div class="search-wrap">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="memberSearch" placeholder="이름 또는 이메일 검색...">
+                    </div>
+                    <select class="sel" id="memberPayFilter">
+                        <option value="">전체 결제 상태</option>
+                        <option value="paid">결제 완료</option>
+                        <option value="unpaid">미결제</option>
+                    </select>
+                    <button class="btn btn-primary" id="memberRefresh">새로고침</button>
+                </div>
+                <div style="overflow-x:auto">
+                    <table>
+                        <thead>
+                            <tr><th>#</th><th>회원 정보</th><th>결제 상태</th><th>가입일</th><th>마지막 로그인</th></tr>
+                        </thead>
+                        <tbody id="memberTbody">
+                            <tr><td colspan="5" class="empty-cell"><div class="mini-spin"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tbl-footer" id="memberFooter"></div>
+            </div>
+        </div>
+
+        <!-- ── 수강 후기 탭 ── -->
+        <div class="tab-panel" id="tab-reviews">
+            <div class="page-title">수강 후기 관리</div>
+            <div class="page-desc">제출된 수강 후기를 검토하고 승인 또는 숨김 처리합니다.</div>
+
+            <div class="box">
+                <div class="toolbar">
+                    <select class="sel" id="reviewStatusFilter">
+                        <option value="">전체 상태</option>
+                        <option value="pending">대기중</option>
+                        <option value="approved">승인</option>
+                        <option value="hidden">숨김</option>
+                    </select>
+                    <button class="btn btn-primary" id="reviewRefresh">새로고침</button>
+                    <a id="sheetLink" href="#" target="_blank" rel="noopener"
+                       style="padding:8px 14px;border:1px solid #34a853;color:#34a853;border-radius:8px;font-size:.85rem;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:5px;white-space:nowrap;">
+                       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                       스프레드시트 열기
+                    </a>
+                    <span id="reviewStatusMsg" style="font-size:.85rem;color:var(--sub);"></span>
+                </div>
+                <div style="overflow-x:auto">
+                    <table>
+                        <thead>
+                            <tr><th>작성자</th><th>수강 과정</th><th>후기 내용</th><th>등록일</th><th>상태</th><th>관리</th></tr>
+                        </thead>
+                        <tbody id="reviewTbody">
+                            <tr><td colspan="6" class="empty-cell"><div class="mini-spin"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tbl-footer" id="reviewFooter"></div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script>
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzy1Qb1k1k_HMwYrQTHoGPbhWFs0r9J6bC6iGkvL0o7SEaJwQr4d72tZKATbIdTvojWnQ/exec";
+const SHEET_ID = "18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I";
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
+
+;(async () => {
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    const authScreen = document.getElementById('authScreen')
+    const authMsg    = document.getElementById('authMsg')
+    const app        = document.getElementById('app')
+
+    // ── 세션 확인 ──────────────────────────────────────
+    const { data: { session } } = await sb.auth.getSession()
+
+    if (!session) {
+        authMsg.textContent = '로그인이 필요합니다. 이동 중...'
+        setTimeout(() => { location.href = 'login.html?redirect=admin.html' }, 1200)
+        return
+    }
+
+    const token = session.access_token
+
+    // ── 관리자 확인 + 회원 데이터 로드 ──────────────────
+    let allMembers = []
+    const res = await fetch('/api/admin-users', { headers: { Authorization: `Bearer ${token}` } })
+
+    if (res.status === 401 || res.status === 403) {
+        const d = await res.json()
+        authMsg.innerHTML = `<strong>${session.user.email}</strong> 계정은 관리자가 아닙니다.`
+        const btn = document.createElement('button')
+        btn.textContent = '다른 계정으로 로그인'
+        btn.style.cssText = 'margin-top:14px;padding:9px 20px;background:#f97316;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.9rem;cursor:pointer;display:block;margin-left:auto;margin-right:auto;'
+        btn.onclick = async () => { await sb.auth.signOut(); location.href = 'login.html?redirect=admin.html' }
+        authScreen.appendChild(btn)
+        return
+    }
+    if (!res.ok) {
+        authMsg.textContent = '서버 오류가 발생했습니다.'
+        return
+    }
+
+    const data = await res.json()
+    allMembers = data.users || []
+
+    // ── UI 표시 ─────────────────────────────────────────
+    authScreen.style.display = 'none'
+    app.style.display = 'block'
+    document.getElementById('adminEmail').textContent = session.user.email
+    document.getElementById('sheetLink').href = SHEET_URL
+
+    // ── 탭 전환 ─────────────────────────────────────────
+    window.switchTab = function(name) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'))
+        document.querySelectorAll('.nav-item, .mob-tab').forEach(n => n.classList.remove('active'))
+        document.getElementById('tab-' + name).classList.add('active')
+        document.querySelectorAll('[data-tab="' + name + '"]').forEach(n => n.classList.add('active'))
+        if (name === 'reviews' && !reviewsLoaded) loadReviews()
+    }
+
+    document.querySelectorAll('.nav-item, .mob-tab').forEach(el => {
+        el.addEventListener('click', () => switchTab(el.dataset.tab))
+    })
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        await sb.auth.signOut(); location.href = 'login.html'
+    })
+
+    // ════════════════════════════════════════════════════
+    // 회원 관리
+    // ════════════════════════════════════════════════════
+    renderMembers(allMembers)
+    renderDashboard(allMembers)
+
+    document.getElementById('memberSearch').addEventListener('input', filterMembers)
+    document.getElementById('memberPayFilter').addEventListener('change', filterMembers)
+    document.getElementById('memberRefresh').addEventListener('click', async () => {
+        const btn = document.getElementById('memberRefresh')
+        btn.disabled = true; btn.textContent = '로딩 중...'
+        document.getElementById('memberTbody').innerHTML = '<tr><td colspan="5" class="empty-cell"><div class="mini-spin"></div></td></tr>'
+        try {
+            const r = await fetch('/api/admin-users', { headers: { Authorization: `Bearer ${token}` } })
+            const d = await r.json()
+            allMembers = d.users || []
+            filterMembers()
+            renderDashboard(allMembers)
+        } catch(e) { alert('새로고침 실패: ' + e.message) }
+        finally { btn.disabled = false; btn.textContent = '새로고침' }
+    })
+
+    function filterMembers() {
+        const q   = document.getElementById('memberSearch').value.trim().toLowerCase()
+        const pay = document.getElementById('memberPayFilter').value
+        const filtered = allMembers.filter(u => {
+            const matchQ   = !q || (u.name||'').toLowerCase().includes(q) || (u.email||'').toLowerCase().includes(q)
+            const isPaid   = u.purchases.length > 0
+            const matchPay = !pay || (pay==='paid' && isPaid) || (pay==='unpaid' && !isPaid)
+            return matchQ && matchPay
+        })
+        renderMembers(filtered)
+    }
+
+    function renderMembers(list) {
+        const tbody  = document.getElementById('memberTbody')
+        const footer = document.getElementById('memberFooter')
+        if (!list.length) {
+            tbody.innerHTML = '<tr><td colspan="5" class="empty-cell">조건에 맞는 회원이 없습니다.</td></tr>'
+            footer.textContent = ''; return
         }
+        tbody.innerHTML = list.map((u, i) => {
+            const paid = u.purchases.length > 0
+            return `<tr>
+                <td style="color:var(--sub);font-size:.8rem">${i+1}</td>
+                <td><div class="tbl-name">${esc(u.name||'(이름 없음)')}</div><div class="tbl-sub">${esc(u.email)}</div></td>
+                <td><span class="badge ${paid?'paid':'unpaid'}">${paid?'결제 완료':'미결제'}</span></td>
+                <td><span class="tbl-date">${fmtDate(u.created_at)}</span></td>
+                <td>${u.last_sign_in_at ? `<span class="tbl-date">${fmtDate(u.last_sign_in_at)}</span>` : '<span style="color:#d1d5db;font-size:.82rem">없음</span>'}</td>
+            </tr>`
+        }).join('')
+        footer.textContent = `총 ${list.length}명`
+    }
 
-        function setStatus(message, type) {
-            statusBar.innerHTML = `<span>${message}</span>`;
-            statusBar.style.borderColor = type === 'approved' ? '#d1fae5' : type === 'hidden' ? '#fecaca' : '#e5e7eb';
-            statusBar.style.background = type === 'approved' ? '#ecfdf5' : type === 'hidden' ? '#fef2f2' : '#fff';
+    // ════════════════════════════════════════════════════
+    // 대시보드
+    // ════════════════════════════════════════════════════
+    function renderDashboard(members) {
+        const paid    = members.filter(u => u.purchases.length > 0)
+        const revenue = paid.reduce((s, u) => s + u.purchases.reduce((ss, p) => ss + (p.amount||0), 0), 0)
+        document.getElementById('ds-total').textContent   = members.length
+        document.getElementById('ds-paid').textContent    = paid.length
+        document.getElementById('ds-unpaid').textContent  = members.length - paid.length
+        document.getElementById('ds-revenue').textContent = revenue.toLocaleString() + '원'
+
+        // 최근 가입 5명
+        const recent = [...members].sort((a,b) => new Date(b.created_at)-new Date(a.created_at)).slice(0,5)
+        document.getElementById('recentMembers').innerHTML = recent.length
+            ? recent.map(u => `
+                <div class="recent-item">
+                    <div>
+                        <div style="font-weight:500;font-size:.88rem">${esc(u.name||'(이름 없음)')}</div>
+                        <div style="font-size:.78rem;color:var(--sub)">${esc(u.email)}</div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <span class="badge ${u.purchases.length?'paid':'unpaid'}">${u.purchases.length?'결제':'미결제'}</span>
+                        <span style="font-size:.78rem;color:var(--sub)">${fmtDate(u.created_at)}</span>
+                    </div>
+                </div>`).join('')
+            : '<div class="empty-cell">데이터 없음</div>'
+    }
+
+    // ════════════════════════════════════════════════════
+    // 수강 후기
+    // ════════════════════════════════════════════════════
+    let reviewsLoaded = false
+    let allReviews = []
+
+    document.getElementById('reviewRefresh').addEventListener('click', loadReviews)
+    document.getElementById('reviewStatusFilter').addEventListener('change', filterReviews)
+
+    async function loadReviews() {
+        reviewsLoaded = true
+        const btn = document.getElementById('reviewRefresh')
+        const msg = document.getElementById('reviewStatusMsg')
+        btn.disabled = true; btn.textContent = '로딩 중...'
+        msg.textContent = ''
+        document.getElementById('reviewTbody').innerHTML = '<tr><td colspan="6" class="empty-cell"><div class="mini-spin"></div></td></tr>'
+        try {
+            const filter = document.getElementById('reviewStatusFilter').value
+            const params = new URLSearchParams({ action: 'fetch' })
+            if (filter) params.set('status', filter)
+            const r = await fetch(`${GOOGLE_SCRIPT_URL}?${params}`)
+            const d = await r.json()
+            if (d.status !== 'success') throw new Error(d.message || '불러오기 실패')
+            allReviews = d.reviews || []
+
+            // 대시보드 통계 업데이트
+            document.getElementById('ds-reviews').textContent = allReviews.length
+            document.getElementById('ds-pending').textContent = allReviews.filter(rv => rv.status==='pending'||!rv.status).length
+
+            // 대시보드 최근 후기
+            const recentRv = allReviews.slice(0, 5)
+            document.getElementById('recentReviews').innerHTML = recentRv.length
+                ? recentRv.map(rv => `
+                    <div class="recent-item">
+                        <div style="flex:1;min-width:0">
+                            <div style="font-weight:500;font-size:.88rem">${esc(rv.name||'익명')} · <span style="font-size:.8rem;color:var(--sub)">${esc(rv.course||'')}</span></div>
+                            <div style="font-size:.78rem;color:var(--sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(rv.content||'')}</div>
+                        </div>
+                        <span class="badge ${rv.status||'pending'}" style="margin-left:8px;flex-shrink:0">${rv.status||'pending'}</span>
+                    </div>`).join('')
+                : '<div class="empty-cell">데이터 없음</div>'
+
+            filterReviews()
+            msg.textContent = `총 ${allReviews.length}건 로드됨`
+        } catch(e) {
+            msg.textContent = '오류: ' + e.message
+            document.getElementById('reviewTbody').innerHTML = '<tr><td colspan="6" class="empty-cell">데이터를 불러오지 못했습니다.</td></tr>'
+        } finally {
+            btn.disabled = false; btn.textContent = '새로고침'
         }
+    }
 
-        function renderReviews(rows) {
-            if (!rows.length) {
-                reviewsContainer.innerHTML = '<div class="empty">조건에 맞는 후기가 없습니다.</div>';
-                return;
-            }
-            const rowsHtml = rows.map(row => {
-                const note = row.age ? `<small>연령대: ${escapeHtml(row.age)}</small>` : '';
-                const email = row.email ? `<small>이메일: ${escapeHtml(row.email)}</small>` : '';
-                return `
-                    <tr>
-                        <td>${escapeHtml(row.name || '익명')}</td>
-                        <td>${escapeHtml(row.course)}</td>
-                        <td>${escapeHtml(row.content)}</td>
-                        <td>${escapeHtml(row.timestamp)}</td>
-                        <td><span class="badge ${row.status}">${escapeHtml(row.status || 'pending')}</span></td>
-                        <td>
-                            <div class="btn-group">
-                                <button class="btn approve ${row.status === 'approved' ? 'disabled' : ''}" data-row="${row.rowIndex}" data-status="approved" ${row.status === 'approved' ? 'disabled' : ''}>승인</button>
-                                <button class="btn hide ${row.status === 'hidden' ? 'disabled' : ''}" data-row="${row.rowIndex}" data-status="hidden" ${row.status === 'hidden' ? 'disabled' : ''}>숨김</button>
-                            </div>
-                            ${note}
-                            ${email}
-                        </td>
-                    </tr>`;
-            }).join('');
+    function filterReviews() {
+        const filter = document.getElementById('reviewStatusFilter').value
+        const list   = filter ? allReviews.filter(rv => (rv.status||'pending') === filter) : allReviews
+        renderReviews(list)
+    }
 
-            reviewsContainer.innerHTML = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>작성자</th>
-                            <th>수강 과정</th>
-                            <th>후기 내용</th>
-                            <th>등록일</th>
-                            <th>상태</th>
-                            <th>관리</th>
-                        </tr>
-                    </thead>
-                    <tbody>${rowsHtml}</tbody>
-                </table>`;
-
-            reviewsContainer.querySelectorAll('button[data-row]').forEach(button => {
-                button.addEventListener('click', () => updateStatus(button.dataset.row, button.dataset.status));
-            });
+    function renderReviews(list) {
+        const tbody  = document.getElementById('reviewTbody')
+        const footer = document.getElementById('reviewFooter')
+        if (!list.length) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-cell">조건에 맞는 후기가 없습니다.</td></tr>'
+            footer.textContent = ''; return
         }
+        tbody.innerHTML = list.map(rv => {
+            const st = rv.status || 'pending'
+            const email = rv.email ? `<div class="tbl-sub">${esc(rv.email)}</div>` : ''
+            const age   = rv.age   ? `<div class="tbl-sub">연령: ${esc(rv.age)}</div>` : ''
+            return `<tr>
+                <td><div class="tbl-name">${esc(rv.name||'익명')}</div>${email}${age}</td>
+                <td style="white-space:nowrap">${esc(rv.course||'')}</td>
+                <td><div class="review-content" title="${esc(rv.content)}">${esc(rv.content||'')}</div></td>
+                <td><span class="tbl-date">${esc(rv.timestamp||'')}</span></td>
+                <td><span class="badge ${st}">${st}</span></td>
+                <td>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap">
+                        <button class="btn btn-approve ${st==='approved'?'disabled':''}" ${st==='approved'?'disabled':''} data-row="${rv.rowIndex}" data-status="approved">승인</button>
+                        <button class="btn btn-hide ${st==='hidden'?'disabled':''}"    ${st==='hidden'?'disabled':''}    data-row="${rv.rowIndex}" data-status="hidden">숨김</button>
+                    </div>
+                </td>
+            </tr>`
+        }).join('')
 
-        async function updateStatus(rowIndex, newStatus) {
-            setStatus('상태를 변경 중입니다...', 'pending');
-            try {
-                const form = new FormData();
-                form.append('action', 'update');
-                form.append('row', rowIndex);
-                form.append('status', newStatus);
-                const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: form });
-                const json = await res.json();
-                if (json.status !== 'success') throw new Error(json.message || '상태 변경에 실패했습니다.');
-                setStatus(`행 ${rowIndex} 상태를 '${newStatus}'로 변경했습니다.`, 'approved');
-                loadReviews();
-            } catch (error) {
-                setStatus(`오류: ${error.message}`, 'hidden');
-            }
+        footer.textContent = `총 ${list.length}건`
+
+        tbody.querySelectorAll('button[data-row]').forEach(btn => {
+            btn.addEventListener('click', () => updateReview(btn.dataset.row, btn.dataset.status))
+        })
+    }
+
+    async function updateReview(rowIndex, newStatus) {
+        const msg = document.getElementById('reviewStatusMsg')
+        msg.textContent = '처리 중...'
+        try {
+            const fd = new FormData()
+            fd.append('action', 'update')
+            fd.append('row', rowIndex)
+            fd.append('status', newStatus)
+            const r = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: fd })
+            const d = await r.json()
+            if (d.status !== 'success') throw new Error(d.message || '변경 실패')
+            msg.textContent = `행 ${rowIndex} → '${newStatus}' 변경 완료`
+            loadReviews()
+        } catch(e) {
+            msg.textContent = '오류: ' + e.message
         }
+    }
 
-        function escapeHtml(str) {
-            return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-        }
+    // ════════════════════════════════════════════════════
+    // 유틸
+    // ════════════════════════════════════════════════════
+    function fmtDate(iso) {
+        if (!iso) return '—'
+        const d = new Date(iso)
+        return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`
+    }
+    function esc(s) {
+        return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+    }
 
-        loadReviews();
-    </script>
+    // 첫 로드 시 후기도 자동으로 가져와서 대시보드 통계 채우기
+    loadReviews()
+
+})()
+</script>
 </body>
 </html>
