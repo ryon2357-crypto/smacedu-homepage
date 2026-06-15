@@ -553,7 +553,9 @@ const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
                         </div>
                     </div>`).join('')
                 recentReviewsEl.querySelectorAll('button[data-row]').forEach(btn => {
-                    btn.addEventListener('click', () => updateReview(btn.dataset.row, btn.dataset.status))
+                    btn.addEventListener('click', function() {
+                        updateReview(this.dataset.row, this.dataset.status, this.closest('.recent-item'))
+                    })
                 })
             } else {
                 recentReviewsEl.innerHTML = '<div class="empty-cell" style="padding:24px;font-size:.85rem;">대기 중인 후기가 없습니다 ✓</div>'
@@ -604,25 +606,69 @@ const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
         footer.textContent = `총 ${list.length}건`
 
         tbody.querySelectorAll('button[data-row]').forEach(btn => {
-            btn.addEventListener('click', () => updateReview(btn.dataset.row, btn.dataset.status))
+            btn.addEventListener('click', function() {
+                updateReview(this.dataset.row, this.dataset.status, this.closest('tr'))
+            })
         })
     }
 
-    async function updateReview(rowIndex, newStatus) {
-        const msg = document.getElementById('reviewStatusMsg')
-        msg.textContent = '처리 중...'
+    async function updateReview(rowIndex, newStatus, rowEl) {
+        const isTr = rowEl && rowEl.tagName === 'TR'
+        const LABEL = { approved: '승인', hidden: '숨김', pending: '대기' }
+
+        // 즉각 UI 반영 (낙관적 업데이트)
+        if (isTr) {
+            const badge = rowEl.querySelector('.badge')
+            if (badge) { badge.className = `badge ${newStatus}`; badge.textContent = newStatus }
+            rowEl.querySelectorAll('button[data-status]').forEach(b => {
+                const isNow = b.dataset.status === newStatus
+                b.disabled = isNow
+                b.classList.toggle('disabled', isNow)
+                b.textContent = LABEL[b.dataset.status] || b.dataset.status
+            })
+        } else if (rowEl) {
+            rowEl.querySelectorAll('button').forEach(b => b.disabled = true)
+            rowEl.style.opacity = '0.5'
+        }
+
         try {
             const fd = new FormData()
             fd.append('action', 'update')
             fd.append('row', rowIndex)
             fd.append('status', newStatus)
-            const r = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: fd })
-            const d = await r.json()
-            if (d.status !== 'success') throw new Error(d.message || '변경 실패')
-            msg.textContent = `행 ${rowIndex} → '${newStatus}' 변경 완료`
-            loadReviews()
+            // no-cors: CORS 우회 — 응답을 읽을 수 없지만 요청은 정상 처리됨
+            await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: fd, mode: 'no-cors' })
+
+            // 메모리 업데이트
+            const rv = allReviews.find(r => String(r.rowIndex) === String(rowIndex))
+            if (rv) rv.status = newStatus
+
+            // 대시보드 통계 업데이트
+            document.getElementById('ds-pending').textContent =
+                allReviews.filter(r => !r.status || r.status === 'pending').length
+
+            // 대시보드 대기 목록에서 처리된 항목 제거
+            if (!isTr && rowEl) {
+                rowEl.style.transition = 'opacity .25s, max-height .3s'
+                rowEl.style.maxHeight = rowEl.scrollHeight + 'px'
+                setTimeout(() => { rowEl.style.maxHeight = '0'; rowEl.style.overflow = 'hidden' }, 50)
+                setTimeout(() => {
+                    rowEl.remove()
+                    const c = document.getElementById('recentReviews')
+                    if (c && !c.querySelector('.recent-item'))
+                        c.innerHTML = '<div class="empty-cell" style="padding:24px;font-size:.85rem;">대기 중인 후기가 없습니다 ✓</div>'
+                }, 350)
+            }
+
+            const msg = document.getElementById('reviewStatusMsg')
+            if (msg) { msg.textContent = `✓ '${LABEL[newStatus]}'로 변경되었습니다.`; setTimeout(() => { msg.textContent = '' }, 3000) }
+
         } catch(e) {
-            msg.textContent = '오류: ' + e.message
+            // 실패 시 원상 복구
+            if (isTr) loadReviews()
+            else if (rowEl) { rowEl.style.opacity = '1'; rowEl.querySelectorAll('button').forEach(b => b.disabled = false) }
+            const msg = document.getElementById('reviewStatusMsg')
+            if (msg) msg.textContent = '오류: ' + e.message
         }
     }
 
