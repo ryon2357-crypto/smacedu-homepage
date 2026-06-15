@@ -303,8 +303,19 @@
     // ── 세션 확인 ──────────────────────────────────────────
     const { data: { session } } = await client.auth.getSession()
 
+    function showAuthError(msg, showLogout) {
+        authMsg.innerHTML = msg
+        if (showLogout) {
+            const btn = document.createElement('button')
+            btn.textContent = '다른 계정으로 로그인'
+            btn.style.cssText = 'margin-top:14px;padding:9px 20px;background:#f97316;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.9rem;cursor:pointer;'
+            btn.onclick = async () => { await client.auth.signOut(); location.href = 'login.html?redirect=admin-users.html' }
+            document.getElementById('authScreen').appendChild(btn)
+        }
+    }
+
     if (!session) {
-        authMsg.textContent = '로그인이 필요합니다. 로그인 페이지로 이동합니다...'
+        showAuthError('로그인이 필요합니다. 로그인 페이지로 이동합니다...')
         setTimeout(() => { location.href = 'login.html?redirect=admin-users.html' }, 1500)
         return
     }
@@ -317,9 +328,16 @@
         const res = await fetch('/api/admin-users', {
             headers: { Authorization: `Bearer ${token}` }
         })
-        if (res.status === 401 || res.status === 403) {
+        if (res.status === 401) {
             const data = await res.json()
-            authMsg.textContent = data.error || '접근 권한이 없습니다.'
+            showAuthError(data.error || '인증에 실패했습니다.', true)
+            return null
+        }
+        if (res.status === 403) {
+            showAuthError(
+                `현재 로그인 계정 <strong>${session.user.email}</strong>은 관리자가 아닙니다.<br>관리자 계정으로 로그인해 주세요.`,
+                true
+            )
             return null
         }
         if (!res.ok) {
@@ -332,7 +350,7 @@
     try {
         result = await fetchUsers()
     } catch (e) {
-        authMsg.textContent = '데이터를 불러오는 중 오류가 발생했습니다: ' + e.message
+        showAuthError('데이터를 불러오는 중 오류가 발생했습니다: ' + e.message, true)
         return
     }
 
