@@ -670,18 +670,18 @@
         return reviews;
     }
 
-    /* 후기 로드 — gviz 우선, 실패 시 Apps Script 폴백 */
+    /* 후기 로드 — Apps Script 우선(캐시 없음), 실패 시 gviz 폴백 */
     async function loadReviews() {
         const grid = document.getElementById('reviewsGrid');
         let reviews = null;
 
         try {
-            reviews = await loadFromSheet();
+            const res  = await fetch(`${GOOGLE_SCRIPT_URL}?action=fetch&status=approved`);
+            const json = await res.json();
+            if (json.status === 'success') reviews = json.reviews;
         } catch {
             try {
-                const res  = await fetch(`${GOOGLE_SCRIPT_URL}?action=fetch&status=approved`);
-                const json = await res.json();
-                if (json.status === 'success') reviews = json.reviews;
+                reviews = await loadFromSheet();
             } catch { /* ignore */ }
         }
 
