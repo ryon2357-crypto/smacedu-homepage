@@ -2,7 +2,7 @@ const { createClient } = require('@supabase/supabase-js')
 
 const SUPABASE_URL       = process.env.SUPABASE_URL
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY
-const ADMIN_EMAIL        = process.env.ADMIN_EMAIL || 'aistudy38@gmail.com'
+const ADMIN_EMAIL        = process.env.ADMIN_EMAIL || 'ryon2357@gmail.com'
 
 module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end()
