@@ -45,6 +45,11 @@ function doGet(e) {
       return _handleContactInquiry(params);
     }
 
+    // ── 회원 가입 처리 (GET 방식) ──
+    if (params.sheetType === 'member') {
+      return _handleMemberSignup(params);
+    }
+
     const ss = SpreadsheetApp.openById('18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I');
     const sheet = ss.getSheetByName('후기') || ss.getSheets()[0];
     const headers = _ensureHeaders(sheet);
@@ -427,6 +432,59 @@ function _sendLectureAdminNotify(name, email, phone, timestamp, total) {
     subject:  `[SMAC EDU 특강] 신청 접수 — ${name} (총 ${total}명)`,
     htmlBody: html
   });
+}
+
+// ════════════════════════════════════════════
+// 회원 가입 처리
+// ════════════════════════════════════════════
+
+function _handleMemberSignup(params) {
+  try {
+    const ss    = SpreadsheetApp.openById(SHEET_ID);
+    let   sheet = ss.getSheetByName('회원');
+
+    if (!sheet) {
+      sheet = ss.insertSheet('회원');
+      sheet.appendRow(['가입일시', '이름', '이메일']);
+      sheet.setFrozenRows(1);
+      sheet.getRange('A1:C1').setBackground('#1e3a5f').setFontColor('#ffffff').setFontWeight('bold');
+    }
+
+    const now       = new Date();
+    const timestamp = Utilities.formatDate(now, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss');
+    const name      = params.name  || '';
+    const email     = params.email || '';
+    const total     = sheet.getLastRow();
+
+    sheet.appendRow([timestamp, name, email]);
+
+    MailApp.sendEmail({
+      to:      'elanvital7@naver.com',
+      subject: `[SMAC EDU 회원] 새 회원 가입 — ${name} (누적 ${total}명)`,
+      htmlBody: `
+<div style="font-family:sans-serif;max-width:480px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#1e3a5f;color:#fff;padding:16px 20px;margin:0;border-radius:8px 8px 0 0;">
+    👤 새 회원 가입 (누적 ${total}명)
+  </h2>
+  <div style="background:#f8fafc;padding:20px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <table style="width:100%;border-collapse:collapse;font-size:14px;">
+      <tr><td style="padding:6px 0;color:#64748b;width:70px;">가입일시</td><td>${timestamp}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">이름</td><td><strong>${name}</strong></td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">이메일</td><td>${email}</td></tr>
+    </table>
+    <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
+      <a href="${SHEET_URL}">스프레드시트에서 전체 회원 목록 확인 →</a>
+    </p>
+  </div>
+</div>`
+    });
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }
 
 // ════════════════════════════════════════════

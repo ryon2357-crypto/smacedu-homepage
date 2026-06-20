@@ -173,6 +173,8 @@
                         showMsg(map[error.message] || error.message, 'error')
                         btn.disabled = false; btn.textContent = '회원가입'
                     } else {
+                        const _p = new URLSearchParams({ sheetType: 'member', name, email })
+                        fetch(`https://script.google.com/macros/s/AKfycbzy1Qb1k1k_HMwYrQTHoGPbhWFs0r9J6bC6iGkvL0o7SEaJwQr4d72tZKATbIdTvojWnQ/exec?${_p}`, { mode: 'no-cors' }).catch(() => {})
                         msg.innerHTML = '가입 완료! <a href="login.html" style="color:#10b981;font-weight:700;">로그인하기 →</a>'
                         msg.className = 'msg success'
                         btn.textContent = '가입 완료'
