@@ -1017,8 +1017,8 @@
     btn.textContent = '신청 중…';
 
     try {
-      const body = new URLSearchParams({ sheetType: 'lecture', name, email, phone });
-      await fetch(SCRIPT_URL, { method: 'POST', body, mode: 'no-cors' });
+      const params = new URLSearchParams({ sheetType: 'lecture', name, email, phone });
+      await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
       showMsg('success', `${name}님, 신청이 완료됐습니다!\n확인 메일을 보내드렸어요.`);
       btn.textContent = '✓ 신청 완료';
     } catch {
