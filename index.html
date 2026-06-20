@@ -1902,7 +1902,7 @@
     });
 
     /* ── 출강 요청 신청서 Google Sheets 연동 ── */
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwd8XT_Q20rxPN9650WntHyrIFTMfAQjEmQFye5HVsc12O1xVyxKwcYiZAKiyLJhkQHxA/exec";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzy1Qb1k1k_HMwYrQTHoGPbhWFs0r9J6bC6iGkvL0o7SEaJwQr4d72tZKATbIdTvojWnQ/exec";
 
     const lectureForm   = document.getElementById('lectureForm');
     const submitBtn     = document.getElementById('lectureSubmitBtn');
@@ -1958,11 +1958,23 @@
         formData.append('timestamp', new Date().toLocaleString('ko-KR'));
 
         try {
-            await fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                body: formData,
-                mode: 'no-cors',
+            const params = new URLSearchParams({
+                sheetType: 'contact',
+                orgName:     formData.get('orgName')     || '',
+                contactName: formData.get('contactName') || '',
+                phone:       formData.get('phone')       || '',
+                email:       formData.get('email')       || '',
+                field:       fields,
+                target:      formData.get('target')      || '',
+                headcount:   formData.get('headcount')   || '',
+                schedule:    formData.get('schedule')    || '',
+                duration:    formData.get('duration')    || '',
+                venue:       formData.get('venue')       || '',
+                budget:      formData.get('budget')      || '',
+                message:     formData.get('message')     || '',
+                timestamp:   formData.get('timestamp')  || '',
             });
+            await fetch(`${GOOGLE_SCRIPT_URL}?${params}`, { mode: 'no-cors' });
 
             showStatus('success',
                 '✅ 출강·수강 문의가 정상적으로 접수되었습니다.<br>확인 후 빠르게 연락드리겠습니다.');
