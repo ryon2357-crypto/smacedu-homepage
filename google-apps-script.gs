@@ -72,10 +72,16 @@ function doGet(e) {
 
 function doPost(e) {
   try {
+    const params = e.parameter || {};
+
+    // ── 특강 신청 처리 ──
+    if (params.sheetType === 'lecture') {
+      return _handleLectureSignup(params);
+    }
+
     const ss = SpreadsheetApp.openById('18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I');
     const sheet = ss.getSheetByName('후기') || ss.getSheets()[0];
     const headers = _ensureHeaders(sheet);
-    const params = e.parameter || {};
     const action = params.action || '';
     const statusCol = headers.indexOf('status') + 1;
 
@@ -269,6 +275,117 @@ function onStatusEdit(e) {
   MailApp.sendEmail({
     to: 'ryon2357@gmail.com',
     subject: `[스마트미디어아트센터] 후기 상태 변경: ${label} — ${name}`,
+    htmlBody: html
+  });
+}
+
+// ════════════════════════════════════════════
+// 특강 신청 처리
+// ════════════════════════════════════════════
+
+const LECTURE_SHEET_NAME = '특강신청';
+const ADMIN_EMAIL        = 'ryon2357@gmail.com';
+const SHEET_ID           = '18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I';
+const SHEET_URL          = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
+
+function _handleLectureSignup(params) {
+  try {
+    const ss    = SpreadsheetApp.openById(SHEET_ID);
+    let   sheet = ss.getSheetByName(LECTURE_SHEET_NAME);
+
+    if (!sheet) {
+      sheet = ss.insertSheet(LECTURE_SHEET_NAME);
+      sheet.appendRow(['신청일시', '이름', '이메일', '연락처']);
+      sheet.setFrozenRows(1);
+      sheet.getRange('A1:D1').setBackground('#1e3a5f').setFontColor('#ffffff').setFontWeight('bold');
+    }
+
+    const now       = new Date();
+    const timestamp = Utilities.formatDate(now, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss');
+    const name      = params.name  || '';
+    const email     = params.email || '';
+    const phone     = params.phone || '';
+
+    sheet.appendRow([timestamp, name, email, phone]);
+    const total = sheet.getLastRow() - 1;
+
+    if (email) _sendLectureConfirmEmail(name, email);
+    _sendLectureAdminNotify(name, email, phone, timestamp, total);
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function _sendLectureConfirmEmail(name, email) {
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <div style="background:linear-gradient(135deg,#7c3aed,#2563eb);padding:32px 28px;border-radius:12px 12px 0 0;text-align:center;">
+    <h1 style="color:#fff;margin:0;font-size:24px;font-weight:900;">신청이 완료됐습니다! 🎉</h1>
+    <p style="color:rgba(255,255,255,0.85);margin:10px 0 0;font-size:15px;">AI 에이전트로 랜딩 페이지 만들기 — 2시간 무료 특강</p>
+  </div>
+  <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${name}</strong>님, 반갑습니다!</p>
+    <p style="margin:0 0 20px;color:#475569;line-height:1.7;">
+      특강 신청이 정상적으로 접수됐어요.<br>
+      일정 및 참여 링크는 특강 하루 전에 이 메일로 다시 안내드리겠습니다.
+    </p>
+
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:20px;">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <tr>
+          <td style="padding:7px 0;color:#64748b;width:90px;">강의명</td>
+          <td style="color:#1e293b;font-weight:600;">AI 에이전트로 랜딩 페이지 만들기</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 0;color:#64748b;">시간</td>
+          <td style="color:#1e293b;">2시간 (무료)</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 0;color:#64748b;">준비물</td>
+          <td style="color:#1e293b;">노트북, Claude 계정 (무료 가입 가능)</td>
+        </tr>
+      </table>
+    </div>
+
+    <p style="margin:0;font-size:13px;color:#94a3b8;">
+      문의는 <a href="mailto:${ADMIN_EMAIL}" style="color:#7c3aed;">${ADMIN_EMAIL}</a>로 보내주세요.
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       email,
+    subject:  '[SMAC EDU] AI 에이전트 특강 신청이 완료됐습니다',
+    htmlBody: html
+  });
+}
+
+function _sendLectureAdminNotify(name, email, phone, timestamp, total) {
+  const html = `
+<div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#1e3a5f;color:#fff;padding:18px 22px;margin:0;border-radius:8px 8px 0 0;">
+    ✦ 특강 신청 알림 (누적 ${total}명)
+  </h2>
+  <div style="background:#f8fafc;padding:22px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <table style="width:100%;border-collapse:collapse;font-size:14px;">
+      <tr><td style="padding:7px 0;color:#64748b;width:80px;">신청일시</td><td>${timestamp}</td></tr>
+      <tr><td style="padding:7px 0;color:#64748b;">이름</td><td><strong>${name}</strong></td></tr>
+      <tr><td style="padding:7px 0;color:#64748b;">이메일</td><td>${email}</td></tr>
+      <tr><td style="padding:7px 0;color:#64748b;">연락처</td><td>${phone || '미입력'}</td></tr>
+    </table>
+    <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
+      <a href="${SHEET_URL}">스프레드시트에서 전체 목록 확인 →</a>
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       ADMIN_EMAIL,
+    subject:  `[SMAC EDU 특강] 신청 접수 — ${name} (총 ${total}명)`,
     htmlBody: html
   });
 }

@@ -565,6 +565,116 @@
       font-size: 13px;
     }
 
+    /* ── 모달 ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--bg3);
+      border: 1px solid rgba(124,58,237,0.35);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 460px;
+      padding: 40px 36px;
+      position: relative;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 60px rgba(124,58,237,0.15);
+      animation: modalIn 0.25s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 20px;
+      background: none; border: none;
+      color: var(--muted);
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+    }
+    .modal-close:hover { color: #fff; }
+
+    .modal h3 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .modal p.modal-desc {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #ccc;
+      margin-bottom: 7px;
+    }
+    .form-group input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 16px;
+      font-size: 15px;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input::placeholder { color: #555; }
+    .form-group input:focus { border-color: rgba(124,58,237,0.6); }
+
+    .form-submit {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .form-note {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .form-msg {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .form-msg.success {
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: #86efac;
+    }
+    .form-msg.error {
+      background: rgba(239,68,68,0.12);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: #fca5a5;
+    }
+
     /* ── 반응형 ── */
     @media (max-width: 640px) {
       section { padding: 72px 20px; }
@@ -585,12 +695,42 @@
   <span class="nav-badge">무료 특강</span>
 </nav>
 
+<!-- 신청 모달 -->
+<div class="modal-overlay" id="applyModal" onclick="closeModalOutside(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" onclick="closeModal()" aria-label="닫기">✕</button>
+    <h3 id="modalTitle">무료 특강 신청</h3>
+    <p class="modal-desc">아래 정보를 입력하시면 신청이 완료됩니다.<br>확인 메일을 즉시 발송해 드립니다.</p>
+
+    <form id="applyForm" onsubmit="submitApply(event)" novalidate>
+      <div class="form-group">
+        <label for="f-name">이름 <span style="color:#a78bfa">*</span></label>
+        <input id="f-name" name="name" type="text" placeholder="홍길동" required autocomplete="name" />
+      </div>
+      <div class="form-group">
+        <label for="f-email">이메일 <span style="color:#a78bfa">*</span></label>
+        <input id="f-email" name="email" type="email" placeholder="example@email.com" required autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label for="f-phone">연락처 <span style="color:#555;font-weight:400">(선택)</span></label>
+        <input id="f-phone" name="phone" type="tel" placeholder="010-0000-0000" autocomplete="tel" />
+      </div>
+      <button type="submit" class="btn btn-primary form-submit" id="submitBtn">
+        ✦ 신청 완료하기
+      </button>
+      <div class="form-msg" id="formMsg"></div>
+    </form>
+
+    <p class="form-note">개인정보는 특강 안내 목적으로만 사용됩니다.</p>
+  </div>
+</div>
+
 <!-- ① HERO -->
 <section id="hero">
   <div class="container">
     <div class="hero-badge reveal">
       <span></span>
-      2025년 무료 특강 오픈
+      2026년 무료 특강 오픈
     </div>
 
     <h1 class="reveal">
@@ -826,13 +966,73 @@
 
 <!-- 푸터 -->
 <footer>
-  <p>© 2025 SMAC EDU · <a href="/privacy.html" style="color: var(--muted); text-decoration: underline;">개인정보처리방침</a></p>
+  <p>© 2026 SMAC EDU · <a href="/privacy.html" style="color: var(--muted); text-decoration: underline;">개인정보처리방침</a></p>
 </footer>
 
 <script>
-  /* ── 신청 버튼 ── */
+  /* ────────────────────────────────────────────
+     Apps Script 웹앱 URL을 아래에 붙여넣으세요.
+     배포 후 받은 URL 예시:
+     https://script.google.com/macros/s/AKfy.../exec
+  ──────────────────────────────────────────── */
+  const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL';
+
+  /* ── 모달 열기/닫기 ── */
   function handleApply() {
-    alert('준비 중입니다.\n곧 신청 페이지가 열릴 예정이에요. 기대해 주세요! 🚀');
+    document.getElementById('applyModal').classList.add('open');
+    document.getElementById('f-name').focus();
+  }
+
+  function closeModal() {
+    document.getElementById('applyModal').classList.remove('open');
+    document.getElementById('formMsg').style.display = 'none';
+    document.getElementById('formMsg').className = 'form-msg';
+    document.getElementById('applyForm').reset();
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('submitBtn').textContent = '✦ 신청 완료하기';
+  }
+
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('applyModal')) closeModal();
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  /* ── 폼 제출 ── */
+  async function submitApply(e) {
+    e.preventDefault();
+    const name  = document.getElementById('f-name').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+    const msg   = document.getElementById('formMsg');
+    const btn   = document.getElementById('submitBtn');
+
+    if (!name)  { showMsg('error', '이름을 입력해 주세요.'); return; }
+    if (!email) { showMsg('error', '이메일을 입력해 주세요.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('error', '올바른 이메일 형식이 아닙니다.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = '신청 중…';
+
+    try {
+      const body = new URLSearchParams({ sheetType: 'lecture', name, email, phone });
+      await fetch(SCRIPT_URL, { method: 'POST', body, mode: 'no-cors' });
+      showMsg('success', `${name}님, 신청이 완료됐습니다!\n확인 메일을 보내드렸어요.`);
+      btn.textContent = '✓ 신청 완료';
+    } catch {
+      showMsg('error', '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+      btn.disabled = false;
+      btn.textContent = '✦ 신청 완료하기';
+    }
+  }
+
+  function showMsg(type, text) {
+    const el = document.getElementById('formMsg');
+    el.className = `form-msg ${type}`;
+    el.textContent = text;
+    el.style.display = 'block';
   }
 
   /* ── 스크롤 reveal ── */
