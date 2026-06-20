@@ -124,6 +124,7 @@ function doPost(e) {
     sheet.appendRow(row);
 
     const totalReviews = sheet.getLastRow() - 1;
+    _sendNewReviewNotify(data, totalReviews);
     if (totalReviews > 0 && totalReviews % 10 === 0) {
       _sendDashboardEmail(sheet, headers, totalReviews);
     }
@@ -136,8 +137,35 @@ function doPost(e) {
   }
 }
 
+function _sendNewReviewNotify(data, total) {
+  const stars = '★'.repeat(parseInt(data.rating) || 0) + '☆'.repeat(5 - (parseInt(data.rating) || 0));
+  const html = `
+<div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#1e3a5f;color:#fff;padding:16px 20px;margin:0;border-radius:8px 8px 0 0;">
+    ⭐ 새 수강후기 접수 (누적 ${total}건)
+  </h2>
+  <div style="background:#f8fafc;padding:20px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <table style="width:100%;border-collapse:collapse;font-size:14px;">
+      <tr><td style="padding:6px 0;color:#64748b;width:70px;">별점</td><td style="color:#f59e0b;font-size:16px;">${stars}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">이름</td><td><strong>${data.name || '-'}</strong></td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">과정</td><td>${data.course || '-'}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">내용</td><td style="line-height:1.6;">${String(data.content || '-').slice(0, 120)}</td></tr>
+    </table>
+    <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
+      <a href="https://docs.google.com/spreadsheets/d/18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I/edit">스프레드시트에서 확인 →</a>
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       'elanvital7@naver.com',
+    subject:  `[SMAC EDU 후기] ${data.name || '(이름없음)'} — ${data.course || ''} ${data.rating || '-'}점`,
+    htmlBody: html
+  });
+}
+
 function _sendDashboardEmail(sheet, headers, totalReviews) {
-  const RECIPIENT = 'ryon2357@gmail.com';
+  const RECIPIENT = 'elanvital7@naver.com';
   const values = sheet.getDataRange().getValues().slice(1);
 
   const statusIdx  = headers.indexOf('status');
@@ -284,7 +312,7 @@ function onStatusEdit(e) {
 </div>`;
 
   MailApp.sendEmail({
-    to: 'ryon2357@gmail.com',
+    to: 'elanvital7@naver.com',
     subject: `[스마트미디어아트센터] 후기 상태 변경: ${label} — ${name}`,
     htmlBody: html
   });
@@ -295,7 +323,7 @@ function onStatusEdit(e) {
 // ════════════════════════════════════════════
 
 const LECTURE_SHEET_NAME = '특강신청';
-const ADMIN_EMAIL        = 'ryon2357@gmail.com';
+const ADMIN_EMAIL        = 'elanvital7@naver.com';
 const SHEET_ID           = '18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I';
 const SHEET_URL          = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
 
