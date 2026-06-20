@@ -40,6 +40,11 @@ function doGet(e) {
       return _handleLectureSignup(params);
     }
 
+    // ── 출강·수강 문의 처리 (GET 방식) ──
+    if (params.sheetType === 'contact') {
+      return _handleContactInquiry(params);
+    }
+
     const ss = SpreadsheetApp.openById('18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I');
     const sheet = ss.getSheetByName('후기') || ss.getSheets()[0];
     const headers = _ensureHeaders(sheet);
@@ -392,6 +397,88 @@ function _sendLectureAdminNotify(name, email, phone, timestamp, total) {
   MailApp.sendEmail({
     to:       ADMIN_EMAIL,
     subject:  `[SMAC EDU 특강] 신청 접수 — ${name} (총 ${total}명)`,
+    htmlBody: html
+  });
+}
+
+// ════════════════════════════════════════════
+// 출강·수강 문의 처리
+// ════════════════════════════════════════════
+
+const CONTACT_RECIPIENT = 'elanvital7@naver.com';
+
+function _handleContactInquiry(params) {
+  try {
+    const ss    = SpreadsheetApp.openById(SHEET_ID);
+    let   sheet = ss.getSheetByName('문의');
+
+    if (!sheet) {
+      sheet = ss.insertSheet('문의');
+      sheet.appendRow(['접수일시','기관명','담당자명','연락처','이메일','교육분야','교육대상','예상인원','희망일정','교육시간','교육장소','예산','요청내용']);
+      sheet.setFrozenRows(1);
+      sheet.getRange('A1:M1').setBackground('#1e3a5f').setFontColor('#ffffff').setFontWeight('bold');
+    }
+
+    const now       = new Date();
+    const timestamp = Utilities.formatDate(now, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss');
+
+    sheet.appendRow([
+      timestamp,
+      params.orgName     || '',
+      params.contactName || '',
+      params.phone       || '',
+      params.email       || '',
+      params.field       || '',
+      params.target      || '',
+      params.headcount   || '',
+      params.schedule    || '',
+      params.duration    || '',
+      params.venue       || '',
+      params.budget      || '',
+      params.message     || '',
+    ]);
+
+    _sendContactEmail(params, timestamp);
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function _sendContactEmail(p, timestamp) {
+  const html = `
+<div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#1e3a5f;color:#fff;padding:20px 24px;margin:0;border-radius:8px 8px 0 0;">
+    📋 출강·수강 문의 접수
+  </h2>
+  <div style="background:#f8fafc;padding:24px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <p style="margin:0 0 16px;color:#64748b;">접수일시: ${timestamp}</p>
+    <table style="width:100%;border-collapse:collapse;font-size:14px;">
+      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;width:110px;">기관명</td><td style="padding:8px 12px;">${p.orgName || '-'}</td></tr>
+      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">담당자명</td><td style="padding:8px 12px;">${p.contactName || '-'}</td></tr>
+      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">연락처</td><td style="padding:8px 12px;">${p.phone || '-'}</td></tr>
+      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">이메일</td><td style="padding:8px 12px;">${p.email || '-'}</td></tr>
+      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">교육 분야</td><td style="padding:8px 12px;">${p.field || '-'}</td></tr>
+      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">교육 대상</td><td style="padding:8px 12px;">${p.target || '-'}</td></tr>
+      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">예상 인원</td><td style="padding:8px 12px;">${p.headcount || '-'}</td></tr>
+      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">희망 일정</td><td style="padding:8px 12px;">${p.schedule || '-'}</td></tr>
+      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">교육 시간</td><td style="padding:8px 12px;">${p.duration || '-'}</td></tr>
+      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">교육 장소</td><td style="padding:8px 12px;">${p.venue || '-'}</td></tr>
+      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">예산</td><td style="padding:8px 12px;">${p.budget || '-'}</td></tr>
+      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">요청 내용</td><td style="padding:8px 12px;">${p.message || '-'}</td></tr>
+    </table>
+    <p style="margin:20px 0 0;font-size:12px;color:#94a3b8;">
+      <a href="${SHEET_URL}">스프레드시트에서 전체 문의 목록 확인 →</a>
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       CONTACT_RECIPIENT,
+    subject:  `[SMAC EDU 문의] ${p.orgName || '(기관명 없음)'} — ${p.contactName || ''} ${p.phone || ''}`,
     htmlBody: html
   });
 }
