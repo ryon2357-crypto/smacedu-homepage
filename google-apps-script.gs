@@ -33,10 +33,16 @@ function _ensureHeaders(sheet) {
 
 function doGet(e) {
   try {
+    const params = e.parameter || {};
+
+    // ── 특강 신청 처리 (GET 방식) ──
+    if (params.sheetType === 'lecture') {
+      return _handleLectureSignup(params);
+    }
+
     const ss = SpreadsheetApp.openById('18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I');
     const sheet = ss.getSheetByName('후기') || ss.getSheets()[0];
     const headers = _ensureHeaders(sheet);
-    const params = e.parameter || {};
     const action = params.action || 'fetch';
 
     if (action !== 'fetch') {
