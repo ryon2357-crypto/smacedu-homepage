@@ -1016,6 +1016,11 @@
     document.getElementById('f-name').focus();
   }
 
+  /* ── 메일 링크(?apply=1)로 들어오면 신청 모달 자동 오픈 ── */
+  if (new URLSearchParams(window.location.search).get('apply') === '1') {
+    window.addEventListener('DOMContentLoaded', handleApply);
+  }
+
   function closeModal() {
     document.getElementById('applyModal').classList.remove('open');
     document.getElementById('formMsg').style.display = 'none';
