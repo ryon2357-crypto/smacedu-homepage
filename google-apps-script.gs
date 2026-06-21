@@ -332,6 +332,36 @@ const ADMIN_EMAIL        = 'elanvital7@naver.com';
 const SHEET_ID           = '18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I';
 const SHEET_URL          = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
 
+// 시트의 자동 포맷으로 "08210-4717-0624"처럼 깨진 연락처를 "010-4717-0624" 형식으로 일괄 정리.
+// 편집기에서 이 함수를 선택해 한 번만 실행하면 됩니다 (배포 불필요).
+function normalizeLecturePhoneNumbers() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sheet = ss.getSheetByName(LECTURE_SHEET_NAME);
+  if (!sheet) return;
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return;
+
+  const range = sheet.getRange(2, 4, lastRow - 1, 1); // D열 = 연락처
+  const fixed = range.getValues().map(([v]) => [_normalizePhone(String(v || ''))]);
+  range.setValues(fixed);
+}
+
+function _normalizePhone(raw) {
+  const digits = raw.replace(/[^0-9]/g, '');
+  if (!digits) return raw;
+
+  let fixedDigits = digits;
+  if (/^0?82\d{10}$/.test(digits)) {
+    fixedDigits = '0' + digits.slice(-10);
+  }
+
+  if (fixedDigits.length === 11) {
+    return fixedDigits.slice(0, 3) + '-' + fixedDigits.slice(3, 7) + '-' + fixedDigits.slice(7);
+  }
+  return raw; // 11자리로 안 맞으면 수동 확인이 필요하니 원본 유지
+}
+
 function _handleLectureSignup(params) {
   try {
     const ss    = SpreadsheetApp.openById(SHEET_ID);
