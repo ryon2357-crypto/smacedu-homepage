@@ -381,8 +381,12 @@ function _sendLectureConfirmEmail(name, email) {
     <p style="margin:0 0 16px;font-size:16px;"><strong>${name}</strong>님, 반갑습니다!</p>
     <p style="margin:0 0 20px;color:#475569;line-height:1.7;">
       특강 신청이 정상적으로 접수됐어요.<br>
-      일정 및 참여 링크는 특강 하루 전에 이 메일로 다시 안내드리겠습니다.
+      참여 링크는 특강 전날인 6월 26일(금)에 이 메일로 다시 안내드리겠습니다.
     </p>
+
+    <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 18px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0;font-size:14px;font-weight:700;color:#dc2626;">🗓 6월 27일(토) 저녁 8시 — 잊지 마세요!</p>
+    </div>
 
     <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:20px;">
       <table style="width:100%;border-collapse:collapse;font-size:14px;">
@@ -391,7 +395,11 @@ function _sendLectureConfirmEmail(name, email) {
           <td style="color:#1e293b;font-weight:600;">AI 에이전트로 랜딩 페이지 만들기</td>
         </tr>
         <tr>
-          <td style="padding:7px 0;color:#64748b;">시간</td>
+          <td style="padding:7px 0;color:#64748b;">일시</td>
+          <td style="color:#1e293b;font-weight:600;">2026년 6월 27일(토) 저녁 8시</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 0;color:#64748b;">소요시간</td>
           <td style="color:#1e293b;">2시간</td>
         </tr>
         <tr>
@@ -440,7 +448,7 @@ function _sendLectureConfirmEmail(name, email) {
     </table>
 
     <div style="text-align:center;margin-bottom:20px;">
-      <a href="https://www.smacedu.kr/lecture-landing?apply=1" style="display:inline-block;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;text-decoration:none;font-size:14px;font-weight:700;padding:13px 32px;border-radius:999px;">특강 페이지 다시 보기</a>
+      <a href="https://www.smacedu.kr/lecture-landing" style="display:inline-block;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;text-decoration:none;font-size:14px;font-weight:700;padding:13px 32px;border-radius:999px;">특강 페이지 다시 보기</a>
     </div>
 
     <p style="margin:0;font-size:13px;color:#94a3b8;">
