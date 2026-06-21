@@ -364,12 +364,18 @@ function _handleLectureSignup(params) {
   }
 }
 
+const PRE_MATERIAL_LINKS = {
+  part1: 'https://drive.google.com/file/d/10kpffzU20qvmGSVlo22i6jF9QRbrCO9B/view?usp=drive_link',
+  part2: 'https://drive.google.com/file/d/1opLUlKh-QnZOFTLJUp6QQ9lNSbYVtHu1/view?usp=drive_link',
+  part3: 'https://drive.google.com/file/d/17ZveAlTk4EquoA47rweZSE2JDVZ5cLPZ/view?usp=drive_link'
+};
+
 function _sendLectureConfirmEmail(name, email) {
   const html = `
 <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
   <div style="background:linear-gradient(135deg,#7c3aed,#2563eb);padding:32px 28px;border-radius:12px 12px 0 0;text-align:center;">
     <h1 style="color:#fff;margin:0;font-size:24px;font-weight:900;">신청이 완료됐습니다! 🎉</h1>
-    <p style="color:rgba(255,255,255,0.85);margin:10px 0 0;font-size:15px;">AI 에이전트로 랜딩 페이지 만들기 — 2시간 무료 특강</p>
+    <p style="color:rgba(255,255,255,0.85);margin:10px 0 0;font-size:15px;">AI 에이전트로 랜딩 페이지 만들기 — 2시간 VIP 특강</p>
   </div>
   <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
     <p style="margin:0 0 16px;font-size:16px;"><strong>${name}</strong>님, 반갑습니다!</p>
@@ -386,13 +392,55 @@ function _sendLectureConfirmEmail(name, email) {
         </tr>
         <tr>
           <td style="padding:7px 0;color:#64748b;">시간</td>
-          <td style="color:#1e293b;">2시간 (무료)</td>
+          <td style="color:#1e293b;">2시간</td>
         </tr>
         <tr>
           <td style="padding:7px 0;color:#64748b;">준비물</td>
-          <td style="color:#1e293b;">노트북, Claude 계정 (무료 가입 가능)</td>
+          <td style="color:#1e293b;">노트북, Claude 유료 개인 계정 (1주일 무료체험 가능 — 특강 당일 안내)</td>
         </tr>
       </table>
+    </div>
+
+    <p style="margin:0 0 12px;font-size:14px;font-weight:700;color:#1e293b;">사전 자료 (PDF 3종)</p>
+    <p style="margin:0 0 14px;color:#475569;line-height:1.6;font-size:14px;">
+      아래 PART를 클릭하면 구글 드라이브에서 바로 열람·다운로드할 수 있습니다.<br>
+      특강 전날까지 읽어보시면 당일이 훨씬 빨라요.
+    </p>
+
+    <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+      <tr>
+        <td style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px;">
+          <a href="${PRE_MATERIAL_LINKS.part1}" style="text-decoration:none;color:#1e293b;">
+            <div style="font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:0.05em;margin-bottom:4px;">PART 1</div>
+            <div style="font-size:13px;font-weight:700;margin-bottom:4px;">설치 가이드 ↓</div>
+            <div style="font-size:12px;color:#64748b;">Claude Desktop + Claude Code 설치 3단계 안내</div>
+          </a>
+        </td>
+      </tr>
+      <tr><td style="height:10px;"></td></tr>
+      <tr>
+        <td style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px;">
+          <a href="${PRE_MATERIAL_LINKS.part2}" style="text-decoration:none;color:#1e293b;">
+            <div style="font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:0.05em;margin-bottom:4px;">PART 2</div>
+            <div style="font-size:13px;font-weight:700;margin-bottom:4px;">개념 예습 ↓</div>
+            <div style="font-size:12px;color:#64748b;">챗봇 vs 에이전트, Cowork vs Code 차이</div>
+          </a>
+        </td>
+      </tr>
+      <tr><td style="height:10px;"></td></tr>
+      <tr>
+        <td style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px;">
+          <a href="${PRE_MATERIAL_LINKS.part3}" style="text-decoration:none;color:#1e293b;">
+            <div style="font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:0.05em;margin-bottom:4px;">PART 3</div>
+            <div style="font-size:13px;font-weight:700;margin-bottom:4px;">사전 과제 ↓</div>
+            <div style="font-size:12px;color:#64748b;">내 랜딩 페이지 아이디어 미리 메모하기</div>
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <div style="text-align:center;margin-bottom:20px;">
+      <a href="https://www.smacedu.kr/lecture-landing?apply=1" style="display:inline-block;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;text-decoration:none;font-size:14px;font-weight:700;padding:13px 32px;border-radius:999px;">특강 페이지 다시 보기</a>
     </div>
 
     <p style="margin:0;font-size:13px;color:#94a3b8;">
@@ -403,7 +451,7 @@ function _sendLectureConfirmEmail(name, email) {
 
   MailApp.sendEmail({
     to:       email,
-    subject:  '[SMAC EDU] AI 에이전트 특강 신청이 완료됐습니다',
+    subject:  '[SMAC EDU] AI 에이전트 특강 신청 완료 + 사전 자료를 보내드립니다',
     htmlBody: html
   });
 }
