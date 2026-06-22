@@ -65,6 +65,12 @@ function _sendConfirmEmail(name, email) {
       참여 ZOOM 링크는 특강 당일인 7월 1일(수) 저녁 6시까지 이 메일로 다시 안내드리겠습니다.
     </p>
 
+    <div style="background:linear-gradient(135deg,#fef3c7,#fed7aa);border:1px solid #fdba74;border-radius:10px;padding:18px 20px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#9a3412;">🎁 신청해 주신 분께 드리는 선물</p>
+      <p style="margin:0 0 12px;font-size:13px;color:#7c2d12;">강의 전 미리 보면 좋은 사전 핸드아웃 PDF를 드려요</p>
+      <a href="https://drive.google.com/file/d/1JjWkBJgoztxhPqZucrpJyLpX5QTOMHQm/view?usp=sharing" style="display:inline-block;background:#fff;color:#9a3412;border:1px solid #fdba74;text-decoration:none;font-size:14px;font-weight:700;padding:11px 28px;border-radius:999px;">📄 사전 핸드아웃 받기</a>
+    </div>
+
     <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 18px;margin-bottom:20px;text-align:center;">
       <p style="margin:0;font-size:14px;font-weight:700;color:#dc2626;">🗓 7월 1일(수) 저녁 9시 — 잊지 마세요!</p>
     </div>
@@ -88,6 +94,11 @@ function _sendConfirmEmail(name, email) {
           <td style="color:#1e293b;">엘란비탈 박성욱 작가 — 스마트미디어아트센터 대표</td>
         </tr>
       </table>
+    </div>
+
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:16px 18px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0 0 10px;font-size:13px;color:#92400e;">강의 공지·자료는 단체 채팅방에서 가장 빠르게 안내드려요</p>
+      <a href="https://invite.kakao.com/tc/sEmjtp7axZ" style="display:inline-block;background:#FEE500;color:#3c1e1e;text-decoration:none;font-size:14px;font-weight:700;padding:11px 28px;border-radius:999px;">💬 엘란비탈 무료특강 아카데미 팀채팅 입장하기</a>
     </div>
 
     <div style="text-align:center;margin-bottom:20px;">
