@@ -384,7 +384,7 @@ function _handleLectureSignup(params) {
     const total = sheet.getLastRow() - 1;
 
     if (email) _sendLectureConfirmEmail(name, email);
-    _sendLectureAdminNotify(name, email, phone, timestamp, total);
+    if (total % 10 === 0) _sendLectureAdminDigest(sheet, total);
 
     return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -494,18 +494,36 @@ function _sendLectureConfirmEmail(name, email) {
   });
 }
 
-function _sendLectureAdminNotify(name, email, phone, timestamp, total) {
+// 신청 10명마다 한 번씩, 최근 10명을 모아서 알려줍니다 (매번 메일이 오면 너무 정신없어서 배치 처리).
+function _sendLectureAdminDigest(sheet, total) {
+  const lastRow   = sheet.getLastRow();
+  const batchSize = Math.min(10, lastRow - 1);
+  const startRow  = lastRow - batchSize + 1;
+  // 열 순서: 신청일시(1), 이름(2), 이메일(3), 연락처(4)
+  const rows = sheet.getRange(startRow, 1, batchSize, 4).getValues();
+
+  const rowsHtml = rows.map(r => `
+    <tr>
+      <td style="padding:6px 10px;font-size:13px;color:#64748b;">${r[0]}</td>
+      <td style="padding:6px 10px;font-size:13px;"><strong>${r[1]}</strong></td>
+      <td style="padding:6px 10px;font-size:13px;">${r[2]}</td>
+      <td style="padding:6px 10px;font-size:13px;">${r[3] || '미입력'}</td>
+    </tr>`).join('');
+
   const html = `
-<div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#1e293b;">
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
   <h2 style="background:#1e3a5f;color:#fff;padding:18px 22px;margin:0;border-radius:8px 8px 0 0;">
-    ✦ 특강 신청 알림 (누적 ${total}명)
+    ✦ 특강 신청 알림 (누적 ${total}명 — 최근 ${batchSize}명)
   </h2>
   <div style="background:#f8fafc;padding:22px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
-    <table style="width:100%;border-collapse:collapse;font-size:14px;">
-      <tr><td style="padding:7px 0;color:#64748b;width:80px;">신청일시</td><td>${timestamp}</td></tr>
-      <tr><td style="padding:7px 0;color:#64748b;">이름</td><td><strong>${name}</strong></td></tr>
-      <tr><td style="padding:7px 0;color:#64748b;">이메일</td><td>${email}</td></tr>
-      <tr><td style="padding:7px 0;color:#64748b;">연락처</td><td>${phone || '미입력'}</td></tr>
+    <table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid #e2e8f0;border-radius:6px;">
+      <tr style="background:#f1f5f9;font-size:12px;color:#64748b;">
+        <th style="padding:8px 10px;text-align:left;">신청일시</th>
+        <th style="padding:8px 10px;text-align:left;">이름</th>
+        <th style="padding:8px 10px;text-align:left;">이메일</th>
+        <th style="padding:8px 10px;text-align:left;">연락처</th>
+      </tr>
+      ${rowsHtml}
     </table>
     <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
       <a href="${SHEET_URL}">스프레드시트에서 전체 목록 확인 →</a>
@@ -515,7 +533,7 @@ function _sendLectureAdminNotify(name, email, phone, timestamp, total) {
 
   MailApp.sendEmail({
     to:       ADMIN_EMAIL,
-    subject:  `[SMAC EDU 특강] 신청 접수 — ${name} (총 ${total}명)`,
+    subject:  `[SMAC EDU 특강] 신청 누적 ${total}명 — 최근 ${batchSize}명 알림`,
     htmlBody: html
   });
 }
