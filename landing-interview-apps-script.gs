@@ -1,11 +1,15 @@
-// 랜딩페이지 기획 인터뷰 — 신청서 응답 처리 스크립트
+// 랜딩페이지 기획 인터뷰 + VIP 1:1 신청 — 응답 처리 스크립트
+//
+// 같은 스프레드시트 안에서 두 가지 폼을 처리합니다.
+// - 랜딩페이지 기획 인터뷰(landing-interview.html) → 첫 번째 탭(시트1)
+// - VIP 1:1 신청(vip-1on1-landing.html, type=vip 파라미터) → "VIP신청" 탭 (없으면 자동 생성)
 //
 // 사용 방법:
 // 1. 새 구글 스프레드시트를 하나 만듭니다 (예: "랜딩페이지 기획 인터뷰 응답").
 // 2. 확장 프로그램 → Apps Script 로 들어갑니다 (이 시트에 직접 바인딩되는 스크립트라 권한 문제가 없습니다).
 // 3. 기본 코드를 지우고 이 파일 내용 전체를 붙여넣습니다.
 // 4. 배포 → 새 배포 → 유형: 웹 앱 → 액세스 권한: "전체" → 배포.
-// 5. 배포 후 나온 웹 앱 URL을 landing-interview.html의 SCRIPT_URL에 붙여넣습니다.
+// 5. 배포 후 나온 웹 앱 URL을 landing-interview.html과 vip-1on1-landing.html의 SCRIPT_URL에 붙여넣습니다.
 
 const ADMIN_EMAIL = 'elanvital7@naver.com';
 
@@ -15,9 +19,13 @@ const HEADERS = [
   '경쟁사 약점', '숫자/증거', '신뢰 요소', '실제 후기', '마감 이벤트', '효율화 앱 아이디어'
 ];
 
+const VIP_SHEET_NAME = 'VIP신청';
+const VIP_HEADERS = ['타임스탬프', '이름', '이메일', '연락처'];
+
 function doGet(e) {
   try {
     const p = e.parameter || {};
+    if (p.type === 'vip') return _handleVipSubmission(p);
 
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
     if (sheet.getLastRow() === 0) {
@@ -59,6 +67,80 @@ function doGet(e) {
     return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+function _handleVipSubmission(p) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let sheet = ss.getSheetByName(VIP_SHEET_NAME);
+    if (!sheet) {
+      sheet = ss.insertSheet(VIP_SHEET_NAME);
+      sheet.appendRow(VIP_HEADERS);
+      sheet.getRange(1, 1, 1, VIP_HEADERS.length).setFontWeight('bold');
+    }
+
+    const timestamp = _formatKoreanTimestamp(new Date(), Session.getScriptTimeZone());
+    sheet.appendRow([timestamp, p.name || '', p.email || '', p.phone || '']);
+
+    if (p.email) _sendVipConfirmEmail(p.name, p.email);
+    _sendVipAdminNotice(p);
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function _sendVipConfirmEmail(name, email) {
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <div style="background:#c9a84c;padding:32px 28px;border-radius:12px 12px 0 0;text-align:center;">
+    <h1 style="color:#000;margin:0;font-size:22px;font-weight:900;">VIP 신청이 접수됐어요 ✦</h1>
+  </div>
+  <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${name || '신청자'}</strong>님, 신청 잘 받았습니다.</p>
+    <p style="margin:0;color:#475569;line-height:1.7;">
+      입금 계좌: 신한은행 110-050-892636 박성욱<br>
+      입금 확인 후 24시간 이내로 일정 조율 연락을 드릴게요.<br>
+      궁금한 점이 있으면 언제든 회신 주세요.
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to: email,
+    subject: '[SMAC EDU] VIP 1:1 지도 신청이 접수됐습니다',
+    htmlBody: html
+  });
+}
+
+function _sendVipAdminNotice(p) {
+  const sheetUrl = SpreadsheetApp.getActiveSpreadsheet().getUrl();
+
+  const html = `
+<div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#1e3a5f;color:#fff;padding:18px 22px;margin:0;border-radius:8px 8px 0 0;">
+    ✦ VIP 1:1 지도 신규 신청 — ${p.name || '이름없음'}
+  </h2>
+  <div style="background:#f8fafc;padding:22px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <p style="margin:0;font-size:14px;color:#334155;line-height:1.9;">
+      <strong>이름</strong> ${p.name || '-'}<br>
+      <strong>이메일</strong> ${p.email || '-'}<br>
+      <strong>연락처</strong> ${p.phone || '-'}
+    </p>
+    <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
+      <a href="${sheetUrl}">스프레드시트에서 확인 →</a>
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to: ADMIN_EMAIL,
+    subject: `[SMAC EDU] VIP 1:1 지도 신청 — ${p.name || '이름없음'}`,
+    htmlBody: html
+  });
 }
 
 function _formatKoreanTimestamp(date, tz) {
