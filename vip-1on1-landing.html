@@ -199,7 +199,7 @@
     /* ─── 고민 섹션 ────────────────────────────────── */
     .worry-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 16px;
       margin-top: 48px;
     }
@@ -231,6 +231,7 @@
       margin-top: 48px;
     }
     @media (max-width: 600px) { .program-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 560px) { .worry-grid { grid-template-columns: 1fr; } }
     .program-card {
       background: var(--bg2);
       border: 1px solid var(--border);
