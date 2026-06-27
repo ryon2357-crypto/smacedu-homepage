@@ -4,49 +4,53 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VIP 1:1 지도 — 나만의 홈페이지 만들기 | SMAC EDU</title>
-  <meta name="description" content="VIP 특강 수강생 한정, 선착순 5명. 8시간 4회 세션 + 완성될 때까지 무제한 1:1 지도로 홈페이지·랜딩페이지 4개·업무 자동화·앱까지 완성합니다." />
+  <meta name="description" content="VIP 회원 한정, 선착순 5명. 8시간 4회 세션 + 완성될 때까지 무제한 1:1 지도로 홈페이지·랜딩페이지 4개·업무 자동화·앱까지 완성합니다." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.smacedu.kr/vip-1on1-landing" />
   <meta property="og:title" content="VIP 1:1 지도 — 나만의 홈페이지 만들기 | SMAC EDU" />
-  <meta property="og:description" content="VIP 특강 수강생 한정, 선착순 5명. 8시간 4회 세션 + 완성될 때까지 무제한 1:1 지도로 홈페이지·랜딩페이지 4개·업무 자동화·앱까지 완성합니다." />
+  <meta property="og:description" content="VIP 회원 한정, 선착순 5명. 8시간 4회 세션 + 완성될 때까지 무제한 1:1 지도로 홈페이지·랜딩페이지 4개·업무 자동화·앱까지 완성합니다." />
   <meta property="og:image" content="https://www.smacedu.kr/images/vip-1on1-og.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="VIP 1:1 지도 — 나만의 홈페이지 만들기 | SMAC EDU" />
-  <meta name="twitter:description" content="VIP 특강 수강생 한정, 선착순 5명. 1:1 맞춤 지도로 될 때까지 완성합니다." />
+  <meta name="twitter:description" content="VIP 회원 한정, 선착순 5명. 1:1 맞춤 지도로 될 때까지 완성합니다." />
   <meta name="twitter:image" content="https://www.smacedu.kr/images/vip-1on1-og.png" />
   <style>
     /* ─── Reset & Base ─────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:       #060b18;
-      --bg2:      #0c1730;
-      --bg3:      #112048;
-      --border:   rgba(201,168,76,.18);
-      --gold:     #c9a84c;
-      --gold-lt:  #f0d384;
-      --text:     #eef1f7;
-      --muted:    #8d96ab;
-      --red:      #e0667a;
-      --radius:   14px;
+      --bg:        #050a16;
+      --bg2:       #0a1530;
+      --bg3:       #0e1c3e;
+      --border:    rgba(201,168,92,.16);
+      --gold-deep: #8a6d23;
+      --gold:      #c6a35c;
+      --gold-lt:   #e9d49a;
+      --text:      #eef1f7;
+      --muted:     #8d96ab;
+      --red:       #e0667a;
+      --radius:    14px;
     }
     html { scroll-behavior: smooth; }
     body {
       background:
-        radial-gradient(circle at 12% -5%, rgba(201,168,76,.12) 0%, transparent 42%),
-        radial-gradient(circle at 92% 8%, rgba(72,108,194,.18) 0%, transparent 45%),
-        linear-gradient(180deg, #060b18 0%, #0a1226 60%, #060b18 100%);
+        radial-gradient(circle at 14% -8%, rgba(201,168,92,.09) 0%, transparent 40%),
+        radial-gradient(circle at 90% 6%, rgba(58,92,180,.28) 0%, transparent 48%),
+        radial-gradient(circle at 50% 110%, rgba(40,70,150,.18) 0%, transparent 55%),
+        linear-gradient(180deg, #050a16 0%, #081230 55%, #050a16 100%);
       color: var(--text);
       font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
       line-height: 1.7;
       font-size: 16px;
+      word-break: keep-all;
+      overflow-wrap: break-word;
     }
     a { color: inherit; text-decoration: none; }
     img { max-width: 100%; border-radius: var(--radius); }
 
     /* ─── Utility ──────────────────────────────────── */
-    .top-bar { height: 3px; background: linear-gradient(90deg, transparent, var(--gold), var(--gold-lt), var(--gold), transparent); }
+    .top-bar { height: 3px; background: linear-gradient(90deg, transparent, var(--gold-deep), var(--gold-lt), var(--gold-deep), transparent); }
     .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
     .tag {
       display: inline-block;
@@ -55,16 +59,22 @@
       letter-spacing: .12em;
       text-transform: uppercase;
       color: var(--gold-lt);
-      border: 1px solid rgba(201,168,76,.5);
-      background: rgba(201,168,76,.08);
+      border: 1px solid rgba(201,168,92,.4);
+      background: rgba(201,168,92,.06);
       border-radius: 99px;
       padding: 5px 16px;
       margin-bottom: 20px;
     }
-    .gold { color: var(--gold-lt); }
+    .gold {
+      background: linear-gradient(135deg, var(--gold-deep) 0%, var(--gold-lt) 45%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: var(--gold-lt);
+    }
     .muted { color: var(--muted); }
     section { padding: 96px 0; border-bottom: 1px solid var(--border); }
-    h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); font-weight: 800; line-height: 1.25; margin-bottom: 16px; }
+    h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
     h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
     p  { color: #aab2c4; }
 
@@ -91,7 +101,7 @@
       font-family: inherit;
       transition: transform .2s, box-shadow .2s;
     }
-    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(201,168,76,.35); }
+    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(201,168,92,.35); }
 
     /* ─── Hero ─────────────────────────────────────── */
     .hero {
@@ -103,8 +113,8 @@
       display: inline-flex; align-items: center; gap: 8px;
       font-size: 12px; font-weight: 700; letter-spacing: .06em;
       color: var(--gold-lt);
-      background: rgba(201,168,76,.1);
-      border: 1px solid rgba(201,168,76,.4);
+      background: rgba(201,168,92,.1);
+      border: 1px solid rgba(201,168,92,.4);
       border-radius: 99px;
       padding: 7px 20px;
       margin-bottom: 32px;
@@ -136,11 +146,11 @@
       cursor: pointer;
       font-family: inherit;
       transition: all .2s;
-      box-shadow: 0 0 36px rgba(201,168,76,.3);
+      box-shadow: 0 0 36px rgba(201,168,92,.3);
     }
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 44px rgba(201,168,76,.45);
+      box-shadow: 0 6px 44px rgba(201,168,92,.45);
     }
     .hero-note { font-size: 13px; color: var(--gold-lt); font-weight: 600; }
 
@@ -169,14 +179,14 @@
       font-weight: 900;
       color: var(--gold-lt);
       letter-spacing: -.02em;
-      text-shadow: 0 0 24px rgba(201,168,76,.4);
+      text-shadow: 0 0 24px rgba(201,168,92,.4);
     }
     .price-vat { font-size: 11px; color: var(--muted); }
 
     /* ─── 수강생 전용 알림 ─────────────────────────── */
     .notice-bar {
-      background: rgba(201,168,76,.08);
-      border: 1px solid rgba(201,168,76,.3);
+      background: rgba(201,168,92,.08);
+      border: 1px solid rgba(201,168,92,.3);
       border-radius: var(--radius);
       padding: 18px 24px;
       display: flex; align-items: flex-start; gap: 14px;
@@ -200,9 +210,18 @@
       padding: 24px;
       transition: border-color .2s, transform .2s;
     }
-    .worry-card:hover { border-color: rgba(201,168,76,.4); transform: translateY(-3px); }
-    .worry-card .emoji { font-size: 1.5rem; margin-bottom: 12px; }
-    .worry-card p { font-size: .95rem; color: #c2c8da; margin: 0; line-height: 1.55; }
+    .worry-card:hover { border-color: rgba(201,168,92,.4); transform: translateY(-3px); }
+    .worry-card .emoji {
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      border-radius: 50%;
+      background: rgba(201,168,92,.1);
+      border: 1px solid rgba(201,168,92,.35);
+      margin-bottom: 16px;
+    }
+    .worry-card h3 { font-size: 1rem; }
+    .worry-card p { font-size: .92rem; color: #c2c8da; margin: 0; line-height: 1.6; }
 
     /* ─── 과정 섹션 ────────────────────────────────── */
     .program-grid {
@@ -230,13 +249,13 @@
     .program-card .tag-pill {
       display: inline-block;
       font-size: 11px;
-      background: rgba(201,168,76,.12);
+      background: rgba(201,168,92,.12);
       color: var(--gold-lt);
       border-radius: 6px;
       padding: 3px 10px;
       margin-top: 12px;
     }
-    .program-card.wide { grid-column: 1 / -1; border-color: rgba(201,168,76,.35); }
+    .program-card.wide { grid-column: 1 / -1; border-color: rgba(201,168,92,.35); }
 
     /* ─── 결과물 섹션 ──────────────────────────────── */
     .result-list {
@@ -271,8 +290,8 @@
       margin-top: 48px;
     }
     .why-card {
-      background: linear-gradient(135deg, rgba(201,168,76,.07), transparent 60%), var(--bg2);
-      border: 1px solid rgba(201,168,76,.3);
+      background: linear-gradient(135deg, rgba(201,168,92,.07), transparent 60%), var(--bg2);
+      border: 1px solid rgba(201,168,92,.3);
       border-radius: var(--radius);
       padding: 30px 32px;
       display: flex;
@@ -283,8 +302,8 @@
       flex-shrink: 0;
       width: 52px; height: 52px;
       border-radius: 50%;
-      background: rgba(201,168,76,.12);
-      border: 1px solid rgba(201,168,76,.4);
+      background: rgba(201,168,92,.12);
+      border: 1px solid rgba(201,168,92,.4);
       display: flex; align-items: center; justify-content: center;
       font-size: 1.5rem;
     }
@@ -361,12 +380,12 @@
 
     /* ─── 마감 섹션 ────────────────────────────────── */
     .deadline-box {
-      background: linear-gradient(160deg, rgba(201,168,76,.08), transparent 55%), var(--bg2);
-      border: 1px solid rgba(201,168,76,.4);
+      background: linear-gradient(160deg, rgba(201,168,92,.08), transparent 55%), var(--bg2);
+      border: 1px solid rgba(201,168,92,.4);
       border-radius: 18px;
       padding: 48px 40px;
       text-align: center;
-      box-shadow: 0 24px 60px rgba(0,0,0,.4), 0 0 50px rgba(201,168,76,.08);
+      box-shadow: 0 24px 60px rgba(0,0,0,.4), 0 0 50px rgba(201,168,92,.08);
     }
     .deadline-box h2 { margin-bottom: 12px; }
     .deadline-box .sub { color: #aab2c4; margin-bottom: 36px; font-size: .97rem; }
@@ -389,7 +408,7 @@
       font-weight: 900;
       color: var(--gold-lt);
       letter-spacing: -.03em;
-      text-shadow: 0 0 30px rgba(201,168,76,.4);
+      text-shadow: 0 0 30px rgba(201,168,92,.4);
     }
     .price-row .new-tag small {
       font-size: .55em;
@@ -438,13 +457,13 @@
     .modal-overlay.open { display: flex; }
     .modal {
       background: var(--bg3);
-      border: 1px solid rgba(201,168,76,.4);
+      border: 1px solid rgba(201,168,92,.4);
       border-radius: 20px;
       width: 100%;
       max-width: 440px;
       padding: 40px 36px;
       position: relative;
-      box-shadow: 0 32px 80px rgba(0,0,0,.7), 0 0 60px rgba(201,168,76,.15);
+      box-shadow: 0 32px 80px rgba(0,0,0,.7), 0 0 60px rgba(201,168,92,.15);
       animation: modalIn .25s ease;
     }
     @keyframes modalIn {
@@ -479,7 +498,7 @@
       font-family: inherit;
     }
     .form-group input::placeholder { color: #5a6178; }
-    .form-group input:focus { border-color: rgba(201,168,76,.6); }
+    .form-group input:focus { border-color: rgba(201,168,92,.6); }
     .form-checkbox label {
       display: flex;
       align-items: flex-start;
@@ -538,21 +557,21 @@
 
     <form id="applyForm" onsubmit="submitApply(event)" novalidate>
       <div class="form-group">
-        <label for="f-name">이름 <span style="color:#c9a84c">*</span></label>
+        <label for="f-name">이름 <span style="color:#c6a35c">*</span></label>
         <input id="f-name" name="name" type="text" placeholder="홍길동" required autocomplete="name" />
       </div>
       <div class="form-group">
-        <label for="f-email">이메일 <span style="color:#c9a84c">*</span></label>
+        <label for="f-email">이메일 <span style="color:#c6a35c">*</span></label>
         <input id="f-email" name="email" type="email" placeholder="example@email.com" required autocomplete="email" />
       </div>
       <div class="form-group">
-        <label for="f-phone">연락처 <span style="color:#c9a84c">*</span></label>
+        <label for="f-phone">연락처 <span style="color:#c6a35c">*</span></label>
         <input id="f-phone" name="phone" type="tel" placeholder="010-1234-5678" required autocomplete="tel" />
       </div>
       <div class="form-group form-checkbox">
         <label for="f-consent">
           <input id="f-consent" type="checkbox" required />
-          개인정보는 신청 확인 및 일정 안내 목적으로만 사용됩니다. 동의합니다. <span style="color:#c9a84c">*</span>
+          개인정보는 신청 확인 및 일정 안내 목적으로만 사용됩니다. 동의합니다. <span style="color:#c6a35c">*</span>
         </label>
       </div>
       <button type="submit" class="btn-primary form-submit" id="submitBtn">✦ 신청 완료하기</button>
@@ -564,7 +583,7 @@
 <!-- ── HERO ────────────────────────────────────────── -->
 <section class="hero">
   <div class="container">
-    <div class="hero-eyebrow">✦ VIP 특강 수강생 한정 · 선착순 5명</div>
+    <div class="hero-eyebrow">✦ VIP 회원 한정 · 선착순 5명</div>
     <h1>
       직접 완성까지<br />
       <span class="gold">옆에서 함께</span>합니다
@@ -593,7 +612,7 @@
     <div class="notice-bar">
       <div class="notice-icon">🔒</div>
       <p>
-        이 페이지는 <strong>VIP 특강 수강생에게만</strong> 공개된 한정 오퍼이며, 단 <strong>선착순 5명</strong>만 모십니다.
+        이 페이지는 <strong>VIP 회원에게만</strong> 공개된 한정 오퍼이며, 단 <strong>선착순 5명</strong>만 모십니다.
         특강에서 나눈 내용을 바탕으로, 선생님이 <strong>처음부터 끝까지 1:1로 함께</strong> 완성합니다.
       </p>
     </div>
@@ -623,8 +642,8 @@
       </div>
       <div class="worry-card">
         <div class="emoji">🎯</div>
-        <h3>내 업무에 딱 맞게 하고 싶어요</h3>
-        <p>일반 강의 예제 말고<br />내 상황에 맞는 결과물이 필요해요</p>
+        <h3>내 업무에 딱 맞게<br />하고 싶어요</h3>
+        <p>일반 강의 예제 말고<br />내 결과물이 필요해요</p>
       </div>
     </div>
   </div>
@@ -773,7 +792,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-q">제 수준이 따라갈 수 있을까요?</div>
-        <p class="faq-a">VIP 특강을 완주하셨다면 충분합니다. 코딩 지식은 필요 없습니다. 1:1이라 제 속도에 맞게 진행하며, 막히는 순간 바로 함께 해결합니다.</p>
+        <p class="faq-a">특강을 들어보신 분이라면 충분합니다. 코딩 지식은 필요 없습니다. 1:1이라 제 속도에 맞게 진행하며, 막히는 순간 바로 함께 해결합니다.</p>
       </div>
       <div class="faq-item">
         <div class="faq-q">일정이 안 맞으면 어떻게 하나요?</div>
@@ -792,7 +811,7 @@
   <div class="container">
     <div class="deadline-box">
       <div class="tag">🔥 선착순 5명 · VIP 얼리버드 마감 임박</div>
-      <h2>VIP 특강 수강생에게만<br /><span class="gold">드리는 단 한 번의 가격</span></h2>
+      <h2>VIP 회원에게만<br /><span class="gold">드리는 단 한 번의 가격</span></h2>
       <p class="sub">마감되면 정상가 240만원으로 돌아갑니다. 지금이 마지막 기회입니다.</p>
 
       <div class="price-row">
