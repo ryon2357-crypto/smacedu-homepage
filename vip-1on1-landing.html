@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VIP 1:1 지도 — 나만의 홈페이지 만들기 | SMAC EDU</title>
+  <meta name="description" content="무료 특강 수강생 전용. 2시간×4회, 1:1 맞춤 지도로 진짜 내 홈페이지를 완성합니다. VIP 얼리버드 50만원(정상가 240만원)." />
+  <style>
+    /* ─── Reset & Base ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #0a0a0a;
+      --bg2:      #111111;
+      --bg3:      #181818;
+      --border:   #2a2a2a;
+      --gold:     #c9a84c;
+      --gold-lt:  #e8c96a;
+      --text:     #e8e8e8;
+      --muted:    #888;
+      --red:      #e05252;
+      --radius:   12px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      line-height: 1.7;
+      font-size: 16px;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; border-radius: var(--radius); }
+
+    /* ─── Utility ──────────────────────────────────── */
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      border-radius: 99px;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+    }
+    .gold { color: var(--gold-lt); }
+    .muted { color: var(--muted); }
+    section { padding: 96px 0; border-bottom: 1px solid var(--border); }
+    h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); font-weight: 800; line-height: 1.25; margin-bottom: 16px; }
+    h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    p  { color: #bbb; }
+
+    /* ─── Nav ──────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,10,.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-size: 13px; font-weight: 700; letter-spacing: .08em; color: var(--muted); }
+    .nav-logo span { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold);
+      color: #000;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 20px;
+      border-radius: 99px;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .2s;
+    }
+    .nav-cta:hover { background: var(--gold-lt); }
+
+    /* ─── Hero ─────────────────────────────────────── */
+    .hero {
+      padding: 100px 0 80px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700; letter-spacing: .1em;
+      color: var(--gold);
+      background: rgba(201,168,76,.1);
+      border: 1px solid rgba(201,168,76,.3);
+      border-radius: 99px;
+      padding: 6px 18px;
+      margin-bottom: 32px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5.5vw, 3.6rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      margin-bottom: 24px;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: #999;
+      max-width: 560px;
+      margin: 0 auto 40px;
+    }
+    .hero-cta-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .btn-primary {
+      display: inline-block;
+      background: var(--gold);
+      color: #000;
+      font-size: 1rem;
+      font-weight: 800;
+      padding: 16px 44px;
+      border-radius: 99px;
+      letter-spacing: .02em;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all .2s;
+      box-shadow: 0 0 32px rgba(201,168,76,.25);
+    }
+    .btn-primary:hover {
+      background: var(--gold-lt);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 40px rgba(201,168,76,.4);
+    }
+    .hero-note { font-size: 13px; color: var(--muted); }
+
+    /* 가격 배지 */
+    .price-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 32px;
+      margin: 40px auto 0;
+    }
+    .price-old {
+      font-size: 1rem;
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+    .price-divider { color: var(--border); font-size: 1.4rem; }
+    .price-new-wrap { text-align: left; }
+    .price-label { font-size: 11px; font-weight: 700; color: var(--gold); letter-spacing: .08em; }
+    .price-new {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--gold-lt);
+      letter-spacing: -.02em;
+    }
+    .price-vat { font-size: 11px; color: var(--muted); }
+
+    /* ─── 수강생 전용 알림 ─────────────────────────── */
+    .notice-bar {
+      background: rgba(201,168,76,.08);
+      border: 1px solid rgba(201,168,76,.25);
+      border-radius: var(--radius);
+      padding: 18px 24px;
+      display: flex; align-items: flex-start; gap: 14px;
+      margin-top: 40px;
+    }
+    .notice-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .notice-bar p { color: #c8c8c8; font-size: .92rem; margin: 0; }
+    .notice-bar strong { color: var(--gold-lt); }
+
+    /* ─── 고민 섹션 ────────────────────────────────── */
+    .worry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .worry-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .worry-card .emoji { font-size: 1.5rem; margin-bottom: 12px; }
+    .worry-card p { font-size: .93rem; color: #bbb; margin: 0; }
+
+    /* ─── 과정 섹션 ────────────────────────────────── */
+    .program-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 48px;
+    }
+    @media (max-width: 600px) { .program-grid { grid-template-columns: 1fr; } }
+    .program-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+    .program-card .prog-num {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .program-card h3 { font-size: 1rem; color: var(--text); margin-bottom: 8px; }
+    .program-card p { font-size: .88rem; color: var(--muted); }
+    .program-card .tag-pill {
+      display: inline-block;
+      font-size: 11px;
+      background: rgba(201,168,76,.12);
+      color: var(--gold);
+      border-radius: 6px;
+      padding: 3px 10px;
+      margin-top: 12px;
+    }
+
+    /* ─── 결과물 섹션 ──────────────────────────────── */
+    .result-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin-top: 48px;
+    }
+    .result-list li {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .result-list .check {
+      font-size: 1rem;
+      color: var(--gold);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .result-list p { font-size: .93rem; color: #ccc; margin: 0; }
+
+    /* ─── 신뢰 섹션 ────────────────────────────────── */
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .trust-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      text-align: center;
+    }
+    .trust-card .num {
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--gold-lt);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .trust-card p { font-size: .88rem; color: var(--muted); margin: 0; }
+
+    /* 강사 카드 */
+    .instructor-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px;
+      display: flex;
+      align-items: flex-start;
+      gap: 28px;
+      margin-top: 48px;
+    }
+    @media (max-width: 600px) { .instructor-card { flex-direction: column; } }
+    .instructor-photo {
+      width: 88px; height: 88px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .instructor-info h3 { font-size: 1.15rem; margin-bottom: 4px; }
+    .instructor-info .role { font-size: .88rem; color: var(--gold); margin-bottom: 14px; }
+    .instructor-info p { font-size: .92rem; color: #bbb; }
+    .instructor-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .instructor-tags span {
+      font-size: 11px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 6px;
+      padding: 4px 10px;
+    }
+
+    /* ─── 망설임 해소 섹션 ──────────────────────────── */
+    .faq-list { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; }
+    .faq-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .faq-q { font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .faq-q::before { content: "Q. "; color: var(--gold); }
+    .faq-a { font-size: .92rem; color: #bbb; }
+    .faq-a::before { content: "A. "; color: var(--muted); font-weight: 700; }
+
+    /* ─── 마감 섹션 ────────────────────────────────── */
+    .deadline-box {
+      background: var(--bg2);
+      border: 1px solid rgba(201,168,76,.35);
+      border-radius: 16px;
+      padding: 48px 40px;
+      text-align: center;
+    }
+    .deadline-box h2 { margin-bottom: 12px; }
+    .deadline-box .sub { color: #999; margin-bottom: 36px; font-size: .97rem; }
+    .price-row {
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .price-row .old-tag {
+      text-decoration: line-through;
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+    .price-row .arrow { color: var(--muted); font-size: 1.2rem; }
+    .price-row .new-tag {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--gold-lt);
+      letter-spacing: -.03em;
+    }
+    .price-row .new-tag small {
+      font-size: .55em;
+      font-weight: 600;
+      color: var(--gold);
+      margin-left: 4px;
+    }
+    .payment-info {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 0 auto 28px;
+      max-width: 460px;
+      text-align: left;
+    }
+    .payment-info p {
+      font-size: .88rem;
+      color: #bbb;
+      margin: 0;
+      line-height: 1.9;
+    }
+    .payment-info strong { color: var(--text); }
+    .deadline-note { font-size: .82rem; color: var(--muted); margin-top: 16px; }
+
+    /* ─── Footer ───────────────────────────────────── */
+    footer {
+      padding: 40px 24px;
+      text-align: center;
+      font-size: .82rem;
+      color: var(--muted);
+    }
+
+    /* ─── 신청 모달 ─────────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,.75);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--bg3);
+      border: 1px solid rgba(201,168,76,.35);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 440px;
+      padding: 40px 36px;
+      position: relative;
+      box-shadow: 0 32px 80px rgba(0,0,0,.7), 0 0 60px rgba(201,168,76,.15);
+      animation: modalIn .25s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(20px) scale(.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 20px;
+      background: none; border: none;
+      color: var(--muted);
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+    }
+    .modal-close:hover { color: #fff; }
+    .modal h3 { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .modal p.modal-desc { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: #ccc; margin-bottom: 7px; }
+    .form-group input {
+      width: 100%;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 16px;
+      font-size: 15px;
+      color: #fff;
+      outline: none;
+      transition: border-color .2s;
+      font-family: inherit;
+    }
+    .form-group input::placeholder { color: #555; }
+    .form-group input:focus { border-color: rgba(201,168,76,.6); }
+    .form-checkbox label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 400;
+      color: #ccc;
+      cursor: pointer;
+      line-height: 1.5;
+    }
+    .form-checkbox input[type="checkbox"] {
+      flex-shrink: 0;
+      width: 16px; height: 16px;
+      margin-top: 1px;
+      accent-color: var(--gold);
+      cursor: pointer;
+    }
+    .form-submit { width: 100%; margin-top: 8px; }
+    .form-msg {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .form-msg.success { background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.3); color: #86efac; display: block; }
+    .form-msg.error { background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.3); color: #fca5a5; display: block; }
+
+    /* ─── Responsive ───────────────────────────────── */
+    @media (max-width: 480px) {
+      section { padding: 64px 0; }
+      .price-badge { flex-direction: column; gap: 8px; text-align: center; }
+      .deadline-box { padding: 36px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">SMAC <span>EDU</span></div>
+  <button class="nav-cta" onclick="handleApply()">지금 신청하기 →</button>
+</nav>
+
+<!-- ── 신청 모달 ───────────────────────────────────── -->
+<div class="modal-overlay" id="applyModal" onclick="closeModalOutside(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" onclick="closeModal()" aria-label="닫기">✕</button>
+    <h3 id="modalTitle">VIP 얼리버드 신청</h3>
+    <p class="modal-desc">아래 정보를 입력하시면 신청이 접수됩니다.<br>입금 확인 후 24시간 이내 일정 조율 연락을 드립니다.</p>
+
+    <form id="applyForm" onsubmit="submitApply(event)" novalidate>
+      <div class="form-group">
+        <label for="f-name">이름 <span style="color:#c9a84c">*</span></label>
+        <input id="f-name" name="name" type="text" placeholder="홍길동" required autocomplete="name" />
+      </div>
+      <div class="form-group">
+        <label for="f-email">이메일 <span style="color:#c9a84c">*</span></label>
+        <input id="f-email" name="email" type="email" placeholder="example@email.com" required autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label for="f-phone">연락처 <span style="color:#c9a84c">*</span></label>
+        <input id="f-phone" name="phone" type="tel" placeholder="010-1234-5678" required autocomplete="tel" />
+      </div>
+      <div class="form-group form-checkbox">
+        <label for="f-consent">
+          <input id="f-consent" type="checkbox" required />
+          개인정보는 신청 확인 및 일정 안내 목적으로만 사용됩니다. 동의합니다. <span style="color:#c9a84c">*</span>
+        </label>
+      </div>
+      <button type="submit" class="btn-primary form-submit" id="submitBtn">✦ 신청 완료하기</button>
+      <div class="form-msg" id="formMsg"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ── HERO ────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">✦ 무료 특강 수강생 전용 VIP 오퍼</div>
+    <h1>
+      오늘 배운 것,<br />
+      <span class="gold">직접 완성까지</span><br />
+      옆에서 함께합니다
+    </h1>
+    <p class="hero-sub">
+      나만의 홈페이지 만들기 · 내 업무 간편하게 만들기<br />
+      1:1 맞춤 지도로 끝까지 완성합니다
+    </p>
+    <div class="hero-cta-wrap">
+      <button class="btn-primary" onclick="handleApply()">✦ VIP 얼리버드 신청하기</button>
+      <span class="hero-note">얼리버드 마감 시 정상가로 전환됩니다</span>
+    </div>
+
+    <!-- 가격 배지 -->
+    <div class="price-badge">
+      <span class="price-old">정상가 240만원</span>
+      <span class="price-divider">→</span>
+      <div class="price-new-wrap">
+        <div class="price-label">VIP 얼리버드 특가</div>
+        <div class="price-new">50만원</div>
+        <div class="price-vat">VAT 제외</div>
+      </div>
+    </div>
+
+    <!-- 수강생 전용 안내 -->
+    <div class="notice-bar">
+      <div class="notice-icon">🔒</div>
+      <p>
+        이 페이지는 <strong>오늘 무료 특강 수강생에게만</strong> 공개된 VIP 오퍼입니다.
+        특강에서 나눈 내용을 바탕으로, 선생님이 <strong>처음부터 끝까지 1:1로 함께</strong> 완성합니다.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 고민 ─────────────────────────────────────────── -->
+<section>
+  <div class="container">
+    <div class="tag">이런 고민, 있으시죠?</div>
+    <h2>특강은 이해했는데<br /><span class="gold">막상 혼자 하려니 막막해요</span></h2>
+    <div class="worry-grid">
+      <div class="worry-card">
+        <div class="emoji">😮‍💨</div>
+        <h3>할 수 있을지 모르겠어요</h3>
+        <p>강의 때는 이해됐는데, 집에 가서 혼자 하면 어디서부터 시작해야 할지 모르겠어요.</p>
+      </div>
+      <div class="worry-card">
+        <div class="emoji">🪤</div>
+        <h3>중간에 막히면 어떡하죠</h3>
+        <p>오류가 나거나 원하는 결과가 안 나왔을 때 물어볼 곳이 없어서 항상 포기했어요.</p>
+      </div>
+      <div class="worry-card">
+        <div class="emoji">⏱</div>
+        <h3>시간이 없어서 미루게 돼요</h3>
+        <p>해야지 해야지 하다가 흐지부지됩니다. 혼자선 마감이 없으니까요.</p>
+      </div>
+      <div class="worry-card">
+        <div class="emoji">🎯</div>
+        <h3>내 업무에 딱 맞게 하고 싶어요</h3>
+        <p>일반 강의 예제 말고, 내 상황·내 서비스에 맞는 결과물이 필요해요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 과정 구성 ──────────────────────────────────────── -->
+<section>
+  <div class="container">
+    <div class="tag">과정 구성</div>
+    <h2>총 8시간,<br /><span class="gold">4번의 세션으로 완성합니다</span></h2>
+    <p style="margin-bottom: 0;">온라인 라이브 + 1:1 온오프라인 — 선생님이 화면을 보며 직접 피드백합니다.</p>
+    <div class="program-grid">
+      <div class="program-card">
+        <div class="prog-num">SESSION 01 · 02</div>
+        <h3>온라인 라이브 강의</h3>
+        <p>2시간 × 2회. 기초 개념을 다지고 내 프로젝트 방향을 함께 설정합니다. 막히는 부분은 실시간으로 해결합니다.</p>
+        <span class="tag-pill">📹 온라인 Zoom</span>
+      </div>
+      <div class="program-card">
+        <div class="prog-num">SESSION 03 · 04</div>
+        <h3>1:1 온라인 + 오프라인 지도</h3>
+        <p>2시간 × 2회. 실제 결과물을 함께 만드는 시간. 내 화면을 공유하며 코드·구조·디자인을 직접 잡아드립니다.</p>
+        <span class="tag-pill">🙏 1:1 밀착 지도</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 결과물 ─────────────────────────────────────────── -->
+<section>
+  <div class="container">
+    <div class="tag">수료 후 손에 쥐는 것</div>
+    <h2>8시간 뒤,<br /><span class="gold">이것들이 내 것이 됩니다</span></h2>
+    <ul class="result-list">
+      <li>
+        <span class="check">✦</span>
+        <p><strong>완성된 나만의 홈페이지</strong><br />배포 가능한 실제 URL — 당장 공유할 수 있습니다</p>
+      </li>
+      <li>
+        <span class="check">✦</span>
+        <p><strong>내 업무 자동화 설정</strong><br />반복 작업을 줄이는 AI 워크플로우를 직접 구축합니다</p>
+      </li>
+      <li>
+        <span class="check">✦</span>
+        <p><strong>수정·관리 능력</strong><br />이후 혼자서도 업데이트하고 발전시킬 수 있습니다</p>
+      </li>
+      <li>
+        <span class="check">✦</span>
+        <p><strong>무제한 채팅 피드백</strong><br />세션 이후에도 질문은 계속 받아드립니다</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── 신뢰 ─────────────────────────────────────────── -->
+<section>
+  <div class="container">
+    <div class="tag">강사 소개</div>
+    <h2>함께하는 사람이<br /><span class="gold">결과를 바꿉니다</span></h2>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="num">300+</div>
+        <p>비개발자 수강생이<br />첫 페이지를 완성한 수업</p>
+      </div>
+      <div class="trust-card">
+        <div class="num">100%</div>
+        <p>1:1 맞춤 지도로<br />중도 포기 없는 완주율</p>
+      </div>
+      <div class="trust-card">
+        <div class="num">8h</div>
+        <p>집중 지도로<br />결과물까지 완성</p>
+      </div>
+    </div>
+
+    <div class="instructor-card">
+      <img
+        class="instructor-photo"
+        src="https://www.smacedu.kr/images/director.jpg"
+        alt="박성욱 대표"
+        onerror="this.style.background='#2a2a2a';this.removeAttribute('src');"
+      />
+      <div class="instructor-info">
+        <h3>박성욱</h3>
+        <div class="role">스마트미디어아트센터 대표</div>
+        <p>
+          비개발자가 AI 도구로 실제 제품을 만들 수 있도록 돕는 데 집중하고 있습니다.
+          지금까지 300명 이상의 직장인·소상공인이 AI로 첫 웹페이지를 완성하는 과정을 함께했습니다.
+          "코딩보다 중요한 건 무엇을 만들고 싶은가"라는 신념으로 가르칩니다.
+        </p>
+        <div class="instructor-tags">
+          <span>Claude · AI 에이전트</span>
+          <span>웹 개발 노코드/로우코드</span>
+          <span>업무 자동화</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ─────────────────────────────────────────── -->
+<section>
+  <div class="container">
+    <div class="tag">망설이는 분께</div>
+    <h2>혹시 이런 생각이<br /><span class="gold">드시나요?</span></h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">50만원인데 효과가 있을지 모르겠어요</div>
+        <p class="faq-a">정상가 240만원짜리 과정입니다. 얼리버드 기간에만 50만원. 8시간 동안 1:1로 만든 결과물 하나가 홈페이지 외주 비용(평균 100~300만원)을 대체합니다. 수업 후 직접 관리까지 가능해집니다.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">제 수준이 따라갈 수 있을까요?</div>
+        <p class="faq-a">오늘 무료 특강을 완주하셨다면 충분합니다. 코딩 지식은 필요 없습니다. 1:1이라 제 속도에 맞게 진행하며, 막히는 순간 바로 함께 해결합니다.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">일정이 안 맞으면 어떻게 하나요?</div>
+        <p class="faq-a">신청 후 1:1로 일정을 조율합니다. 평일 저녁·주말 모두 가능합니다. 먼저 입금 후 일정 협의 메시지를 주시면 됩니다.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">온라인으로만 해도 되나요?</div>
+        <p class="faq-a">온라인 세션 2회 + 오프라인(또는 온라인 1:1) 세션 2회로 구성됩니다. 거리상 어려우신 경우 전 세션 온라인으로 협의 가능합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 신청 ─────────────────────────────────────────── -->
+<section id="apply" style="border-bottom: none;">
+  <div class="container">
+    <div class="deadline-box">
+      <div class="tag">🔥 VIP 얼리버드 마감 임박</div>
+      <h2>오늘 특강 수강생에게만<br /><span class="gold">드리는 단 한 번의 가격</span></h2>
+      <p class="sub">마감되면 정상가 240만원으로 돌아갑니다. 지금이 마지막 기회입니다.</p>
+
+      <div class="price-row">
+        <span class="old-tag">240만원</span>
+        <span class="arrow">→</span>
+        <span class="new-tag">50만원 <small>VAT 제외</small></span>
+      </div>
+
+      <div class="payment-info">
+        <p>
+          <strong>입금 계좌</strong> 신한은행 110-050-892636 박성욱<br />
+          <strong>카드 결제</strong> 별도 안내 (신청 후 연락드립니다)<br />
+          <strong>입금 확인 후</strong> 24시간 이내 일정 조율 연락 드립니다
+        </p>
+      </div>
+
+      <button class="btn-primary" onclick="handleApply()">
+        ✦ 지금 바로 신청하기
+      </button>
+      <p class="deadline-note">입금 후 카카오톡 또는 이메일로 신청 사실을 알려주시면 빠르게 확인드립니다</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ───────────────────────────────────────── -->
+<footer>
+  <p>© 2026 SMAC EDU · 스마트미디어아트센터 · <a href="https://www.smacedu.kr/privacy.html" style="color: var(--gold);">개인정보처리방침</a></p>
+</footer>
+
+<script>
+  /* ────────────────────────────────────────────
+     landing-interview-apps-script.gs 에 추가된 VIP 처리 분기를 그대로 사용합니다.
+     (같은 Apps Script 웹앱 URL, type=vip 파라미터로 구분)
+  ──────────────────────────────────────────── */
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxqYBmeYzXx0P-iODP2kFmIRr95I7ri54zk6EB316ySh9qatmK9QGhKDE5f0Q9dmDfgvQ/exec';
+
+  function handleApply() {
+    document.getElementById('applyModal').classList.add('open');
+    document.getElementById('f-name').focus();
+  }
+
+  function closeModal() {
+    document.getElementById('applyModal').classList.remove('open');
+    document.getElementById('formMsg').style.display = 'none';
+    document.getElementById('formMsg').className = 'form-msg';
+    document.getElementById('applyForm').reset();
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('submitBtn').textContent = '✦ 신청 완료하기';
+  }
+
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('applyModal')) closeModal();
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  document.getElementById('f-phone').addEventListener('input', e => {
+    let digits = e.target.value.replace(/\D/g, '').slice(0, 11);
+    if (digits.length > 7) digits = `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+    else if (digits.length > 3) digits = `${digits.slice(0, 3)}-${digits.slice(3)}`;
+    e.target.value = digits;
+  });
+
+  async function submitApply(e) {
+    e.preventDefault();
+    const name    = document.getElementById('f-name').value.trim();
+    const email   = document.getElementById('f-email').value.trim();
+    const phone   = document.getElementById('f-phone').value.trim();
+    const consent = document.getElementById('f-consent').checked;
+    const btn     = document.getElementById('submitBtn');
+
+    if (!name)  { showMsg('error', '이름을 입력해 주세요.'); return; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('error', '올바른 이메일을 입력해 주세요.'); return; }
+    if (!/^\d{3}-\d{4}-\d{4}$/.test(phone)) { showMsg('error', '연락처는 010-1234-5678 형식으로 입력해 주세요.'); return; }
+    if (!consent) { showMsg('error', '개인정보 수집·이용 동의에 체크해 주세요.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = '신청 중…';
+
+    try {
+      const params = new URLSearchParams({ type: 'vip', name, email, phone, consent: 'Y' });
+      await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
+      showMsg('success', `${name}님, 신청이 접수됐어요! 입금 확인 후 24시간 내 연락드릴게요.`);
+      btn.textContent = '✓ 신청 완료';
+    } catch {
+      showMsg('error', '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+      btn.disabled = false;
+      btn.textContent = '✦ 신청 완료하기';
+    }
+  }
+
+  function showMsg(type, text) {
+    const el = document.getElementById('formMsg');
+    el.className = `form-msg ${type}`;
+    el.textContent = text;
+    el.style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
