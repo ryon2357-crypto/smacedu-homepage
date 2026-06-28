@@ -26,7 +26,11 @@ const HEADERS = [
 ];
 
 const VIP_SHEET_NAME = 'VIP신청';
-const VIP_HEADERS = ['타임스탬프', '이름', '이메일', '연락처'];
+const VIP_HEADERS = ['타임스탬프', '이름', '이메일', '연락처', '신청유형'];
+const VIP_TIER_LABELS = {
+  full:  { label: 'VIP 풀코스 (8시간·50만원)', amount: '50만원' },
+  light: { label: '90분 라이트 (15만원)', amount: '15만원' }
+};
 
 const MATERIAL_SHEET_NAME = '자료신청';
 const MATERIAL_HEADERS = ['타임스탬프', '이름', '이메일', '연락처', '신청유형'];
@@ -89,12 +93,17 @@ function _handleVipSubmission(p) {
       sheet = ss.insertSheet(VIP_SHEET_NAME);
       sheet.appendRow(VIP_HEADERS);
       sheet.getRange(1, 1, 1, VIP_HEADERS.length).setFontWeight('bold');
+    } else if (sheet.getLastColumn() < VIP_HEADERS.length) {
+      // 나중에 "라이트" 옵션이 추가되어 헤더보다 칸이 늘어난 경우, 빠진 헤더만 채워 넣습니다.
+      const lastCol = sheet.getLastColumn();
+      sheet.getRange(1, lastCol + 1, 1, VIP_HEADERS.length - lastCol).setValues([VIP_HEADERS.slice(lastCol)]);
     }
 
+    const tierInfo = VIP_TIER_LABELS[p.tier] || VIP_TIER_LABELS.full;
     const timestamp = _formatKoreanTimestamp(new Date(), Session.getScriptTimeZone());
-    sheet.appendRow([timestamp, p.name || '', p.email || '', p.phone || '']);
+    sheet.appendRow([timestamp, p.name || '', p.email || '', p.phone || '', tierInfo.label]);
 
-    if (p.email) _sendVipConfirmEmail(p.name, p.email);
+    if (p.email) _sendVipConfirmEmail(p.name, p.email, tierInfo);
     _notifyAdmin(sheet, 'VIP 1:1 지도 신청');
 
     return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
@@ -182,17 +191,19 @@ function _sendMaterialConfirmEmail(name, email, tier) {
   });
 }
 
-function _sendVipConfirmEmail(name, email) {
+function _sendVipConfirmEmail(name, email, tierInfo) {
   const html = `
 <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
   <div style="background:#c9a84c;padding:32px 28px;border-radius:12px 12px 0 0;text-align:center;">
-    <h1 style="color:#000;margin:0;font-size:22px;font-weight:900;">VIP 신청이 접수됐어요 ✦</h1>
+    <h1 style="color:#000;margin:0;font-size:22px;font-weight:900;">신청이 접수됐어요 ✦</h1>
+    <p style="color:rgba(0,0,0,.65);margin:8px 0 0;font-size:14px;">${tierInfo.label}</p>
   </div>
   <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
     <p style="margin:0 0 16px;font-size:16px;"><strong>${name || '신청자'}</strong>님, 신청 잘 받았습니다.</p>
     <p style="margin:0;color:#475569;line-height:1.7;">
       입금 계좌: 신한은행 110-050-892636 박성욱<br>
-      입금 확인 후 24시간 이내로 일정 조율 연락을 드릴게요.<br>
+      입금 금액: <strong>${tierInfo.amount}</strong><br>
+      입금 확인 후 일정 조율 연락을 드릴게요.<br>
       궁금한 점이 있으면 언제든 회신 주세요.
     </p>
   </div>
@@ -200,7 +211,7 @@ function _sendVipConfirmEmail(name, email) {
 
   MailApp.sendEmail({
     to: email,
-    subject: '[SMAC EDU] VIP 1:1 지도 신청이 접수됐습니다',
+    subject: `[SMAC EDU] 1:1 신청이 접수됐습니다 — ${tierInfo.label}`,
     htmlBody: html
   });
 }
