@@ -258,6 +258,34 @@
     }
     .program-card.wide { grid-column: 1 / -1; border-color: rgba(201,168,92,.35); }
 
+    /* ─── 라이트 옵션 ──────────────────────────────── */
+    .lite-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+    .lite-info { flex: 1; min-width: 260px; }
+    .lite-info h3 { font-size: 18px; color: #fff; margin: 14px 0 14px; }
+    .lite-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .lite-list li { font-size: 14px; color: #c2c8da; padding-left: 22px; position: relative; }
+    .lite-list li::before { content: "✦"; position: absolute; left: 0; top: 2px; color: var(--gold); font-size: 12px; }
+    .lite-price-wrap { text-align: center; flex-shrink: 0; }
+    .lite-price {
+      font-size: 36px; font-weight: 900; color: var(--gold-lt);
+      text-shadow: 0 0 20px rgba(201,168,92,.4); margin-bottom: 2px;
+    }
+    .lite-price-wrap .price-vat { margin-bottom: 16px; }
+    @media (max-width: 600px) {
+      .lite-card { flex-direction: column; align-items: stretch; text-align: center; }
+    }
+
     /* ─── 결과물 섹션 ──────────────────────────────── */
     .result-list {
       list-style: none;
@@ -502,7 +530,17 @@
     }
     .modal-close:hover { color: #fff; }
     .modal h3 { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 6px; }
-    .modal p.modal-desc { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+    .modal p.modal-desc { font-size: 14px; color: var(--muted); margin-bottom: 18px; }
+    .modal-price {
+      background: rgba(201,168,92,.08);
+      border: 1px solid rgba(201,168,92,.3);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #ddd;
+      margin-bottom: 22px;
+    }
+    .modal-price strong { color: var(--gold-lt); }
     .form-group { margin-bottom: 18px; }
     .form-group label { display: block; font-size: 13px; font-weight: 600; color: #ccc; margin-bottom: 7px; }
     .form-group input {
@@ -573,7 +611,8 @@
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <button class="modal-close" onclick="closeModal()" aria-label="닫기">✕</button>
     <h3 id="modalTitle">VIP 얼리버드 신청</h3>
-    <p class="modal-desc">아래 정보를 입력하시면 신청이 접수됩니다.<br>입금 확인 후 24시간 이내 일정 조율 연락을 드립니다.</p>
+    <p class="modal-desc" id="modalDesc">아래 정보를 입력하시면 신청이 접수됩니다.<br>입금 확인 후 24시간 이내 일정 조율 연락을 드립니다.</p>
+    <div class="modal-price" id="modalPrice"></div>
 
     <form id="applyForm" onsubmit="submitApply(event)" novalidate>
       <div class="form-group">
@@ -613,8 +652,9 @@
       1:1 맞춤 지도로, <strong style="color:#fff;">될 때까지</strong> 완성합니다
     </p>
     <div class="hero-cta-wrap">
-      <button class="btn-primary" onclick="handleApply()">✦ VIP 얼리버드 신청하기</button>
+      <button class="btn-primary" onclick="handleApply('full')">✦ VIP 얼리버드 신청하기</button>
       <span class="hero-note">선착순 5명 한정 · 마감 시 정상가로 전환됩니다</span>
+      <a href="#lite" style="margin-top:6px;font-size:13px;color:#aab2c4;text-decoration:underline;">먼저 가볍게 시작하고 싶다면 — 90분 라이트(15만원) →</a>
     </div>
 
     <!-- 가격 배지 -->
@@ -635,6 +675,32 @@
         이 페이지는 <strong>VIP 회원에게만</strong> 공개된 한정 오퍼이며, 단 <strong>선착순 5명</strong>만 모십니다.
         특강에서 나눈 내용을 바탕으로, 선생님이 <strong>처음부터 끝까지 1:1로 함께</strong> 완성합니다.
       </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 라이트 옵션 ──────────────────────────────────── -->
+<section id="lite" style="background: var(--bg2);">
+  <div class="container">
+    <div class="tag">더 가볍게 시작하고 싶다면</div>
+    <h2>90분 온라인 1:1로<br /><span class="gold">가볍게 시작</span>해보세요</h2>
+    <p style="margin-bottom: 0;">프로그램 설치부터 랜딩페이지 1개 완성까지, 온라인 화면공유로 함께합니다. 끝나면 혼자서도 랜딩페이지를 수정하고 추가로 만들 수 있게 됩니다.</p>
+
+    <div class="lite-card">
+      <div class="lite-info">
+        <span class="tag-pill">💻 온라인 원격 · 90분 · 1:1</span>
+        <h3>프로그램 설치 + 랜딩페이지 1개 완성</h3>
+        <ul class="lite-list">
+          <li>필요한 프로그램 설치를 도와드립니다</li>
+          <li>랜딩페이지 1개를 함께 완성합니다</li>
+          <li>이후 혼자서도 랜딩페이지를 수정·추가 제작할 수 있게 됩니다</li>
+        </ul>
+      </div>
+      <div class="lite-price-wrap">
+        <div class="lite-price">15만원</div>
+        <div class="price-vat">VAT 제외</div>
+        <button class="btn-primary" onclick="handleApply('light')">✦ 90분 라이트 신청하기</button>
+      </div>
     </div>
   </div>
 </section>
@@ -863,10 +929,11 @@
         </p>
       </div>
 
-      <button class="btn-primary" onclick="handleApply()">
+      <button class="btn-primary" onclick="handleApply('full')">
         ✦ 지금 바로 신청하기
       </button>
       <p class="deadline-note">신청하시고 입금 확인되면 빠르게 확인 드립니다.</p>
+      <p class="deadline-note">먼저 가볍게 시작하고 싶다면 <a href="#lite" style="color:#e9d49a;text-decoration:underline;">90분 라이트(15만원)</a>도 있어요.</p>
     </div>
   </div>
 </section>
@@ -883,7 +950,27 @@
   ──────────────────────────────────────────── */
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxqYBmeYzXx0P-iODP2kFmIRr95I7ri54zk6EB316ySh9qatmK9QGhKDE5f0Q9dmDfgvQ/exec';
 
-  function handleApply() {
+  const TIER_INFO = {
+    full:  {
+      title: 'VIP 얼리버드 신청',
+      amount: '50만원',
+      desc: '아래 정보를 입력하시면 신청이 접수됩니다.<br>입금 확인 후 24시간 이내 일정 조율 연락을 드립니다.'
+    },
+    light: {
+      title: '90분 1:1 라이트 신청',
+      amount: '15만원',
+      desc: '아래 정보를 입력하시면 신청이 접수됩니다.<br>입금 확인 후 일정 조율 연락을 드립니다.'
+    }
+  };
+
+  let selectedApplyTier = 'full';
+
+  function handleApply(tier) {
+    selectedApplyTier = tier === 'light' ? 'light' : 'full';
+    const info = TIER_INFO[selectedApplyTier];
+    document.getElementById('modalTitle').textContent = info.title;
+    document.getElementById('modalDesc').innerHTML = info.desc;
+    document.getElementById('modalPrice').innerHTML = `입금 금액: <strong>${info.amount}</strong> · 신한은행 110-050-892636 박성욱`;
     document.getElementById('applyModal').classList.add('open');
     document.getElementById('f-name').focus();
   }
@@ -929,9 +1016,9 @@
     btn.textContent = '신청 중…';
 
     try {
-      const params = new URLSearchParams({ type: 'vip', name, email, phone, consent: 'Y' });
+      const params = new URLSearchParams({ type: 'vip', tier: selectedApplyTier, name, email, phone, consent: 'Y' });
       await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
-      showMsg('success', `${name}님, 신청이 접수됐어요! 입금 확인 후 24시간 내 연락드릴게요.`);
+      showMsg('success', `${name}님, 신청이 접수됐어요! 입금 확인 후 연락드릴게요.`);
       btn.textContent = '✓ 신청 완료';
     } catch {
       showMsg('error', '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
