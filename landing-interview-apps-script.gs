@@ -5,6 +5,10 @@
 // - VIP 1:1 신청(vip-1on1-landing.html, type=vip 파라미터) → "VIP신청" 탭 (없으면 자동 생성)
 // - 특강 자료 신청(materials-request.html, type=material 파라미터) → "자료신청" 탭 (없으면 자동 생성)
 //
+// 관리자(ADMIN_EMAIL) 알림은 신청마다 보내지 않고, _notifyAdmin()이 폼 종류별로
+// ADMIN_DIGEST_BATCH_SIZE(20)건씩 쌓일 때마다 모아서 한 번에 보냅니다.
+// 새 신청서 폼을 추가할 때도 이 _notifyAdmin()을 그대로 재사용하세요 (개별 알림 함수를 새로 만들지 마세요).
+//
 // 사용 방법:
 // 1. 새 구글 스프레드시트를 하나 만듭니다 (예: "랜딩페이지 기획 인터뷰 응답").
 // 2. 확장 프로그램 → Apps Script 로 들어갑니다 (이 시트에 직접 바인딩되는 스크립트라 권한 문제가 없습니다).
@@ -13,6 +17,7 @@
 // 5. 배포 후 나온 웹 앱 URL을 landing-interview.html, vip-1on1-landing.html, materials-request.html의 SCRIPT_URL에 붙여넣습니다.
 
 const ADMIN_EMAIL = 'elanvital7@naver.com';
+const ADMIN_DIGEST_BATCH_SIZE = 20; // 관리자 알림은 매번 보내지 않고, 이 건수만큼 쌓일 때마다 한 번에 모아 보냅니다.
 
 const HEADERS = [
   '타임스탬프', '이름', '이메일', '연락처',
@@ -66,7 +71,7 @@ function doGet(e) {
     ]);
 
     if (p.email) _sendConfirmEmail(p.name, p.email, p);
-    _sendAdminNotice(p);
+    _notifyAdmin(sheet, '랜딩페이지 기획 인터뷰');
 
     return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -90,7 +95,7 @@ function _handleVipSubmission(p) {
     sheet.appendRow([timestamp, p.name || '', p.email || '', p.phone || '']);
 
     if (p.email) _sendVipConfirmEmail(p.name, p.email);
-    _sendVipAdminNotice(p);
+    _notifyAdmin(sheet, 'VIP 1:1 지도 신청');
 
     return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -115,7 +120,7 @@ function _handleMaterialSubmission(p) {
     sheet.appendRow([timestamp, p.name || '', p.email || '', p.phone || '', tierLabel]);
 
     if (p.email) _sendMaterialConfirmEmail(p.name, p.email, p.tier);
-    _sendMaterialAdminNotice(p, tierLabel);
+    _notifyAdmin(sheet, '특강 자료 신청');
 
     return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -177,35 +182,6 @@ function _sendMaterialConfirmEmail(name, email, tier) {
   });
 }
 
-function _sendMaterialAdminNotice(p, tierLabel) {
-  const sheetUrl = SpreadsheetApp.getActiveSpreadsheet().getUrl();
-
-  const html = `
-<div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#1e293b;">
-  <h2 style="background:#1e3a5f;color:#fff;padding:18px 22px;margin:0;border-radius:8px 8px 0 0;">
-    📚 특강 자료 신청 — ${p.name || '이름없음'}
-  </h2>
-  <div style="background:#f8fafc;padding:22px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
-    <p style="margin:0;font-size:14px;color:#334155;line-height:1.9;">
-      <strong>신청 유형</strong> ${tierLabel}<br>
-      <strong>이름</strong> ${p.name || '-'}<br>
-      <strong>이메일</strong> ${p.email || '-'}<br>
-      <strong>연락처</strong> ${p.phone || '-'}
-    </p>
-    ${p.tier === 'paid' ? '<p style="margin:14px 0 0;font-size:13px;color:#dc2626;font-weight:700;">⚠️ 입금 확인 후 직접 자료를 보내주세요.</p>' : ''}
-    <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
-      <a href="${sheetUrl}">스프레드시트에서 확인 →</a>
-    </p>
-  </div>
-</div>`;
-
-  MailApp.sendEmail({
-    to: ADMIN_EMAIL,
-    subject: `[SMAC EDU] 특강 자료 신청 — ${p.name || '이름없음'} (${tierLabel})`,
-    htmlBody: html
-  });
-}
-
 function _sendVipConfirmEmail(name, email) {
   const html = `
 <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
@@ -229,29 +205,50 @@ function _sendVipConfirmEmail(name, email) {
   });
 }
 
-function _sendVipAdminNotice(p) {
-  const sheetUrl = SpreadsheetApp.getActiveSpreadsheet().getUrl();
+// 신청이 쌓일 때마다 매번 메일을 보내면 너무 많아지므로, ADMIN_DIGEST_BATCH_SIZE건마다
+// 한 번씩 최근 건들을 모아서 관리자에게 보냅니다. 모든 신청서 폼(인터뷰/VIP/자료신청 등)이
+// 이 함수를 공유합니다 — 새 폼을 추가할 때도 이 함수를 그대로 재사용하세요.
+function _notifyAdmin(sheet, formLabel) {
+  const total = sheet.getLastRow() - 1; // 헤더 행 제외
+  if (total <= 0 || total % ADMIN_DIGEST_BATCH_SIZE !== 0) return;
+
+  const lastCol     = sheet.getLastColumn();
+  const headerNames = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+  const batchSize   = Math.min(ADMIN_DIGEST_BATCH_SIZE, total);
+  const startRow    = sheet.getLastRow() - batchSize + 1;
+  const rows        = sheet.getRange(startRow, 1, batchSize, lastCol).getValues();
+  const sheetUrl     = `${SpreadsheetApp.getActiveSpreadsheet().getUrl()}#gid=${sheet.getSheetId()}`;
+
+  const headerHtml = headerNames.map(h =>
+    `<th style="padding:8px 10px;text-align:left;font-size:12px;color:#64748b;white-space:nowrap;">${h}</th>`
+  ).join('');
+
+  const rowsHtml = rows.map(row => `
+    <tr>
+      ${row.map(cell => `<td style="padding:6px 10px;font-size:13px;border-top:1px solid #e2e8f0;">${
+        (cell || '').toString().replace(/\n/g, '<br>') || '<span style="color:#cbd5e1;">-</span>'
+      }</td>`).join('')}
+    </tr>`).join('');
 
   const html = `
-<div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#1e293b;">
+<div style="font-family:sans-serif;max-width:720px;margin:0 auto;color:#1e293b;">
   <h2 style="background:#1e3a5f;color:#fff;padding:18px 22px;margin:0;border-radius:8px 8px 0 0;">
-    ✦ VIP 1:1 지도 신규 신청 — ${p.name || '이름없음'}
+    📥 ${formLabel} — 누적 ${total}건 (최근 ${batchSize}건 알림)
   </h2>
-  <div style="background:#f8fafc;padding:22px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
-    <p style="margin:0;font-size:14px;color:#334155;line-height:1.9;">
-      <strong>이름</strong> ${p.name || '-'}<br>
-      <strong>이메일</strong> ${p.email || '-'}<br>
-      <strong>연락처</strong> ${p.phone || '-'}
-    </p>
+  <div style="background:#f8fafc;padding:20px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid #e2e8f0;border-radius:6px;">
+      <tr style="background:#f1f5f9;">${headerHtml}</tr>
+      ${rowsHtml}
+    </table>
     <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
-      <a href="${sheetUrl}">스프레드시트에서 확인 →</a>
+      <a href="${sheetUrl}">스프레드시트에서 전체 확인 →</a>
     </p>
   </div>
 </div>`;
 
   MailApp.sendEmail({
     to: ADMIN_EMAIL,
-    subject: `[SMAC EDU] VIP 1:1 지도 신청 — ${p.name || '이름없음'}`,
+    subject: `[SMAC EDU] ${formLabel} — 누적 ${total}건 (최근 ${batchSize}건)`,
     htmlBody: html
   });
 }
@@ -347,41 +344,4 @@ ${v(p.event)}
 
 [푸터(이메일 주소나 연락처)]
 필요한 경우 기재`;
-}
-
-function _sendAdminNotice(p) {
-  const sheetUrl = SpreadsheetApp.getActiveSpreadsheet().getUrl();
-
-  const rows = [
-    ['상품/서비스', p.product], ['타깃 고객', p.target], ['고객의 고민', p.worry],
-    ['구매 망설임', p.hesitation], ['핵심 장점', p.advantages], ['경쟁사 약점', p.competitor],
-    ['숫자/증거', p.numbers], ['신뢰 요소', p.trust], ['실제 후기', p.review], ['마감 이벤트', p.event],
-    ['효율화 앱 아이디어', p.appIdea]
-  ].map(([k, v]) => `
-    <tr>
-      <td style="padding:6px 10px;font-size:13px;color:#64748b;width:120px;vertical-align:top;">${k}</td>
-      <td style="padding:6px 10px;font-size:13px;">${(v || '').toString().replace(/\n/g, '<br>') || '<span style="color:#cbd5e1;">(미입력)</span>'}</td>
-    </tr>`).join('');
-
-  const html = `
-<div style="font-family:sans-serif;max-width:620px;margin:0 auto;color:#1e293b;">
-  <h2 style="background:#1e3a5f;color:#fff;padding:18px 22px;margin:0;border-radius:8px 8px 0 0;">
-    📝 랜딩페이지 인터뷰 신규 응답 — ${p.name || '이름없음'}
-  </h2>
-  <div style="background:#f8fafc;padding:22px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
-    <p style="margin:0 0 12px;font-size:13px;color:#64748b;">이메일: ${p.email || '-'} · 연락처: ${p.phone || '-'}</p>
-    <table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid #e2e8f0;border-radius:6px;">
-      ${rows}
-    </table>
-    <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
-      <a href="${sheetUrl}">스프레드시트에서 전체 응답 확인 →</a>
-    </p>
-  </div>
-</div>`;
-
-  MailApp.sendEmail({
-    to: ADMIN_EMAIL,
-    subject: `[SMAC EDU] 랜딩페이지 인터뷰 응답 — ${p.name || '이름없음'}`,
-    htmlBody: html
-  });
 }
