@@ -7,6 +7,10 @@
 // 3. 기본 코드를 지우고 이 파일 내용 전체를 붙여넣습니다.
 // 4. 배포 → 새 배포 → 유형: 웹 앱 → 액세스 권한: "전체" → 배포.
 // 5. 배포 후 나온 웹 앱 URL을 photo-lecture-landing.html의 SCRIPT_URL에 붙여넣습니다.
+// 6. 구글폼(forms.gle)으로 직접 제출해도 확인 메일이 가도록 트리거를 한 번 등록해야 합니다:
+//    Apps Script 편집기 좌측 "트리거"(시계 아이콘) → 트리거 추가
+//    → 실행할 함수: onFormSubmit / 이벤트 소스: 스프레드시트에서 / 이벤트 유형: 양식 제출 시 → 저장
+//    (랜딩페이지 신청은 doGet이 처리하고, 구글폼 직접 제출은 이 트리거가 처리합니다 — 서로 겹치지 않습니다.)
 
 const ADMIN_EMAIL = 'elanvital7@naver.com';
 const SHEET_GID   = 12733408; // 신청서 응답 시트(설문지 응답 시트1)의 tab gid
@@ -42,6 +46,25 @@ function doGet(e) {
   }
 }
 
+// 구글폼(forms.gle)으로 직접 제출했을 때 실행되는 트리거.
+// doGet과 달리 question 제목 매칭에 의존하지 않고, 방금 추가된 행을 열 번호로 직접 읽습니다
+// (열 순서는 doGet의 appendRow와 동일: 타임스탬프, 점수, 이름, 신청경로, 전화번호, 이메일, ...).
+function onFormSubmit(e) {
+  try {
+    const sheet = e.range.getSheet();
+    const row   = e.range.getRow();
+    const name  = sheet.getRange(row, 3).getValue();
+    const email = sheet.getRange(row, 6).getValue();
+
+    if (email) _sendConfirmEmail(name, email);
+
+    const total = sheet.getLastRow() - 1;
+    if (total % 10 === 0) _sendAdminDigest(sheet, total);
+  } catch (err) {
+    console.error('onFormSubmit 오류: ' + err.message);
+  }
+}
+
 function _formatKoreanTimestamp(date, tz) {
   const hour24   = parseInt(Utilities.formatDate(date, tz, 'H'), 10);
   const ampm     = hour24 < 12 ? '오전' : '오후';
@@ -62,17 +85,23 @@ function _sendConfirmEmail(name, email) {
     <p style="margin:0 0 16px;font-size:16px;"><strong>${name}</strong>님, 반갑습니다!</p>
     <p style="margin:0 0 20px;color:#475569;line-height:1.7;">
       특강 신청이 정상적으로 접수됐어요.<br>
-      참여 ZOOM 링크는 특강 당일인 7월 1일(수) 저녁 6시까지 이 메일로 다시 안내드리겠습니다.
+      참여 ZOOM 링크는 특강 당일인 7월 17일(금) 저녁 6시까지 이 메일로 다시 안내드리겠습니다.
     </p>
 
-    <div style="background:linear-gradient(135deg,#fef3c7,#fed7aa);border:1px solid #fdba74;border-radius:10px;padding:18px 20px;margin-bottom:20px;text-align:center;">
-      <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#9a3412;">🎁 신청해 주신 분께 드리는 선물</p>
-      <p style="margin:0 0 12px;font-size:13px;color:#7c2d12;">강의 전 미리 보면 좋은 사전 핸드아웃 PDF를 드려요</p>
-      <a href="https://drive.google.com/file/d/1JjWkBJgoztxhPqZucrpJyLpX5QTOMHQm/view?usp=sharing" style="display:inline-block;background:#fff;color:#9a3412;border:1px solid #fdba74;text-decoration:none;font-size:14px;font-weight:700;padding:11px 28px;border-radius:999px;">📄 사전 핸드아웃 받기</a>
+    <div style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);border:1px solid #c4b5fd;border-radius:10px;padding:18px 20px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#5b21b6;">✨ 신청해 주신 분께 드리는 VIP 특별 초대</p>
+      <p style="margin:0 0 12px;font-size:13px;color:#5b21b6;">코딩 몰라도 괜찮아요 — VIP 특강 <strong>"AI 에이전트로 랜딩 페이지 만들기(바이브 코딩)"</strong>에도 초대드려요</p>
+      <a href="https://www.smacedu.kr/lecture-landing.html" style="display:inline-block;background:#fff;color:#5b21b6;border:1px solid #c4b5fd;text-decoration:none;font-size:14px;font-weight:700;padding:11px 28px;border-radius:999px;">✨ 바이브 코딩 강의 보러가기</a>
+    </div>
+
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:16px 18px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0 0 6px;font-size:14px;font-weight:700;color:#92400e;">🎁엘란비탈 무료특강 아카데미 단톡방에 들어오시면</p>
+      <p style="margin:0 0 12px;font-size:13px;color:#7c2d12;">다양한 장르 + 양질의 무료 특강을 자주 만날 수 있습니다.</p>
+      <a href="https://invite.kakao.com/tc/sEmjtp7axZ" style="display:inline-block;background:#FEE500;color:#3c1e1e;text-decoration:none;font-size:14px;font-weight:700;padding:11px 28px;border-radius:999px;">💬 단톡방 입장하기</a>
     </div>
 
     <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 18px;margin-bottom:20px;text-align:center;">
-      <p style="margin:0;font-size:14px;font-weight:700;color:#dc2626;">🗓 7월 1일(수) 저녁 9시 — 잊지 마세요!</p>
+      <p style="margin:0;font-size:14px;font-weight:700;color:#dc2626;">🗓 7월 17일(금) 저녁 8시 — 잊지 마세요!</p>
     </div>
 
     <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:20px;">
@@ -83,7 +112,7 @@ function _sendConfirmEmail(name, email) {
         </tr>
         <tr>
           <td style="padding:7px 0;color:#64748b;">일시</td>
-          <td style="color:#1e293b;font-weight:600;">2026년 7월 1일(수) 저녁 9시</td>
+          <td style="color:#1e293b;font-weight:600;">2026년 7월 17일(금) 저녁 8시</td>
         </tr>
         <tr>
           <td style="padding:7px 0;color:#64748b;">진행 방식</td>
@@ -94,11 +123,6 @@ function _sendConfirmEmail(name, email) {
           <td style="color:#1e293b;">엘란비탈 박성욱 작가 — 스마트미디어아트센터 대표</td>
         </tr>
       </table>
-    </div>
-
-    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:16px 18px;margin-bottom:20px;text-align:center;">
-      <p style="margin:0 0 10px;font-size:13px;color:#92400e;">강의 공지·자료는 단체 채팅방에서 가장 빠르게 안내드려요</p>
-      <a href="https://invite.kakao.com/tc/sEmjtp7axZ" style="display:inline-block;background:#FEE500;color:#3c1e1e;text-decoration:none;font-size:14px;font-weight:700;padding:11px 28px;border-radius:999px;">💬 엘란비탈 무료특강 아카데미 팀채팅 입장하기</a>
     </div>
 
     <div style="text-align:center;margin-bottom:20px;">

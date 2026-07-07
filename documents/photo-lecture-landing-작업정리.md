@@ -5,6 +5,9 @@
 - [photo-lecture-landing.html](../photo-lecture-landing.html) — 7/1(수) 스마트폰 사진특강 랜딩페이지
 - [photo-lecture-apps-script.gs](../photo-lecture-apps-script.gs) — 이 페이지 전용 신청 처리 백엔드 (로컬 보관용 사본, 실제 동작은 Google Apps Script 배포본)
 - [videos/intro.mp4](../videos/intro.mp4) — 히어로 영역 인트로 영상 (10초, 자동재생·무음·반복)
+- [photo-lecture-email-preview.html](../photo-lecture-email-preview.html) — 신청 확인 메일 미리보기 (배포 없이 브라우저로 바로 확인용)
+- [images/photo-lecture-og.png](../images/photo-lecture-og.png) — 카카오톡 등 링크 공유 시 노출되는 미리보기 이미지
+- [images/photo-lecture-date-badge.png](../images/photo-lecture-date-badge.png) — 히어로의 일정 배지(이미지로 박아 넣은 날짜 텍스트, 아래 "모바일 날짜 자동인식 버그" 참고)
 
 ## 페이지 구성
 
@@ -64,6 +67,25 @@
 - **연락처: 필수**, `010-1234-5678` 형식 검증 (정규식 `^01[0-9]-\d{3,4}-\d{4}$`)
 - **개인정보 수집·이용 동의 체크박스: 필수** (미체크 시 제출 불가)
 - 하단 안내문: "*제출 버튼을 클릭하시면 개인정보 수집 및 이용에 동의한 것으로 간주됩니다."
+
+## 신청 유도 선물 (전환율 보강)
+
+신청만 해도 자료를 주는 미끼 제공 — "핵심장점 반복" 전략대로 페이지 안에서 2곳에 동일 문구 반복:
+
+- `photo-lecture-landing.html`: 히어로 CTA 버튼 아래, 하단 CTA 섹션 버튼 아래 — "🎁 신청만 해도 유료급 강의 자료를 보내 드립니다" (노란색 강조)
+- `photo-lecture-apps-script.gs`의 확인 메일에 두 가지 추가:
+  1. **선물 박스** — 사전 핸드아웃 PDF(`엘란비탈 스마트폰 사진 특강 사전 핸드아웃.pdf`, Google Drive 링크) 다운로드 버튼. 인사말 바로 다음, ZOOM 일정 안내 박스 위에 배치.
+  2. **카카오톡 단체채팅방 입장 버튼** — `https://invite.kakao.com/tc/sEmjtp7axZ` ("엘란비탈 무료특강 아카데미 팀채팅"), 카카오 브랜드 노란색(#FEE500)으로 스타일링. "특강 페이지 다시 보기" 버튼 위에 배치.
+- 이 메일 변경은 Apps Script 재배포가 필요 (git push로는 적용 안 됨).
+
+## Open Graph 미리보기 이미지 / 모바일 날짜 자동인식 버그
+
+이 두 가지는 이 페이지만의 문제가 아니라 **앞으로 만들 모든 랜딩페이지에 공통으로 적용해야 할 패턴**이라서, 일반 가이드로 분리해 정리함 → [랜딩페이지_제작_가이드.md](랜딩페이지_제작_가이드.md) 4번, 5번 항목 참고.
+
+이 페이지에서의 구체적인 결과물만 남기면:
+- 미리보기 배너: `images/photo-lecture-og.png` (1200×630)
+- 날짜 배지 이미지: `images/photo-lecture-date-badge.png` (히어로의 "🗓 2026년 7월 1일(수)..." 배지를 이미지로 교체)
+- 정보 안내 박스의 "일시" 줄, CTA 하단 날짜 문구 등 다른 곳에도 같은 날짜 패턴이 평문으로 남아있어서, 같은 증상이 재현되면 동일하게 이미지로 교체 필요 (아직 미확인).
 
 ## 알아두면 좋은 것
 
