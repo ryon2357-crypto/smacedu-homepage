@@ -1,21 +1,40 @@
 // 스마트폰 사진특강 랜딩페이지 전용 신청 처리 스크립트
+// (이미 배포·인증이 끝난 프로젝트라, 후기 감사 선물 랜딩페이지 신청도 함께 처리합니다 — 아래 참고)
 //
 // 사용 방법:
 // 1. 이 스프레드시트를 엽니다:
 //    https://docs.google.com/spreadsheets/d/1mWvHb6H6YhtAe-j2y_PDGwfcK4jY8mpHyCO0OJHBA-0/edit
 // 2. 확장 프로그램 → Apps Script 로 들어갑니다 (이 시트에 직접 바인딩되는 스크립트라 권한 문제가 없습니다).
 // 3. 기본 코드를 지우고 이 파일 내용 전체를 붙여넣습니다.
-// 4. 배포 → 새 배포 → 유형: 웹 앱 → 액세스 권한: "전체" → 배포.
-// 5. 배포 후 나온 웹 앱 URL을 photo-lecture-landing.html의 SCRIPT_URL에 붙여넣습니다.
+// 4. 배포 → 배포 관리 → 기존 배포 옆 ✏️ → 새 버전으로 배포 (이미 인증된 배포를 재사용하므로 "차단된 앱" 문제가 없습니다).
+// 5. 배포 후 나온 웹 앱 URL을 photo-lecture-landing.html과 review-gift-landing.html의 SCRIPT_URL에 붙여넣습니다.
+//    (두 랜딩페이지가 같은 웹 앱 URL을 공유하고, review-gift-landing.html은 요청에 form=reviewgift 를 추가로 보냅니다.)
 // 6. 구글폼(forms.gle)으로 직접 제출해도 확인 메일이 가도록 트리거를 한 번 등록해야 합니다:
 //    Apps Script 편집기 좌측 "트리거"(시계 아이콘) → 트리거 추가
 //    → 실행할 함수: onFormSubmit / 이벤트 소스: 스프레드시트에서 / 이벤트 유형: 양식 제출 시 → 저장
-//    (랜딩페이지 신청은 doGet이 처리하고, 구글폼 직접 제출은 이 트리거가 처리합니다 — 서로 겹치지 않습니다.)
+//    (랜딩페이지 신청은 doGet이 처리하고, 구글폼 직접 제출은 이 트리거가 처리합니다 — 서로 겹치지 않습니다.
+//     단, 이 트리거는 사진특강 시트 전용이며 후기 선물 시트의 폼 직접 제출까지는 커버하지 않습니다.)
 
 const ADMIN_EMAIL = 'elanvital7@naver.com';
 const SHEET_GID   = 12733408; // 신청서 응답 시트(설문지 응답 시트1)의 tab gid
 
+// ── 후기 감사 선물 랜딩페이지(review-gift-landing.html) 겸용 ──
+// 이 스크립트는 이미 배포되어 구글 인증이 통과된 프로젝트라, 후기 선물 신청도
+// 여기에 얹어서 처리합니다 (새 스크립트 프로젝트를 새로 배포하면 "차단된 앱" 인증
+// 문제를 다시 겪을 수 있어, 기존에 인증이 끝난 이 프로젝트를 재사용하는 방식입니다).
+// review-gift-landing.html은 요청에 form=reviewgift 를 함께 보내 이 분기를 탑니다.
+const REVIEWGIFT_SHEET_ID  = '1LQCmJX4Drdq2bBjo6fhaF_wr1vu_kJucN-e_ZSe6P6A'; // 혜택 선물 신청서(응답)
+const REVIEWGIFT_TAB_NAME  = '후기선물신청'; // 기존 시트(다른 캠페인 응답 뒤섞여 있음) 대신 이 전용 탭에 기록 — 없으면 자동 생성
+const GIFT_DRIVE_URL       = 'https://drive.google.com/drive/folders/1hm3zlJevuCMpOEGfOnZDH-w0I9wYqy8n?usp=sharing';
+const RECAP_URL            = 'https://www.smacedu.kr/photo-lecture-recap'; // gamma.site 직링크는 스팸 신호가 되어, smacedu.kr 리다이렉트 페이지를 거칩니다
+const RECRUIT_URL          = 'https://www.smacedu.kr/photo-artist-instructor';
+
 function doGet(e) {
+  const params0 = e.parameter || {};
+  if (params0.form === 'reviewgift') {
+    return _handleReviewGiftSubmit(params0);
+  }
+
   try {
     const params  = e.parameter || {};
     const name    = params.name  || '';
@@ -183,6 +202,160 @@ function _sendAdminDigest(sheet, total) {
   MailApp.sendEmail({
     to:       ADMIN_EMAIL,
     subject:  `[SMAC EDU 사진특강] 신청 누적 ${total}명 — 최근 ${batchSize}명 알림`,
+    htmlBody: html
+  });
+}
+
+// ════════════════════════════════════════════
+// 후기 감사 선물 랜딩페이지 처리 (review-gift-landing.html)
+// 이 스크립트는 사진특강 시트에 바인딩돼 있으므로, 후기 선물 시트는
+// openById로 별도로 열어서 기록합니다. 기존 "설문지 응답 시트1"은 다른
+// 캠페인 응답이 뒤섞여 있어, 이 전용 탭(REVIEWGIFT_TAB_NAME)에 따로 기록합니다.
+// ════════════════════════════════════════════
+function _getReviewGiftSheet(ss) {
+  let sheet = ss.getSheets().find(s => s.getName() === REVIEWGIFT_TAB_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(REVIEWGIFT_TAB_NAME);
+    sheet.appendRow(['타임스탬프', '이름', '전화번호', '이메일', '개인정보 동의']);
+    sheet.getRange(1, 1, 1, 5).setFontWeight('bold');
+  }
+  return sheet;
+}
+
+function _handleReviewGiftSubmit(params) {
+  try {
+    const name    = params.name  || '';
+    const email   = params.email || '';
+    const phone   = params.phone || '';
+    const consent = params.consent === 'Y' ? '동의함' : '';
+
+    const ss    = SpreadsheetApp.openById(REVIEWGIFT_SHEET_ID);
+    const sheet = _getReviewGiftSheet(ss);
+
+    const now       = new Date();
+    const timestamp = _formatKoreanTimestamp(now, Session.getScriptTimeZone());
+
+    sheet.appendRow([timestamp, name, phone, email, consent]);
+    const total = sheet.getLastRow() - 1;
+
+    // 후기 확인 절차 없이 신청 즉시 자료 발송
+    if (email) _sendGiftEmail(name, email);
+    if (total % 10 === 0) _sendReviewGiftAdminDigest(sheet, total);
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function _sendGiftEmail(name, email) {
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#172554;">
+  <div style="background:linear-gradient(135deg,#f97316,#fbbf24);padding:32px 28px;border-radius:12px 12px 0 0;text-align:center;">
+    <h1 style="color:#fff;margin:0;font-size:24px;font-weight:900;">소중한 후기 감사합니다 💛</h1>
+    <p style="color:rgba(255,255,255,0.9);margin:10px 0 0;font-size:15px;">약속드린 실전 자료 12종을 모두 보내드립니다</p>
+  </div>
+  <div style="background:#fff9ec;padding:28px;border:1px solid #fcd9a8;border-top:none;border-radius:0 0 12px 12px;">
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${name}</strong>님, 반갑습니다!</p>
+    <p style="margin:0 0 20px;color:#4b5563;line-height:1.7;">
+      바쁘신 와중에도 소중한 후기를 남겨주셔서 진심으로 감사합니다.<br>
+      그 마음에 보답하고자 사진·SNS·마케팅·AI 실전 자료 12가지를 아래 링크에서 바로 다운로드하실 수 있도록 준비했습니다.
+    </p>
+
+    <div style="text-align:center;margin-bottom:24px;">
+      <a href="${GIFT_DRIVE_URL}" style="display:inline-block;background:linear-gradient(135deg,#f97316,#fbbf24);color:#fff;text-decoration:none;font-size:15px;font-weight:800;padding:14px 34px;border-radius:999px;">🎁 선물 자료 12종 다운로드</a>
+    </div>
+
+    <div style="background:#fff;border:1px solid #fcd9a8;border-radius:10px;padding:20px 22px;margin-bottom:22px;">
+      <p style="margin:0 0 10px;font-size:13px;font-weight:800;color:#ea6b0c;">받으시는 자료 12가지</p>
+      <ol style="margin:0;padding-left:18px;font-size:13px;color:#374151;line-height:1.9;">
+        <li>엘란비탈 스마트폰 사진 용어집</li>
+        <li>미드저니 V6→V7 활용 꿀팁 가이드</li>
+        <li>네이버 블로그 상위노출 프리미엄 체크리스트</li>
+        <li>프로처럼 사진 잘 찍는 법</li>
+        <li>영상 하나로 알고리즘 타는 유튜브 전략</li>
+        <li>적은 예산으로 큰 효과를 내는 마케팅 전략</li>
+        <li>챗GPT로 돈 버는 현실적인 10가지 방법</li>
+        <li>초보자용 사진촬영 체크리스트</li>
+        <li>캔바 AI 활용법 — 기본기편</li>
+        <li>캔바 단축키 모음</li>
+        <li>퇴사 전에 반드시 준비해야 할 7가지</li>
+        <li>윈도우 필수 단축키 2026</li>
+      </ol>
+    </div>
+
+    <div style="background:#fff;border:1px solid #fcd9a8;border-radius:10px;padding:16px 18px;margin-bottom:22px;text-align:center;">
+      <p style="margin:0 0 10px;font-size:13px;font-weight:800;color:#ea6b0c;">🎁 보너스 선물 — 7월 1일(수) 스마트폰 사진특강 정리본</p>
+      <a href="${RECAP_URL}" style="display:inline-block;background:#fff;color:#ea6b0c;border:1px solid #fcd9a8;text-decoration:none;font-size:14px;font-weight:700;padding:10px 26px;border-radius:999px;">정리본 보기</a>
+    </div>
+
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:16px 18px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0 0 6px;font-size:14px;font-weight:700;color:#92400e;">🗓 7월 17일(금) 저녁 8시 — 지금 열려 있는 무료 특강</p>
+      <p style="margin:0 0 12px;font-size:13px;color:#7c2d12;">찍는 순간 작품이 되는 스마트폰 사진 — 촬영과 보정부터 AI 활용까지, ZOOM 온라인</p>
+      <a href="https://www.smacedu.kr/photo-lecture-landing#curriculum" style="display:inline-block;background:#fff;color:#92400e;border:1px solid #fde68a;text-decoration:none;font-size:14px;font-weight:700;padding:11px 28px;border-radius:999px;">특강 커리큘럼 보기</a>
+    </div>
+
+    <div style="background:linear-gradient(135deg,#172554,#1e3a8a);border-radius:10px;padding:20px 22px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0 0 8px;font-size:13px;font-weight:800;color:#fde68a;">🟧 사진작가 23기 &amp; 사진강사 11기 모집 중</p>
+      <p style="margin:0 0 14px;font-size:13px;color:rgba(255,255,255,0.85);">이 메일을 받으신 <strong style="color:#fde68a;">${name}</strong>님께는 등록 시 <strong style="color:#fde68a;">3만원 할인</strong> 혜택을 드립니다.</p>
+      <a href="${RECRUIT_URL}" style="display:inline-block;background:#fde68a;color:#172554;text-decoration:none;font-size:14px;font-weight:800;padding:11px 28px;border-radius:999px;">과정 자세히 보기</a>
+    </div>
+
+    <p style="margin:0;font-size:13px;color:#9ca3af;">
+      문의는 <a href="mailto:${ADMIN_EMAIL}" style="color:#f97316;">${ADMIN_EMAIL}</a>로 보내주세요.
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       email,
+    subject:  '[SMAC EDU] 소중한 후기 감사합니다 — 실전 자료 12종을 보내드려요 🎁',
+    htmlBody: html
+  });
+}
+
+function _sendReviewGiftAdminDigest(sheet, total) {
+  const sheetUrl   = `https://docs.google.com/spreadsheets/d/${REVIEWGIFT_SHEET_ID}/edit#gid=${sheet.getSheetId()}`;
+  const lastRow    = sheet.getLastRow();
+  const batchSize  = Math.min(10, lastRow - 1);
+  const startRow   = lastRow - batchSize + 1;
+  // 열 순서: 타임스탬프(1), 이름(2), 전화번호(3), 이메일(4), ...
+  const rows = sheet.getRange(startRow, 1, batchSize, 4).getValues();
+
+  const rowsHtml = rows.map(r => `
+    <tr>
+      <td style="padding:6px 10px;font-size:13px;color:#64748b;">${r[0]}</td>
+      <td style="padding:6px 10px;font-size:13px;"><strong>${r[1]}</strong></td>
+      <td style="padding:6px 10px;font-size:13px;">${r[3]}</td>
+      <td style="padding:6px 10px;font-size:13px;">${r[2] || '미입력'}</td>
+    </tr>`).join('');
+
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#172554;color:#fff;padding:18px 22px;margin:0;border-radius:8px 8px 0 0;">
+    🎁 후기 선물 신청 알림 (누적 ${total}명 — 최근 ${batchSize}명)
+  </h2>
+  <div style="background:#f8fafc;padding:22px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid #e2e8f0;border-radius:6px;">
+      <tr style="background:#f1f5f9;font-size:12px;color:#64748b;">
+        <th style="padding:8px 10px;text-align:left;">신청일시</th>
+        <th style="padding:8px 10px;text-align:left;">이름</th>
+        <th style="padding:8px 10px;text-align:left;">이메일</th>
+        <th style="padding:8px 10px;text-align:left;">연락처</th>
+      </tr>
+      ${rowsHtml}
+    </table>
+    <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
+      <a href="${sheetUrl}">스프레드시트에서 전체 목록 확인 →</a>
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       ADMIN_EMAIL,
+    subject:  `[SMAC EDU 후기선물] 신청 누적 ${total}명 — 최근 ${batchSize}명 알림`,
     htmlBody: html
   });
 }
