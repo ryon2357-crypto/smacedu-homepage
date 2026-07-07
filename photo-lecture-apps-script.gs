@@ -25,7 +25,7 @@ const SHEET_GID   = 12733408; // 신청서 응답 시트(설문지 응답 시트
 // review-gift-landing.html은 요청에 form=reviewgift 를 함께 보내 이 분기를 탑니다.
 const REVIEWGIFT_SHEET_ID  = '1LQCmJX4Drdq2bBjo6fhaF_wr1vu_kJucN-e_ZSe6P6A'; // 혜택 선물 신청서(응답)
 const REVIEWGIFT_TAB_NAME  = '후기선물신청'; // 기존 시트(다른 캠페인 응답 뒤섞여 있음) 대신 이 전용 탭에 기록 — 없으면 자동 생성
-const GIFT_DRIVE_URL       = 'https://drive.google.com/drive/folders/1hm3zlJevuCMpOEGfOnZDH-w0I9wYqy8n?usp=sharing';
+const GIFT_DRIVE_URL       = 'https://www.smacedu.kr/review-gift-download'; // drive.google.com 직링크는 스팸 신호가 되어, smacedu.kr 리다이렉트 페이지를 거칩니다
 const RECAP_URL            = 'https://www.smacedu.kr/photo-lecture-recap'; // gamma.site 직링크는 스팸 신호가 되어, smacedu.kr 리다이렉트 페이지를 거칩니다
 const RECRUIT_URL          = 'https://www.smacedu.kr/photo-artist-instructor';
 
@@ -311,7 +311,7 @@ function _sendGiftEmail(name, email) {
 
   MailApp.sendEmail({
     to:       email,
-    subject:  '[SMAC EDU] 소중한 후기 감사합니다 — 실전 자료 12종을 보내드려요 🎁',
+    subject:  '[SMAC EDU] 소중한 후기 감사합니다 — 실전 자료 12종을 보내드립니다',
     htmlBody: html
   });
 }
