@@ -226,6 +226,7 @@
     .form-msg {
       display: none; margin-top: 16px; padding: 14px 18px;
       border-radius: 10px; font-size: 14px; font-weight: 700; text-align: center;
+      white-space: pre-line;
     }
     .form-msg.success { background: #eefbf1; border: 1px solid #b9ecc7; color: #1e8a4a; }
     .form-msg.error   { background: #fef1f1; border: 1px solid #f4bcbc; color: #c23434; }
@@ -662,7 +663,7 @@
     try {
       const params = new URLSearchParams({ name, email, phone, consent: 'Y', form: 'reviewgift' });
       await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
-      showMsg('success', `${name}님, 신청이 완료됐습니다! 🎁\n확인 메일로 자료를 바로 보내드렸어요.`);
+      showMsg('success', `${name}님, 신청이 완료됐습니다! 🎁\n확인 메일로 자료를 바로 보내드렸어요.\n메일이 안 보이면 스팸함도 확인해 주세요.`);
       btn.textContent = '✓ 신청 완료';
     } catch {
       showMsg('error', '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
