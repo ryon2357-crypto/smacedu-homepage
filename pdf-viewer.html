@@ -21,7 +21,7 @@ body{
   -webkit-tap-highlight-color:transparent; touch-action:manipulation;
 }
 button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
-@media (prefers-reduced-motion: reduce){ .flip-leaf,#progressFill{transition:none !important;} }
+@media (prefers-reduced-motion: reduce){ #progressFill{transition:none !important;} }
 #app{position:fixed;inset:0;display:flex;flex-direction:column;}
 
 /* ---------- top bar ---------- */
@@ -59,25 +59,31 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
 .tapzone{position:absolute;top:0;bottom:0;width:15%;z-index:5;cursor:pointer;}
 .tapzone.left{left:0;} .tapzone.right{right:0;}
 
-#flipStage{position:absolute;inset:0;z-index:25;pointer-events:none;display:none;perspective:2000px;}
-#flipStage.active{display:block;}
-.flip-leaf{position:absolute;inset:0;transform-style:preserve-3d;}
-.flip-leaf .face{position:absolute;inset:0;overflow:hidden;backface-visibility:hidden;background:var(--paper);box-shadow:0 0 40px rgba(0,0,0,.25);display:flex;}
-.flip-leaf .face.back{transform:rotateY(180deg);}
-.flip-leaf .fold-shadow{position:absolute;inset:0;opacity:0;pointer-events:none;}
-.flip-leaf.dir-next .fold-shadow{background:linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(255,255,255,.22) 46%, rgba(0,0,0,.42) 62%, rgba(0,0,0,0) 100%);}
-.flip-leaf.dir-prev .fold-shadow{background:linear-gradient(to left, rgba(0,0,0,0) 0%, rgba(255,255,255,.22) 46%, rgba(0,0,0,.42) 62%, rgba(0,0,0,0) 100%);}
-@keyframes foldShadow{0%{opacity:0;}45%{opacity:1;}55%{opacity:1;}100%{opacity:0;}}
-@keyframes flipNext{
-  0%{transform:rotateY(0deg);}
-  100%{transform:rotateY(-180deg);}
+.corner-peel{position:absolute;bottom:0;width:56px;height:56px;z-index:26;pointer-events:none;perspective:280px;opacity:0;}
+.corner-peel.corner-right{right:0;}
+.corner-peel.corner-left{left:0;}
+.corner-face{position:absolute;inset:0;backface-visibility:hidden;}
+.corner-right .corner-face{clip-path:polygon(100% 100%, 0% 100%, 100% 0%);transform-origin:100% 100%;}
+.corner-left .corner-face{clip-path:polygon(0% 100%, 100% 100%, 0% 0%);transform-origin:0% 100%;}
+.corner-front{background:linear-gradient(135deg, rgba(0,0,0,.02), rgba(0,0,0,.18) 75%);}
+.corner-back{background:linear-gradient(315deg, #fdfbf7, #d8d2c2);transform:rotateY(180deg);}
+html.dark .corner-back{background:linear-gradient(315deg, #232838, #0d0f18);}
+@keyframes peelRight{
+  0%{opacity:0;transform:rotateY(0deg);}
+  12%{opacity:1;}
+  50%{transform:rotateY(-150deg);}
+  88%{opacity:1;}
+  100%{opacity:0;transform:rotateY(-170deg);}
 }
-@keyframes flipPrev{
-  0%{transform:rotateY(0deg);}
-  100%{transform:rotateY(180deg);}
+@keyframes peelLeft{
+  0%{opacity:0;transform:rotateY(0deg);}
+  12%{opacity:1;}
+  50%{transform:rotateY(150deg);}
+  88%{opacity:1;}
+  100%{opacity:0;transform:rotateY(170deg);}
 }
-.flip-leaf.dir-next.turning{animation:flipNext .62s cubic-bezier(.4,.05,.2,1) forwards;}
-.flip-leaf.dir-prev.turning{animation:flipPrev .62s cubic-bezier(.4,.05,.2,1) forwards;}
+.corner-right.playing{animation:peelRight .5s ease-in-out;}
+.corner-left.playing{animation:peelLeft .5s ease-in-out;}
 
 /* ---------- empty / drop zone ---------- */
 #dropZone{
@@ -176,7 +182,8 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
     <div class="tapzone left" id="tapLeft"></div>
     <div class="tapzone right" id="tapRight"></div>
     <div id="stage" class="pages-row"></div>
-    <div id="flipStage"></div>
+    <div id="cornerNext" class="corner-peel corner-right"><div class="corner-face corner-front"></div><div class="corner-face corner-back"></div></div>
+    <div id="cornerPrev" class="corner-peel corner-left"><div class="corner-face corner-front"></div><div class="corner-face corner-back"></div></div>
     <div id="loadingOverlay"><div class="spinner"></div></div>
 
     <div id="dropZone">
@@ -280,7 +287,14 @@ window.SOUND_LIBRARY = {
 
   var STORE_KEY = 'pdf_flipbook_v1';
   var stageEl = document.getElementById('stage');
-  var flipStageEl = document.getElementById('flipStage');
+  var cornerNextEl = document.getElementById('cornerNext');
+  var cornerPrevEl = document.getElementById('cornerPrev');
+  function playCornerPeel(direction){
+    var el = direction === 'next' ? cornerNextEl : cornerPrevEl;
+    el.classList.remove('playing');
+    void el.offsetWidth;
+    el.classList.add('playing');
+  }
   var dropZone = document.getElementById('dropZone');
   var loadingOverlay = document.getElementById('loadingOverlay');
   var titleEl = document.querySelector('#topbar .title');
@@ -431,26 +445,6 @@ window.SOUND_LIBRARY = {
   });
 
   /* ---------- 캔버스 스냅샷 (플립 애니메이션용) ---------- */
-  function snapshotStageNode(){
-    var wrap = document.createElement('div');
-    wrap.className = 'pages-row' + (stageEl.classList.contains('two') ? ' two' : '');
-    Array.prototype.forEach.call(stageEl.children, function(pageDiv){
-      var pClone = document.createElement('div');
-      pClone.className = pageDiv.className;
-      var srcCanvas = pageDiv.querySelector('canvas');
-      if(srcCanvas){
-        var c = document.createElement('canvas');
-        c.width = srcCanvas.width; c.height = srcCanvas.height;
-        c.style.width = srcCanvas.style.width; c.style.height = srcCanvas.style.height;
-        c.style.boxShadow = '0 3px 20px rgba(0,0,0,.22)'; c.style.borderRadius='2px'; c.style.background='#fff';
-        c.getContext('2d').drawImage(srcCanvas, 0, 0);
-        pClone.appendChild(c);
-      }
-      wrap.appendChild(pClone);
-    });
-    return wrap;
-  }
-
   /* ---------- 효과음 (실제 음원, data URI 내장) ---------- */
   var soundMuted = localStorage.getItem(STORE_KEY + '_muted') === '1';
   var soundKey = localStorage.getItem(STORE_KEY + '_soundKey') || 'oxid';
@@ -502,37 +496,11 @@ window.SOUND_LIBRARY = {
     if(isFlipping || !pdfDoc) return;
     isFlipping = true;
     playFlipSound();
-
-    var frontNode = snapshotStageNode();
+    playCornerPeel(direction);
     mutateIdx();
     await renderStagePromise();
     updateChrome();
-    var backNode = snapshotStageNode();
-
-    var leaf = document.createElement('div');
-    leaf.className = 'flip-leaf dir-' + direction;
-    var front = document.createElement('div'); front.className = 'face front'; front.appendChild(frontNode);
-    var back = document.createElement('div'); back.className = 'face back'; back.appendChild(backNode);
-    var shadow = document.createElement('div'); shadow.className = 'fold-shadow';
-    leaf.appendChild(front); leaf.appendChild(back); leaf.appendChild(shadow);
-    flipStageEl.innerHTML = ''; flipStageEl.appendChild(leaf); flipStageEl.classList.add('active');
-
-    var origin = direction === 'next' ? '0% 50%' : '100% 50%';
-    leaf.style.transformOrigin = origin;
-    back.style.transform = direction === 'next' ? 'rotateY(180deg)' : 'rotateY(-180deg)';
-
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        leaf.classList.add('turning');
-        shadow.style.animation = 'foldShadow .62s ease';
-      });
-    });
-
-    setTimeout(function(){
-      flipStageEl.classList.remove('active');
-      flipStageEl.innerHTML = '';
-      isFlipping = false;
-    }, 660);
+    isFlipping = false;
   }
 
   window.goTo = function(oneBasedIdx){
