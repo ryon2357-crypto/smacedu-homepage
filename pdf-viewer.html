@@ -40,7 +40,10 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
 #topbar .spacer{flex:1 1 auto;}
 
 /* ---------- reader (StPageFlip) ---------- */
-#reader{flex:1 1 auto;position:relative;overflow:hidden;background:var(--paper-2);display:flex;align-items:center;justify-content:center;}
+#reader{flex:1 1 auto;position:relative;overflow:auto;background:var(--paper-2);display:flex;align-items:center;justify-content:center;}
+#zoomCtrl{display:flex;align-items:center;gap:2px;background:rgba(255,255,255,0.08);border-radius:9px;padding:2px;}
+#zoomCtrl button{width:28px;height:28px;font-size:15px;background:transparent;border-radius:7px;}
+#zoomCtrl button:hover{background:rgba(255,255,255,0.18);}
 #book{}
 .pf-page{background:var(--paper);overflow:hidden;display:flex;align-items:center;justify-content:center;}
 .pf-page canvas{max-width:100%;max-height:100%;display:block;}
@@ -120,6 +123,10 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
     <div class="title">엘란비탈 PDF 플립북 뷰어</div>
     <div class="spacer"></div>
     <button id="openBtn2" title="다른 PDF 열기">📂</button>
+    <div id="zoomCtrl">
+      <button id="zoomOut" title="축소">−</button>
+      <button id="zoomIn" title="확대">+</button>
+    </div>
     <button id="soundBtn" title="효과음 설정">🔊</button>
     <button id="darkBtn" title="다크모드">🌙</button>
   </div>
@@ -255,20 +262,25 @@ window.SOUND_LIBRARY = {
 
   function computeBounds(){
     var r = readerEl.getBoundingClientRect();
-    var availH = Math.max(300, r.height - 24);
-    var availW = Math.max(280, r.width - 24);
-    var maxH = availH;
-    var maxW = Math.min(availW, maxH * BASE_RATIO);
+    var fitH = Math.max(300, r.height - 24);
+    var fitW = Math.min(Math.max(280, r.width - 24), fitH * BASE_RATIO);
+    var z = (typeof zoomFactor === 'number') ? zoomFactor : 1;
+    var maxH = fitH * z;
+    var maxW = fitW * z;
     return { minWidth: 240, maxWidth: maxW, minHeight: 320, maxHeight: maxH };
   }
 
-  /* ---------- 모든 페이지를 캔버스로 미리 렌더링 ---------- */
+  /* ---------- 모든 페이지를 캔버스로 미리 렌더링 (확대 여유분 포함) ---------- */
+  var allPageDivs = [];
+  var zoomFactor = 1;
+  var ZOOM_HEADROOM = 1.6;
+
   async function renderAllPages(){
     var bounds = computeBounds();
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var firstPage = await pdfDoc.getPage(1);
     var vp1 = firstPage.getViewport({scale: 1});
-    var scale = Math.max(0.2, (bounds.maxHeight * dpr) / vp1.height);
+    var scale = Math.max(0.2, (bounds.maxHeight * dpr * ZOOM_HEADROOM) / vp1.height);
 
     var divs = [];
     for(var i = 1; i <= numPages; i++){
@@ -288,12 +300,27 @@ window.SOUND_LIBRARY = {
     return divs;
   }
 
-  async function buildBook(){
-    var divs = await renderAllPages();
-    bookEl.innerHTML = '';
-    divs.forEach(function(d){ bookEl.appendChild(d); });
+  function cloneAllPageDivs(){
+    return allPageDivs.map(function(d){
+      var newDiv = document.createElement('div');
+      newDiv.className = 'pf-page';
+      newDiv.dataset.density = d.dataset.density;
+      var oldCanvas = d.querySelector('canvas');
+      var newCanvas = document.createElement('canvas');
+      newCanvas.width = oldCanvas.width;
+      newCanvas.height = oldCanvas.height;
+      newCanvas.getContext('2d').drawImage(oldCanvas, 0, 0);
+      newDiv.appendChild(newCanvas);
+      return newDiv;
+    });
+  }
 
+  function mountPageFlip(startPage){
+    if(!bookEl.isConnected) readerEl.appendChild(bookEl);
     var bounds = computeBounds();
+    var freshDivs = cloneAllPageDivs();
+    bookEl.innerHTML = '';
+    freshDivs.forEach(function(d){ bookEl.appendChild(d); });
     pageFlip = new St.PageFlip(bookEl, {
       width: 520,
       height: 720,
@@ -306,12 +333,29 @@ window.SOUND_LIBRARY = {
       usePortrait: true,
       maxShadowOpacity: 0.5,
       flippingTime: 700,
+      startPage: startPage || 0,
       mobileScrollSupport: true
     });
     pageFlip.loadFromHTML(document.querySelectorAll('#book > .pf-page'));
-    pageFlip.on('flip', function(){ playFlipSound(); updateChrome(); });
-    pageFlip.on('init', function(){ updateChrome(); });
+    pageFlip.on('changeState', function(e){ if(e.data === 'flipping') playFlipSound(); });
+    pageFlip.on('flip', function(){ updateChrome(); });
   }
+
+  async function buildBook(){
+    allPageDivs = await renderAllPages();
+    mountPageFlip(0);
+  }
+
+  function applyZoom(newFactor){
+    if(!pdfDoc || !pageFlip) return;
+    zoomFactor = Math.max(0.6, Math.min(ZOOM_HEADROOM, newFactor));
+    var curIdx = pageFlip.getCurrentPageIndex();
+    try{ pageFlip.destroy(); }catch(e){}
+    mountPageFlip(curIdx);
+    updateChrome();
+  }
+  document.getElementById('zoomIn').addEventListener('click', function(){ applyZoom(zoomFactor + 0.15); });
+  document.getElementById('zoomOut').addEventListener('click', function(){ applyZoom(zoomFactor - 0.15); });
 
   function updateChrome(){
     if(!pageFlip){
