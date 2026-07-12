@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기획 없이 찍지 마세요 | SMAC EDU</title>
+<meta name="description" content="영상 제작보다 먼저 와야 할 채널 기획. 8단계 기획 프레임워크와 제작 10단계가 어떻게 이어지는지 배웁니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F1E6; --ink:#1B1815; --red:#E62117; --red-dark:#B71C12;
+    --amber:#C89B3C; --reel:#211E1B; --muted:#8A8375; --card:#FFFEFA;
+    --line:#E1DACB;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'Noto Sans KR',sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 24px;}
+  a{color:inherit;}
+  img,svg{display:block;}
+
+  /* ── 필름스트립 밴드 (시그니처) ── */
+  .reel-band{height:22px; background:var(--reel);
+    background-image:
+      radial-gradient(circle, var(--paper) 3.5px, transparent 3.6px),
+      radial-gradient(circle, var(--paper) 3.5px, transparent 3.6px);
+    background-size:34px 22px; background-position:8px 50%, 25px 50%;
+    background-repeat:repeat-x;}
+
+  /* ── 히어로 ── */
+  .hero{padding:64px 0 52px; text-align:center;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; letter-spacing:.24em; color:var(--red); text-transform:uppercase;}
+  .hero h1{font-family:'Gowun Batang',serif; font-weight:700; font-size:clamp(30px,5.4vw,54px); line-height:1.32; margin:16px auto 18px; max-width:760px;}
+  .hero h1 em{font-style:normal; color:var(--red); position:relative; white-space:nowrap;}
+  .hero-sub{font-size:16px; line-height:1.85; color:#48423A; max-width:520px; margin:0 auto;}
+  .hero-line{display:block; opacity:0; transform:translateY(16px); animation:riseIn .7s cubic-bezier(.2,.8,.2,1) forwards;}
+  .hero-line:nth-child(2){animation-delay:.12s;}
+  @keyframes riseIn{to{opacity:1; transform:translateY(0);}}
+
+  section{padding:64px 0;}
+  .section-head{max-width:620px; margin:0 auto 40px; text-align:center;}
+  .section-head h2{font-family:'Gowun Batang',serif; font-weight:700; font-size:clamp(23px,3.4vw,32px); line-height:1.4; margin:10px 0 12px;}
+  .section-head p{font-size:14.5px; line-height:1.85; color:#5B5548;}
+
+  /* ── HOOK: before / after ── */
+  .hook{background:var(--card); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .path-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px; max-width:780px; margin:0 auto;}
+  .path-card{border-radius:4px; padding:26px 24px 24px; position:relative; reveal;}
+  .path-card.bad{background:#F4EFE6; border:1.5px dashed #C7BEA9;}
+  .path-card.good{background:#1B1815; color:#F5F1E6; box-shadow:0 10px 28px rgba(27,24,21,.18);}
+  .path-tag{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; letter-spacing:.14em;}
+  .path-card.bad .path-tag{color:var(--muted);}
+  .path-card.good .path-tag{color:var(--amber);}
+  .path-title{font-family:'Gowun Batang',serif; font-size:19px; font-weight:700; margin:10px 0 12px; line-height:1.5;}
+  .path-list{list-style:none; margin:0; padding:0; font-size:13.5px; line-height:2; }
+  .path-card.bad .path-list li{color:#6B6558;}
+  .path-card.good .path-list li{color:#DAD5C8;}
+  .path-list li::before{content:"·"; margin-right:8px; opacity:.6;}
+  .path-vs{display:flex; align-items:center; justify-content:center; font-family:'Gowun Batang',serif; font-size:13px; color:var(--muted); margin:16px 0 0;}
+
+  /* ── STORYBOARD 8 steps ── */
+  .board-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px 16px; margin-top:8px;}
+  .frame{background:var(--card); border:1px solid var(--line); border-radius:3px; padding:16px 16px 18px; position:relative;
+    opacity:0; transform:translateY(18px); transition:opacity .55s ease, transform .55s ease;}
+  .frame.in{opacity:1; transform:translateY(0);}
+  .frame::before, .frame::after{content:""; position:absolute; left:0; right:0; height:8px;
+    background-image: radial-gradient(circle, var(--paper) 2.2px, transparent 2.3px);
+    background-size:14px 8px; background-position:4px 50%; background-repeat:repeat-x;}
+  .frame::before{top:0;} .frame::after{bottom:0;}
+  .frame-inner{padding-top:10px;}
+  .cut-tag{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; color:var(--amber); letter-spacing:.08em;}
+  .frame-mark{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); float:right;}
+  .frame-title{font-family:'Gowun Batang',serif; font-weight:700; font-size:15.5px; margin:8px 0 8px; line-height:1.45;}
+  .frame-body{font-size:12.5px; line-height:1.75; color:#5B5548;}
+  .frame-warn{margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); font-size:11.5px; line-height:1.6; color:var(--red-dark);}
+  .frame-warn b{font-weight:700;}
+
+  /* ── PIPELINE ── */
+  .pipeline{background:var(--reel); color:#F5F1E6;}
+  .pipeline .section-head p{color:#C9C3B4;}
+  .pipeline .section-head h2{color:#fff;}
+  .pipeline .eyebrow{color:var(--amber);}
+  .track-wrap{max-width:900px; margin:0 auto;}
+  .track-row{display:flex; align-items:center; gap:0; margin-bottom:14px;}
+  .track-label{width:96px; flex:none; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--amber); letter-spacing:.08em;}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; flex:1;}
+  .chip{font-size:12.5px; padding:8px 13px; border-radius:99px; background:rgba(245,241,230,.08); border:1px solid rgba(245,241,230,.18); white-space:nowrap;}
+  .chip.plan{background:rgba(230,33,23,.16); border-color:rgba(230,33,23,.4); color:#FFDAD6;}
+  .chip.make{background:rgba(200,155,60,.14); border-color:rgba(200,155,60,.36); color:#F0DCA8;}
+  .track-arrow{text-align:center; font-family:'Gowun Batang',serif; font-size:13px; color:#8A8375; margin:6px 0 14px;}
+  .pipeline-note{max-width:640px; margin:28px auto 0; text-align:center; font-size:13.5px; line-height:1.9; color:#C9C3B4;}
+  .pipeline-note b{color:#fff;}
+
+  /* ── CTA ── */
+  .cta{text-align:center;}
+  .cta-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:26px;}
+  .btn{display:inline-flex; align-items:center; gap:8px; border:none; cursor:pointer; text-decoration:none; font-family:'Noto Sans KR'; font-weight:700; font-size:14.5px; border-radius:8px; padding:14px 26px; transition:transform .12s, background .15s;}
+  .btn:active{transform:scale(.97);}
+  .btn.primary{background:var(--red); color:#fff; box-shadow:0 4px 14px rgba(230,33,23,.28);}
+  .btn.primary:hover{background:var(--red-dark);}
+  .btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--line);}
+  .btn.ghost:hover{border-color:var(--ink);}
+
+  footer{padding:30px 0 44px; text-align:center; font-size:12px; color:var(--muted);}
+  footer a{color:var(--red); font-weight:700; text-decoration:none;}
+
+  @media (max-width:860px){
+    .board-grid{grid-template-columns:repeat(2,1fr);}
+    .path-grid{grid-template-columns:1fr;}
+    .path-vs{position:static; margin:4px 0;}
+  }
+  @media (max-width:520px){
+    .board-grid{grid-template-columns:1fr;}
+    .track-row{flex-direction:column; align-items:flex-start; gap:8px;}
+    .track-label{width:auto;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .hero-line, .frame{animation:none !important; opacity:1 !important; transform:none !important; transition:none !important;}
+  }
+  :focus-visible{outline:3px solid rgba(230,33,23,.45); outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div class="reel-band" aria-hidden="true"></div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">SMAC EDU · 기획편</span>
+    <h1>
+      <span class="hero-line">생성 버튼을 누르기 전에,</span>
+      <span class="hero-line">먼저 <em>시놉시스</em>를 쓰세요.</span>
+    </h1>
+    <p class="hero-sub">스토리보드 짜는 법, AI로 이미지·영상 생성하는 법, 편집법은 이미 배웠습니다. 그런데 왜 어떤 채널은 3개월을 못 버틸까요? 문제는 손이 아니라 순서였습니다.</p>
+  </div>
+</header>
+
+<div class="reel-band" aria-hidden="true"></div>
+
+<!-- HOOK: before / after -->
+<section class="hook">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">SCENE 00 · 흔한 시작</span>
+      <h2>이런 경험, 있으신가요?</h2>
+      <p>많은 분들이 "일단 만들어보자"로 시작합니다. 실행력은 좋지만, 그다음이 문제입니다.</p>
+    </div>
+    <div class="path-grid">
+      <div class="path-card bad">
+        <span class="path-tag mono">TAKE 1 — 기획 없이 시작</span>
+        <div class="path-title">주제부터 정하고 바로 생성 버튼</div>
+        <ul class="path-list">
+          <li>1편, 2편은 반응이 있음</li>
+          <li>3편부터 "오늘 뭐 찍지" 고민 시작</li>
+          <li>업로드 주기가 들쭉날쭉해짐</li>
+          <li>누구를 위한 채널인지 스스로도 헷갈림</li>
+        </ul>
+      </div>
+      <div class="path-card good">
+        <span class="path-tag mono">TAKE 2 — 기획부터 시작</span>
+        <div class="path-title">채널의 뼈대를 먼저 세움</div>
+        <ul class="path-list">
+          <li>정해진 주제 축(필러) 안에서만 고민</li>
+          <li>아이디어가 떨어지지 않음</li>
+          <li>시청자가 다음 편을 기다림</li>
+          <li>1년 뒤에도 같은 방향으로 가고 있음</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORYBOARD: 8 steps -->
+<section id="storyboard">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">STORYBOARD · 8 CUTS</span>
+      <h2>채널을 지탱하는 8개의 컷</h2>
+      <p>영상 한 편의 스토리보드를 짜듯, 채널에도 스토리보드가 필요합니다. 순서대로 채워야 다음 컷이 자연스럽게 이어집니다.</p>
+    </div>
+
+    <div class="board-grid" id="boardGrid">
+
+      <div class="frame"><div class="frame-inner">
+        <span class="cut-tag">CUT 01</span><span class="frame-mark mono">WHY</span>
+        <div class="frame-title">존재 이유</div>
+        <div class="frame-body">이 채널이 사라지면 아쉬워할 사람이 있어야 합니다. "무엇을 알려주는가"가 아니라 "누구의 어떤 문제를 푸는가"로 정의하세요.</div>
+        <div class="frame-warn"><b>생략하면</b> 주제가 산으로 갑니다.</div>
+      </div></div>
+
+      <div class="frame"><div class="frame-inner">
+        <span class="cut-tag">CUT 02</span><span class="frame-mark mono">WHO</span>
+        <div class="frame-title">시청자 페르소나</div>
+        <div class="frame-body">전 국민이 아니라 단 한 명을 그리세요. 나이, 상황, 지금 겪는 어려움까지 구체적일수록 콘텐츠 방향이 흔들리지 않습니다.</div>
+        <div class="frame-warn"><b>생략하면</b> 말투와 난이도가 매번 바뀝니다.</div>
+      </div></div>
+
+      <div class="frame"><div class="frame-inner">
+        <span class="cut-tag">CUT 03</span><span class="frame-mark mono">EDGE</span>
+        <div class="frame-title">포지셔닝</div>
+        <div class="frame-body">비슷한 채널이 안 하는 것, 못 하는 것을 찾아 나만의 각도를 한 문장으로 정의하세요. 이 문장이 제목과 썸네일의 기준이 됩니다.</div>
+        <div class="frame-warn"><b>생략하면</b> "그냥 그런 채널 중 하나"가 됩니다.</div>
+      </div></div>
+
+      <div class="frame"><div class="frame-inner">
+        <span class="cut-tag">CUT 04</span><span class="frame-mark mono">PILLAR</span>
+        <div class="frame-title">콘텐츠 필러</div>
+        <div class="frame-body">채널을 지탱할 3~5개의 반복 가능한 주제 축을 세우세요. 필러가 있으면 "오늘 뭐 찍지" 고민이 사라집니다.</div>
+        <div class="frame-warn"><b>생략하면</b> 소재가 금방 바닥납니다.</div>
+      </div></div>
+
+      <div class="frame"><div class="frame-inner">
+        <span class="cut-tag">CUT 05</span><span class="frame-mark mono">FORMAT</span>
+        <div class="frame-title">고정 포맷</div>
+        <div class="frame-body">훅 → 문제 제기 → 해결 → 결과 → CTA 같은 고정 구조와 시리즈명을 정하세요. 매번 새로 기획하지 않아도 됩니다.</div>
+        <div class="frame-warn"><b>생략하면</b> 편집 시간이 매번 2배로 늘어납니다.</div>
+      </div></div>
+
+      <div class="frame"><div class="frame-inner">
+        <span class="cut-tag">CUT 06</span><span class="frame-mark mono">RHYTHM</span>
+        <div class="frame-title">업로드 주기</div>
+        <div class="frame-body">의욕적인 "주 3회"보다 확실히 지키는 "주 1회"가 오래갑니다. 배치 제작으로 번아웃을 피하세요.</div>
+        <div class="frame-warn"><b>생략하면</b> 두 달 만에 업로드가 멈춥니다.</div>
+      </div></div>
+
+      <div class="frame"><div class="frame-inner">
+        <span class="cut-tag">CUT 07</span><span class="frame-mark mono">FANS</span>
+        <div class="frame-title">시청자 관계</div>
+        <div class="frame-body">댓글 유도 질문, 커뮤니티 소통으로 "구독"이 아니라 "관계"를 만드세요. 초반엔 조회수보다 찐팬 100명이 더 강합니다.</div>
+        <div class="frame-warn"><b>생략하면</b> 채널이 일방적인 방송이 됩니다.</div>
+      </div></div>
+
+      <div class="frame"><div class="frame-inner">
+        <span class="cut-tag">CUT 08</span><span class="frame-mark mono">LOOP</span>
+        <div class="frame-title">피드백 루프</div>
+        <div class="frame-body">초기엔 조회수보다 시청 지속률과 반응을 관찰하세요. 가설 → 실행 → 관찰 → 조정을 반복하는 채널만 살아남습니다.</div>
+        <div class="frame-warn"><b>생략하면</b> 안 되는 걸 계속 반복하게 됩니다.</div>
+      </div></div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE: 8 planning -> 10 production -->
+<section class="pipeline">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">FULL REEL</span>
+      <h2>지금까지 배운 제작법은, 사실 두 번째 단계였습니다</h2>
+      <p>스토리보드 그리는 법, AI로 이미지·영상 만드는 법 — 이미 배우셨죠. 그건 아래 파이프라인의 <b>뒷부분</b>이었습니다. 이제 앞부분이 채워졌습니다.</p>
+    </div>
+
+    <div class="track-wrap">
+      <div class="track-row">
+        <span class="track-label mono">PLAN · 8</span>
+        <div class="chips">
+          <span class="chip plan">01 존재이유</span>
+          <span class="chip plan">02 페르소나</span>
+          <span class="chip plan">03 포지셔닝</span>
+          <span class="chip plan">04 필러</span>
+          <span class="chip plan">05 포맷</span>
+          <span class="chip plan">06 업로드주기</span>
+          <span class="chip plan">07 시청자관계</span>
+          <span class="chip plan">08 피드백루프</span>
+        </div>
+      </div>
+      <div class="track-arrow">↓ 채널의 뼈대가 서면, 그다음 영상 한 편을 만듭니다 ↓</div>
+      <div class="track-row">
+        <span class="track-label mono">MAKE · 10</span>
+        <div class="chips">
+          <span class="chip make">주제·시놉시스</span>
+          <span class="chip make">스토리보드</span>
+          <span class="chip make">이미지 생성</span>
+          <span class="chip make">이미지별 프롬프트</span>
+          <span class="chip make">AI 영상 생성</span>
+          <span class="chip make">영상 편집</span>
+          <span class="chip make">BGM(수노)</span>
+          <span class="chip make">자막</span>
+          <span class="chip make">장면전환</span>
+          <span class="chip make">내레이션</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="pipeline-note">즉 <b>PLAN 8단계</b>는 채널 전체의 방향을, <b>MAKE 10단계</b>는 영상 한 편의 완성을 담당합니다. 순서를 바꾸면 잘 만든 영상 한 편은 남지만, 오래가는 채널은 남지 않습니다.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:0;">
+      <span class="eyebrow">NEXT CUT</span>
+      <h2>이제 직접 8컷을 채워볼 차례입니다</h2>
+      <p>인터랙티브 워크북에서 8단계 질문에 답하면, 나만의 채널 기획서가 완성됩니다.</p>
+    </div>
+    <div class="cta-actions">
+      <a class="btn primary" href="./youtube-planner.html">기획 워크북 시작하기 →</a>
+      <a class="btn ghost" href="https://smacedu.kr/photo-artist-instructor" target="_blank" rel="noopener">사진강사 양성과정 보기</a>
+    </div>
+  </div>
+</section>
+
+<div class="reel-band" aria-hidden="true"></div>
+<footer>© SMAC EDU · <a href="https://smacedu.kr" target="_blank" rel="noopener">smacedu.kr</a></footer>
+
+<script>
+  // 스토리보드 카드 스크롤 리빌
+  const frames = document.querySelectorAll('.frame');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach((e,i)=>{
+        if (e.isIntersecting){
+          setTimeout(()=> e.target.classList.add('in'), i%4 * 60);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold:.15 });
+    frames.forEach(f=>io.observe(f));
+  } else {
+    frames.forEach(f=>f.classList.add('in'));
+  }
+</script>
+</body>
+</html>
