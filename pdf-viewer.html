@@ -40,7 +40,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
 #topbar .spacer{flex:1 1 auto;}
 
 /* ---------- reader (StPageFlip) ---------- */
-#reader{flex:1 1 auto;position:relative;overflow:auto;background:var(--paper-2);display:flex;align-items:center;justify-content:center;}
+#reader{flex:1 1 auto;position:relative;overflow:auto;background:var(--paper-2);display:flex;align-items:safe center;justify-content:safe center;}
 #zoomCtrl{display:flex;align-items:center;gap:2px;background:rgba(255,255,255,0.08);border-radius:9px;padding:2px;}
 #zoomCtrl button{width:28px;height:28px;font-size:15px;background:transparent;border-radius:7px;}
 #zoomCtrl button:hover{background:rgba(255,255,255,0.18);}
@@ -406,15 +406,22 @@ window.SOUND_LIBRARY = {
     });
     soundListEl.appendChild(row);
   });
-  function makeAudio(key){
+  var audioPool = {};
+  function getAudio(key){
     var lib = window.SOUND_LIBRARY && window.SOUND_LIBRARY[key];
     if(!lib) return null;
-    var el = new Audio('data:' + lib.mime + ';base64,' + lib.data);
-    el.volume = (lib.vol !== undefined) ? lib.vol : 0.65;
+    var el = audioPool[key];
+    if(!el){
+      el = new Audio('data:' + lib.mime + ';base64,' + lib.data);
+      el.volume = (lib.vol !== undefined) ? lib.vol : 0.65;
+      el.preload = 'auto';
+      audioPool[key] = el;
+    }
     return el;
   }
-  function previewSound(key){ var el = makeAudio(key); if(el) el.play().catch(function(){}); }
-  function playFlipSound(){ if(soundMuted) return; var el = makeAudio(soundKey); if(el) el.play().catch(function(){}); }
+  function previewSound(key){ var el = getAudio(key); if(el){ el.currentTime = 0; el.play().catch(function(){}); } }
+  function playFlipSound(){ if(soundMuted) return; var el = getAudio(soundKey); if(el){ el.currentTime = 0; el.play().catch(function(){}); } }
+  getAudio(soundKey);
 
   soundBtn.addEventListener('click', function(e){ e.stopPropagation(); soundPanel.classList.toggle('open'); });
   soundPanel.addEventListener('click', function(e){ e.stopPropagation(); });
