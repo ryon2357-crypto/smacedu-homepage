@@ -1,5 +1,6 @@
 // 스마트폰 사진특강 랜딩페이지 전용 신청 처리 스크립트
-// (이미 배포·인증이 끝난 프로젝트라, 후기 감사 선물 랜딩페이지 신청도 함께 처리합니다 — 아래 참고)
+// (이미 배포·인증이 끝난 프로젝트라, 후기 감사 선물 랜딩페이지 + 유튜브 기획 워크북(수강생용/리드마그넷)
+// 제출 기록도 함께 처리합니다 — 아래 참고)
 //
 // 사용 방법:
 // 1. 이 스프레드시트를 엽니다:
@@ -8,7 +9,9 @@
 // 3. 기본 코드를 지우고 이 파일 내용 전체를 붙여넣습니다.
 // 4. 배포 → 배포 관리 → 기존 배포 옆 ✏️ → 새 버전으로 배포 (이미 인증된 배포를 재사용하므로 "차단된 앱" 문제가 없습니다).
 // 5. 배포 후 나온 웹 앱 URL을 photo-lecture-landing.html과 review-gift-landing.html의 SCRIPT_URL에 붙여넣습니다.
-//    (두 랜딩페이지가 같은 웹 앱 URL을 공유하고, review-gift-landing.html은 요청에 form=reviewgift 를 추가로 보냅니다.)
+//    (여러 랜딩페이지가 같은 웹 앱 URL을 공유하고, 요청에 form 파라미터로 분기합니다:
+//     review-gift-landing.html → form=reviewgift, youtube-planner-수강생용.html → form=ytplanner,
+//     youtube-planner.html(리드마그넷 워크북) → form=ytworkbook.)
 // 6. 구글폼(forms.gle)으로 직접 제출해도 확인 메일이 가도록 트리거를 한 번 등록해야 합니다:
 //    Apps Script 편집기 좌측 "트리거"(시계 아이콘) → 트리거 추가
 //    → 실행할 함수: onFormSubmit / 이벤트 소스: 스프레드시트에서 / 이벤트 유형: 양식 제출 시 → 저장
@@ -29,10 +32,27 @@ const GIFT_DRIVE_URL       = 'https://www.smacedu.kr/review-gift-download'; // d
 const RECAP_URL            = 'https://www.smacedu.kr/photo-lecture-recap'; // gamma.site 직링크는 스팸 신호가 되어, smacedu.kr 리다이렉트 페이지를 거칩니다
 const RECRUIT_URL          = 'https://www.smacedu.kr/photo-artist-instructor';
 
+// ── 유튜브 채널 기획 워크북(youtube-planner-수강생용.html) 제출 기록 겸용 ──
+// 새 구글폼/새 스크립트 프로젝트를 또 만들면 "차단된 앱" 인증 문제를 다시 겪을 수 있어,
+// 이미 인증이 끝난 이 프로젝트를 재사용합니다. 페이지에서 form=ytplanner 로 요청을 보냅니다.
+const YTPLANNER_SHEET_ID   = '1Zp9bEwB-bqLK8UkhAFaoFOqY1kpT1O4k98P9RiF24o8'; // 유튜브 기획 워크북_수강생 제출 기록
+const YTPLANNER_TAB_NAME   = '기획서 제출';
+
+// ── 유튜브 채널 기획 워크북 리드마그넷(youtube-planner.html) 신청자 기록 겸용 ──
+// 위 ytplanner(수강생용)와는 대상이 다른 별도 방문자(잠재고객)라 같은 스프레드시트의
+// 별도 탭에 기록합니다. 페이지에서 form=ytworkbook 으로 요청을 보냅니다.
+const WORKBOOK_TAB_NAME    = '워크북 리드';
+
 function doGet(e) {
   const params0 = e.parameter || {};
   if (params0.form === 'reviewgift') {
     return _handleReviewGiftSubmit(params0);
+  }
+  if (params0.form === 'ytplanner') {
+    return _handleYtPlannerSubmit(params0);
+  }
+  if (params0.form === 'ytworkbook') {
+    return _handleWorkbookLead(params0);
   }
 
   try {
@@ -356,6 +376,136 @@ function _sendReviewGiftAdminDigest(sheet, total) {
   MailApp.sendEmail({
     to:       ADMIN_EMAIL,
     subject:  `[SMAC EDU 후기선물] 신청 누적 ${total}명 — 최근 ${batchSize}명 알림`,
+    htmlBody: html
+  });
+}
+
+// ════════════════════════════════════════════
+// 유튜브 채널 기획 워크북 수강생 제출 기록 (youtube-planner-수강생용.html)
+// 리드폼 없이 바로 쓰는 파일이라, "기획서 완성하기" 클릭 시 화면 변화 없이
+// 조용히 이 분기로 전송돼 시트에 쌓입니다. 이름은 선택 입력이라 빈 값일 수 있습니다.
+// ════════════════════════════════════════════
+function _getYtPlannerSheet(ss) {
+  let sheet = ss.getSheets().find(s => s.getName() === YTPLANNER_TAB_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(YTPLANNER_TAB_NAME);
+    sheet.appendRow(['타임스탬프', '이름', '기획서 내용']);
+    sheet.getRange(1, 1, 1, 3).setFontWeight('bold');
+  }
+  return sheet;
+}
+
+function _handleYtPlannerSubmit(params) {
+  try {
+    const name = params.name || '(이름 미입력)';
+    const plan = params.plan || '';
+
+    const ss    = SpreadsheetApp.openById(YTPLANNER_SHEET_ID);
+    const sheet = _getYtPlannerSheet(ss);
+
+    const now       = new Date();
+    const timestamp = _formatKoreanTimestamp(now, Session.getScriptTimeZone());
+
+    sheet.appendRow([timestamp, name, plan]);
+
+    // 시트 기록과 별개로, 제출될 때마다 바로 확인할 수 있도록 관리자에게도 이메일 발송
+    // (수업 중이라 시트를 계속 열어둘 필요 없이 메일함만 확인하면 됨)
+    _sendYtPlannerAdminEmail(name, plan, timestamp);
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function _escapeHtml(s) {
+  return String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+}
+
+function _sendYtPlannerAdminEmail(name, plan, timestamp) {
+  const sheetUrl = `https://docs.google.com/spreadsheets/d/${YTPLANNER_SHEET_ID}/edit`;
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#17213B;color:#fff;padding:18px 22px;margin:0;border-radius:8px 8px 0 0;">
+    📺 유튜브 기획 워크북 제출 — ${_escapeHtml(name)}
+  </h2>
+  <div style="background:#f8fafc;padding:22px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <p style="margin:0 0 14px;font-size:13px;color:#64748b;">${timestamp}</p>
+    <pre style="white-space:pre-wrap;font-family:inherit;font-size:13px;line-height:1.7;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:0 0 16px;">${_escapeHtml(plan)}</pre>
+    <p style="margin:0;font-size:12px;color:#94a3b8;">
+      <a href="${sheetUrl}">스프레드시트에서 전체 목록 확인 →</a>
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       ADMIN_EMAIL,
+    subject:  `[SMAC EDU 유튜브 워크북] ${name}님 기획서 제출`,
+    htmlBody: html
+  });
+}
+
+// ════════════════════════════════════════════
+// 유튜브 채널 기획 워크북 리드마그넷 신청자 기록 (youtube-planner.html)
+// 이름/연락처를 남겨야 기획서 복사·카카오 공유가 열리는 구조라, 위 수강생용과 달리
+// 매 건마다 이름·전화번호·개인정보 동의가 함께 들어옵니다. 이메일은 수집하지 않으므로
+// 신청자에게 보내는 확인 메일은 없고, 관리자에게만 즉시 알림 메일을 보냅니다.
+// ════════════════════════════════════════════
+function _getWorkbookSheet(ss) {
+  let sheet = ss.getSheets().find(s => s.getName() === WORKBOOK_TAB_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(WORKBOOK_TAB_NAME);
+    sheet.appendRow(['타임스탬프', '이름', '전화번호', '기획서 내용']);
+    sheet.getRange(1, 1, 1, 4).setFontWeight('bold');
+  }
+  return sheet;
+}
+
+function _handleWorkbookLead(params) {
+  try {
+    const name  = params.name  || '';
+    const phone = params.phone || '';
+    const plan  = params.plan  || '';
+
+    const ss    = SpreadsheetApp.openById(YTPLANNER_SHEET_ID);
+    const sheet = _getWorkbookSheet(ss);
+
+    const now       = new Date();
+    const timestamp = _formatKoreanTimestamp(now, Session.getScriptTimeZone());
+
+    sheet.appendRow([timestamp, name, phone, plan]);
+
+    _sendWorkbookAdminEmail(name, phone, plan, timestamp);
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function _sendWorkbookAdminEmail(name, phone, plan, timestamp) {
+  const sheetUrl = `https://docs.google.com/spreadsheets/d/${YTPLANNER_SHEET_ID}/edit`;
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#f59e0b;color:#fff;padding:18px 22px;margin:0;border-radius:8px 8px 0 0;">
+    📺 유튜브 워크북 리드 — ${_escapeHtml(name)} (${_escapeHtml(phone)})
+  </h2>
+  <div style="background:#f8fafc;padding:22px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <p style="margin:0 0 14px;font-size:13px;color:#64748b;">${timestamp}</p>
+    <pre style="white-space:pre-wrap;font-family:inherit;font-size:13px;line-height:1.7;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:0 0 16px;">${_escapeHtml(plan)}</pre>
+    <p style="margin:0;font-size:12px;color:#94a3b8;">
+      <a href="${sheetUrl}">스프레드시트에서 전체 목록 확인 →</a>
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       ADMIN_EMAIL,
+    subject:  `[SMAC EDU 유튜브 워크북 리드] ${name}님 (${phone}) 신청`,
     htmlBody: html
   });
 }
