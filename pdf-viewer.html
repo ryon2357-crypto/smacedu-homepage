@@ -406,22 +406,55 @@ window.SOUND_LIBRARY = {
     });
     soundListEl.appendChild(row);
   });
-  var audioPool = {};
-  function getAudio(key){
-    var lib = window.SOUND_LIBRARY && window.SOUND_LIBRARY[key];
-    if(!lib) return null;
-    var el = audioPool[key];
-    if(!el){
-      el = new Audio('data:' + lib.mime + ';base64,' + lib.data);
-      el.volume = (lib.vol !== undefined) ? lib.vol : 0.65;
-      el.preload = 'auto';
-      audioPool[key] = el;
-    }
-    return el;
+  var wa_ctx = null;
+  var wa_buffers = {};
+  var wa_loading = {};
+  function wa_ensureCtx(){
+    if(!wa_ctx) wa_ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if(wa_ctx.state === 'suspended') wa_ctx.resume();
+    return wa_ctx;
   }
-  function previewSound(key){ var el = getAudio(key); if(el){ el.currentTime = 0; el.play().catch(function(){}); } }
-  function playFlipSound(){ if(soundMuted) return; var el = getAudio(soundKey); if(el){ el.currentTime = 0; el.play().catch(function(){}); } }
-  getAudio(soundKey);
+  function wa_base64ToBuffer(base64){
+    var binary = atob(base64);
+    var bytes = new Uint8Array(binary.length);
+    for(var i = 0; i < binary.length; i++){ bytes[i] = binary.charCodeAt(i); }
+    return bytes.buffer;
+  }
+  function wa_getBuffer(key){
+    if(wa_buffers[key]) return Promise.resolve(wa_buffers[key]);
+    if(wa_loading[key]) return wa_loading[key];
+    var lib = window.SOUND_LIBRARY && window.SOUND_LIBRARY[key];
+    if(!lib) return Promise.resolve(null);
+    var ctx = wa_ensureCtx();
+    var arrayBuf = wa_base64ToBuffer(lib.data);
+    wa_loading[key] = new Promise(function(resolve){
+      ctx.decodeAudioData(arrayBuf, function(decoded){
+        wa_buffers[key] = decoded;
+        delete wa_loading[key];
+        resolve(decoded);
+      }, function(){ delete wa_loading[key]; resolve(null); });
+    });
+    return wa_loading[key];
+  }
+  function wa_play(key){
+    var buf = wa_buffers[key];
+    if(!buf) return;
+    var ctx = wa_ensureCtx();
+    var lib = window.SOUND_LIBRARY[key];
+    var src = ctx.createBufferSource();
+    src.buffer = buf;
+    var gain = ctx.createGain();
+    gain.gain.value = (lib.vol !== undefined) ? lib.vol : 0.65;
+    src.connect(gain).connect(ctx.destination);
+    src.start(0);
+  }
+  function previewSound(key){ wa_getBuffer(key).then(function(){ wa_play(key); }); }
+  function playFlipSound(){
+    if(soundMuted) return;
+    if(wa_buffers[soundKey]){ wa_play(soundKey); }
+    else { wa_getBuffer(soundKey).then(function(){ wa_play(soundKey); }); }
+  }
+  wa_getBuffer(soundKey);
 
   soundBtn.addEventListener('click', function(e){ e.stopPropagation(); soundPanel.classList.toggle('open'); });
   soundPanel.addEventListener('click', function(e){ e.stopPropagation(); });
