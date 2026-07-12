@@ -48,7 +48,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
 @media (max-width:859px){ #spreadCtrl{display:none;} }
 
 /* ---------- reader ---------- */
-#reader{flex:1 1 auto;position:relative;overflow:hidden;background:var(--paper);perspective:2200px;}
+#reader{flex:1 1 auto;position:relative;overflow:hidden;background:var(--paper);}
 #stage{position:absolute;inset:0;display:flex;}
 .pages-row.two > .page:first-child{box-shadow:inset -16px 0 20px -16px rgba(0,0,0,.16);border-right:1px solid var(--line);}
 .pages-row.two > .page:last-child{box-shadow:inset 16px 0 20px -16px rgba(0,0,0,.16);}
@@ -59,15 +59,25 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
 .tapzone{position:absolute;top:0;bottom:0;width:15%;z-index:5;cursor:pointer;}
 .tapzone.left{left:0;} .tapzone.right{right:0;}
 
-#flipStage{position:absolute;inset:0;z-index:25;pointer-events:none;display:none;}
+#flipStage{position:absolute;inset:0;z-index:25;pointer-events:none;display:none;perspective:2000px;}
 #flipStage.active{display:block;}
 .flip-leaf{position:absolute;inset:0;transform-style:preserve-3d;}
 .flip-leaf .face{position:absolute;inset:0;overflow:hidden;backface-visibility:hidden;background:var(--paper);box-shadow:0 0 40px rgba(0,0,0,.25);display:flex;}
 .flip-leaf .face.back{transform:rotateY(180deg);}
 .flip-leaf .fold-shadow{position:absolute;inset:0;opacity:0;pointer-events:none;}
-.flip-leaf.dir-next .fold-shadow{background:linear-gradient(to right, rgba(0,0,0,0) 40%, rgba(0,0,0,.35) 100%);}
-.flip-leaf.dir-prev .fold-shadow{background:linear-gradient(to left, rgba(0,0,0,0) 40%, rgba(0,0,0,.35) 100%);}
+.flip-leaf.dir-next .fold-shadow{background:linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(255,255,255,.22) 46%, rgba(0,0,0,.42) 62%, rgba(0,0,0,0) 100%);}
+.flip-leaf.dir-prev .fold-shadow{background:linear-gradient(to left, rgba(0,0,0,0) 0%, rgba(255,255,255,.22) 46%, rgba(0,0,0,.42) 62%, rgba(0,0,0,0) 100%);}
 @keyframes foldShadow{0%{opacity:0;}45%{opacity:1;}55%{opacity:1;}100%{opacity:0;}}
+@keyframes flipNext{
+  0%{transform:rotateY(0deg);}
+  100%{transform:rotateY(-180deg);}
+}
+@keyframes flipPrev{
+  0%{transform:rotateY(0deg);}
+  100%{transform:rotateY(180deg);}
+}
+.flip-leaf.dir-next.turning{animation:flipNext .62s cubic-bezier(.4,.05,.2,1) forwards;}
+.flip-leaf.dir-prev.turning{animation:flipPrev .62s cubic-bezier(.4,.05,.2,1) forwards;}
 
 /* ---------- empty / drop zone ---------- */
 #dropZone{
@@ -83,6 +93,9 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
 #pickBtn{background:var(--gold);color:#2a2004;font-weight:800;border:none;padding:14px 28px;border-radius:11px;font-size:14.5px;cursor:pointer;}
 #dropHint{margin-top:16px;font-size:12.5px;color:#9db4e8;}
 #privacyNote{margin-top:44px;font-size:12px;color:#8b95c0;max-width:440px;line-height:1.7;border-top:1px solid rgba(255,255,255,.15);padding-top:16px;}
+#contactNote{margin-top:18px;font-size:12.5px;color:#c3cbea;max-width:440px;line-height:1.9;}
+#contactNote a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(240,185,58,.4);}
+#contactNote a:hover{border-bottom-color:var(--gold);}
 
 /* ---------- loading spinner ---------- */
 #loadingOverlay{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;background:rgba(10,15,31,.35);}
@@ -174,6 +187,10 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
       <div id="dropHint">또는 이 영역에 파일을 끌어다 놓으세요</div>
       <input type="file" id="fileInput" accept="application/pdf" style="display:none">
       <div id="privacyNote">업로드가 아니라 로컬 렌더링입니다 — 인터넷 연결 없이도 열린 뒤에는 그대로 작동합니다.</div>
+      <div id="contactNote">
+        이런 프로그램이 필요하신가요? <strong>스마트미디어아트센터</strong>에 문의하세요.<br>
+        <a href="https://www.smacedu.kr/" target="_blank" rel="noopener">www.smacedu.kr</a> · <a href="mailto:elanvital7@naver.com">elanvital7@naver.com</a>
+      </div>
     </div>
   </div>
 
@@ -510,13 +527,11 @@ window.SOUND_LIBRARY = {
 
     var origin = direction === 'next' ? '0% 50%' : '100% 50%';
     leaf.style.transformOrigin = origin;
-    leaf.style.transform = 'rotateY(0deg)';
     back.style.transform = direction === 'next' ? 'rotateY(180deg)' : 'rotateY(-180deg)';
 
     requestAnimationFrame(function(){
       requestAnimationFrame(function(){
-        leaf.style.transition = 'transform .62s cubic-bezier(.4,.05,.2,1)';
-        leaf.style.transform = direction === 'next' ? 'rotateY(-180deg)' : 'rotateY(180deg)';
+        leaf.classList.add('turning');
         shadow.style.animation = 'foldShadow .62s ease';
       });
     });
