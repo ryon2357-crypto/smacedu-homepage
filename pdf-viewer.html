@@ -297,7 +297,6 @@ window.SOUND_LIBRARY = {
   var scale = 1;
   var renderCache = new Map();
   var isFlipping = false;
-  var flipEnabled = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function setLoading(on){ loadingOverlay.classList.toggle('active', on); }
 
@@ -501,13 +500,6 @@ window.SOUND_LIBRARY = {
   /* ---------- 플립 애니메이션 ---------- */
   async function turn(direction, mutateIdx){
     if(isFlipping || !pdfDoc) return;
-    if(!flipEnabled){
-      mutateIdx();
-      await renderStagePromise();
-      updateChrome();
-      playFlipSound();
-      return;
-    }
     isFlipping = true;
     playFlipSound();
 
