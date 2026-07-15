@@ -32,6 +32,10 @@ const GIFT_DRIVE_URL       = 'https://www.smacedu.kr/review-gift-download'; // d
 const RECAP_URL            = 'https://www.smacedu.kr/photo-lecture-recap'; // gamma.site 직링크는 스팸 신호가 되어, smacedu.kr 리다이렉트 페이지를 거칩니다
 const RECRUIT_URL          = 'https://www.smacedu.kr/photo-artist-instructor';
 
+// 사진특강 신청 확인 메일 전용 감사 자료 링크 (review-gift 12종 번들과는 별개 — 이 메일에서만 사용).
+// 사용자가 직접 지정한 구글드라이브 직링크를 그대로 씁니다 (스팸 신호 우회용 리다이렉트 없음).
+const PHOTO_MATERIALS_URL  = 'https://drive.google.com/drive/folders/1DWd2knB3-oH2SxnyseGhkqykuduF-DzI?usp=sharing';
+
 // ── 유튜브 채널 기획 워크북(youtube-planner-수강생용.html) 제출 기록 겸용 ──
 // 새 구글폼/새 스크립트 프로젝트를 또 만들면 "차단된 앱" 인증 문제를 다시 겪을 수 있어,
 // 이미 인증이 끝난 이 프로젝트를 재사용합니다. 페이지에서 form=ytplanner 로 요청을 보냅니다.
@@ -127,10 +131,44 @@ function _sendConfirmEmail(name, email) {
       참여 ZOOM 링크는 특강 당일인 7월 17일(금) 저녁 6시까지 이 메일로 다시 안내드리겠습니다.
     </p>
 
-    <div style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);border:1px solid #c4b5fd;border-radius:10px;padding:18px 20px;margin-bottom:20px;text-align:center;">
-      <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#5b21b6;">✨ 신청해 주신 분께 드리는 VIP 특별 초대</p>
-      <p style="margin:0 0 12px;font-size:13px;color:#5b21b6;">코딩 몰라도 괜찮아요 — VIP 특강 <strong>"AI 에이전트로 랜딩 페이지 만들기(바이브 코딩)"</strong>에도 초대드려요</p>
-      <a href="https://www.smacedu.kr/lecture-landing.html" style="display:inline-block;background:#fff;color:#5b21b6;border:1px solid #c4b5fd;text-decoration:none;font-size:14px;font-weight:700;padding:11px 28px;border-radius:999px;">✨ 바이브 코딩 강의 보러가기</a>
+    <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:18px 18px 8px;margin-bottom:20px;">
+      <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#c2410c;text-align:center;">🎁 늘 함께해주셔서 감사합니다</p>
+      <p style="margin:0 0 14px;font-size:13px;color:#7c2d12;text-align:center;">신청해 주신 분께 <strong style="color:#c2410c;font-weight:800;">유료급</strong> 실전 자료 6종을 함께 보내드려요</p>
+      <table role="presentation" style="width:100%;border-collapse:separate;border-spacing:0 6px;">
+        <tr>
+          <td style="background:#fffaf5;border-left:5px solid #1e3a5f;border-radius:0 6px 6px 0;padding:9px 12px;">
+            <span style="font-family:Georgia,'Nanum Myeongjo',serif;font-size:13px;font-weight:700;color:#292524;">적은 예산으로 큰 효과를 내는 마케팅 전략</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#fffaf5;border-left:5px solid #16a34a;border-radius:0 6px 6px 0;padding:9px 12px;">
+            <span style="font-family:Georgia,'Nanum Myeongjo',serif;font-size:13px;font-weight:700;color:#292524;">챗GPT로 돈 버는 현실적인 10가지 방법</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#fffaf5;border-left:5px solid #dc2626;border-radius:0 6px 6px 0;padding:9px 12px;">
+            <span style="font-family:Georgia,'Nanum Myeongjo',serif;font-size:13px;font-weight:700;color:#292524;">영상 하나로 알고리즘 타는 유튜브 전략</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#fffaf5;border-left:5px solid #ca8a04;border-radius:0 6px 6px 0;padding:9px 12px;">
+            <span style="font-family:Georgia,'Nanum Myeongjo',serif;font-size:13px;font-weight:700;color:#292524;">퇴사 전에 반드시 준비해야 할 7가지</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#fffaf5;border-left:5px solid #2563eb;border-radius:0 6px 6px 0;padding:9px 12px;">
+            <span style="font-family:Georgia,'Nanum Myeongjo',serif;font-size:13px;font-weight:700;color:#292524;">윈도우 필수 단축키 2026</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#fffaf5;border-left:5px solid #1e3a8a;border-radius:0 6px 6px 0;padding:9px 12px;">
+            <span style="font-family:Georgia,'Nanum Myeongjo',serif;font-size:13px;font-weight:700;color:#292524;">팔지 않아도 고객이 찾아오는 SNS 마케팅</span>
+          </td>
+        </tr>
+      </table>
+      <div style="text-align:center;margin:14px 0 0;">
+        <a href="${PHOTO_MATERIALS_URL}" style="display:inline-block;background:linear-gradient(135deg,#f97316,#fbbf24);color:#fff;text-decoration:none;font-size:14px;font-weight:800;padding:12px 30px;border-radius:999px;">🎁 자료 받으러 가기</a>
+      </div>
     </div>
 
     <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:16px 18px;margin-bottom:20px;text-align:center;">
@@ -168,8 +206,11 @@ function _sendConfirmEmail(name, email) {
       <a href="https://www.smacedu.kr/photo-lecture-landing.html" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;text-decoration:none;font-size:14px;font-weight:700;padding:13px 32px;border-radius:999px;">특강 페이지 다시 보기</a>
     </div>
 
-    <p style="margin:0;font-size:13px;color:#94a3b8;">
+    <p style="margin:0 0 8px;font-size:13px;color:#94a3b8;">
       문의는 <a href="mailto:${ADMIN_EMAIL}" style="color:#f59e0b;">${ADMIN_EMAIL}</a>로 보내주세요.
+    </p>
+    <p style="margin:0;font-size:12px;color:#b8c0cc;">
+      더 이상 안내 메일을 받고 싶지 않으시면 이 메일에 회신해 "수신거부"라고 남겨주세요.
     </p>
   </div>
 </div>`;
