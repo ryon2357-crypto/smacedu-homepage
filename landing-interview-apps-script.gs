@@ -9,6 +9,11 @@
 // ADMIN_DIGEST_BATCH_SIZE(20)건씩 쌓일 때마다 모아서 한 번에 보냅니다.
 // 새 신청서 폼을 추가할 때도 이 _notifyAdmin()을 그대로 재사용하세요 (개별 알림 함수를 새로 만들지 마세요).
 //
+// 예외: VIP 1:1 지도 신청(VIP신청 탭)은 50만원/15만원짜리 고액 결제 리드라서 20건 배치를
+// 기다리면 응대가 너무 늦어집니다. 그래서 VIP신청만 _notifyAdminVipImmediate()로 건마다
+// 즉시 알림을 보냅니다 (2026-07-15, 박은경 VIP 풀코스 신청건이 배치에 안 걸려서 며칠간
+// 아무도 몰랐던 사고 이후 추가). 자료신청/시트1(랜딩페이지 인터뷰)은 그대로 배치 알림 유지.
+//
 // 사용 방법:
 // 1. 새 구글 스프레드시트를 하나 만듭니다 (예: "랜딩페이지 기획 인터뷰 응답").
 // 2. 확장 프로그램 → Apps Script 로 들어갑니다 (이 시트에 직접 바인딩되는 스크립트라 권한 문제가 없습니다).
@@ -104,7 +109,8 @@ function _handleVipSubmission(p) {
     sheet.appendRow([timestamp, p.name || '', p.email || '', p.phone || '', tierInfo.label]);
 
     if (p.email) _sendVipConfirmEmail(p.name, p.email, tierInfo);
-    _notifyAdmin(sheet, 'VIP 1:1 지도 신청');
+    const sheetUrl = `${ss.getUrl()}#gid=${sheet.getSheetId()}`;
+    _notifyAdminVipImmediate(p.name, p.email, p.phone, tierInfo, sheetUrl);
 
     return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -260,6 +266,33 @@ function _notifyAdmin(sheet, formLabel) {
   MailApp.sendEmail({
     to: ADMIN_EMAIL,
     subject: `[SMAC EDU] ${formLabel} — 누적 ${total}건 (최근 ${batchSize}건)`,
+    htmlBody: html
+  });
+}
+
+// VIP 1:1 지도 신청은 20건 배치 알림을 쓰지 않고, 접수 즉시 관리자에게 알립니다.
+function _notifyAdminVipImmediate(name, email, phone, tierInfo, sheetUrl) {
+  const html = `
+<div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#c9a84c;color:#000;padding:16px 20px;margin:0;border-radius:8px 8px 0 0;">
+    ✦ VIP 1:1 지도 신청 — 즉시 알림
+  </h2>
+  <div style="background:#f8fafc;padding:20px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <table style="width:100%;border-collapse:collapse;font-size:14px;">
+      <tr><td style="padding:6px 0;color:#64748b;width:80px;">이름</td><td style="padding:6px 0;font-weight:600;">${name || '-'}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">이메일</td><td style="padding:6px 0;font-weight:600;">${email || '-'}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">연락처</td><td style="padding:6px 0;font-weight:600;">${phone || '-'}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">신청유형</td><td style="padding:6px 0;font-weight:600;">${tierInfo.label}</td></tr>
+    </table>
+    <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
+      <a href="${sheetUrl}">스프레드시트에서 확인 →</a>
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to: ADMIN_EMAIL,
+    subject: `[SMAC EDU] VIP 1:1 지도 신청 — ${name || '신청자'} (${tierInfo.label})`,
     htmlBody: html
   });
 }
