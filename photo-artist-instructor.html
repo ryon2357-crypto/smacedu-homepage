@@ -329,8 +329,8 @@
   }
   .countdown-timer { display: flex; gap: 10px; justify-content: center; }
   .countdown-unit { display: flex; flex-direction: column; align-items: center; }
-  .countdown-num { font-size: 26px; font-weight: 900; color: var(--text); font-variant-numeric: tabular-nums; line-height: 1; }
-  .countdown-num-ms { font-size: 18px; color: var(--gold); opacity: .85; }
+  .countdown-num { font-size: 26px; font-weight: 900; color: #dc2626; font-variant-numeric: tabular-nums; line-height: 1; }
+  .countdown-num-ms { font-size: 18px; color: #dc2626; opacity: .8; }
   .countdown-unit-label { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
 
   /* week steps */
@@ -434,8 +434,8 @@
     padding: 12px 22px; border-radius: 999px; box-shadow: 0 14px 30px -8px rgba(244,180,0,.65);
     animation: stickyCountdownPulse 1.6s ease-in-out infinite;
   }
-  .sticky-countdown #scd-time { font-size: 19px; }
-  .sticky-countdown #scd-ms { font-size: 14px; opacity: .8; }
+  .sticky-countdown #scd-time { font-size: 19px; color: #dc2626; }
+  .sticky-countdown #scd-ms { font-size: 14px; color: #dc2626; opacity: .85; }
   @keyframes stickyCountdownPulse {
     0%, 100% { transform: scale(1); box-shadow: 0 14px 30px -8px rgba(244,180,0,.65); }
     50%      { transform: scale(1.06); box-shadow: 0 18px 40px -8px rgba(244,180,0,.9); }
