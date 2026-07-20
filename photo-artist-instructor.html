@@ -326,11 +326,13 @@
   .countdown-label {
     display: inline-block; font-size: 12.5px; font-weight: 800; color: var(--gold-ink);
     background: var(--gold); padding: 4px 14px; border-radius: 999px; margin-bottom: 12px;
+    animation: priceBlink 1.3s ease-in-out infinite;
   }
+  @media (prefers-reduced-motion: reduce) { .countdown-label { animation: none; } }
   .countdown-timer { display: flex; gap: 10px; justify-content: center; }
   .countdown-unit { display: flex; flex-direction: column; align-items: center; }
-  .countdown-num { font-size: 26px; font-weight: 900; color: #dc2626; font-variant-numeric: tabular-nums; line-height: 1; }
-  .countdown-num-ms { font-size: 18px; color: #dc2626; opacity: .8; }
+  .countdown-num { font-size: 26px; font-weight: 900; color: var(--text); font-variant-numeric: tabular-nums; line-height: 1; }
+  .countdown-num-ms { font-size: 18px; color: var(--gold); opacity: .85; }
   .countdown-unit-label { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
 
   /* week steps */
@@ -434,8 +436,10 @@
     padding: 12px 22px; border-radius: 999px; box-shadow: 0 14px 30px -8px rgba(244,180,0,.65);
     animation: stickyCountdownPulse 1.6s ease-in-out infinite;
   }
-  .sticky-countdown #scd-time { font-size: 19px; color: #dc2626; }
-  .sticky-countdown #scd-ms { font-size: 14px; color: #dc2626; opacity: .85; }
+  .sticky-countdown #scd-time { font-size: 19px; color: #fff; }
+  .sticky-countdown #scd-ms { font-size: 14px; color: #fff; opacity: .85; }
+  .sticky-label-blink { animation: priceBlink 1.3s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { .sticky-label-blink { animation: none; } }
   @keyframes stickyCountdownPulse {
     0%, 100% { transform: scale(1); box-shadow: 0 14px 30px -8px rgba(244,180,0,.65); }
     50%      { transform: scale(1.06); box-shadow: 0 18px 40px -8px rgba(244,180,0,.9); }
@@ -1063,7 +1067,7 @@
   </div>
 </footer>
 
-<div class="sticky-countdown" id="sticky-countdown">⏰ 마감 <span id="scd-time">00:00:00</span><span id="scd-ms">.00</span></div>
+<div class="sticky-countdown" id="sticky-countdown">⏰ <span class="sticky-label-blink">마감</span> <span id="scd-time">00:00:00</span><span id="scd-ms">.00</span></div>
 <a class="sticky-cta" href="https://forms.gle/DYcw9MTbFZPK3BiP7" target="_blank" rel="noopener">🔥 지금 신청하기</a>
 
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true" onclick="if(event.target===this) closeLightbox();">
