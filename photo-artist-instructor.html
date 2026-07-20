@@ -308,6 +308,31 @@
   .price-badge { display: inline-block; font-size: 13px; font-weight: 800; color: #fff; background: var(--orange); padding: 4px 12px; border-radius: 999px; margin-left: 10px; vertical-align: middle; }
   .price-foot { margin-top: 10px; font-size: 14px; color: var(--text-muted); }
 
+  /* 요약 카드 가격 강조 (할인 전/후 + 깜빡임) */
+  .summary-price-old { font-size: 13px; font-weight: 600; color: var(--text-muted); text-decoration: line-through; margin-right: 6px; }
+  .summary-price-new { animation: priceBlink 1.3s ease-in-out infinite; }
+  @keyframes priceBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .4; }
+  }
+  @media (prefers-reduced-motion: reduce) { .summary-price-new { animation: none; } }
+
+  /* 마감 카운트다운 (매일 자정 초기화) */
+  .countdown-box {
+    background: var(--surface); border: 1px solid var(--gold); border-radius: 16px;
+    padding: 18px 26px; text-align: center; max-width: 320px; margin: 0 auto 28px;
+    box-shadow: var(--shadow);
+  }
+  .countdown-label {
+    display: inline-block; font-size: 12.5px; font-weight: 800; color: var(--gold-ink);
+    background: var(--gold); padding: 4px 14px; border-radius: 999px; margin-bottom: 12px;
+  }
+  .countdown-timer { display: flex; gap: 10px; justify-content: center; }
+  .countdown-unit { display: flex; flex-direction: column; align-items: center; }
+  .countdown-num { font-size: 26px; font-weight: 900; color: var(--text); font-variant-numeric: tabular-nums; line-height: 1; }
+  .countdown-num-ms { font-size: 18px; color: var(--gold); opacity: .85; }
+  .countdown-unit-label { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+
   /* week steps */
   .week-list { display: flex; flex-direction: column; margin-bottom: 44px; }
   .week-row { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--line); }
@@ -469,8 +494,8 @@
       <div class="badge-chip"><span class="ic">🎯</span>박성욱 작가의 실전 노하우</div>
     </div>
     <div class="hero-cta-row">
-      <a class="btn-primary" href="https://forms.gle/DYcw9MTbFZPK3BiP7" target="_blank" rel="noopener">🔥 지금 무료로 신청하기</a>
-      <span class="hero-note">이름 · 연락처 · 이메일만 입력하면 신청 완료</span>
+      <a class="btn-primary" href="https://forms.gle/DYcw9MTbFZPK3BiP7" target="_blank" rel="noopener">🔥 지금 신청하기</a>
+      <span class="hero-note">구글 신청폼으로 연결됩니다</span>
     </div>
   </div>
   <div class="wrap">
@@ -718,6 +743,17 @@
         <h2>사진작가 과정 vs 사진강사 양성과정</h2>
         <p class="lede">가르치는 관점에서 공부하면 사진 실력은 배가 됩니다. 아래 두 과정을 비교해보고, 탭을 눌러 자세히 확인하세요.</p>
       </div>
+
+      <div class="countdown-box">
+        <div class="countdown-label">⏰ 오늘 마감까지</div>
+        <div class="countdown-timer" id="countdown">
+          <div class="countdown-unit"><span class="countdown-num" id="cd-h">00</span><span class="countdown-unit-label">시간</span></div>
+          <div class="countdown-unit"><span class="countdown-num" id="cd-m">00</span><span class="countdown-unit-label">분</span></div>
+          <div class="countdown-unit"><span class="countdown-num" id="cd-s">00</span><span class="countdown-unit-label">초</span></div>
+          <div class="countdown-unit"><span class="countdown-num countdown-num-ms" id="cd-ms">00</span><span class="countdown-unit-label">&nbsp;</span></div>
+        </div>
+      </div>
+
       <div class="summary-grid">
         <div class="summary-card">
           <span class="summary-badge">Course 01</span>
@@ -725,7 +761,7 @@
           <div class="summary-stats">
             <div><span class="k">개강</span><span class="v">7월 22일(수) 저녁 9시</span></div>
             <div><span class="k">기간</span><span class="v">6주</span></div>
-            <div><span class="k">가격</span><span class="v">15만원<small style="font-weight:600;color:var(--text-muted);"> (얼리버드)</small></span></div>
+            <div><span class="k">가격</span><span class="v"><span class="summary-price-old">40만원</span><span class="summary-price-new">15만원</span><small style="font-weight:600;color:var(--text-muted);"> (얼리버드)</small></span></div>
             <div><span class="k">이런 분께</span><span class="v">사진만 잘 찍고 싶다면</span></div>
           </div>
           <p class="desc">인물·풍경·야경·제품·음식까지, 작품 사진을 완성하는 촬영·보정을 순서대로 익힙니다.</p>
@@ -737,7 +773,7 @@
           <div class="summary-stats">
             <div><span class="k">개강</span><span class="v">7월 22일(수) 사진작가 과정부터 → 9월 4일(금) 강사 심화 과정</span></div>
             <div><span class="k">기간</span><span class="v">8주 · 평생</span></div>
-            <div><span class="k">가격</span><span class="v">64만원<small style="font-weight:600;color:var(--text-muted);"> (얼리버드)</small></span></div>
+            <div><span class="k">가격</span><span class="v"><span class="summary-price-old">100만원</span><span class="summary-price-new">64만원</span><small style="font-weight:600;color:var(--text-muted);"> (얼리버드)</small></span></div>
             <div><span class="k">이런 분께</span><span class="v">미디어강사로 성장하고 싶다면</span></div>
           </div>
           <p class="desc">촬영·보정은 물론 AI 활용, 강의 기획, SNS 마케팅, 강사 매칭까지 — 자격증을 직접 발급하는 강사로 성장합니다.</p>
@@ -1142,6 +1178,39 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeLightbox();
     });
+  })();
+
+  // ---------- 오늘 자정에 초기화되는 마감 임박 카운트다운 (매일 00:00 리셋) ----------
+  (function () {
+    var cd = document.getElementById('countdown');
+    if (!cd) return;
+
+    function nextMidnight() {
+      var now = new Date();
+      return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
+    }
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    var els = {
+      h: document.getElementById('cd-h'),
+      m: document.getElementById('cd-m'),
+      s: document.getElementById('cd-s'),
+      ms: document.getElementById('cd-ms'),
+    };
+
+    function tickCountdown() {
+      var diff = nextMidnight() - Date.now();
+      var totalMs = Math.max(diff, 0);
+      var h = Math.floor(totalMs / 3600000);
+      var m = Math.floor((totalMs % 3600000) / 60000);
+      var s = Math.floor((totalMs % 60000) / 1000);
+      els.h.textContent = pad(h);
+      els.m.textContent = pad(m);
+      els.s.textContent = pad(s);
+      els.ms.textContent = pad(Math.floor((totalMs % 1000) / 10));
+    }
+    tickCountdown();
+    setInterval(tickCountdown, 30);
   })();
 </script>
 </body>
