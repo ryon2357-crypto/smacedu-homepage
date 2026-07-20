@@ -21,6 +21,16 @@
 // 4. 배포 → 새 배포 → 유형: 웹 앱 → 액세스 권한: "전체" → 배포.
 // 5. 배포 후 나온 웹 앱 URL을 landing-interview.html, vip-1on1-landing.html, materials-request.html의 SCRIPT_URL에 붙여넣습니다.
 
+// 사용자 입력값을 이메일 HTML 본문에 넣기 전 이스케이프 (HTML/링크 삽입 방지)
+function escapeHtml(str) {
+  return String(str === null || str === undefined ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 const ADMIN_EMAIL = 'elanvital7@naver.com';
 const ADMIN_DIGEST_BATCH_SIZE = 20; // 관리자 알림은 매번 보내지 않고, 이 건수만큼 쌓일 때마다 한 번에 모아 보냅니다.
 
@@ -180,7 +190,7 @@ function _sendMaterialConfirmEmail(name, email, tier) {
     <p style="color:rgba(255,255,255,.85);margin:8px 0 0;font-size:14px;">클로드 AI에서 클로드 코드까지</p>
   </div>
   <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
-    <p style="margin:0 0 16px;font-size:16px;"><strong>${name || '신청자'}</strong>님, 신청 잘 받았습니다.</p>
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name || '신청자')}</strong>님, 신청 잘 받았습니다.</p>
     ${bodyHtml}
     <p style="margin:20px 0 0;color:#475569;line-height:1.8;">
       궁금한 점이 있으면 언제든 회신 주세요.
@@ -205,7 +215,7 @@ function _sendVipConfirmEmail(name, email, tierInfo) {
     <p style="color:rgba(0,0,0,.65);margin:8px 0 0;font-size:14px;">${tierInfo.label}</p>
   </div>
   <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
-    <p style="margin:0 0 16px;font-size:16px;"><strong>${name || '신청자'}</strong>님, 신청 잘 받았습니다.</p>
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name || '신청자')}</strong>님, 신청 잘 받았습니다.</p>
     <p style="margin:0;color:#475569;line-height:1.7;">
       입금 계좌: 신한은행 110-050-892636 박성욱<br>
       입금 금액: <strong>${tierInfo.amount}</strong><br>
@@ -243,7 +253,7 @@ function _notifyAdmin(sheet, formLabel) {
   const rowsHtml = rows.map(row => `
     <tr>
       ${row.map(cell => `<td style="padding:6px 10px;font-size:13px;border-top:1px solid #e2e8f0;">${
-        (cell || '').toString().replace(/\n/g, '<br>') || '<span style="color:#cbd5e1;">-</span>'
+        escapeHtml((cell || '').toString()).replace(/\n/g, '<br>') || '<span style="color:#cbd5e1;">-</span>'
       }</td>`).join('')}
     </tr>`).join('');
 
@@ -279,9 +289,9 @@ function _notifyAdminVipImmediate(name, email, phone, tierInfo, sheetUrl) {
   </h2>
   <div style="background:#f8fafc;padding:20px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
     <table style="width:100%;border-collapse:collapse;font-size:14px;">
-      <tr><td style="padding:6px 0;color:#64748b;width:80px;">이름</td><td style="padding:6px 0;font-weight:600;">${name || '-'}</td></tr>
-      <tr><td style="padding:6px 0;color:#64748b;">이메일</td><td style="padding:6px 0;font-weight:600;">${email || '-'}</td></tr>
-      <tr><td style="padding:6px 0;color:#64748b;">연락처</td><td style="padding:6px 0;font-weight:600;">${phone || '-'}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;width:80px;">이름</td><td style="padding:6px 0;font-weight:600;">${escapeHtml(name || '-')}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">이메일</td><td style="padding:6px 0;font-weight:600;">${escapeHtml(email || '-')}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">연락처</td><td style="padding:6px 0;font-weight:600;">${escapeHtml(phone || '-')}</td></tr>
       <tr><td style="padding:6px 0;color:#64748b;">신청유형</td><td style="padding:6px 0;font-weight:600;">${tierInfo.label}</td></tr>
     </table>
     <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
@@ -315,7 +325,7 @@ function _sendConfirmEmail(name, email, p) {
     <h1 style="color:#fff;margin:0;font-size:22px;font-weight:900;">인터뷰 응답이 접수됐어요! 🎉</h1>
   </div>
   <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
-    <p style="margin:0 0 16px;font-size:16px;"><strong>${name || '수강생'}</strong>님, 답변 잘 받았습니다.</p>
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name || '수강생')}</strong>님, 답변 잘 받았습니다.</p>
     <p style="margin:0 0 20px;color:#475569;line-height:1.7;">
       답변하신 내용을 정리해서 아래에 준비했어요.
     </p>

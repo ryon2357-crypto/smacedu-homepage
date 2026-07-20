@@ -18,6 +18,16 @@
 //    (랜딩페이지 신청은 doGet이 처리하고, 구글폼 직접 제출은 이 트리거가 처리합니다 — 서로 겹치지 않습니다.
 //     단, 이 트리거는 사진특강 시트 전용이며 후기 선물 시트의 폼 직접 제출까지는 커버하지 않습니다.)
 
+// 사용자 입력값을 이메일 HTML 본문에 넣기 전 이스케이프 (HTML/링크 삽입 방지)
+function escapeHtml(str) {
+  return String(str === null || str === undefined ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 const ADMIN_EMAIL = 'elanvital7@naver.com';
 const SHEET_GID   = 12733408; // 신청서 응답 시트(설문지 응답 시트1)의 tab gid
 
@@ -125,7 +135,7 @@ function _sendConfirmEmail(name, email) {
     <p style="color:rgba(255,255,255,0.85);margin:10px 0 0;font-size:15px;">찍는 순간 작품이 되는 스마트폰 사진 — 촬영과 보정부터 AI 활용까지</p>
   </div>
   <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
-    <p style="margin:0 0 16px;font-size:16px;"><strong>${name}</strong>님, 반갑습니다!</p>
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name)}</strong>님, 반갑습니다!</p>
     <p style="margin:0 0 20px;color:#475569;line-height:1.7;">
       특강 신청이 정상적으로 접수됐어요.<br>
       참여 ZOOM 링크는 특강 당일인 7월 17일(금) 저녁 6시까지 이 메일로 다시 안내드리겠습니다.
@@ -234,9 +244,9 @@ function _sendAdminDigest(sheet, total) {
   const rowsHtml = rows.map(r => `
     <tr>
       <td style="padding:6px 10px;font-size:13px;color:#64748b;">${r[0]}</td>
-      <td style="padding:6px 10px;font-size:13px;"><strong>${r[2]}</strong></td>
-      <td style="padding:6px 10px;font-size:13px;">${r[5]}</td>
-      <td style="padding:6px 10px;font-size:13px;">${r[4] || '미입력'}</td>
+      <td style="padding:6px 10px;font-size:13px;"><strong>${escapeHtml(r[2])}</strong></td>
+      <td style="padding:6px 10px;font-size:13px;">${escapeHtml(r[5])}</td>
+      <td style="padding:6px 10px;font-size:13px;">${escapeHtml(r[4] || '미입력')}</td>
     </tr>`).join('');
 
   const html = `
@@ -319,7 +329,7 @@ function _sendGiftEmail(name, email) {
     <p style="color:rgba(255,255,255,0.9);margin:10px 0 0;font-size:15px;">약속드린 실전 자료 12종을 모두 보내드립니다</p>
   </div>
   <div style="background:#fff9ec;padding:28px;border:1px solid #fcd9a8;border-top:none;border-radius:0 0 12px 12px;">
-    <p style="margin:0 0 16px;font-size:16px;"><strong>${name}</strong>님, 반갑습니다!</p>
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name)}</strong>님, 반갑습니다!</p>
     <p style="margin:0 0 20px;color:#4b5563;line-height:1.7;">
       바쁘신 와중에도 소중한 후기를 남겨주셔서 진심으로 감사합니다.<br>
       그 마음에 보답하고자 사진·SNS·마케팅·AI 실전 자료 12가지를 아래 링크에서 바로 다운로드하실 수 있도록 준비했습니다.
@@ -360,7 +370,7 @@ function _sendGiftEmail(name, email) {
 
     <div style="background:linear-gradient(135deg,#172554,#1e3a8a);border-radius:10px;padding:20px 22px;margin-bottom:20px;text-align:center;">
       <p style="margin:0 0 8px;font-size:13px;font-weight:800;color:#fde68a;">🟧 사진작가 23기 &amp; 사진강사 11기 모집 중</p>
-      <p style="margin:0 0 14px;font-size:13px;color:rgba(255,255,255,0.85);">이 메일을 받으신 <strong style="color:#fde68a;">${name}</strong>님께는 등록 시 <strong style="color:#fde68a;">3만원 할인</strong> 혜택을 드립니다.</p>
+      <p style="margin:0 0 14px;font-size:13px;color:rgba(255,255,255,0.85);">이 메일을 받으신 <strong style="color:#fde68a;">${escapeHtml(name)}</strong>님께는 등록 시 <strong style="color:#fde68a;">3만원 할인</strong> 혜택을 드립니다.</p>
       <a href="${RECRUIT_URL}" style="display:inline-block;background:#fde68a;color:#172554;text-decoration:none;font-size:14px;font-weight:800;padding:11px 28px;border-radius:999px;">과정 자세히 보기</a>
     </div>
 
@@ -388,9 +398,9 @@ function _sendReviewGiftAdminDigest(sheet, total) {
   const rowsHtml = rows.map(r => `
     <tr>
       <td style="padding:6px 10px;font-size:13px;color:#64748b;">${r[0]}</td>
-      <td style="padding:6px 10px;font-size:13px;"><strong>${r[1]}</strong></td>
-      <td style="padding:6px 10px;font-size:13px;">${r[3]}</td>
-      <td style="padding:6px 10px;font-size:13px;">${r[2] || '미입력'}</td>
+      <td style="padding:6px 10px;font-size:13px;"><strong>${escapeHtml(r[1])}</strong></td>
+      <td style="padding:6px 10px;font-size:13px;">${escapeHtml(r[3])}</td>
+      <td style="padding:6px 10px;font-size:13px;">${escapeHtml(r[2] || '미입력')}</td>
     </tr>`).join('');
 
   const html = `

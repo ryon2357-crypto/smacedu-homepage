@@ -102,8 +102,11 @@
 
         const res = await fetch('/api/payment-confirm', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ paymentKey, orderId, amount: Number(amount), userId: session.user.id })
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({ paymentKey, orderId, amount: Number(amount) })
         })
         const data = await res.json()
 
