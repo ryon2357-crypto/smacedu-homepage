@@ -426,6 +426,21 @@
   }
   @media (max-width: 560px) { .sticky-cta { left: 20px; right: 20px; text-align: center; } }
 
+  .sticky-countdown {
+    position: fixed; right: 20px; bottom: 78px; z-index: 60;
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--surface); border: 1px solid var(--gold); color: var(--text);
+    font-size: 12.5px; font-weight: 800; font-variant-numeric: tabular-nums;
+    padding: 8px 16px; border-radius: 999px; box-shadow: var(--shadow);
+    animation: stickyCountdownPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes stickyCountdownPulse {
+    0%, 100% { box-shadow: 0 0 0 rgba(244,180,0,0); }
+    50%      { box-shadow: 0 0 16px rgba(244,180,0,.55); }
+  }
+  @media (prefers-reduced-motion: reduce) { .sticky-countdown { animation: none; } }
+  @media (max-width: 560px) { .sticky-countdown { left: 20px; right: 20px; bottom: 84px; justify-content: center; } }
+
   .center-cta { text-align: center; margin-top: 20px; }
 
   /* ---------- scroll reveal ---------- */
@@ -1046,6 +1061,7 @@
   </div>
 </footer>
 
+<div class="sticky-countdown" id="sticky-countdown">⏰ 오늘 마감 <span id="scd-time">00:00:00</span></div>
 <a class="sticky-cta" href="https://forms.gle/DYcw9MTbFZPK3BiP7" target="_blank" rel="noopener">🔥 지금 신청하기</a>
 
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true" onclick="if(event.target===this) closeLightbox();">
@@ -1182,8 +1198,9 @@
 
   // ---------- 오늘 자정에 초기화되는 마감 임박 카운트다운 (매일 00:00 리셋) ----------
   (function () {
-    var cd = document.getElementById('countdown');
-    if (!cd) return;
+    var hasMainBox = !!document.getElementById('countdown');
+    var stickyTime = document.getElementById('scd-time');
+    if (!hasMainBox && !stickyTime) return;
 
     function nextMidnight() {
       var now = new Date();
@@ -1204,10 +1221,15 @@
       var h = Math.floor(totalMs / 3600000);
       var m = Math.floor((totalMs % 3600000) / 60000);
       var s = Math.floor((totalMs % 60000) / 1000);
-      els.h.textContent = pad(h);
-      els.m.textContent = pad(m);
-      els.s.textContent = pad(s);
-      els.ms.textContent = pad(Math.floor((totalMs % 1000) / 10));
+      if (hasMainBox) {
+        els.h.textContent = pad(h);
+        els.m.textContent = pad(m);
+        els.s.textContent = pad(s);
+        els.ms.textContent = pad(Math.floor((totalMs % 1000) / 10));
+      }
+      if (stickyTime) {
+        stickyTime.textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
+      }
     }
     tickCountdown();
     setInterval(tickCountdown, 30);
