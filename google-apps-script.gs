@@ -4,6 +4,16 @@
 // 3. 배포 > 웹 앱으로 배포 > "익명 사용자도 실행" 또는 "Anyone" 권한으로 설정합니다.
 // 4. 배포 후 나온 URL을 reviews.html과 admin.html의 GOOGLE_SCRIPT_URL에 붙여넣으세요.
 
+// 사용자 입력값을 이메일 HTML 본문에 넣기 전 이스케이프 (HTML/링크 삽입 방지)
+function escapeHtml(str) {
+  return String(str === null || str === undefined ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function _ensureHeaders(sheet) {
   const lastCol = sheet.getLastColumn();
   const currentHeaders = lastCol > 0 ? sheet.getRange(1, 1, 1, lastCol).getValues()[0] : [];
@@ -152,9 +162,9 @@ function _sendNewReviewNotify(data, total) {
   <div style="background:#f8fafc;padding:20px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
     <table style="width:100%;border-collapse:collapse;font-size:14px;">
       <tr><td style="padding:6px 0;color:#64748b;width:70px;">별점</td><td style="color:#f59e0b;font-size:16px;">${stars}</td></tr>
-      <tr><td style="padding:6px 0;color:#64748b;">이름</td><td><strong>${data.name || '-'}</strong></td></tr>
-      <tr><td style="padding:6px 0;color:#64748b;">과정</td><td>${data.course || '-'}</td></tr>
-      <tr><td style="padding:6px 0;color:#64748b;">내용</td><td style="line-height:1.6;">${String(data.content || '-').slice(0, 120)}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">이름</td><td><strong>${escapeHtml(data.name || '-')}</strong></td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">과정</td><td>${escapeHtml(data.course || '-')}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">내용</td><td style="line-height:1.6;">${escapeHtml(String(data.content || '-').slice(0, 120))}</td></tr>
     </table>
     <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
       <a href="https://docs.google.com/spreadsheets/d/18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I/edit">스프레드시트에서 확인 →</a>
@@ -193,15 +203,15 @@ function _sendDashboardEmail(sheet, headers, totalReviews) {
   });
   const courseRows = Object.entries(courseCounts)
     .sort((a, b) => b[1] - a[1])
-    .map(([c, n]) => `<tr><td style="padding:6px 12px;">${c}</td><td style="padding:6px 12px;text-align:center;">${n}건</td></tr>`)
+    .map(([c, n]) => `<tr><td style="padding:6px 12px;">${escapeHtml(c)}</td><td style="padding:6px 12px;text-align:center;">${n}건</td></tr>`)
     .join('');
 
   const recent = values.slice(-5).reverse()
     .map(r => `<tr>
       <td style="padding:6px 12px;">${r[timeIdx]}</td>
-      <td style="padding:6px 12px;">${r[nameIdx]}</td>
-      <td style="padding:6px 12px;">${r[courseIdx]}</td>
-      <td style="padding:6px 12px;">${String(r[contentIdx]).slice(0, 40)}…</td>
+      <td style="padding:6px 12px;">${escapeHtml(r[nameIdx])}</td>
+      <td style="padding:6px 12px;">${escapeHtml(r[courseIdx])}</td>
+      <td style="padding:6px 12px;">${escapeHtml(String(r[contentIdx]).slice(0, 40))}…</td>
     </tr>`).join('');
 
   const html = `
@@ -303,12 +313,12 @@ function onStatusEdit(e) {
   </h2>
   <div style="background:#f8fafc;padding:20px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
     <p style="margin:0 0 12px;">
-      <strong>${name}</strong> 님의 후기 상태가
+      <strong>${escapeHtml(name)}</strong> 님의 후기 상태가
       <span style="color:${color};font-weight:700;">${label}</span> 으로 변경되었습니다.
     </p>
     <table style="width:100%;border-collapse:collapse;font-size:14px;">
-      <tr><td style="padding:6px 0;color:#64748b;width:80px;">과정</td><td>${course}</td></tr>
-      <tr><td style="padding:6px 0;color:#64748b;">내용</td><td>${content}…</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;width:80px;">과정</td><td>${escapeHtml(course)}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">내용</td><td>${escapeHtml(content)}…</td></tr>
     </table>
     <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
       <a href="https://docs.google.com/spreadsheets/d/18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I/edit">스프레드시트 바로가기</a>
@@ -408,7 +418,7 @@ function _sendLectureConfirmEmail(name, email) {
     <p style="color:rgba(255,255,255,0.85);margin:10px 0 0;font-size:15px;">AI 에이전트로 랜딩 페이지 만들기 — 2시간 VIP 특강</p>
   </div>
   <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
-    <p style="margin:0 0 16px;font-size:16px;"><strong>${name}</strong>님, 반갑습니다!</p>
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name)}</strong>님, 반갑습니다!</p>
     <p style="margin:0 0 20px;color:#475569;line-height:1.7;">
       특강 신청이 정상적으로 접수됐어요.<br>
       참여 링크는 특강 전날인 6월 26일(금)에 이 메일로 다시 안내드리겠습니다.
@@ -505,9 +515,9 @@ function _sendLectureAdminDigest(sheet, total) {
   const rowsHtml = rows.map(r => `
     <tr>
       <td style="padding:6px 10px;font-size:13px;color:#64748b;">${r[0]}</td>
-      <td style="padding:6px 10px;font-size:13px;"><strong>${r[1]}</strong></td>
-      <td style="padding:6px 10px;font-size:13px;">${r[2]}</td>
-      <td style="padding:6px 10px;font-size:13px;">${r[3] || '미입력'}</td>
+      <td style="padding:6px 10px;font-size:13px;"><strong>${escapeHtml(r[1])}</strong></td>
+      <td style="padding:6px 10px;font-size:13px;">${escapeHtml(r[2])}</td>
+      <td style="padding:6px 10px;font-size:13px;">${escapeHtml(r[3] || '미입력')}</td>
     </tr>`).join('');
 
   const html = `
@@ -573,8 +583,8 @@ function _handleMemberSignup(params) {
   <div style="background:#f8fafc;padding:20px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
     <table style="width:100%;border-collapse:collapse;font-size:14px;">
       <tr><td style="padding:6px 0;color:#64748b;width:70px;">가입일시</td><td>${timestamp}</td></tr>
-      <tr><td style="padding:6px 0;color:#64748b;">이름</td><td><strong>${name}</strong></td></tr>
-      <tr><td style="padding:6px 0;color:#64748b;">이메일</td><td>${email}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">이름</td><td><strong>${escapeHtml(name)}</strong></td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">이메일</td><td>${escapeHtml(email)}</td></tr>
     </table>
     <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
       <a href="${SHEET_URL}">스프레드시트에서 전체 회원 목록 확인 →</a>
@@ -647,18 +657,18 @@ function _sendContactEmail(p, timestamp) {
   <div style="background:#f8fafc;padding:24px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
     <p style="margin:0 0 16px;color:#64748b;">접수일시: ${timestamp}</p>
     <table style="width:100%;border-collapse:collapse;font-size:14px;">
-      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;width:110px;">기관명</td><td style="padding:8px 12px;">${p.orgName || '-'}</td></tr>
-      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">담당자명</td><td style="padding:8px 12px;">${p.contactName || '-'}</td></tr>
-      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">연락처</td><td style="padding:8px 12px;">${p.phone || '-'}</td></tr>
-      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">이메일</td><td style="padding:8px 12px;">${p.email || '-'}</td></tr>
-      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">교육 분야</td><td style="padding:8px 12px;">${p.field || '-'}</td></tr>
-      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">교육 대상</td><td style="padding:8px 12px;">${p.target || '-'}</td></tr>
-      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">예상 인원</td><td style="padding:8px 12px;">${p.headcount || '-'}</td></tr>
-      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">희망 일정</td><td style="padding:8px 12px;">${p.schedule || '-'}</td></tr>
-      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">교육 시간</td><td style="padding:8px 12px;">${p.duration || '-'}</td></tr>
-      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">교육 장소</td><td style="padding:8px 12px;">${p.venue || '-'}</td></tr>
-      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">예산</td><td style="padding:8px 12px;">${p.budget || '-'}</td></tr>
-      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">요청 내용</td><td style="padding:8px 12px;">${p.message || '-'}</td></tr>
+      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;width:110px;">기관명</td><td style="padding:8px 12px;">${escapeHtml(p.orgName || '-')}</td></tr>
+      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">담당자명</td><td style="padding:8px 12px;">${escapeHtml(p.contactName || '-')}</td></tr>
+      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">연락처</td><td style="padding:8px 12px;">${escapeHtml(p.phone || '-')}</td></tr>
+      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">이메일</td><td style="padding:8px 12px;">${escapeHtml(p.email || '-')}</td></tr>
+      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">교육 분야</td><td style="padding:8px 12px;">${escapeHtml(p.field || '-')}</td></tr>
+      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">교육 대상</td><td style="padding:8px 12px;">${escapeHtml(p.target || '-')}</td></tr>
+      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">예상 인원</td><td style="padding:8px 12px;">${escapeHtml(p.headcount || '-')}</td></tr>
+      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">희망 일정</td><td style="padding:8px 12px;">${escapeHtml(p.schedule || '-')}</td></tr>
+      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">교육 시간</td><td style="padding:8px 12px;">${escapeHtml(p.duration || '-')}</td></tr>
+      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">교육 장소</td><td style="padding:8px 12px;">${escapeHtml(p.venue || '-')}</td></tr>
+      <tr style="background:#f1f5f9;"><td style="padding:8px 12px;font-weight:700;">예산</td><td style="padding:8px 12px;">${escapeHtml(p.budget || '-')}</td></tr>
+      <tr><td style="padding:8px 12px;font-weight:700;background:#f8fafc;">요청 내용</td><td style="padding:8px 12px;">${escapeHtml(p.message || '-')}</td></tr>
     </table>
     <p style="margin:20px 0 0;font-size:12px;color:#94a3b8;">
       <a href="${SHEET_URL}">스프레드시트에서 전체 문의 목록 확인 →</a>
