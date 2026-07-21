@@ -108,6 +108,26 @@
 
   .empty-state, .loading-state { text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 14px; }
 
+  .cat-tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .cat-tile {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    padding: 20px 16px; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    cursor: pointer; font-family: inherit; transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .cat-tile:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .cat-tile-name { font-weight: 700; font-size: 14.5px; color: var(--text); text-align: center; }
+  .cat-tile-count {
+    font-weight: 800; font-size: 13px; color: var(--gold-ink); background: var(--gold);
+    padding: 3px 12px; border-radius: 999px;
+  }
+  .cat-tile.urgent .cat-tile-count { background: rgba(255,122,41,0.18); color: var(--orange); }
+
+  .back-link {
+    display: inline-block; margin-bottom: 14px; font-size: 13px; font-weight: 700;
+    color: var(--text-muted); text-decoration: none;
+  }
+  .back-link:hover { color: var(--text); }
+
   .cta-banner {
     background: linear-gradient(135deg, var(--navy), var(--navy-2)); color: #fff; border-radius: 16px;
     padding: 28px 26px; text-align: center; margin: 30px 0 50px;
@@ -187,6 +207,35 @@
     return { text: `D-${diff}`, urgent: diff <= 3 };
   }
 
+  const PRIORITY_CATEGORIES = ['사진/영상', 'AI/컴퓨터'];
+
+  function sortJobs(list, sort) {
+    const sorted = list.slice();
+    if (sort === 'deadline') {
+      sorted.sort((a, b) => {
+        if (!a.deadline && !b.deadline) return new Date(b.collected_at) - new Date(a.collected_at);
+        if (!a.deadline) return 1;
+        if (!b.deadline) return -1;
+        return a.deadline.localeCompare(b.deadline);
+      });
+    } else {
+      sorted.sort((a, b) => new Date(b.collected_at) - new Date(a.collected_at));
+    }
+    return sorted;
+  }
+
+  function jobCardHtml(j) {
+    const dd = dDayInfo(j.deadline);
+    return `<a class="job-card" href="${j.url}" target="_blank" rel="noopener">
+        <div class="main">
+          <span class="cat-badge">${escapeHtml(j.category || '기타')}</span>
+          <h3>${escapeHtml(j.title)}</h3>
+          <div class="meta">${escapeHtml(j.institution || '')}${j.institution ? ' · ' : ''}수집일 ${escapeHtml((j.collected_at || '').slice(0, 10))}</div>
+        </div>
+        <div class="dday ${dd.urgent ? 'urgent' : ''}">${dd.text}<small>${j.deadline ? escapeHtml(j.deadline) : '마감일 미상'}</small></div>
+      </a>`;
+  }
+
   function render() {
     const cat = document.getElementById('filter-category').value;
     const sort = document.getElementById('filter-sort').value;
@@ -198,17 +247,6 @@
       return true;
     });
 
-    if (sort === 'deadline') {
-      list.sort((a, b) => {
-        if (!a.deadline && !b.deadline) return new Date(b.collected_at) - new Date(a.collected_at);
-        if (!a.deadline) return 1;
-        if (!b.deadline) return -1;
-        return a.deadline.localeCompare(b.deadline);
-      });
-    } else {
-      list.sort((a, b) => new Date(b.collected_at) - new Date(a.collected_at));
-    }
-
     document.getElementById('count-pill').textContent = `${list.length}건`;
 
     const listEl = document.getElementById('job-list');
@@ -217,22 +255,53 @@
       return;
     }
 
-    listEl.innerHTML = list.map(j => {
-      const dd = dDayInfo(j.deadline);
-      return `<a class="job-card" href="${j.url}" target="_blank" rel="noopener">
-        <div class="main">
-          <span class="cat-badge">${escapeHtml(j.category || '기타')}</span>
-          <h3>${escapeHtml(j.title)}</h3>
-          <div class="meta">${escapeHtml(j.institution || '')}${j.institution ? ' · ' : ''}수집일 ${escapeHtml((j.collected_at || '').slice(0, 10))}</div>
-        </div>
-        <div class="dday ${dd.urgent ? 'urgent' : ''}">${dd.text}<small>${j.deadline ? escapeHtml(j.deadline) : '마감일 미상'}</small></div>
-      </a>`;
-    }).join('');
+    if (cat || q) {
+      // 특정 분야로 필터링했거나 검색 중이면 해당 목록만 나열 + 전체로 돌아가는 링크
+      const backLink = cat && !q ? '<a href="#" id="back-to-blocks" class="back-link">← 전체 분야 보기</a>' : '';
+      listEl.innerHTML = backLink + sortJobs(list, sort).map(jobCardHtml).join('');
+      const back = document.getElementById('back-to-blocks');
+      if (back) {
+        back.addEventListener('click', (e) => {
+          e.preventDefault();
+          document.getElementById('filter-category').value = '';
+          render();
+        });
+      }
+      return;
+    }
+
+    // 기본 화면: 분야별 요약 타일만 보여주고 클릭하면 그 분야 목록으로 들어감 (전체를 다 펼치면
+    // 페이지가 너무 길어져서 하단 강의 홍보 배너가 묻히는 문제 때문에 기본은 압축된 타일로 유지)
+    const byCategory = {};
+    list.forEach(j => {
+      const c = j.category || '기타';
+      (byCategory[c] = byCategory[c] || []).push(j);
+    });
+    const otherCategories = Object.keys(byCategory).filter(c => !PRIORITY_CATEGORIES.includes(c)).sort();
+    const orderedCategories = [...PRIORITY_CATEGORIES, ...otherCategories].filter(c => byCategory[c]);
+
+    listEl.innerHTML = `<div class="cat-tile-grid">${orderedCategories.map(c => {
+      const jobs = byCategory[c];
+      const urgent = jobs.some(j => dDayInfo(j.deadline).urgent);
+      return `<button type="button" class="cat-tile${urgent ? ' urgent' : ''}" data-cat="${escapeAttr(c)}">
+        <span class="cat-tile-name">${escapeHtml(c)}</span>
+        <span class="cat-tile-count">${jobs.length}건</span>
+      </button>`;
+    }).join('')}</div>`;
+
+    listEl.querySelectorAll('.cat-tile').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('filter-category').value = btn.dataset.cat;
+        render();
+        listEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
   }
 
   function escapeHtml(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
+  const escapeAttr = escapeHtml;
 
   async function init() {
     const { data, error } = await sb
