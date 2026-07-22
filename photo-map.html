@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엘란비탈 대한민국 출사지도</title>
+<style>
+  :root{
+    --bg:#faf8f5; --ink:#26221e; --sub:#7a7269; --line:#e8e2d9;
+    --card:#ffffff; --shadow:0 1px 2px rgba(40,34,28,.04),0 8px 24px rgba(40,34,28,.06);
+    --spring:#e2607f; --spring-soft:#f7d9e2;
+    --summer:#2f9d94; --summer-soft:#c9ebe7;
+    --autumn:#cf7a34; --autumn-soft:#f3ddc2;
+    --winter:#5b83a8; --winter-soft:#d7e3ef;
+    --c-flower:#e2607f; --c-scape:#5a9367; --c-night:#5b6bb0; --c-festival:#d1493f; --c-indoor:#3f9aa0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all;line-break:strict}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+
+  /* HERO */
+  .hero{position:relative;padding:96px 24px 60px;text-align:center;overflow:hidden;
+    background:radial-gradient(60% 90% at 12% 8%,rgba(226,96,127,.13),transparent 60%),radial-gradient(50% 80% at 88% 16%,rgba(91,107,176,.12),transparent 60%),radial-gradient(60% 90% at 82% 96%,rgba(207,122,52,.13),transparent 60%),radial-gradient(50% 80% at 18% 96%,rgba(47,157,148,.12),transparent 60%)}
+  .hero .eyebrow{font-size:13px;letter-spacing:.3em;color:var(--sub);font-weight:600;margin-bottom:20px}
+  .hero h1{font-size:clamp(33px,5.4vw,60px);font-weight:800;letter-spacing:-.02em;line-height:1.1}
+  .hero h1 .accent{color:#d1493f;-webkit-text-fill-color:#d1493f}
+  .hero p.lead{margin:24px auto 0;max-width:600px;font-size:17px;line-height:1.75;color:#544d45}
+  .hero .by{margin-top:20px;font-size:14px;color:var(--sub)}
+  .hero .by b{color:var(--ink);font-weight:700}
+  .hero .note{margin:30px auto 0;display:flex;gap:11px;align-items:flex-start;text-align:left;font-size:13px;line-height:1.85;color:var(--sub);background:rgba(255,255,255,.72);border:1px solid var(--line);padding:15px 20px;border-radius:16px;max-width:660px}
+  .hero .note .badge-author{margin:0 2px}
+  .badge-author{display:inline-flex;gap:5px;align-items:center;background:#fff3d6;color:#a9761f;border:1px solid #f0dca8;font-weight:700;font-size:12px;padding:2px 9px;border-radius:999px}
+
+  /* CONTROLS */
+  .controls{position:sticky;top:0;z-index:50;background:rgba(250,248,245,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .controls-inner{display:flex;flex-direction:column;gap:10px;padding:12px 24px}
+  .ctrl-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+  .cats{display:flex;flex-wrap:wrap;gap:7px}
+  .cats button{border:1px solid var(--line);background:#fff;font-family:inherit;font-size:13px;font-weight:600;color:var(--sub);padding:7px 13px;border-radius:999px;cursor:pointer;transition:.18s}
+  .cats button:hover{border-color:#cfc7ba}
+  .cats button.on{color:#fff;border-color:transparent}
+  .region-toggle{display:inline-flex;background:#efe9e0;border-radius:999px;padding:4px;gap:2px;flex-shrink:0}
+  .region-toggle button{border:0;background:transparent;font-family:inherit;font-size:13px;font-weight:600;color:var(--sub);padding:7px 15px;border-radius:999px;cursor:pointer;transition:.2s}
+  .region-toggle button.on{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+  .month-pills{display:flex;flex-wrap:wrap;gap:6px}
+  .month-pills button{border:1px solid var(--line);background:#fff;font-family:inherit;font-size:13px;font-weight:600;color:var(--sub);width:36px;height:36px;border-radius:10px;cursor:pointer;transition:.18s}
+  .month-pills button:hover{border-color:#cfc7ba}
+  .month-pills button.on{color:#fff;border-color:transparent}
+  .month-pills button.all{width:auto;padding:0 14px}
+
+  /* SECTION */
+  .month-block{padding:52px 0 8px;scroll-margin-top:120px}
+  .month-head{display:flex;align-items:baseline;gap:18px;margin-bottom:8px;flex-wrap:wrap}
+  .month-num{font-size:clamp(44px,7vw,72px);font-weight:800;letter-spacing:-.03em;line-height:.9}
+  .month-meta{display:flex;flex-direction:column;gap:2px}
+  .month-season{font-size:14px;font-weight:700;letter-spacing:.06em}
+  .month-en{font-size:12.5px;color:var(--sub);letter-spacing:.16em}
+  .accent-bar{height:4px;border-radius:4px;margin:14px 0 28px;width:100%;opacity:.9}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;padding-bottom:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 22px 20px;box-shadow:var(--shadow);position:relative;overflow:hidden;opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s,border-color .2s}
+  .card.in{opacity:1;transform:none}
+  .card:hover{border-color:#d8d0c4}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--acc)}
+  .card.author::before{width:5px;background:linear-gradient(var(--acc),#caa24a)}
+  .card-photo{position:relative;margin:-22px -22px 16px;aspect-ratio:4/3;overflow:hidden;background:#eee}
+  .card-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .card-photo::after{content:"";position:absolute;inset:0;box-shadow:inset 0 -30px 30px -20px rgba(0,0,0,.25)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .cat-chip{display:inline-flex;gap:4px;align-items:center;font-size:11px;font-weight:700;color:#fff;background:var(--acc);padding:3px 9px;border-radius:999px;letter-spacing:.02em}
+  .card-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:13px}
+  .flower-emoji{font-size:28px;line-height:1;flex-shrink:0}
+  .flower-name{font-size:19px;font-weight:800;letter-spacing:-.01em;line-height:1.25}
+  .flower-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
+  .timing{margin-left:auto;flex-shrink:0;font-size:11.5px;font-weight:700;color:var(--acc);background:color-mix(in srgb,var(--acc) 12%,#fff);padding:5px 10px;border-radius:999px;white-space:nowrap}
+  .spots{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+  .spot-row{display:flex;gap:9px;font-size:13.5px}
+  .spot-tag{flex-shrink:0;font-size:11px;font-weight:700;color:#fff;background:#3d3833;padding:3px 8px;border-radius:7px;height:fit-content}
+  .spot-tag.nation{background:#9a9188}
+  .spot-list{color:#4a443c;padding-top:1px}
+  .tip{margin-top:15px;padding-top:13px;border-top:1px dashed var(--line);font-size:12.5px;color:#6b6459;display:flex;gap:8px}
+  .tip b{color:var(--acc);font-weight:700;flex-shrink:0}
+  .tip.note{background:linear-gradient(180deg,#fffaf0,#fff8ea);margin:15px -22px 0;padding:14px 22px 16px;border-top:1px solid #ecd9a8;font-size:13px;color:#5c5443}
+  .tip.note:last-child{margin-bottom:-20px;padding-bottom:18px}
+  .tip.note b{color:#a9761f}
+  .tip.sp{background:#eef2fb;margin:0 -22px -20px;padding:13px 22px 16px;border-top:1px solid #d6e0f5;font-size:12.5px;color:#41506e;line-height:1.7}
+  .tip.sp b{color:#4a5fb0}
+  .card .tip:not(.sp){line-height:1.7}
+  .empty{padding:70px 24px;text-align:center;color:var(--sub);font-size:15px;display:none}
+
+  footer{margin-top:56px;border-top:1px solid var(--line);padding:40px 24px 60px;text-align:center;color:var(--sub);font-size:13.5px}
+  footer .fnote{max-width:680px;margin:0 auto 16px;line-height:1.7}
+  footer .brand{font-weight:800;color:var(--ink);font-size:15px}
+  footer .brand span{color:var(--spring)}
+  footer .sig{margin-top:6px;font-size:12.5px}
+
+  @media(max-width:640px){.hero{padding:60px 20px 44px}.controls-inner{padding:11px 14px}.grid{grid-template-columns:1fr}.month-num{font-size:50px}}
+
+  .spot-list a{color:inherit;text-decoration:none;border-bottom:1px dotted #b8b0a2}
+  .spot-list a:hover{color:var(--acc);border-bottom-color:var(--acc)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">SMART MEDIA ART CENTER · PHOTO EXCURSION MAP OF KOREA</div>
+  <h1>엘란비탈 <span class="accent">대한민국 출사지도</span></h1>
+  <p class="lead">개화·단풍·억새·은하수부터 야경, 축제, 그리고 비 오는 날 갈 실내 촬영지까지. 월별·지역별로 오늘 어디로 카메라를 들고 나갈지 한눈에.</p>
+  <p class="by">기획·촬영 노트 <b>엘란비탈 박성욱 작가</b> · 스마트미디어아트센터</p>
+  <div class="note"><span>🌦️</span><span>수년간의 실제 출사 기록을 바탕으로 정리한 시기·장소 데이터입니다. 개화·단풍·은하수 시기는 그해 날씨에 따라 앞뒤로 움직이니 <b>평년 기준</b>으로 보고 출발 전 현지 상황을 꼭 확인하세요. <span class="badge-author">✍️ 작가 노트</span> 는 박성욱 작가가 실제 다녀와 남긴 현장 세팅값입니다.</span></div>
+</header>
+
+<nav class="controls">
+  <div class="controls-inner">
+    <div class="ctrl-row">
+      <div class="cats" id="catFilter">
+        <button data-cat="all" class="on">전체</button>
+        <button data-cat="flower">🌸 개화</button>
+        <button data-cat="scape">🏔️ 풍경·자연</button>
+        <button data-cat="night">🌃 야경</button>
+        <button data-cat="festival">🎆 축제</button>
+        <button data-cat="indoor">☔ 실내·우천</button>
+      </div>
+      <div class="region-toggle" id="regionToggle">
+        <button data-region="all" class="on">전체</button>
+        <button data-region="seoul">서울·경기</button>
+        <button data-region="nation">전국</button>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <div class="month-pills" id="monthPills"><button data-month="0" class="all on">전체 월</button></div>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap" id="app"></main>
+<div class="empty" id="empty">선택한 조건에 맞는 출사지가 없어요. 다른 달·지역·카테고리를 골라보세요.</div>
+
+<footer>
+  <p class="fnote">평년 개화·단풍·기상 시기와 대표 출사지를 정리한 참고 자료입니다. 방문 전 지자체 축제 공지, 기상청 예보, 물때·일출시각, 현지 SNS로 최신 상황을 확인하세요.<br>📷 촬영 팁은 DSLR·미러리스 공통이며, 조리개·셔터·ISO 값은 카메라·날씨에 따라 조정하세요. 📱 스마트폰 사용자를 위한 팁은 카드마다 따로 표기했습니다.</p>
+  <p class="brand">엘란비탈 <span>박성욱</span></p>
+  <p class="sig">스마트미디어아트센터 · 이엘포토그래피 · blog.naver.com/elanvital7</p>
+</footer>
+
+<script>
+const SEASON={spring:{ko:'봄'},summer:{ko:'여름'},autumn:{ko:'가을'},winter:{ko:'겨울'}};
+const monthSeason=m=>(m>=3&&m<=5)?'spring':(m>=6&&m<=8)?'summer':(m>=9&&m<=11)?'autumn':'winter';
+const EN=['','JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+const CAT={flower:{ko:'개화',e:'🌸',c:'var(--c-flower)'},scape:{ko:'풍경·자연',e:'🏔️',c:'var(--c-scape)'},night:{ko:'야경',e:'🌃',c:'var(--c-night)'},festival:{ko:'축제·이벤트',e:'🎆',c:'var(--c-festival)'},indoor:{ko:'실내·우천',e:'☔',c:'var(--c-indoor)'}};
+
+// n:1 = 박성욱 작가 실전 노트
+const DATA={
+1:[
+  {c:'flower',f:'동백',sub:'冬柏',e:'🌺',t:'12~3월',seoul:['아침고요수목원 온실(가평)'],nation:['제주 형제섬 애기동백','제주 동백포레스트·카멜리아힐','여수 오동도','거제 지심도'],tip:'흐린 날·비 온 뒤 붉은색이 가장 진합니다. 떨어진 꽃송이를 함께 담으면 이야기가 생겨요.'},
+  {c:'scape',f:'겨울 일출',sub:'日出',e:'🌅',t:'12~1월',seoul:['인천 소래포구','시흥 오이도','파주 공릉천'],nation:['강릉 정동진·등명해변','포항 호미곶·문무대왕릉','울산 간절곶','동해 추암 촛대바위','부산 오랑대'],img:'images/chulsa/winter_sunrise_donghae.jpg',n:1,tip:'수평선 위 구름 상태가 성패를 가릅니다. 해 뜨기 40분 전 도착해 매직아워부터. 강릉 정동진·등명은 실루엣 인물을 넣으면 색이 살아있는 채로 형태가 또렷하게 남아요. 파주 공릉천은 물안개 낀 강 일출이 몽환적.',sp:'스마트폰은 해를 정면으로 넣으면 하늘이 하얗게 날아갑니다. 노출보정(밝기)을 −1~−2로 낮춰 실루엣으로 담으세요. 태양이 강하면 지형지물로 살짝 가리고, 어둑한 매직아워엔 프로 모드로. 밋밋하면 스냅시드 보정으로 살립니다.'},
+  {c:'scape',f:'설경·상고대',sub:'雪景',e:'❄️',t:'12~2월',seoul:['경복궁·창덕궁 설경','남한산성','광교산'],nation:['무주 덕유산 설경 일출','태백산 주목','덕유산 향적봉','소백산','대관령 양떼목장','인제 자작나무숲','한라산 영실'],tip:'영하 10도+습도가 겹친 다음날 아침이 최적. 일출 직후 30분 안에 상고대가 사라집니다. 눈 온 다음날 아침 경복궁·창덕궁 설경 번개는 서울에서 만나는 최고의 겨울 그림 — 개장 직후 인파 전에 담으세요.'},
+  {c:'flower',f:'복수초',sub:'福壽草',e:'💛',t:'1월말~3월',seoul:['화야산(가평)','축령산'],nation:['한라산','지리산 자락'],tip:'잔설을 뚫고 나온 노란 꽃이 주인공. 저각도 접사+눈 배경으로 봄의 첫 신호를 담으세요.'},
+  {c:'festival',f:'겨울 빛축제',sub:'',e:'✨',t:'12~2월',seoul:['가평 아침고요 오색별빛정원','포천 허브아일랜드 불빛동화','서울 광화문·청계천 빛초롱'],nation:['보성 차밭 빛축제','부산 크리스마스트리축제'],tip:'점등 직후 하늘이 남색인 블루아워 20분이 조명과 하늘색이 가장 조화롭습니다.'},
+  {c:'festival',f:'얼음·눈 축제',sub:'',e:'🧊',t:'1월',seoul:[],nation:['화천 산천어축제','태백산 눈축제','인제 빙어축제'],tip:'얼음 위 인파·텐트를 높은 곳에서 부감으로. 눈 결정 접사도 챙기세요.'}
+],
+2:[
+  {c:'flower',f:'매화(홍매·청매)',sub:'梅花',e:'🌸',t:'2월말~3월',seoul:['서울 봉은사 홍매화'],nation:['양산 통도사 자장매','부산 오랑대 일출','여수 향일암','순천 금둔사·홍매화','통영'],tip:'통도사 자장매가 전국에서 가장 이르게 핍니다. 기와·단청 배경으로 홍매 한 가지를 클로즈업. 2월 이른 매화는 여수 향일암·부산 오랑대 일출과 묶어 남부 무박으로. 서울에선 봉은사 홍매화가 가장 먼저 봄을 알립니다.'},
+  {c:'flower',f:'노루귀·바람꽃',sub:'野生花',e:'🌱',t:'2~3월',seoul:['천마산','화야산'],nation:['풍도(안산)','변산반도'],tip:'솜털이 살아있는 역광 접사가 백미. 땅에 바짝 엎드려 눈높이를 꽃과 맞추세요.'},
+  {c:'scape',f:'남해안 겨울 풍경',sub:'',e:'🌊',t:'2월',seoul:[],nation:['장흥 매생이 양식장','벌교 갯벌·골목','여수'],n:1,tip:'매생이 양식장의 규칙적인 지주 선이 갯벌 위 패턴을 만듭니다. 물때 낮은 시간에 반영과 함께. 벌교 옛 골목은 흐린 겨울빛이 오히려 정취를 살려줘요.'}
+],
+3:[
+  {c:'flower',f:'매화',sub:'梅花',e:'🌸',t:'3월 중순',seoul:['서울 봉은사 홍매화'],nation:['광양 홍쌍리 청매실농원','양산 원동 순매원','구례 화엄사 화엄매','천은사 수홍루','순천 선암사 선암매','장성 백양사 고불매','금시당·밀양향교','고성 시루섬','대구 남평문씨본리세거지'],img:'images/chulsa/maehwa_gwangyang.jpg',n:1,tip:'광양매화마을은 새벽 블루아워→일출→낮까지 시간대마다 완전히 다른 사진이 나옵니다. 장노출로 조명과 매화 군락을 정리하고, 70-200mm로 홍매·백매를 압축하세요. 양산 원동 순매원은 낙동강 배경으로 매화 사이를 지나는 기차가 이곳만의 그림 — 역광으로 꽃잎 투과를 노려보세요. 사찰 매화(화엄사·백양사)는 고목의 곡선을 단청과 함께.',sp:'매화 한 송이에 화면을 터치해 초점을 맞추고 밝기를 살짝 올리면 화사하게 나옵니다. 인물사진 모드는 꽃가지가 뭉개질 수 있으니 일반 모드로. 역광이면 노출보정으로 꽃잎이 투과되는 빛을 살리세요.'},
+  {c:'flower',f:'산수유',sub:'山茱萸',e:'💛',t:'3월 중~하순',seoul:['이천 백사 산수유마을','양평 개군면'],nation:['구례 산동 현천마을·반곡마을','순천 송광사','의성 화전리'],img:'images/chulsa/sansuyu_gurye.jpg',n:1,tip:'구례 현천마을은 저수지 물빛이 노란 산수유를 더 선명하게 받쳐줍니다. 반곡마을 계곡에선 장노출로 비단처럼 흐르는 물과 산수유를 함께 담으세요. 돌담·기와와 어우러진 골목이 남도의 봄입니다.'},
+  {c:'scape',f:'물안개 반영',sub:'反影',e:'🌫️',t:'3월말~4월초',seoul:['양평 세미원'],nation:['화순 세량지','청송 주산지'],tip:'세량지는 새벽 물안개+연둣빛 왕벚꽃 반영으로 유명. 일출 전 도착이 필수입니다.'},
+  {c:'festival',f:'광양 매화축제',sub:'',e:'🎪',t:'3월 중순',seoul:[],nation:['광양 매화마을'],tip:'축제 기간 인파가 많으니 이른 아침이나 평일. 섬진강 물빛과 매화를 함께 잡으세요.'}
+],
+4:[
+  {c:'flower',f:'벚꽃',sub:'櫻花',e:'🌸',t:'4월 초~중순',seoul:['여의도 윤중로','석촌호수','현충원 벚꽃','정독도서관','반포 서래섬','서울대공원','안양천','일산 호수공원'],nation:['진해 군항제','경주 보문·대릉원','하동 십리벚꽃·남해','화순 세량제 산벚꽃','거창 수양벚꽃','순천·전주·천안 겹벚꽃','서산 개심사 겹벚꽃·황금산'],tip:'꽃비는 1/1000초 이상 고속셔터. 야간 조명 벚꽃은 삼각대+저감도로 색을 살리세요. 서래섬은 유채와 겹쳐 노랑+분홍을 함께. 현충원·정독도서관 벚꽃은 이른 아침 인파 전이 좋고, 겹벚꽃(서산 개심사, 4월말)은 벚꽃이 진 뒤 풍성하게 이어집니다.',sp:'벚꽃 아래에서 극단적인 로우앵글로 하늘을 배경 삼아 올려찍으면 스마트폰으로도 시원한 사진이 나옵니다. 나무·아치를 이용한 프레임 속 프레임 구도가 흐린 날 특히 효과적이에요. 흰 꽃이 날아가면 밝기를 조금 낮추세요.'},
+  {c:'flower',f:'진달래·봄꽃',sub:'杜鵑',e:'💗',t:'4월 초~중순',seoul:['강화 고려산','부천 원미산'],nation:['창녕 화왕산','대구 비슬산','여수 영취산','강진 남미륵사','구례 지리산치즈랜드 수선화'],tip:'화왕산·비슬산 능선 군락은 광각 한 컷이 정석. 아침 순광에 분홍이 가장 곱습니다. 강진 남미륵사 겹벚꽃·구례 수선화도 함께.'},
+  {c:'flower',f:'유채꽃',sub:'',e:'💛',t:'4월',seoul:['구리 한강시민공원','반포 서래섬'],nation:['제주 산방산·형제섬·가시리','제주 가파도 청보리','삼척 맹방'],img:'images/chulsa/yuchae_sanbangsan.jpg',n:1,tip:'제주 유채는 바람이 주인공입니다. 전경-중경-원경(앞꽃-밭-오름/바다)을 한 프레임에 쌓고, 유채밭의 말이나 풍력발전기를 16mm 광각으로 넣으면 제주가 다 담겨요. 노을엔 꽃과 마을 불빛이 어우러집니다. 가파도 청보리는 4월말이 초록 절정.',sp:'유채밭에선 근경(앞꽃)-중경(밭)-원경(오름·바다)을 한 프레임에 넣으면 스마트폰도 입체감이 살아납니다. 꽃에 바짝 다가가 로우앵글로 찍으면 작은 밭도 광활해 보여요. 노란색이 날아가면 밝기를 살짝 낮추세요.'},
+  {c:'flower',f:'튤립',sub:'',e:'🌷',t:'4월 중~5월초',seoul:['서울숲 튤립','에버랜드 튤립축제'],nation:['태안 튤립꽃박람회(4.10~5.7)'],tip:'색색의 줄을 사선 구도로 배치하면 리듬이 생깁니다. 한 송이 클로즈업도 병행. 서울숲 튤립은 4월 중순 도심에서 만나는 봄.'},
+  {c:'festival',f:'진해 군항제',sub:'',e:'🎆',t:'3월말~4월초(3.27~4.5)',seoul:['여의도 봄꽃축제'],nation:['진해 군항제','경주 벚꽃'],tip:'경화역·여좌천 로망스다리가 명소. 새벽 첫차로 인파 없는 철길 벚꽃을 노리세요. 2026년은 3.27~4.5.'},
+  {c:'scape',f:'주산지 반영',sub:'反影',e:'🌫️',t:'4월',seoul:[],nation:['청송 주산지','포천 산정호수'],tip:'왕버들이 물에 잠긴 주산지는 새벽 물안개가 신비롭습니다. 바람 없는 날 완벽한 반영.'}
+],
+5:[
+  {c:'flower',f:'철쭉·꽃잔디',sub:'',e:'💗',t:'5월 초~중순',seoul:['군포 철쭉동산','서울 불암산·수락산'],nation:['합천 황매산(철쭉 일출·은하수)','소백산','지리산 바래봉','산청 대명사 꽃잔디','거창 월성계곡 수달래','김해 화포천 꽃잔디','남해 미조항'],img:'images/chulsa/cheoljjuk_hwangmaesan.jpg',n:1,tip:'황매산은 일출+운해+철쭉 삼박자가 국내 최고 풍경이라 새벽 산행을 각오하세요. 남부 무박 출사라면 고성 문수암 일출→산청 꽃잔디→거창 수달래로 하루에 봄꽃을 몰아 담을 수 있습니다.'},
+  {c:'flower',f:'작약·양귀비·장미',sub:'',e:'🌹',t:'5월 중~하순',seoul:['중랑천 서울장미공원','올림픽공원','서울숲'],nation:['고흥 작약','의성 조문국 작약','함안 악양둑방 양귀비','영천 소래풀','장성 황룡강 양귀비','곡성 장미축제','순천만국가정원','김해 화포천 등나무','남해 산들예술원 목향장미'],tip:'터널·아치로 깊이감을. 양귀비·작약은 역광 투과+얕은 심도로 주인공을 세우세요. 함안 악양둑방은 일출과 양귀비 군락을 함께.'},
+  {c:'flower',f:'청보리·이팝·샤스타',sub:'',e:'🌾',t:'~5월 초',seoul:['조계사 겹벚꽃'],nation:['고창 학원농장 청보리','밀양 위양지 이팝','충주 목계나루 유채','부안 곰소염전','영광 숲쟁이 금계국','변산반도·홍성 샤스타데이지'],tip:'바람에 눕는 보리 물결을 느린 셔터로. 이팝나무는 하얀 눈꽃처럼 흐드러집니다. 밀양 위양지는 이팝나무가 못에 비치는 반영이 절경.'},
+  {c:'festival',f:'연등회·대나무',sub:'燃燈',e:'🏮',t:'5월(석가탄신일)',seoul:['서울 조계사·청계천 연등','봉은사'],nation:['담양 대나무축제','진주 남강'],tip:'청계천 연등 물빛 반영이 화려합니다. 연등행렬은 저속셔터로 빛의 흐름을 담으세요.'}
+],
+6:[
+  {c:'flower',f:'수국',sub:'水菊',e:'💙',t:'6월 중~7월',seoul:['아침고요수목원','양평'],nation:['보성 주월산 전망대·윤제림','부산 태종대','울산 장생포','제주 카멜리아힐·혼인지','강진·해남·신안 여름꽃','통영'],tip:'비 오는 날 물방울 맺힌 수국이 백미. 흐린 날 파스텔 톤이 오히려 곱게 나옵니다. 보성 윤제림·주월산 전망대는 수국 명소로 손꼽힙니다.'},
+  {c:'flower',f:'라벤더·여름꽃',sub:'',e:'💜',t:'6월',seoul:['안성팜랜드','하늘공원 양귀비'],nation:['고성 하늬라벤더팜','신안 퍼플섬 라벤더','정읍허브원 라벤더축제','진도 운림산림욕장·공주 미르섬 코끼리마늘꽃'],tip:'보라 밭 사이 길을 소실점 구도로. 인물을 넣으면 유럽풍 감성이 살아납니다. 신안 퍼플섬은 보라색 마을·다리 전체가 피사체.'},
+  {c:'scape',f:'은하수',sub:'銀河',e:'🌌',t:'6~9월(신월)',seoul:[],nation:['영양 반딧불이천문대(밤하늘보호공원)','정선 안반데기·새비재','평창 청옥산','부안 솔섬','제천 옥순대교','군산 신시도','합천 오도산'],tip:'광해 없는 곳+달 없는 밤(신월/그믐)이 필수. 6월부터 은하수 중심부가 보입니다. 20초/f2.8/ISO3200 기준. 서해 부안 솔섬·군산 신시도는 바다 위 은하수, 정선 새비재·평창 청옥산은 산 위 은하수 성지.',sp:'은하수는 스마트폰에 가장 어려운 주제입니다. 나이트 모드나 프로 모드로 셔터를 최대(10~30초)로 열고 반드시 삼각대·거치대에 고정하세요. 그래도 한계가 있으니, 은하수 중심은 카메라로 담고 스마트폰은 전경·인증용으로 쓰는 걸 권합니다.'},
+  {c:'flower',f:'능소화',sub:'凌霄花',e:'🧡',t:'6월말~8월',seoul:['서울 북촌','덕수궁 돌담'],nation:['김해 수로왕릉','전주 한옥마을','경주'],tip:'한옥 담장을 타고 늘어진 주황 꽃이 한국적. 담장 선을 따라 세로 구도로.'}
+],
+7:[
+  {c:'flower',f:'연꽃',sub:'蓮花',e:'🪷',t:'7월 중~8월초',seoul:['시흥 관곡지','양평 세미원','수원 화성'],nation:['부여 궁남지','무안 회산백련지','전주 덕진공원'],tip:'해 뜨기 직전 물안개 낄 때 개화합니다. 새벽 5~7시 골든타임, 반영을 노리세요.',sp:'연꽃 한 송이를 터치해 초점을 잡고 밝기를 조절하세요. 물 위 반영을 같이 담으면 안정적입니다. 반영이 안 보이면 스마트폰을 수면 가까이 낮추거나 거꾸로 들어보세요 — 카메라 위치가 낮을수록 반영이 살아납니다.'},
+  {c:'scape',f:'은하수 절정',sub:'銀河',e:'🌌',t:'7~8월(그믐)',seoul:[],nation:['정선 안반데기·새비재','설악 울산바위','제천 옥순대교','부안 솔섬·군산 신시도','영양','제주 수월봉'],tip:'안반데기 배추밭+은하수가 대표 구도. 은하수는 남쪽 하늘, 자정 전후가 가장 높이 뜹니다. 그믐 전후 3~4일이 유일한 기회이니 달력을 미리 확인하세요.'},
+  {c:'festival',f:'여름 축제',sub:'',e:'🎆',t:'7월',seoul:[],nation:['무주 반딧불축제','보령 머드축제','가평 자라섬'],tip:'무주 반딧불은 장노출로 빛의 궤적을. 삼각대+릴리즈+어둠 적응 필수입니다.'},
+  {c:'flower',f:'맥문동·해바라기·배롱',sub:'',e:'🌻',t:'7월 중~하순',seoul:['서울숲 맥문동'],nation:['경주 대왕암 맥문동','경주 월정교 해바라기','함안 강주리 해바라기','안동 병산서원·하목정 배롱','대구 가창 채석장'],tip:'맥문동은 소나무숲 아래 보랏빛 융단을 저각도로. 대왕암 솔숲 맥문동, 월정교 배경 해바라기가 7월 남부의 대표 조합입니다.'},
+  {c:'flower',f:'원추리·나리',sub:'',e:'🧡',t:'7월',seoul:[],nation:['곰배령','태백 고원'],tip:'야생화 트레킹 코스. 능선 위 주황 군락을 광각으로 담으세요.'}
+],
+8:[
+  {c:'flower',f:'배롱나무(백일홍)',sub:'百日紅',e:'🌸',t:'8월',seoul:['서울 효창공원 배롱','덕수궁 배롱','안산'],nation:['담양 명옥헌원림','화순 만연사','화순 죽림서원','순천·담양·곡성','안동 병산서원','경주 서출지'],tip:'명옥헌 배롱나무 연못 반영이 국내 최고. 100일간 피니 8월 내내 기회가 있습니다. 화순 만연사·명옥헌은 붉은 배롱과 사찰·정자 반영이 압권. 서울에선 효창공원·덕수궁 배롱을 노을과 함께.'},
+  {c:'flower',f:'해바라기·맥문동',sub:'',e:'🌻',t:'8월 중순',seoul:['서울숲 맥문동','올림픽공원 솔숲'],nation:['태백 구와우 해바라기','담양 메타세쿼이아길','장성 축령산 편백숲'],tip:'해바라기는 파란 하늘+순광 대비로. 맥문동은 소나무숲 아래 보랏빛 융단을 저각도로.'},
+  {c:'scape',f:'여름 이끼계곡·운무',sub:'',e:'💦',t:'6~8월',seoul:['가평 용추계곡'],nation:['삼척·평창 3대 이끼계곡','무주 구천동','정선 화암','청송 얼음골'],tip:'비 갠 뒤 이끼계곡의 초록 물안개가 절정. 느린 셔터(ND필터)로 물줄기를 비단처럼, 이끼는 젖어있을 때 색이 가장 진합니다. 이끼계곡은 습해서 렌즈 김서림·미끄럼 주의.'}
+],
+9:[
+  {c:'flower',f:'꽃무릇(상사화)',sub:'石蒜',e:'🔴',t:'9월 중~하순(불갑사 9.18~27)',seoul:[],nation:['영광 불갑사','함평 용천사','함평 밀재','고창 선운사','진안 마이산','변산마실길','내장사 백양꽃'],tip:'사찰 숲을 붉게 물들이는 군락. 이슬 맺힌 아침 접사와 숲길 광각을 모두 챙기세요. 영광 불갑산 상사화축제는 2026년 9.18~27.'},
+  {c:'flower',f:'코스모스·메밀',sub:'',e:'🌸',t:'9월말~10월',seoul:['하늘공원','올림픽공원','양주 나리공원'],nation:['봉평 메밀(효석문화제)','장흥 선학동마을 메밀','하동 북천','구례 서시천'],tip:'코스모스는 역광 투과. 메밀은 "소금 뿌린 듯" 흰 군락을 해질녘 따뜻한 톤으로. 장흥 선학동 메밀은 마을·바다와 어우러진 명소.'},
+  {c:'scape',f:'운해',sub:'雲海',e:'🌫️',t:'9~11월 새벽',seoul:[],nation:['무등산','지리산 노고단','강릉 안반데기','대관령'],tip:'맑고 일교차 큰 가을 새벽에 발생. 능선 위로 올라가 구름 바다를 내려다보세요.'},
+  {c:'festival',f:'진주 남강유등',sub:'',e:'🏮',t:'9월말~10월',seoul:[],nation:['진주 남강유등축제','김제 지평선축제'],tip:'유등이 강물에 반영되는 야경이 절정. 다리 위에서 물빛 반영을 세로로 담으세요.'}
+],
+10:[
+  {c:'scape',f:'단풍(산·북부)',sub:'丹楓',e:'🍁',t:'10월(북→남)',seoul:['남한산성','광교산','북한산'],nation:['설악산(초·중)','오대산','내장산(말)','주왕산','청송 주산지','인제 자작나무숲','철원 주상절리길·고석정 꽃밭'],tip:'단풍은 설악에서 시작해 하루 20~25km 남하합니다. 계곡 물 반영을 함께 담으세요. 청송 주산지는 왕버들 반영과 단풍이 겹치는 새벽이 백미. 인제 자작나무숲은 하얀 수피+노란 잎이 이색적.'},
+  {c:'scape',f:'억새',sub:'',e:'🌾',t:'10월 중~11월초',seoul:['하늘공원 억새축제','포천 명성산'],nation:['정선 민둥산','창녕 화왕산','울산 신불산 영남알프스','제주 산굼부리'],tip:'해질녘 역광에 은빛으로 빛나는 골든아워 20분이 최고입니다.',sp:'역광 억새는 스마트폰 하늘이 하얗게 날아가기 쉬우니 억새를 터치해 초점을 맞추고 밝기(노출)를 한두 칸 낮추세요. 억새 사이로 낮게 들어가 하늘을 배경 삼아 올려찍으면 은빛 결이 훨씬 도드라지고, 바람에 흔들릴 땐 연사로 여러 장 찍어 고르면 됩니다.'},
+  {c:'flower',f:'핑크뮬리·가을꽃',sub:'',e:'🩷',t:'10월',seoul:['양주 나리공원','안성팜랜드','서울숲'],nation:['경주 첨성대','부산 대저생태공원','정읍 구절초축제','거창 감악산 아스타국화','문경 봉천사 개미취','남원 신생마을 댑싸리'],tip:'핑크뮬리는 자칫 진부하니 소실점·인물·일몰 역광으로 차별화하세요. 거창 감악산 아스타국화·문경 봉천사 개미취는 보랏빛 가을 군락 명소.'},
+  {c:'festival',f:'불꽃축제',sub:'',e:'🎆',t:'10월',seoul:['서울세계불꽃축제(여의도)'],nation:['포항 불빛축제','진주 유등'],tip:'삼각대+ISO100+f11, 셔터 벌브로 터지는 순간 열고 닫기. 연기 방향(바람) 고려해 자리 선택.'}
+],
+11:[
+  {c:'scape',f:'단풍(도심 고궁·남부)',sub:'丹楓',e:'🍁',t:'11월 초~중순',seoul:['경복궁','창덕궁 후원','덕수궁','창경궁','수원화성','남산','가평 아침고요'],nation:['내장산 백양사','고창 선운사','밀양 위양지','경주 불국사·운곡서원','청송 주산지','순천 선암사'],img:'images/chulsa/danpung_gyeongbokgung.jpg',n:1,tip:'경복궁의 가을 은행·단풍은 아침 햇살 시간이 좋습니다. 하이라이트가 강한 시간에도 인물 얼굴이 날아가지 않게 노출을 잡고, 살짝 역광으로 옆선을 부드럽게. 단풍 아래에서 올려다보는 각도로 붉은 터널을 만들면 깊이가 생겨요. 남부 단풍은 밀양 위양지 반영이 손꼽힙니다.',sp:'한복 인물은 인물사진 모드를 맹신하지 마세요 — 고궁 배경까지 살리려면 일반 모드가 낫습니다. 단풍 아래에서 올려찍는 로우앵글로 붉은 터널을 만들고, 얼굴이 어두우면 인물을 터치해 밝기를 올리세요.'},
+  {c:'scape',f:'은행나무',sub:'銀杏',e:'💛',t:'11월 초~중순',seoul:['서울 정동길·덕수궁 돌담길','대학로~낙산공원','성균관 명륜당','양평 용문사'],nation:['아산 곡교천 은행나무길','창녕 우포늪 서리 일출','밀양·경주 은행','홍천 은행나무숲','괴산 문광저수지','원주 반계리'],img:'images/chulsa/eunhaeng_deoksugung.jpg',n:1,tip:'마로니에공원에서 낙산공원까지 은행길은 저녁 조명이 켜지는 시간이 백미. 성곽 돌담에 조명이 들면 ISO 3200~6400으로도 깨끗하게 담깁니다. 노란 낙엽이 바닥까지 두껍게 깔린 날, 올려다보는 각도로 은행이 건물을 감싸게 잡아보세요. 창녕 우포늪은 서리 낀 은행 일출이 절경.'},
+  {c:'scape',f:'메타세쿼이아 단풍',sub:'',e:'🍂',t:'11월 중~하순',seoul:['담양 메타세쿼이아길'],nation:['나주 오봉제','담양 관방제림','진안 모래재','대전 장태산자연휴양림'],tip:'붉게 물든 메타세쿼이아 가로수 길을 소실점 구도로. 안개 낀 아침 나주 오봉제·진안 모래재가 몽환적입니다.'},
+  {c:'festival',f:'부산불꽃축제',sub:'',e:'🎆',t:'11월 초',seoul:[],nation:['부산 광안리 불꽃축제'],tip:'광안대교+불꽃이 한 프레임. 황령산·이기대 조망 포인트는 몇 시간 전 선점해야 합니다.'},
+  {c:'scape',f:'늦가을 반영',sub:'反影',e:'🌫️',t:'11월',seoul:['양평 두물머리'],nation:['괴산 문광저수지','청송 주산지'],tip:'두물머리 물안개+느티나무 실루엣 일출이 유명. 은행 반영과 함께 새벽에 담으세요.'}
+],
+12:[
+  {c:'scape',f:'설경·상고대',sub:'雪景',e:'❄️',t:'12~2월',seoul:['남한산성','광교산'],nation:['태백산 주목','덕유산 향적봉','소백산'],tip:'눈 온 다음날 맑은 아침이 최적. 태백산 주목+상고대+일출이 겨울 산사진의 정점입니다.'},
+  {c:'scape',f:'겨울 바다 장노출',sub:'長露出',e:'🌊',t:'12~2월',seoul:['인천 소래·왜목'],nation:['삼척 해신당','울산 강양항·경주 읍천 주상절리','강릉 정동진','동해 추암'],img:'images/chulsa/winter_sea_haesindang.jpg',n:1,tip:'겨울 바다 장노출은 바로 찍지 말고, 파도가 어디서 올라와 어디로 빠지는지 먼저 오래 관찰하세요. 30초 장노출이면 파도는 부드럽게, 바위 질감은 또렷하게 대비됩니다. 바람이 세니 삼각대를 단단히 고정하고, 프레임에 불필요한 요소가 없는지 계속 확인하세요. 강양항 일출→읍천 주상절리는 겨울 낭만 출사 코스.',sp:'스마트폰도 프로 모드의 셔터를 길게(1~10초) 두면 파도가 부드럽게 흐릅니다. 삼각대·거치대 고정은 필수. 아이폰은 라이브포토의 "장노출" 효과, 갤럭시는 프로 모드나 별도 장노출 앱을 쓰면 됩니다.'},
+  {c:'flower',f:'동백',sub:'冬柏',e:'🌺',t:'12~3월',seoul:[],nation:['제주 형제섬 애기동백','여수 오동도','거제 지심도'],tip:'겨울에 피는 붉은 동백은 눈과 함께 담으면 색 대비가 강렬합니다. 제주 형제섬 애기동백+억새+일출이 12~1월 대표 조합.'},
+  {c:'festival',f:'크리스마스 빛축제',sub:'',e:'🎄',t:'12월',seoul:['에버랜드 크리스마스','아침고요 오색별빛','서울 청계천·명동'],nation:['부산 크리스마스트리축제','보성 빛축제'],tip:'점등 직후 블루아워 20분. 젖은 노면에 반사된 조명을 활용하면 색이 두 배가 됩니다.'}
+]
+};
+
+// 연중 상시 (야경 · 실내 · 낙조)
+const EVERGREEN=[
+  {c:'night',f:'한강 다리 야경 — 동작대교',sub:'서울 대표 야경 출사지',e:'🌉',t:'연중',seoul:['동작대교남단','동작노을카페(용산 이촌동)'],nation:[],img:'images/chulsa/dongjak_bridge_night.jpg',n:1,tip:'한 자리에서 패닝샷·일몰·블루아워·야경이 다 나오는 낭만 출사지. 패닝샷은 1/10~1/30초로 지하철과 같은 속도로 따라가며, 220mm로 빌딩 사이 태양을 1/6400초로 단단하게, 교각 아래선 1/2초 장노출로 강물을 부드럽게. 블루아워엔 광각 24mm에 N서울타워까지 한 프레임에 걸립니다.',sp:'해 진 직후 매직아워에 찍으면 하늘이 파랗게 남아 스마트폰 야경도 흔들림 없이 잘 나옵니다. 다리 난간에 폰을 붙여 고정하고, 지나가는 차·지하철의 궤적을 원하면 프로 모드에서 셔터를 길게 여세요. 초광각(0.6x)으로 다리와 도심을 시원하게.'},
+  {c:'night',f:'물빛 야경 — 세빛섬·달빛무지개분수',sub:'',e:'💦',t:'연중',seoul:['반포 세빛섬','달빛무지개분수(서초)'],nation:[],img:'images/chulsa/sebitseom_dusk.jpg',n:1,tip:'블루아워 10~20분이 승부처라 미리 자리를 잡고 기다리세요. F2.8 밝은 렌즈로 ISO를 낮게, 달빛분수는 1/40초면 물줄기가 자연스럽게 흘러요. 70mm 망원으로 교각을 압축하거나 로우앵글로 스카이라인까지 배경에 깔고, 색이 계속 바뀌니 여러 컷 연속으로. 반영은 바람 없는 날이어야 제대로 나옵니다.'},
+  {c:'night',f:'손각대 야경 — 성수대교·한강',sub:'삼각대 없이',e:'🌃',t:'연중',seoul:['성수대교(성동 성수동)','서울숲 한강전망대'],nation:[],img:'images/chulsa/seongsu_bridge_night.jpg',n:1,tip:'삼각대가 없어도 조리개를 열고(F2.8 등) 바디 손떨림 보정(IBIS)이 있으면 1/2초까지 버팁니다. 없다면 난간·벽에 팔꿈치를 기대면 돼요. 빛이 별처럼 갈라지길 원하면 F값을 높이되 ISO·셔터를 감수. 한강전망대 하이앵글에서 셔터스피드를 바꿔가며 차량 궤적을 연습하기 좋습니다.',sp:'스마트폰은 프로/전문가 모드에서 셔터 1~2초로 두고 난간에 딱 붙여 고정하세요. 나이트 모드도 좋습니다. 매직아워(해 진 직후 20분)에 찍으면 하늘이 고운 파란색이라 어두운 밤보다 훨씬 잘 나오고, 어두우면 스냅시드로 보정하면 됩니다.'},
+  {c:'night',f:'호수 반영 야경 — 안동 월영교',sub:'',e:'🌉',t:'연중(가을 특히)',seoul:[],nation:['안동 월영교','진주 남강','여수 밤바다'],n:1,tip:'블루아워에 정자 조명이 따뜻하게 뜨고 하늘은 청색으로 물듭니다. 바람 없는 날 노출을 길게 가져가면 수면이 거울처럼 되어 다리가 두 배로 이어져요. 전경-중경-원경(앞 보트-다리-산 조명)을 겹치면 밤의 월영교가 완성됩니다.'},
+  {c:'scape',f:'주상절리·바다 장노출 — 읍천/강양항',sub:'',e:'🪨',t:'연중(일출)',seoul:[],nation:['경주 읍천항 주상절리','울산 강양항'],n:1,tip:'읍천 주상절리는 부채살처럼 갈라진 현무암에 70mm·25~30초 장노출. 단단한 돌의 직선과 부드러운 물결의 대비가 핵심입니다. 붉은등대·초록등대를 색 포인트로. 강양항 일출은 400mm로 배와 갈매기를 1/500초에 잡으면 아침 바다가 분주하게 살아납니다.'},
+  {c:'night',f:'도심 스카이라인 야경',sub:'',e:'🏙️',t:'연중·가을·겨울 공기 맑을 때',seoul:['남산 N서울타워','롯데타워 서울스카이','응봉산(차선궤적)','낙산 성곽','하늘공원'],nation:['부산 황령산','대구 83타워','여수 돌산공원'],tip:'해 진 직후 블루아워 20분이 황금 시간. 응봉산은 올림픽대로 차량 궤적의 성지라 30초 장노출로 빛의 강물을 만드세요.'},
+  {c:'night',f:'서울 야경 프로젝트 — 한강 다리 순례',sub:'수도권 야경 명소 총집합',e:'🌉',t:'연중(가을·겨울 최적)',seoul:['노들섬','방화대교','선유도공원','잠실철교·올림픽대교 남단','청담대교 남단','영동대교','서울함공원·성산대교','여의도 한강','뚝섬한강공원'],nation:[],tip:'한강 다리 야경은 요일을 정해 한 곳씩 순례하듯 도는 것이 실력이 느는 길입니다. 해 지기 1시간 전 도착해 블루아워를 노리고, 다리는 차량 궤적(장노출 20~30초)과 다리 조명 반영을 핵심으로. 청담대교·잠실철교 남단은 열차·차량 궤적, 선유도는 성산대교 조망이 좋습니다.'},
+  {c:'night',f:'인천·수도권 일몰·야경',sub:'',e:'🌇',t:'연중',seoul:['인천 송도 센트럴파크·트라이보울','인천 정서진 일몰','영종도 파라다이스시티','파주 오두산·일출','수원화성 야간'],nation:[],tip:'송도 트라이보울은 곡선 건축+야경 반영이 이국적입니다. 정서진·영종도는 서해 낙조가 좋아 물때·일몰시각을 확인하고 가세요. 수원화성은 야간 조명이 들어오는 성곽길이 백미.'},
+  {c:'night',f:'고궁 야경·주경',sub:'가을 번개출사 인기',e:'🏯',t:'연중(단풍철 특히)',seoul:['창경궁 주경·야경(물빛연화)','경복궁·광화문 일대','덕수궁 주경·야경','종묘'],nation:[],tip:'고궁 야경은 해질녘 조명이 켜지는 "개와 늑대의 시간"이 핵심. 창경궁 물빛연화(가을 야간개장)는 연못 반영이 절경이고, 덕수궁은 주경에서 야경으로 넘어가는 20분을 노리면 하늘색과 조명이 함께 삽니다.'},
+  {c:'indoor',f:'건축·미술관',sub:'비 오는 날 1순위',e:'🏛️',t:'연중',seoul:['국립현대미술관(서울·과천)','서울시립사진미술관','리움미술관','더현대 서울','DDP','아모레퍼시픽 본사'],nation:['원주 뮤지엄산(안도 다다오)','제주 본태·유민미술관','김해 클레이아크'],tip:'뮤지엄산·유민미술관은 노출콘크리트 건축 자체가 피사체. 흐린 날 균일한 빛에서 선과 면을 담으세요. 더현대 서울·서울시립사진미술관은 곡선·유리 건축과 전시를 함께 담기 좋습니다.',sp:'노출콘크리트 건축은 스마트폰 초광각(0.6x)으로 비스듬히 서서 찍으면 벽과 천장의 직선이 훨씬 시원하게 뻗어 보입니다. 실내와 창밖 밝기 차이가 크면 화면을 터치해 노출을 실내 쪽에 맞추고, 격자선을 켜두면 대칭 구도를 훨씬 정확히 맞출 수 있어요. 사람이 잠깐 빠지는 순간을 기다렸다 셔터를 누르세요.'},
+  {c:'indoor',f:'박물관·도서관·온실',sub:'',e:'📚',t:'연중',seoul:['국립중앙박물관(거울못·열주, 매직아워 야경)','서소문성지 역사박물관','스타필드 별마당도서관','서울식물원 온실'],nation:['부산 국립해양박물관','대전 국립중앙과학관','서천 국립생태원'],img:'images/chulsa/museum_bluehour.jpg',n:1,tip:'국립중앙박물관은 거울못과 열주 사이로 남산타워가 걸리는 프레임이 명소입니다. 폐관 전 매직아워에 열주 실루엣과 야경을 함께 담아보세요. 서소문성지 역사박물관은 콘크리트 지하 공간의 빛이 인상적. 온실은 유리에 맺힌 물방울까지 소재가 됩니다.',sp:'실내 건축은 스마트폰 초광각(0.6x)으로 열주·계단의 선을 시원하게 담기 좋습니다. 열주를 이용한 프레임 속 프레임 구도를 노리고, 밝은 창과 어두운 실내가 섞이면 밝기(노출)를 터치로 조절하세요. 거울못 반영은 폰을 바닥 가까이 낮춰서.'},
+  {c:'indoor',f:'도심·골목 스냅',sub:'날씨 무관',e:'📷',t:'연중',seoul:['문래 철공소골목','익선동·종로3가 뒷골목','을지로 힙지로','서촌(청운문학도서관·초소책방)','북촌·삼청동','이태원 해방촌·경리단길','남대문시장'],nation:['인천 개항장·차이나타운·송월동 동화마을','부산 감천문화마을'],tip:'골목 스냅은 표준 화각(50mm)으로 발이 먼저 움직이며 결정적 순간을 노리세요. 흐린 날·비 오는 날이 오히려 간판·벽·젖은 노면의 색을 살려줍니다. 을지로 힙지로·문래 철공소골목은 오래된 것과 새것이 섞인 서울의 질감이 살아있는 곳.',sp:'스마트폰 골목 스냅의 핵심은 발입니다 — 디지털 줌으로 당기지 말고 직접 다가가세요(2x 정도까지만). 비 온 뒤 바닥 물웅덩이 반영, 간판·창문을 활용한 프레임 속 프레임을 노리고, 어두운 골목은 밝기를 올린 뒤 스냅시드로 마무리하면 감성이 살아납니다.'},
+  {c:'indoor',f:'아쿠아리움·수족관',sub:'',e:'🐠',t:'연중',seoul:['코엑스 아쿠아리움','롯데월드 아쿠아리움','아쿠아플라넷 일산'],nation:['아쿠아플라넷 여수·제주','부산 씨라이프'],tip:'유리 반사를 없애려면 렌즈를 유리에 밀착. 고감도+밝은 렌즈로 물고기 움직임을 얼리세요.'},
+  {c:'scape',f:'서해 낙조·갯벌 장노출',sub:'日沒',e:'🌇',t:'연중·겨울 공기 맑을 때',seoul:['인천 을왕리·선녀바위','인천 모도·황산도','시흥 오이도','당진 왜목','안산 노둣길'],nation:['안면도 꽃지해변','강화 장화리','부안 채석강'],tip:'꽃지 할미·할아비바위 사이로 지는 해가 상징적. 물때를 확인해 갯벌 반영을 노리세요. 인천 선녀바위·모도, 안산 노둣길은 갯벌 위 지주·바위를 ND필터 장노출로 담기 좋은 곳입니다.'}
+];
+
+let curRegion='all', curMonth=0, curCat='all';
+const app=document.getElementById('app'), emptyEl=document.getElementById('empty');
+const pills=document.getElementById('monthPills');
+for(let m=1;m<=12;m++){const b=document.createElement('button');b.dataset.month=m;b.textContent=m;pills.appendChild(b);}
+
+function hasRegion(ev){if(curRegion==='all')return ev.seoul.length||ev.nation.length;if(curRegion==='seoul')return ev.seoul.length;return ev.nation.length;}
+function passes(ev){return (curCat==='all'||ev.c===curCat)&&hasRegion(ev);}
+
+function nd(s){return String(s).replace(/[가-힣A-Za-z0-9]{1,20}(?:·[가-힣A-Za-z0-9]{1,20})+/g,m=>`<span style="white-space:nowrap">${m}</span>`);}
+function mapLink(s){return `<a href="https://map.naver.com/p/search/${encodeURIComponent(s)}" target="_blank" rel="noopener">${nd(s)}</a>`;}
+
+function cardHTML(ev){
+  const cat=CAT[ev.c];
+  const ss=(curRegion==='all'||curRegion==='seoul')&&ev.seoul.length;
+  const sn=(curRegion==='all'||curRegion==='nation')&&ev.nation.length;
+  return `<article class="card${ev.n?' author':''}" style="--acc:${cat.c}">
+    ${ev.img?`<div class="card-photo"><img src="${ev.img}?v=2" alt="${ev.f}" loading="lazy"></div>`:''}
+    <div class="chips"><span class="cat-chip">${cat.e} ${cat.ko}</span>${ev.n?'<span class="cat-chip" style="background:#caa24a">✍️ 작가 노트</span>':''}</div>
+    <div class="card-top">
+      <span class="flower-emoji">${ev.e}</span>
+      <div><div class="flower-name">${ev.f}</div>${ev.sub?`<div class="flower-sub">${nd(ev.sub)}</div>`:''}</div>
+      <span class="timing">${ev.t}</span>
+    </div>
+    <div class="spots">
+      ${ss?`<div class="spot-row"><span class="spot-tag">서울·경기</span><span class="spot-list">${ev.seoul.map(mapLink).join(' · ')}</span></div>`:''}
+      ${sn?`<div class="spot-row"><span class="spot-tag nation">전국</span><span class="spot-list">${ev.nation.map(mapLink).join(' · ')}</span></div>`:''}
+    </div>
+    <div class="tip${ev.n?' note':''}"><b>${ev.n?'✍️ 작가 노트':'💡 촬영 팁'}</b><span>${nd(ev.tip)}</span></div>
+    ${ev.sp?`<div class="tip sp"><b>📱 스마트폰</b><span>${nd(ev.sp)}</span></div>`:''}
+  </article>`;
+}
+
+function render(){
+  app.innerHTML=''; let any=false;
+  for(let m=1;m<=12;m++){
+    if(curMonth!==0&&curMonth!==m)continue;
+    const ev=DATA[m].filter(passes); if(!ev.length)continue; any=true;
+    const sv=monthSeason(m), acc=`var(--${sv})`, soft=`var(--${sv}-soft)`;
+    const b=document.createElement('section'); b.className='month-block'; b.id='m'+m;
+    b.innerHTML=`<div class="month-head"><div class="month-num" style="color:${acc}">${m}<span style="font-size:.42em;font-weight:700"> 월</span></div>
+      <div class="month-meta"><span class="month-season" style="color:${acc}">${SEASON[sv].ko} · SEASON</span><span class="month-en">${EN[m]}</span></div></div>
+      <div class="accent-bar" style="background:linear-gradient(90deg,${acc},${soft})"></div>
+      <div class="grid">${ev.map(cardHTML).join('')}</div>`;
+    app.appendChild(b);
+  }
+  const ever=EVERGREEN.filter(passes);
+  if(ever.length){any=true;
+    const b=document.createElement('section'); b.className='month-block'; b.id='ever';
+    b.innerHTML=`<div class="month-head"><div class="month-num" style="color:var(--c-night);font-size:clamp(30px,4.5vw,46px)">연중 <span style="font-size:.5em;font-weight:700">언제든</span></div>
+      <div class="month-meta"><span class="month-season" style="color:var(--c-night)">야경 · 실내 · 낙조</span><span class="month-en">ALL YEAR ROUND</span></div></div>
+      <div class="accent-bar" style="background:linear-gradient(90deg,var(--c-night),var(--c-indoor))"></div>
+      <div class="grid">${ever.map(cardHTML).join('')}</div>`;
+    app.appendChild(b);
+  }
+  emptyEl.style.display=any?'none':'block'; revealCards();
+}
+
+let io;
+function revealCards(){if(io)io.disconnect();io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1});document.querySelectorAll('.card').forEach(c=>io.observe(c));}
+
+document.getElementById('regionToggle').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;curRegion=b.dataset.region;document.querySelectorAll('#regionToggle button').forEach(x=>x.classList.toggle('on',x===b));render();});
+document.getElementById('catFilter').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;curCat=b.dataset.cat;document.querySelectorAll('#catFilter button').forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.style.background=on&&curCat!=='all'?CAT[curCat].c:(on?'#26221e':'');});render();});
+pills.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;curMonth=+b.dataset.month;document.querySelectorAll('#monthPills button').forEach(x=>{const on=x===b;x.classList.toggle('on',on);if(on&&curMonth!==0)x.style.background=`var(--${monthSeason(curMonth)})`;else if(on)x.style.background='#26221e';else x.style.background='';});render();window.scrollTo({top:document.querySelector('.controls').offsetHeight+300,behavior:'smooth'});});
+
+render();
+document.querySelectorAll('.hero .lead, .hero .note, footer .fnote').forEach(el=>{el.innerHTML=nd(el.innerHTML);});
+</script>
+</body>
+</html>
