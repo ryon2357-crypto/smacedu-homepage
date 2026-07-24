@@ -178,6 +178,17 @@
     }
     .gift-card h3 { font-size: 14px; font-weight: 700; color: var(--text-head); padding: 0 12px 16px; line-height: 1.5; }
 
+    .gift-note {
+      margin-top: 40px;
+      background: var(--cream2);
+      border: 1px solid #fcd9a8;
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    }
+    .gift-note p { font-size: 14.5px; color: #7a5b1f; line-height: 1.6; }
+    @media (max-width: 640px) { .gift-note { padding: 22px 20px; text-align: center; justify-content: center; } }
+
     /* ── 신청 폼 ── */
     #apply { background: var(--gray-bg); }
     .apply-card {
@@ -231,66 +242,7 @@
     .form-msg.success { background: #eefbf1; border: 1px solid #b9ecc7; color: #1e8a4a; }
     .form-msg.error   { background: #fef1f1; border: 1px solid #f4bcbc; color: #c23434; }
 
-    /* ── 특강 소식 ── */
-    #news { background: var(--gray-bg); }
-    .news-card {
-      display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
-      background: var(--cream2);
-      border: 1px solid #f9c876;
-      border-left: 5px solid var(--orange);
-      border-radius: var(--radius);
-      padding: 32px 36px;
-      margin-top: 40px;
-      box-shadow: 0 10px 26px rgba(234,107,12,.08);
-    }
-    .news-tag {
-      font-size: 12px; font-weight: 800; color: #fff;
-      background: var(--grad); border-radius: 999px; padding: 5px 14px;
-    }
-    .news-card h3 { font-size: 19px; font-weight: 800; color: var(--navy); margin: 12px 0 6px; }
-    .news-card p { font-size: 14px; color: var(--text-body); }
-    .news-card .news-cta { margin-left: auto; }
-
     /* ── 수강생 작품 / 박성욱 작가 작품 갤러리 ── */
-    .showcase-caption {
-      text-align: center;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-sub);
-      margin: 32px 0 14px;
-    }
-
-    /* 수강생 작품 — photo-artist-instructor.html의 .photo-gallery와 동일한 정적 그리드 */
-    .photo-gallery {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-    .photo-gallery figure { margin: 0; }
-    .photo-gallery img {
-      width: 100%; aspect-ratio: 4/3; object-fit: cover;
-      border-radius: 16px; display: block; border: 1px solid var(--gray-line);
-    }
-    .photo-gallery figcaption { margin-top: 8px; font-size: 12.5px; font-weight: 700; color: var(--text-sub); text-align: center; }
-    @media (max-width: 640px) { .photo-gallery { grid-template-columns: repeat(2, 1fr); } }
-
-    /* 박성욱 작가 작품 — photo-artist-instructor.html의 .photo-marquee와 동일한 흐름 */
-    .photo-marquee {
-      overflow: hidden;
-      -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-      mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-    }
-    .photo-marquee-track { display: flex; gap: 16px; width: max-content; animation: photo-marquee-scroll 45s linear infinite; }
-    .photo-marquee:hover .photo-marquee-track { animation-play-state: paused; }
-    .photo-marquee figure { flex: 0 0 260px; margin: 0; }
-    .photo-marquee img {
-      width: 100%; aspect-ratio: 4/3; object-fit: cover;
-      border-radius: 16px; display: block; border: 1px solid var(--gray-line);
-    }
-    .photo-marquee figcaption { margin-top: 8px; font-size: 12.5px; font-weight: 700; color: var(--text-sub); text-align: center; }
-    @keyframes photo-marquee-scroll { from { transform: translateX(-50%); } to { transform: translateX(0); } }
-    @media (max-width: 640px) { .photo-marquee figure { flex: 0 0 200px; } }
-
     /* ── 사진작가 모집 ── */
     #recruit .recruit-card {
       background: var(--navy);
@@ -356,7 +308,6 @@
       section { padding: 64px 20px; }
       nav { padding: 14px 20px; }
       .apply-card { padding: 30px 24px; }
-      .news-card .news-cta { margin-left: 0; }
       .gift-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
     }
   </style>
@@ -472,95 +423,14 @@
       </div>
     </div>
 
-    <div class="news-card reveal" style="margin-top:24px;">
-      <div style="flex:1; min-width:240px;">
-        <span class="news-tag">🎁 보너스 선물</span>
-        <h3>7월 1일(수) 스마트폰 사진특강 정리본</h3>
-        <p>특강 자료 정리했습니다.</p>
-      </div>
-      <a class="btn btn-outline news-cta" href="https://www.smacedu.kr/photo-lecture-recap" target="_blank" rel="noopener">정리본 보기 →</a>
+    <div class="gift-note reveal">
+      <p>💡 위 카드는 <strong>미리보기</strong>라 눌러도 바로 다운로드되지 않아요.<br>아래 <strong>이름 · 이메일 · 연락처</strong>만 남겨주시면 신청 직후 12가지 자료를 전부 보내드려요.</p>
+      <a class="btn btn-primary" href="#apply">지금 신청하고 바로 받기 →</a>
     </div>
   </div>
 </section>
 
-<!-- ④ 특강 소식 -->
-<section id="news">
-  <div class="container">
-    <p class="section-label reveal">NEW LECTURE</p>
-    <h2 class="reveal">지금 열려 있는 무료 특강 소식도 함께 전해드려요</h2>
-
-    <div class="news-card reveal">
-      <div style="flex:1; min-width:240px;">
-        <span class="news-tag">7월 17일(금) 저녁 8시 · 무료</span>
-        <h3>찍는 순간 작품이 되는 스마트폰 사진</h3>
-        <p>촬영과 보정부터 AI 활용까지, ZOOM 온라인으로 진행되는 2시간 무료 특강입니다.</p>
-      </div>
-      <a class="btn btn-outline news-cta" href="https://www.smacedu.kr/photo-lecture-landing#curriculum" target="_blank" rel="noopener">커리큘럼 보기 →</a>
-    </div>
-
-    <p class="showcase-caption reveal">📸 수강생들도 이렇게 찍습니다</p>
-    <div class="photo-gallery reveal">
-      <figure>
-        <img src="images/photo-artist-instructor/photo-07.jpg" alt="수강생이 촬영한 야경 장노출 작품">
-        <figcaption>야경 · 장노출 · 반영</figcaption>
-      </figure>
-      <figure>
-        <img src="images/photo-artist-instructor/photo-08.jpg" alt="수강생이 촬영한 노을 도시 풍경 작품">
-        <figcaption>노을 · 색감 · 도시 풍경</figcaption>
-      </figure>
-      <figure>
-        <img src="images/photo-artist-instructor/photo-09.jpg" alt="수강생이 촬영한 안개 낀 호수 인물 작품">
-        <figcaption>인물 · 자연광 · 색보정</figcaption>
-      </figure>
-      <figure>
-        <img src="images/photo-artist-instructor/photo-10.jpg" alt="수강생이 촬영한 실루엣 작품">
-        <figcaption>실루엣 · 감성 사진</figcaption>
-      </figure>
-    </div>
-
-    <p class="showcase-caption reveal">🎨 엘란비탈 박성욱 작가의 작품들</p>
-    <div class="photo-marquee reveal">
-      <div class="photo-marquee-track">
-        <figure>
-          <img src="images/photo-artist-instructor/restored-02-iceland-longexposure.jpg" alt="박성욱 작가가 촬영한 아이슬란드 키르큐펠 산과 폭포의 일출 장노출 사진">
-          <figcaption>일출일몰 · 장노출</figcaption>
-        </figure>
-        <figure>
-          <img src="images/photo-artist-instructor/portfolio-01-bangkok-sunset.jpg" alt="박성욱 작가가 촬영한 노을 속 사원과 배, 물 위 반영 사진">
-          <figcaption>역광 · 반영 · 실루엣</figcaption>
-        </figure>
-        <figure>
-          <img src="images/photo-artist-instructor/portfolio-06-purple-night.jpg" alt="박성욱 작가가 촬영한 보랏빛 조명 건물과 수면 반영 야경 사진">
-          <figcaption>야경 · 반영 · 컬러</figcaption>
-        </figure>
-        <figure>
-          <img src="images/photo-artist-instructor/portfolio-08-hanriver-sunset.jpg" alt="박성욱 작가가 촬영한 한강 노을과 실루엣 사진">
-          <figcaption>노을 · 실루엣 · 도시</figcaption>
-        </figure>
-        <!-- 무한 루프를 위해 동일한 세트를 반복 (스크린리더에는 숨김) -->
-        <figure aria-hidden="true">
-          <img src="images/photo-artist-instructor/restored-02-iceland-longexposure.jpg" alt="" aria-hidden="true">
-          <figcaption aria-hidden="true">일출일몰 · 장노출</figcaption>
-        </figure>
-        <figure aria-hidden="true">
-          <img src="images/photo-artist-instructor/portfolio-01-bangkok-sunset.jpg" alt="" aria-hidden="true">
-          <figcaption aria-hidden="true">역광 · 반영 · 실루엣</figcaption>
-        </figure>
-        <figure aria-hidden="true">
-          <img src="images/photo-artist-instructor/portfolio-06-purple-night.jpg" alt="" aria-hidden="true">
-          <figcaption aria-hidden="true">야경 · 반영 · 컬러</figcaption>
-        </figure>
-        <figure aria-hidden="true">
-          <img src="images/photo-artist-instructor/portfolio-08-hanriver-sunset.jpg" alt="" aria-hidden="true">
-          <figcaption aria-hidden="true">노을 · 실루엣 · 도시</figcaption>
-        </figure>
-      </div>
-    </div>
-    <p class="showcase-caption reveal" style="margin-top:8px; font-weight:400;">* 마우스를 올리면 멈춥니다.</p>
-  </div>
-</section>
-
-<!-- ⑤ 사진작가/사진강사 모집 -->
+<!-- ④ 사진작가/사진강사 모집 -->
 <section id="recruit">
   <div class="container">
     <p class="section-label reveal">NOW RECRUITING</p>
