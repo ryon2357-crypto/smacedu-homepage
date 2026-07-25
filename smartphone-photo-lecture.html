@@ -209,14 +209,14 @@
   .org-chips li {
     font-size: 14px; font-weight: 700; padding: 9px 16px; border-radius: 999px;
     border: 1px solid var(--line); background: var(--surface);
-    transition: background .2s ease, border-color .2s ease, transform .2s ease;
-    animation: chipTwinkle 3.2s ease-in-out infinite;
+    transition: transform .2s ease;
+    animation: chipTwinkle .9s ease-in-out infinite;
     animation-delay: var(--twinkle-delay, 0s);
   }
-  .org-chips li:hover { background: color-mix(in srgb, var(--gold) 16%, var(--surface)); border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); transform: translateY(-2px); }
+  .org-chips li:hover { animation-play-state: paused; background: color-mix(in srgb, var(--gold) 30%, var(--surface)); border-color: color-mix(in srgb, var(--gold) 55%, var(--line)); transform: translateY(-2px); }
   @keyframes chipTwinkle {
-    0%, 100% { opacity: 1; }
-    50% { opacity: .55; }
+    0%, 100% { background: var(--surface); border-color: var(--line); }
+    50% { background: color-mix(in srgb, var(--gold) 30%, var(--surface)); border-color: color-mix(in srgb, var(--gold) 55%, var(--line)); }
   }
   .org-note { font-size: 13px; color: var(--text-muted); }
 
@@ -468,7 +468,7 @@
         <li>의정부자원봉사센터</li>
         <li>샘터봉사회</li>
         <li>부평문화원</li>
-        <li>두르림생태학습관</li>
+        <li>두드림생태학습관</li>
         <li>예천군농업기술센터</li>
         <li>소상공인지원센터</li>
         <li>울산 청년일자리지원센터</li>
