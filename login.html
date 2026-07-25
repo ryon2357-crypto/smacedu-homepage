@@ -160,10 +160,11 @@
 
             async function socialLogin(provider) {
                 showMsg('', '')
-                const { error } = await client.auth.signInWithOAuth({
-                    provider,
-                    options: { redirectTo: new URL(redirect, location.href).href }
-                })
+                const options = { redirectTo: new URL(redirect, location.href).href }
+                if (provider === 'kakao') {
+                    options.scopes = 'account_email profile_image profile_nickname talk_message'
+                }
+                const { error } = await client.auth.signInWithOAuth({ provider, options })
                 if (error) showMsg('오류: ' + error.message, 'error')
             }
             document.getElementById('googleBtn').addEventListener('click', function() { socialLogin('google') })
