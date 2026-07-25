@@ -630,7 +630,7 @@
       document.querySelectorAll(sel).forEach(function (el, i) {
         el.classList.add('reveal');
         el.style.transitionDelay = Math.min(i * 60, 400) + 'ms';
-        if (sel === '.org-chips li') { el.style.setProperty('--twinkle-delay', (i % 9) * 0.35 + 's'); }
+        if (sel === '.org-chips li') { el.style.setProperty('--twinkle-delay', (i * 1.5) + 's'); }
         revealEls.push(el);
       });
     });
