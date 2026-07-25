@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <script src="js/no-copy.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 처리 중 — 스마트미디어아트센터</title>
+    <link rel="icon" href="images/logo1.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #f8f9fa; min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 16px;
+        }
+        .spinner {
+            width: 36px; height: 36px; border-radius: 50%;
+            border: 3px solid #e5e7eb; border-top-color: #f97316;
+            animation: spin .8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        p { font-size: .9rem; color: #6b7280; }
+    </style>
+</head>
+<body>
+
+<div class="spinner"></div>
+<p>로그인 처리 중입니다...</p>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script>
+    const params   = new URLSearchParams(location.search)
+    const redirect = params.get('redirect') || 'replay.html'
+
+    function goNext() { location.href = redirect }
+
+    if (typeof window.supabase === 'undefined' || typeof window.supabase.createClient !== 'function') {
+        goNext()
+    } else {
+        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+        client.auth.getSession().then(function(res) {
+            const session = res.data && res.data.session
+            if (!session) { goNext(); return }
+
+            const user = session.user
+            // created_at과 last_sign_in_at이 거의 같으면 이번이 최초 로그인(=신규 가입)
+            const isNewUser = user.created_at && user.last_sign_in_at &&
+                Math.abs(new Date(user.last_sign_in_at) - new Date(user.created_at)) < 5000
+
+            if (!isNewUser) { goNext(); return }
+
+            const meta  = user.user_metadata || {}
+            const name  = meta.full_name || meta.name || meta.nickname || meta.user_name || ''
+            const email = user.email || ''
+            const p = new URLSearchParams({ sheetType: 'member', name, email })
+            fetch(`https://script.google.com/macros/s/AKfycbzy1Qb1k1k_HMwYrQTHoGPbhWFs0r9J6bC6iGkvL0o7SEaJwQr4d72tZKATbIdTvojWnQ/exec?${p}`, { mode: 'no-cors' })
+                .catch(function() {})
+                .finally(goNext)
+        }).catch(goNext)
+    }
+</script>
+</body>
+</html>

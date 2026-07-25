@@ -160,7 +160,9 @@
 
             async function socialLogin(provider) {
                 showMsg('', '')
-                const options = { redirectTo: new URL(redirect, location.href).href }
+                const callbackUrl = new URL('auth-callback.html', location.href)
+                callbackUrl.searchParams.set('redirect', redirect)
+                const options = { redirectTo: callbackUrl.href }
                 if (provider === 'kakao') {
                     options.scopes = 'account_email profile_image profile_nickname talk_message'
                 }
