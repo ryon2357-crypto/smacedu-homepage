@@ -210,8 +210,15 @@
     font-size: 14px; font-weight: 700; padding: 9px 16px; border-radius: 999px;
     border: 1px solid var(--line); background: var(--surface);
     transition: background .2s ease, border-color .2s ease, transform .2s ease;
+    animation: chipTwinkle 3.2s ease-in-out infinite;
+    animation-delay: var(--twinkle-delay, 0s);
   }
   .org-chips li:hover { background: color-mix(in srgb, var(--gold) 16%, var(--surface)); border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); transform: translateY(-2px); }
+  @keyframes chipTwinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .55; }
+  }
+  @media (prefers-reduced-motion: reduce) { .org-chips li { animation: none; } }
   .org-note { font-size: 13px; color: var(--text-muted); }
 
   .photo-gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 30px; }
@@ -624,6 +631,7 @@
       document.querySelectorAll(sel).forEach(function (el, i) {
         el.classList.add('reveal');
         el.style.transitionDelay = Math.min(i * 60, 400) + 'ms';
+        if (sel === '.org-chips li') { el.style.setProperty('--twinkle-delay', (i % 9) * 0.35 + 's'); }
         revealEls.push(el);
       });
     });
