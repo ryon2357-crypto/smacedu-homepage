@@ -339,6 +339,7 @@
         <li><a href="https://cafe.naver.com/elsnap7"  target="_blank" rel="noopener" onclick="closeMob()">커뮤니티 1</a></li>
         <li><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener" onclick="closeMob()">커뮤니티 2</a></li>
         <li><a href="index.html#lecture-request" onclick="closeMob()">출강·수강 문의</a></li>
+        <li id="navAuthAreaMob"></li>
     </ul>
 </div>
 
@@ -481,18 +482,29 @@
             clearTimeout(loadingTimer)
 
             // 네비게이션 사용자 영역
-            const authArea = document.getElementById('navAuthArea')
+            const authArea    = document.getElementById('navAuthArea')
+            const authAreaMob = document.getElementById('navAuthAreaMob')
             if (session) {
-                authArea.innerHTML = `
-                    <div class="nav-user-area">
-                        <a href="mypage.html" class="btn-nav-mypage">마이페이지</a>
-                        <button class="btn-nav-logout" id="logoutBtn">로그아웃</button>
-                    </div>`
-                document.getElementById('logoutBtn').addEventListener('click', () => {
-                    sbClient.auth.signOut().then(() => location.href = 'index.html')
-                })
+                if (authArea) {
+                    authArea.innerHTML = `
+                        <div class="nav-user-area">
+                            <a href="mypage.html" class="btn-nav-mypage">마이페이지</a>
+                            <button class="btn-nav-logout" id="logoutBtn">로그아웃</button>
+                        </div>`
+                    document.getElementById('logoutBtn').addEventListener('click', () => {
+                        sbClient.auth.signOut().then(() => location.href = 'index.html')
+                    })
+                }
+                if (authAreaMob) {
+                    authAreaMob.innerHTML = `<a href="mypage.html" onclick="closeMob()">마이페이지</a><a href="#" id="logoutBtnMob">로그아웃</a>`
+                    document.getElementById('logoutBtnMob').addEventListener('click', (e) => {
+                        e.preventDefault()
+                        sbClient.auth.signOut().then(() => location.href = 'index.html')
+                    })
+                }
             } else {
-                if (authArea) authArea.innerHTML = `<a href="login.html?redirect=replay.html" class="btn-nav-login">로그인</a>`
+                if (authArea)    authArea.innerHTML    = `<a href="login.html?redirect=replay.html" class="btn-nav-login">로그인</a>`
+                if (authAreaMob) authAreaMob.innerHTML = `<a href="login.html?redirect=replay.html" onclick="closeMob()">로그인</a>`
             }
 
             if (error || !session) { showGate(false); return }
