@@ -11,13 +11,13 @@
   <meta property="og:url" content="https://www.smacedu.kr/photo-lecture-dangsan" />
   <meta property="og:title" content="7월 30일(목) 당산역 인근 — 스마트폰 사진 촬영·보정 무료 특강 [앵콜]" />
   <meta property="og:description" content="같은 폰인데 왜 그 사람 사진만 다를까요? 100분이면 사진이 완전히 달라집니다. 이번엔 좌석이 많지 않습니다." />
-  <meta property="og:image" content="https://www.smacedu.kr/images/photo-artist-instructor/community-photo-12.jpg?v=1" />
+  <meta property="og:image" content="https://www.smacedu.kr/images/photo-artist-instructor/portfolio-08-hanriver-sunset.jpg?v=1" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="7월 30일(목) 당산역 인근 — 스마트폰 사진 촬영·보정 무료 특강 [앵콜]" />
   <meta name="twitter:description" content="같은 폰인데 왜 그 사람 사진만 다를까요? 이번엔 좌석이 많지 않습니다." />
-  <meta name="twitter:image" content="https://www.smacedu.kr/images/photo-artist-instructor/community-photo-12.jpg?v=1" />
+  <meta name="twitter:image" content="https://www.smacedu.kr/images/photo-artist-instructor/portfolio-08-hanriver-sunset.jpg?v=1" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -164,10 +164,17 @@
     .info-note { margin-top: 20px; font-size: 13px; color: var(--muted); background: rgba(255,255,255,0.03); border-radius: 10px; padding: 14px 18px; }
 
     /* ── 사회적 증거 (지난 강연) ── */
-    #proof .community-photo { width: 100%; display: block; border-radius: var(--radius); border: 1px solid var(--border); margin-top: 40px; }
-    .proof-callout {
-      margin-top: 24px; text-align: center; font-size: 15px; color: #fbbf24; font-weight: 700;
+    .proof-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+    .proof-stat {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 32px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center;
     }
+    .proof-stat-num { font-size: 26px; font-weight: 900; background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .proof-stat-label { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .proof-callout {
+      margin-top: 28px; text-align: center; font-size: 15px; color: #fbbf24; font-weight: 700;
+    }
+    @media (max-width: 640px) { .proof-stats { grid-template-columns: 1fr; } }
 
     /* ── 갤러리 ── */
     #gallery { background: var(--bg2); }
@@ -386,7 +393,7 @@
       </div>
       <div class="info-row">
         <div class="info-key">참가비</div>
-        <div class="info-val">완전 무료 (후원사 홍보 시간 10~20분 포함, 성인 대상 · 자녀 동반 입장 제한)</div>
+        <div class="info-val">완전 무료 (후원사 홍보 시간 50~60분 포함, 성인 대상 · 자녀 동반 입장 제한)</div>
       </div>
       <div class="info-row">
         <div class="info-key">강사</div>
@@ -408,7 +415,11 @@
     <p class="section-label reveal">지난 강연은 이랬습니다</p>
     <h2 class="reveal">이번이 처음이 아닙니다</h2>
     <p class="section-desc reveal">이미 여러 차례 만석으로 진행된 강연입니다. 이번 앵콜강연도 같은 인기가 예상됩니다.</p>
-    <img class="community-photo reveal" src="images/photo-artist-instructor/community-photo-12.jpg" alt="박성욱 작가의 지난 강연 현장, 가득 찬 좌석과 함께 배우는 수강생들">
+    <div class="proof-stats reveal">
+      <div class="proof-stat"><span class="proof-stat-num">앵콜</span><span class="proof-stat-label">지난 강연 조기 마감으로<br>재오픈된 강연입니다</span></div>
+      <div class="proof-stat"><span class="proof-stat-num">한정</span><span class="proof-stat-label">이번 회차도<br>확보 좌석이 많지 않습니다</span></div>
+      <div class="proof-stat"><span class="proof-stat-num">100분</span><span class="proof-stat-label">촬영부터 보정까지<br>실전으로 채웁니다</span></div>
+    </div>
     <p class="proof-callout reveal">"앵콜강연"이라는 이름 자체가, 지난 강연이 얼마나 빠르게 마감됐는지를 보여줍니다.</p>
   </div>
 </section>
