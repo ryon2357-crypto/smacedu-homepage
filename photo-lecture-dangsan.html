@@ -197,6 +197,12 @@
     .timeline-content p { font-size: 14px; color: var(--muted); }
 
     /* ── 이유 ── */
+    /* ── 중간 CTA ── */
+    #mid-cta { padding: 56px 24px; text-align: center; }
+    .mid-cta-inner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .mid-cta-text { font-size: 17px; font-weight: 700; color: #fff; }
+    .mid-cta-note { font-size: 12.5px; color: #fca5a5; font-weight: 600; }
+
     #reasons { background: var(--bg2); }
     .outcomes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 48px; }
     .outcome-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px; display: flex; align-items: flex-start; gap: 16px; transition: border-color 0.3s, transform 0.3s; }
@@ -486,6 +492,17 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- 중간 CTA -->
+<section id="mid-cta">
+  <div class="container mid-cta-inner reveal">
+    <p class="mid-cta-text">여기까지 보셨다면, 이미 마음은 정해지신 것 아닐까요?</p>
+    <a class="btn btn-primary" href="https://forms.gle/HRDkUSWNArApNtgF6" target="_blank" rel="noopener">
+      ✦ 지금 바로 신청하기
+    </a>
+    <p class="mid-cta-note">⚠️ 신청 마감 7&#8203;월 29&#8203;일(수) 자정 · 좌석 소진 시 그 전에 마감</p>
   </div>
 </section>
 
