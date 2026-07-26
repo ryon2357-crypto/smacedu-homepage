@@ -298,7 +298,7 @@
     </div>
 
     <div class="countdown-box reveal reveal-delay-3">
-      <div class="countdown-label">⏰ 강연 시작까지 남은 시간</div>
+      <div class="countdown-label">⏰ 신청 마감까지 남은 시간</div>
       <div class="countdown-timer" id="countdown">
         <div class="countdown-unit"><span class="countdown-num" id="cd-d">00</span><span class="countdown-unit-label">일</span></div>
         <div class="countdown-unit"><span class="countdown-num" id="cd-h">00</span><span class="countdown-unit-label">시간</span></div>
@@ -402,6 +402,10 @@
       <div class="info-row">
         <div class="info-key">신청 방법</div>
         <div class="info-val">아래 ‘지금 바로 신청하기’ 버튼으로 구글폼을 작성하시면 좌석이 확보됩니다.</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">신청 마감</div>
+        <div class="info-val">2026&#8203;년 7&#8203;월 29&#8203;일(수) 자정까지 (좌석 소진 시 그 전에 마감될 수 있습니다)</div>
       </div>
     </div>
 
@@ -588,7 +592,7 @@
       <a class="btn btn-primary" href="https://forms.gle/HRDkUSWNArApNtgF6" target="_blank" rel="noopener" style="font-size: 18px; padding: 18px 48px;">
         ✦ 지금 바로 신청하기
       </a>
-      <p class="cta-note" style="color: #fca5a5; font-weight: 600;">⚠️ 좌석 소진 시 신청이 조기 마감될 수 있습니다</p>
+      <p class="cta-note" style="color: #fca5a5; font-weight: 600;">⚠️ 신청 마감 7&#8203;월 29&#8203;일(수) 자정 · 좌석 소진 시 그 전에 마감될 수 있습니다</p>
       <p class="cta-note">2026&#8203;년 7&#8203;월 30&#8203;일(목) 저녁 7시 · 서울 당산역 인근 · 완전 무료</p>
     </div>
   </div>
@@ -599,8 +603,8 @@
 </footer>
 
 <script>
-  /* ── 카운트다운: 2026-07-30 19:00 KST ── */
-  const EVENT_TIME = new Date('2026-07-30T19:00:00+09:00').getTime();
+  /* ── 카운트다운: 신청 마감 (7/29 자정 = 7/30 00:00 KST) ── */
+  const EVENT_TIME = new Date('2026-07-30T00:00:00+09:00').getTime();
 
   function tickCountdown() {
     const els = {
