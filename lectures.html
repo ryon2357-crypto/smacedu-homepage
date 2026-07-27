@@ -54,6 +54,7 @@
         .nav-links .cta a { padding:9px 22px; background:var(--orange); color:#fff; border-radius:8px; font-weight:700; transition:background .2s,transform .2s; }
         .nav-links .cta a:hover { background:var(--orange-dk); transform:translateY(-1px); }
         .nav-dropdown { position:relative; }
+        .nav-dropdown::after { content:""; position:absolute; top:100%; left:0; right:0; height:16px; }
         .nav-dropdown-toggle { background:none; border:none; cursor:pointer; font-family:inherit; padding:0; display:flex; align-items:center; gap:4px; text-decoration:none; color:var(--text-body); font-size:13.5px; font-weight:500; transition:color .2s; white-space:nowrap; }
         .nav-dropdown-toggle:hover { color:var(--orange); }
         .nav-dropdown-toggle .caret { font-size:10px; transition:transform .2s; }
