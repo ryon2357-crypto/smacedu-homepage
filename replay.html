@@ -111,6 +111,7 @@
         .nav-links .cta a:hover { background: var(--orange-dk); transform: translateY(-1px); }
 
         .nav-dropdown { position:relative; }
+        .nav-dropdown::after { content:""; position:absolute; top:100%; left:0; right:0; height:16px; }
         .nav-dropdown-toggle {
             background:none; border:none; cursor:pointer; font-family:inherit; padding:0;
             display:flex; align-items:center; gap:4px;
