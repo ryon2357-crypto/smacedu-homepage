@@ -144,6 +144,9 @@
   @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
 
   .hero-actions{display:flex;flex-direction:column;align-items:center;gap:14px;}
+  .hero-instructors{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;}
+  .hero-byline.assist{color:var(--muted);}
+  .hero-byline.assist b{color:var(--ink);}
   .hero-ppt{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--accent-ink);background:var(--accent);padding:10px 22px;border-radius:999px;text-decoration:none;transition:transform .15s, box-shadow .15s;}
   .hero-ppt:hover{transform:translateY(-1px);box-shadow:0 8px 22px color-mix(in srgb, var(--accent) 35%, transparent);}
   .hero-ppt .arrow{font-family:var(--mono);}
@@ -308,7 +311,10 @@
     <h1>쉽고 빠른<br>스마트폰 영상 촬영과 편집</h1>
     <p class="hero-sub">기획부터 촬영 노하우, 쇼트와 편집의 기본 문법, CapCut PC 실습까지 — 강의 내용을 순서대로 다시 보고, 필요한 기능은 바로 검색해서 찾을 수 있는 학습 페이지입니다.</p>
     <div class="hero-actions">
-      <span class="hero-byline"><span class="rec-dot"></span>강사 <b>엘란비탈 박성욱</b> 작가</span>
+      <div class="hero-instructors">
+        <span class="hero-byline"><span class="rec-dot"></span>강사 <b>엘란비탈 박성욱</b> 작가</span>
+        <span class="hero-byline assist">보조강사 <b>이소진</b> 작가</span>
+      </div>
       <a class="hero-ppt" href="https://docs.google.com/presentation/d/1YsoIoTcT4JYsYBUfugkaVZKa_lNopL76yRMYfxDIDNQ/edit?usp=sharing" target="_blank" rel="noopener">
         <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4" width="15" height="10" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M7 17h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M10 14v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
         이번 강의 PPT 바로 보기 <span class="arrow">↗</span>
