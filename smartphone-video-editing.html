@@ -95,21 +95,26 @@
   /* ---------- HERO ---------- */
   .hero{
     position:relative; padding:72px 24px 72px;
-    background:
-      radial-gradient(1100px 480px at 12% -10%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 60%),
-      radial-gradient(900px 420px at 100% 0%, color-mix(in srgb, var(--accent-2) 16%, transparent), transparent 55%),
-      var(--bg);
+    background:var(--bg);
     border-bottom:1px solid var(--line);
     overflow:hidden;
+  }
+  .hero-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 55%; z-index:0; }
+  .hero-video-overlay{
+    position:absolute; inset:0; z-index:1;
+    background:
+      radial-gradient(1100px 480px at 12% -10%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 60%),
+      radial-gradient(900px 420px at 100% 0%, color-mix(in srgb, var(--accent-2) 24%, transparent), transparent 55%),
+      linear-gradient(180deg, color-mix(in srgb, var(--bg) 60%, transparent) 0%, var(--bg) 88%);
   }
   .hero::before, .hero::after{
     content:""; position:absolute; width:34px; height:34px;
     border:2px solid color-mix(in srgb, var(--accent) 70%, transparent);
-    opacity:0.85;
+    opacity:0.85; z-index:2;
   }
   .hero::before{ top:28px; left:28px; border-right:none; border-bottom:none; }
   .hero::after{ bottom:28px; right:28px; border-left:none; border-top:none; }
-  .hero-inner{ max-width:920px; margin:0 auto; position:relative; text-align:center; }
+  .hero-inner{ max-width:920px; margin:0 auto; position:relative; z-index:2; text-align:center; }
   .eyebrow{ font-family:var(--mono); font-size:12.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--accent); margin:0 0 18px; }
   .hero h1{ font-size:clamp(30px, 5.4vw, 52px); line-height:1.24; font-weight:800; letter-spacing:-0.01em; margin:0 0 20px; text-wrap:balance; }
   .hero-sub{ font-size:17px; color:var(--ink-dim); max-width:620px; margin:0 auto 28px; text-wrap:balance; }
@@ -231,9 +236,40 @@
     .clip-body{padding-left:18px;}
     .sitebar{padding:12px 16px; font-size:12.5px;}
   }
+
+  /* ---------- scroll progress bar ---------- */
+  .scrollbar{position:fixed; top:0; left:0; height:3px; width:0%; background:linear-gradient(90deg, var(--accent), var(--accent-2)); z-index:999;}
+
+  /* ---------- ticker ---------- */
+  .ticker{overflow:hidden; white-space:nowrap; background:var(--surface-2); border-bottom:1px solid var(--line);}
+  .ticker-track{display:inline-flex; width:max-content; animation:ticker-scroll 28s linear infinite;}
+  .ticker-group{display:inline-flex; align-items:center; gap:36px; padding:9px 18px 9px 0; font-family:var(--mono); font-size:12px; letter-spacing:0.03em; color:var(--ink-dim);}
+  .ticker-group b{color:var(--accent); font-weight:600;}
+  @keyframes ticker-scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+  @media (prefers-reduced-motion: reduce){
+    .ticker-track{animation:none;}
+    .ticker{overflow-x:auto;}
+  }
+
+  /* ---------- pulsing CTA glow ---------- */
+  @media (prefers-reduced-motion: no-preference){
+    .hero-ppt, .mission-email{animation:cta-glow 2.6s ease-in-out infinite;}
+  }
+  @keyframes cta-glow{
+    0%,100%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
+    50%{ box-shadow:0 0 0 8px color-mix(in srgb, var(--accent) 0%, transparent); }
+  }
+
+  /* ---------- extra hover-lift ---------- */
+  .term{transition:border-color .15s, transform .15s;}
+  .term:hover{border-color:var(--accent-2); transform:translateY(-2px);}
+  .finder-item{transition:border-color .15s, transform .15s;}
+  .finder-item:hover{border-color:var(--accent-2); transform:translateY(-1px);}
 </style>
 </head>
 <body>
+
+<div class="scrollbar" id="scrollbar"></div>
 
 <div class="sitebar">
   <a class="home" href="index.html">← 스마트미디어아트센터</a>
@@ -241,6 +277,10 @@
 </div>
 
 <div class="hero" id="top">
+  <video class="hero-video" autoplay muted loop playsinline poster="images/photo-artist-instructor/hero-bg-img-02.jpg">
+    <source src="videos/photo-artist-instructor-hero.mp4" type="video/mp4">
+  </video>
+  <div class="hero-video-overlay"></div>
   <div class="hero-inner">
     <p class="eyebrow">Smartphone Video Class · CapCut PC</p>
     <h1>쉽고 빠른<br>스마트폰 영상 촬영과 편집</h1>
@@ -252,6 +292,13 @@
         이번 강의 PPT 바로 보기 <span class="arrow">↗</span>
       </a>
     </div>
+  </div>
+</div>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-group">🎬 <b>스마트폰 촬영</b>부터 <b>CapCut 편집</b>까지 · 자막 · BGM · 나레이션 실습 포함 · 기능 위치 검색기로 바로 찾기 · 오늘의 미션 제출하고 피드백 받기 · </span>
+    <span class="ticker-group" aria-hidden="true">🎬 <b>스마트폰 촬영</b>부터 <b>CapCut 편집</b>까지 · 자막 · BGM · 나레이션 실습 포함 · 기능 위치 검색기로 바로 찾기 · 오늘의 미션 제출하고 피드백 받기 · </span>
   </div>
 </div>
 
@@ -274,14 +321,14 @@
 
   <main>
 
-    <section class="chapter reveal" id="plan">
-      <div class="chapter-head">
+    <section class="chapter" id="plan">
+      <div class="chapter-head reveal">
         <p class="chapter-num">01 · Plan</p>
         <h2>영상 기획</h2>
         <p class="chapter-lede">촬영을 시작하기 전, 누구에게 무엇을 보여줄지부터 정리합니다.</p>
       </div>
 
-      <details class="clip-card" open>
+      <details class="clip-card reveal" open>
         <summary><span class="tag"></span>청중 이해하기<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
         <div class="clip-body">
           <ul>
@@ -293,7 +340,7 @@
         </div>
       </details>
 
-      <details class="clip-card">
+      <details class="clip-card reveal">
         <summary><span class="tag"></span>동영상 스토리보드(콘티) 만들기<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
         <div class="clip-body">
           <p>스토리보드를 사용해 영상을 미리 계획하면 아이디어를 정리하고 논리적인 흐름을 보장하는 데 도움이 됩니다.</p>
@@ -305,14 +352,14 @@
       </details>
     </section>
 
-    <section class="chapter reveal" id="shoot">
-      <div class="chapter-head">
+    <section class="chapter" id="shoot">
+      <div class="chapter-head reveal">
         <p class="chapter-num">02 · Shoot</p>
         <h2>촬영 노하우</h2>
         <p class="chapter-lede">장비, 화질 설정, 인물 촬영 팁, 화각과 카메라 무빙까지 — 촬영 전 알아야 할 실전 지식입니다.</p>
       </div>
 
-      <details class="clip-card">
+      <details class="clip-card reveal">
         <summary><span class="tag"></span>촬영 액세서리<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
         <div class="clip-body">
           <ul>
@@ -323,7 +370,7 @@
         </div>
       </details>
 
-      <details class="clip-card">
+      <details class="clip-card reveal">
         <summary><span class="tag"></span>속도와 방향이 주는 재미<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
         <div class="clip-body">
           <ul>
@@ -335,7 +382,7 @@
         </div>
       </details>
 
-      <details class="clip-card">
+      <details class="clip-card reveal">
         <summary><span class="tag"></span>영상 포맷(해상도) 이해하기<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
         <div class="clip-body">
           <div class="term-grid">
@@ -350,7 +397,7 @@
         </div>
       </details>
 
-      <details class="clip-card">
+      <details class="clip-card reveal">
         <summary><span class="tag"></span>촬영 시 꼭 체크할 것<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
         <div class="clip-body">
           <ul>
@@ -364,7 +411,7 @@
         </div>
       </details>
 
-      <details class="clip-card">
+      <details class="clip-card reveal">
         <summary><span class="tag"></span>전신 인물사진 늘씬하게 찍는 법<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
         <div class="clip-body">
           <ul>
@@ -374,7 +421,7 @@
         </div>
       </details>
 
-      <details class="clip-card">
+      <details class="clip-card reveal">
         <summary><span class="tag"></span>초점거리와 화각의 활용<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
         <div class="clip-body">
           <ul>
@@ -384,7 +431,7 @@
         </div>
       </details>
 
-      <details class="clip-card">
+      <details class="clip-card reveal">
         <summary><span class="tag"></span>카메라 무빙 7가지<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
         <div class="clip-body">
           <div class="term-grid">
@@ -400,14 +447,14 @@
       </details>
     </section>
 
-    <section class="chapter reveal" id="grammar">
-      <div class="chapter-head">
+    <section class="chapter" id="grammar">
+      <div class="chapter-head reveal">
         <p class="chapter-num">03 · Grammar</p>
         <h2>쇼트 &amp; 편집의 기본 문법</h2>
         <p class="chapter-lede">영상 언어의 기본 단위를 알면 촬영 계획과 편집이 훨씬 쉬워집니다.</p>
       </div>
 
-      <details class="clip-card" open>
+      <details class="clip-card reveal" open>
         <summary><span class="tag"></span>쇼트(Shot)의 크기 7종<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
         <div class="clip-body">
           <div class="term-grid">
@@ -422,7 +469,7 @@
         </div>
       </details>
 
-      <details class="clip-card">
+      <details class="clip-card reveal">
         <summary><span class="tag"></span>영상 편집의 단위<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
         <div class="clip-body">
           <ul>
@@ -435,7 +482,7 @@
         </div>
       </details>
 
-      <details class="clip-card">
+      <details class="clip-card reveal">
         <summary><span class="tag"></span>필수 영상 편집 효과 한눈에 보기<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
         <div class="clip-body">
           <p>컷편집 · 크롭 · 확대/축소 · 키프레임 · BGM · 효과음 · 나레이션 · 전환효과 · 자막</p>
@@ -445,14 +492,14 @@
       </details>
     </section>
 
-    <section class="chapter reveal" id="edit">
-      <div class="chapter-head">
+    <section class="chapter" id="edit">
+      <div class="chapter-head reveal">
         <p class="chapter-num">04 · Edit</p>
         <h2>CapCut PC 실습 가이드</h2>
         <p class="chapter-lede">강의에서 실습한 순서 그대로 정리했습니다. 반드시 <b>C드라이브에 캡컷 폴더</b>를 만들고 편집을 시작하세요. 프로젝트는 완성된 영상이 아니라 “편집 중인 상태”이므로, 언제든 다시 불러와 이어서 작업할 수 있습니다.</p>
       </div>
 
-      <div class="material-panel">
+      <div class="material-panel reveal">
         <p class="material-label">실습 자료 다운로드</p>
         <div class="material-list">
           <a class="material-item" href="https://drive.google.com/drive/folders/1yeXNEtfvi3rMNBsemqyo6KXXgWtX3UQQ?usp=drive_link" target="_blank" rel="noopener">
@@ -471,7 +518,7 @@
       </div>
 
       <div class="flow">
-        <details class="clip-card flow-step" data-step="1">
+        <details class="clip-card flow-step reveal" data-step="1">
           <summary><span class="tag"></span>파일 가져오기 &amp; 타임라인<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
           <div class="clip-body">
             <ul>
@@ -483,7 +530,7 @@
           </div>
         </details>
 
-        <details class="clip-card flow-step" data-step="2">
+        <details class="clip-card flow-step reveal" data-step="2">
           <summary><span class="tag"></span>기울기 보정 &amp; 크롭, 밝기·색감 보정<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
           <div class="clip-body">
             <p>기울어진 영상을 바로잡고 필요한 부분만 크롭합니다.</p>
@@ -491,7 +538,7 @@
           </div>
         </details>
 
-        <details class="clip-card flow-step" data-step="3">
+        <details class="clip-card flow-step reveal" data-step="3">
           <summary><span class="tag"></span>얼굴 · 몸매 보정(Enhance)<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
           <div class="clip-body">
             <ul>
@@ -501,7 +548,7 @@
           </div>
         </details>
 
-        <details class="clip-card flow-step" data-step="4">
+        <details class="clip-card flow-step reveal" data-step="4">
           <summary><span class="tag"></span>컷편집: 분할 · 삭제<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
           <div class="clip-body">
             <ul>
@@ -514,14 +561,14 @@
           </div>
         </details>
 
-        <details class="clip-card flow-step" data-step="5">
+        <details class="clip-card flow-step reveal" data-step="5">
           <summary><span class="tag"></span>가로 영상을 세로로 사용하기<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
           <div class="clip-body">
             <p>동영상 → 기본 → 캔버스 옆 삼각형 클릭 → 색상·패턴 등을 선택하면 캔버스 색을 원하는 대로 바꿀 수 있습니다.</p>
           </div>
         </details>
 
-        <details class="clip-card flow-step" data-step="6">
+        <details class="clip-card flow-step reveal" data-step="6">
           <summary><span class="tag"></span>영상 편집의 꽃: 속도 조절<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
           <div class="clip-body">
             <ul>
@@ -531,7 +578,7 @@
           </div>
         </details>
 
-        <details class="clip-card flow-step" data-step="7">
+        <details class="clip-card flow-step reveal" data-step="7">
           <summary><span class="tag"></span>키프레임<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
           <div class="clip-body">
             <p>시작점부터 종착점까지 효과를 서서히 적용합니다 — 패닝, 틸팅, 줌인, 줌아웃.</p>
@@ -542,7 +589,7 @@
           </div>
         </details>
 
-        <details class="clip-card flow-step" data-step="8">
+        <details class="clip-card flow-step reveal" data-step="8">
           <summary><span class="tag"></span>화면 시작 &amp; 장면 전환<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
           <div class="clip-body">
             <ul>
@@ -552,7 +599,7 @@
           </div>
         </details>
 
-        <details class="clip-card flow-step" data-step="9">
+        <details class="clip-card flow-step reveal" data-step="9">
           <summary><span class="tag"></span>오디오: 음향 개선 · BGM · 효과음 · 나레이션<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
           <div class="clip-body">
             <ul>
@@ -565,7 +612,7 @@
           </div>
         </details>
 
-        <details class="clip-card flow-step" data-step="10">
+        <details class="clip-card flow-step reveal" data-step="10">
           <summary><span class="tag"></span>자막 (타이틀 · 말풍선 · AI 자동자막)<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
           <div class="clip-body">
             <ul>
@@ -577,7 +624,7 @@
           </div>
         </details>
 
-        <details class="clip-card flow-step" data-step="11">
+        <details class="clip-card flow-step reveal" data-step="11">
           <summary><span class="tag"></span>배경 변경 · 얼굴 모자이크(PRO)<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
           <div class="clip-body">
             <ul>
@@ -587,7 +634,7 @@
           </div>
         </details>
 
-        <details class="clip-card flow-step" data-step="12">
+        <details class="clip-card flow-step reveal" data-step="12">
           <summary><span class="tag"></span>템플릿 · 스톡 자료 활용<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
           <div class="clip-body">
             <ul>
@@ -597,7 +644,7 @@
           </div>
         </details>
 
-        <details class="clip-card flow-step" data-step="13">
+        <details class="clip-card flow-step reveal" data-step="13">
           <summary><span class="tag"></span>내보내기<svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
           <div class="clip-body">
             <p>동영상만 선택 / <b>1080P, MP4</b>로 내보내기</p>
@@ -606,14 +653,14 @@
       </div>
     </section>
 
-    <section class="chapter reveal" id="finder" style="border-bottom:none;">
-      <div class="chapter-head">
+    <section class="chapter" id="finder" style="border-bottom:none;">
+      <div class="chapter-head reveal">
         <p class="chapter-num">05 · Find</p>
         <h2>CapCut PC 기능 위치 검색기</h2>
         <p class="chapter-lede">기능 이름이나 키워드를 입력하면, 캡컷 PC 화면에서 그 기능이 어디에 있는지 바로 찾아줍니다. 예: “속도”, “자막”, “모자이크”, “내보내기”</p>
       </div>
 
-      <div class="finder-panel">
+      <div class="finder-panel reveal">
         <div class="finder-search">
           <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6.2" stroke="currentColor" stroke-width="1.8"/><path d="M14 14L18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
           <input id="finderInput" type="text" placeholder="찾고 싶은 기능을 입력하세요 (예: 속도, 자막, 배경음악)" autocomplete="off">
@@ -631,7 +678,7 @@
   </main>
 </div>
 
-<section class="mission">
+<section class="mission reveal">
   <div class="mission-inner">
     <p class="mission-eyebrow">Today's Mission</p>
     <h2 class="mission-title">오늘의 미션 과제를 아래 이메일로 보내주세요</h2>
@@ -757,12 +804,26 @@
     sections.forEach(function(s){ if(s) io.observe(s); });
 
     var reveals = document.querySelectorAll('.reveal');
+    reveals.forEach(function(r, i){ r.style.transitionDelay = ((i % 6) * 70) + 'ms'; });
     var rio = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
         if(e.isIntersecting){ e.target.classList.add('in'); rio.unobserve(e.target); }
       });
     }, {threshold:0.06});
     reveals.forEach(function(r){ rio.observe(r); });
+  }
+
+  var scrollbarEl = document.getElementById('scrollbar');
+  if(scrollbarEl){
+    var updateScrollbar = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      var pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+      scrollbarEl.style.width = pct + '%';
+    };
+    window.addEventListener('scroll', updateScrollbar, {passive:true});
+    window.addEventListener('resize', updateScrollbar);
+    updateScrollbar();
   }
 })();
 </script>
