@@ -117,22 +117,53 @@
   .hero-inner{ max-width:920px; margin:0 auto; position:relative; z-index:2; text-align:center; }
 
   .welcome-banner{
+    position:relative;
     display:inline-flex; align-items:center; gap:10px;
-    background:linear-gradient(135deg, color-mix(in srgb, var(--accent) 24%, var(--surface)), color-mix(in srgb, var(--accent-2) 20%, var(--surface)));
+    background:linear-gradient(120deg,
+      color-mix(in srgb, var(--accent) 30%, var(--surface)),
+      color-mix(in srgb, var(--accent-2) 26%, var(--surface)),
+      color-mix(in srgb, var(--accent) 30%, var(--surface)));
+    background-size:220% 100%;
     border:1px solid var(--line-strong); border-radius:999px;
-    padding:10px 22px; margin:0 0 24px;
-    font-size:14.5px; font-weight:700; color:var(--ink);
+    padding:13px 28px; margin:0 0 26px;
+    font-size:16px; font-weight:800; color:var(--ink);
+    letter-spacing:-0.01em;
   }
   .welcome-emoji{display:inline-flex; color:var(--accent); transform-origin:50% 50%;}
   @media (prefers-reduced-motion: no-preference){
-    .welcome-banner{animation:welcome-pop .5s cubic-bezier(.2,.9,.3,1.4) both;}
-    .welcome-emoji{animation:welcome-wave 1.6s ease-in-out .5s infinite;}
+    .welcome-banner{
+      animation:
+        welcome-pop .55s cubic-bezier(.2,.9,.3,1.4) both,
+        welcome-shimmer 4.5s ease-in-out .55s infinite,
+        welcome-glow 2.4s ease-in-out 1.1s infinite;
+    }
+    .welcome-emoji{animation:welcome-wave 1.6s ease-in-out .6s infinite;}
     .welcome-cursor{animation:welcome-blink 1s step-end infinite;}
   }
-  @keyframes welcome-pop{ from{opacity:0; transform:scale(.85) translateY(-8px);} to{opacity:1; transform:scale(1) translateY(0);} }
-  @keyframes welcome-wave{ 0%,100%{transform:scale(1) rotate(0deg); opacity:1;} 50%{transform:scale(1.2) rotate(20deg); opacity:.7;} }
+  @keyframes welcome-pop{ from{opacity:0; transform:scale(.8) translateY(-10px);} to{opacity:1; transform:scale(1) translateY(0);} }
+  @keyframes welcome-shimmer{ 0%,100%{background-position:0% 50%;} 50%{background-position:100% 50%;} }
+  @keyframes welcome-glow{
+    0%,100%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
+    50%{ box-shadow:0 0 24px 3px color-mix(in srgb, var(--accent) 40%, transparent); }
+  }
+  @keyframes welcome-wave{ 0%,100%{transform:scale(1) rotate(0deg); opacity:1;} 50%{transform:scale(1.25) rotate(24deg); opacity:.7;} }
   @keyframes welcome-blink{ 50%{opacity:0;} }
   .welcome-cursor{display:inline-block; margin-left:1px; color:var(--accent); font-weight:400;}
+  .welcome-char{display:inline-block; white-space:pre;}
+  @media (prefers-reduced-motion: no-preference){
+    .welcome-char{animation:char-pop 420ms cubic-bezier(.34,1.56,.64,1) both;}
+  }
+  @keyframes char-pop{ from{opacity:0; transform:translateY(10px) scale(.4) rotate(-8deg);} to{opacity:1; transform:translateY(0) scale(1) rotate(0deg);} }
+
+  .confetti{ position:absolute; top:50%; left:50%; width:7px; height:7px; pointer-events:none; opacity:0; }
+  @media (prefers-reduced-motion: no-preference){
+    .confetti{ animation:confetti-burst 900ms ease-out .55s both; }
+  }
+  @keyframes confetti-burst{
+    0%{ opacity:0; transform:translate(-50%,-50%) scale(.4) rotate(0deg); }
+    18%{ opacity:1; }
+    100%{ opacity:0; transform:translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1) rotate(var(--rot)); }
+  }
 
   .eyebrow{ font-family:var(--mono); font-size:12.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--accent); margin:0 0 18px; }
   .hero h1{ font-size:clamp(30px, 5.4vw, 52px); line-height:1.24; font-weight:800; letter-spacing:-0.01em; margin:0 0 20px; text-wrap:balance; }
@@ -140,13 +171,19 @@
   .hero-byline{ display:inline-flex; align-items:center; gap:10px; font-size:14px; color:var(--muted); padding:8px 16px; border:1px solid var(--line-strong); border-radius:999px; background:color-mix(in srgb, var(--surface) 70%, transparent); }
   .hero-byline b{color:var(--ink);font-weight:700;}
   .rec-dot{width:7px;height:7px;border-radius:50%;background:var(--danger);flex:none;}
+  .rec-dot.dot-teal{background:var(--accent-2);}
+  .rec-dot.dot-amber{background:var(--accent);}
   @media (prefers-reduced-motion: no-preference){ .rec-dot{animation:pulse 2.2s ease-in-out infinite;} }
   @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
 
+  .hero-byline--lead{padding:6px 20px 6px 6px;}
+  .hero-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;flex:none;border:1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);}
+  .byline-text{display:flex;flex-direction:column;align-items:flex-start;line-height:1.35;text-align:left;}
+  .byline-main{white-space:nowrap;}
+  .byline-sub{font-size:10.5px;font-weight:500;color:var(--muted);margin-top:1px;white-space:nowrap;}
+
   .hero-actions{display:flex;flex-direction:column;align-items:center;gap:14px;}
   .hero-instructors{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;}
-  .hero-byline.assist{color:var(--muted);}
-  .hero-byline.assist b{color:var(--ink);}
   .hero-ppt{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--accent-ink);background:var(--accent);padding:10px 22px;border-radius:999px;text-decoration:none;transition:transform .15s, box-shadow .15s;}
   .hero-ppt:hover{transform:translateY(-1px);box-shadow:0 8px 22px color-mix(in srgb, var(--accent) 35%, transparent);}
   .hero-ppt .arrow{font-family:var(--mono);}
@@ -306,14 +343,30 @@
   </video>
   <div class="hero-video-overlay"></div>
   <div class="hero-inner">
-    <p class="welcome-banner"><span class="welcome-emoji"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2v4M10 14v4M2 10h4M14 10h4M4.5 4.5l2.8 2.8M12.7 12.7l2.8 2.8M15.5 4.5l-2.8 2.8M7.3 12.7l-2.8 2.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span> <span id="welcomeText"></span><span class="welcome-cursor">|</span></p>
+    <p class="welcome-banner">
+      <span class="confetti" style="--tx:70px;--ty:-8px;--rot:120deg;background:var(--accent);border-radius:50%;animation-delay:.55s;"></span>
+      <span class="confetti" style="--tx:56px;--ty:-46px;--rot:-80deg;background:var(--accent-2);border-radius:2px;animation-delay:.58s;"></span>
+      <span class="confetti" style="--tx:18px;--ty:-66px;--rot:200deg;background:var(--accent);border-radius:50%;animation-delay:.56s;"></span>
+      <span class="confetti" style="--tx:-26px;--ty:-60px;--rot:-140deg;background:var(--accent-2);border-radius:2px;animation-delay:.6s;"></span>
+      <span class="confetti" style="--tx:-62px;--ty:-30px;--rot:90deg;background:var(--accent);border-radius:50%;animation-delay:.57s;"></span>
+      <span class="confetti" style="--tx:-72px;--ty:12px;--rot:-60deg;background:var(--accent-2);border-radius:2px;animation-delay:.62s;"></span>
+      <span class="confetti" style="--tx:-50px;--ty:46px;--rot:160deg;background:var(--accent);border-radius:50%;animation-delay:.59s;"></span>
+      <span class="confetti" style="--tx:-14px;--ty:66px;--rot:-200deg;background:var(--accent-2);border-radius:2px;animation-delay:.61s;"></span>
+      <span class="confetti" style="--tx:32px;--ty:60px;--rot:110deg;background:var(--accent);border-radius:50%;animation-delay:.63s;"></span>
+      <span class="confetti" style="--tx:66px;--ty:34px;--rot:-90deg;background:var(--accent-2);border-radius:2px;animation-delay:.6s;"></span>
+      <span class="welcome-emoji"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2v4M10 14v4M2 10h4M14 10h4M4.5 4.5l2.8 2.8M12.7 12.7l2.8 2.8M15.5 4.5l-2.8 2.8M7.3 12.7l-2.8 2.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span> <span id="welcomeText"></span><span class="welcome-cursor">|</span>
+    </p>
     <p class="eyebrow">Smartphone Video Class · CapCut PC</p>
     <h1>쉽고 빠른<br>스마트폰 영상 촬영과 편집</h1>
     <p class="hero-sub">기획부터 촬영 노하우, 쇼트와 편집의 기본 문법, CapCut PC 실습까지 — 강의 내용을 순서대로 다시 보고, 필요한 기능은 바로 검색해서 찾을 수 있는 학습 페이지입니다.</p>
     <div class="hero-actions">
       <div class="hero-instructors">
-        <span class="hero-byline"><span class="rec-dot"></span>강사 <b>엘란비탈 박성욱</b> 작가</span>
-        <span class="hero-byline assist">보조강사 <b>이소진</b> 작가</span>
+        <span class="hero-byline hero-byline--lead">
+          <img class="hero-avatar" src="images/director.jpg" alt="박성욱 작가">
+          <span class="byline-text"><span class="byline-main">강사 <b>엘란비탈 박성욱</b> 작가</span><span class="byline-sub">스마트미디어아트센터 대표</span></span>
+        </span>
+        <span class="hero-byline"><span class="rec-dot dot-teal"></span>강사 <b>이소진</b> 작가</span>
+        <span class="hero-byline"><span class="rec-dot dot-amber"></span>강사 <b>김소라</b> 작가</span>
       </div>
       <a class="hero-ppt" href="https://docs.google.com/presentation/d/1YsoIoTcT4JYsYBUfugkaVZKa_lNopL76yRMYfxDIDNQ/edit?usp=sharing" target="_blank" rel="noopener">
         <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4" width="15" height="10" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M7 17h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M10 14v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -805,16 +858,21 @@
 
   var welcomeEl = document.getElementById('welcomeText');
   if(welcomeEl){
-    var welcomeFull = '7급 미래인재 양성과정 여러분, 모두 환영합니다!';
+    var welcomeFull = '7급 미래인재 여러분 모두 환영합니다!';
     var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(reduceMotion){
       welcomeEl.textContent = welcomeFull;
     } else {
       var wi = 0;
       (function typeWelcome(){
-        welcomeEl.textContent = welcomeFull.slice(0, wi);
-        wi++;
-        if(wi <= welcomeFull.length){ setTimeout(typeWelcome, 55); }
+        if(wi < welcomeFull.length){
+          var ch = document.createElement('span');
+          ch.className = 'welcome-char';
+          ch.textContent = welcomeFull[wi];
+          welcomeEl.appendChild(ch);
+          wi++;
+          setTimeout(typeWelcome, 55);
+        }
       })();
     }
   }
