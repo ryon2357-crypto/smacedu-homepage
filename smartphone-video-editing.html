@@ -115,6 +115,25 @@
   .hero::before{ top:28px; left:28px; border-right:none; border-bottom:none; }
   .hero::after{ bottom:28px; right:28px; border-left:none; border-top:none; }
   .hero-inner{ max-width:920px; margin:0 auto; position:relative; z-index:2; text-align:center; }
+
+  .welcome-banner{
+    display:inline-flex; align-items:center; gap:10px;
+    background:linear-gradient(135deg, color-mix(in srgb, var(--accent) 24%, var(--surface)), color-mix(in srgb, var(--accent-2) 20%, var(--surface)));
+    border:1px solid var(--line-strong); border-radius:999px;
+    padding:10px 22px; margin:0 0 24px;
+    font-size:14.5px; font-weight:700; color:var(--ink);
+  }
+  .welcome-emoji{display:inline-flex; color:var(--accent); transform-origin:50% 50%;}
+  @media (prefers-reduced-motion: no-preference){
+    .welcome-banner{animation:welcome-pop .5s cubic-bezier(.2,.9,.3,1.4) both;}
+    .welcome-emoji{animation:welcome-wave 1.6s ease-in-out .5s infinite;}
+    .welcome-cursor{animation:welcome-blink 1s step-end infinite;}
+  }
+  @keyframes welcome-pop{ from{opacity:0; transform:scale(.85) translateY(-8px);} to{opacity:1; transform:scale(1) translateY(0);} }
+  @keyframes welcome-wave{ 0%,100%{transform:scale(1) rotate(0deg); opacity:1;} 50%{transform:scale(1.2) rotate(20deg); opacity:.7;} }
+  @keyframes welcome-blink{ 50%{opacity:0;} }
+  .welcome-cursor{display:inline-block; margin-left:1px; color:var(--accent); font-weight:400;}
+
   .eyebrow{ font-family:var(--mono); font-size:12.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--accent); margin:0 0 18px; }
   .hero h1{ font-size:clamp(30px, 5.4vw, 52px); line-height:1.24; font-weight:800; letter-spacing:-0.01em; margin:0 0 20px; text-wrap:balance; }
   .hero-sub{ font-size:17px; color:var(--ink-dim); max-width:620px; margin:0 auto 28px; text-wrap:balance; }
@@ -284,6 +303,7 @@
   </video>
   <div class="hero-video-overlay"></div>
   <div class="hero-inner">
+    <p class="welcome-banner"><span class="welcome-emoji"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2v4M10 14v4M2 10h4M14 10h4M4.5 4.5l2.8 2.8M12.7 12.7l2.8 2.8M15.5 4.5l-2.8 2.8M7.3 12.7l-2.8 2.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span> <span id="welcomeText"></span><span class="welcome-cursor">|</span></p>
     <p class="eyebrow">Smartphone Video Class · CapCut PC</p>
     <h1>쉽고 빠른<br>스마트폰 영상 촬영과 편집</h1>
     <p class="hero-sub">기획부터 촬영 노하우, 쇼트와 편집의 기본 문법, CapCut PC 실습까지 — 강의 내용을 순서대로 다시 보고, 필요한 기능은 바로 검색해서 찾을 수 있는 학습 페이지입니다.</p>
@@ -776,6 +796,22 @@
   input.addEventListener('input', function(){ render(input.value); });
   clearBtn.addEventListener('click', function(){ input.value=''; render(''); input.focus(); });
   render('');
+
+  var welcomeEl = document.getElementById('welcomeText');
+  if(welcomeEl){
+    var welcomeFull = '7급 미래인재 양성과정 여러분, 모두 환영합니다!';
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduceMotion){
+      welcomeEl.textContent = welcomeFull;
+    } else {
+      var wi = 0;
+      (function typeWelcome(){
+        welcomeEl.textContent = welcomeFull.slice(0, wi);
+        wi++;
+        if(wi <= welcomeFull.length){ setTimeout(typeWelcome, 55); }
+      })();
+    }
+  }
 
   var missionCopyBtn = document.getElementById('missionCopyBtn');
   if(missionCopyBtn){
