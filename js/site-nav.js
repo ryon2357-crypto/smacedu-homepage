@@ -18,7 +18,6 @@
         { label: '자격증',          anchor: 'certification' },
         { label: '수강후기',        href: 'reviews.html', key: 'reviews' },
         { label: '강의 다시보기',    href: 'replay.html',  key: 'replay' },
-        { label: '강사모집 공고',    href: 'lecturer-jobs.html' },
     ]
 
     const KAKAO_ICON = (size) =>
@@ -55,6 +54,19 @@
         <li><a href="https://cafe.naver.com/elsnap7" target="_blank" rel="noopener">💬 사진카페 포토피플</a></li>
         <li><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener">💬 스마트미디어아트센터 카페</a></li>`
 
+    const resourcesDesktop = `
+        <li class="nav-dropdown">
+            <button type="button" class="nav-dropdown-toggle">📂 자료실 <span class="caret">▾</span></button>
+            <ul class="nav-dropdown-menu">
+                <li><a href="lecturer-jobs.html">강사모집 공고</a></li>
+                <li><a href="smartphone-video-editing.html">스마트폰 영상 촬영·편집</a></li>
+            </ul>
+        </li>`
+
+    const resourcesMobile = `
+        <li><a href="lecturer-jobs.html">📂 강사모집 공고</a></li>
+        <li><a href="smartphone-video-editing.html">📂 스마트폰 영상 촬영·편집</a></li>`
+
     root.outerHTML = `
 <nav id="nav">
     <a href="${page === 'index' ? '#home' : 'index.html#home'}" class="nav-logo">
@@ -66,6 +78,7 @@
     </a>
     <ul class="nav-links">
         ${desktopItems}
+        ${resourcesDesktop}
         ${communityDesktop}
         <li class="cta"><a href="${prefix}#lecture-request">출강·수강 문의</a></li>
         <li id="navAuthArea"></li>
@@ -76,6 +89,7 @@
 <div class="mob-menu" id="mob">
     <ul>
         ${mobileItems}
+        ${resourcesMobile}
         ${communityMobile}
         <li><a href="${prefix}#lecture-request">출강·수강 문의</a></li>
         <li id="navAuthAreaMob"></li>
