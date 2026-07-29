@@ -637,6 +637,33 @@
       margin-bottom: 28px;
     }
 
+    .account-box {
+      background: rgba(139,92,246,0.08);
+      border: 1px solid rgba(139,92,246,0.3);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .account-bank {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #c4b5fd;
+      margin-bottom: 4px;
+    }
+    .account-number {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 4px;
+    }
+    .account-holder {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
     .form-group {
       margin-bottom: 18px;
     }
@@ -736,6 +763,45 @@
     </form>
 
     <p class="form-note">*제출 버튼을 클릭하시면 개인정보 수집 및 이용(특강 안내 목적)에 동의한 것으로 간주됩니다.</p>
+  </div>
+</div>
+
+<!-- 녹화본 구매 모달 -->
+<div class="modal-overlay" id="purchaseModal" onclick="closePurchaseModalOutside(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="purchaseModalTitle">
+    <button class="modal-close" onclick="closePurchaseModal()" aria-label="닫기">✕</button>
+    <h3 id="purchaseModalTitle">녹화본 구매 신청</h3>
+    <p class="modal-desc">
+      아래 계좌로 3만원 입금 후 정보를 남겨주세요.<br>
+      입금 확인 후 24시간 이내 녹화본 링크를 이메일로 보내드립니다.
+    </p>
+
+    <div class="account-box">
+      <div class="account-bank">신한은행</div>
+      <div class="account-number">110-050-892636</div>
+      <div class="account-holder">예금주 박성욱 · 3만원</div>
+    </div>
+
+    <form id="purchaseForm" onsubmit="submitPurchase(event)" novalidate>
+      <div class="form-group">
+        <label for="p-name">이름 <span style="color:#f9a8d4">*</span></label>
+        <input id="p-name" name="name" type="text" placeholder="홍길동" required autocomplete="name" />
+      </div>
+      <div class="form-group">
+        <label for="p-depositor">입금자명 <span style="color:var(--muted); font-weight:400;">(이름과 다를 경우)</span></label>
+        <input id="p-depositor" name="depositor" type="text" placeholder="입금 시 사용한 이름" autocomplete="off" />
+      </div>
+      <div class="form-group">
+        <label for="p-email">이메일 <span style="color:#f9a8d4">*</span></label>
+        <input id="p-email" name="email" type="email" placeholder="example@email.com" required autocomplete="email" />
+      </div>
+      <button type="submit" class="btn btn-primary form-submit" id="purchaseSubmitBtn">
+        ✦ 구매 신청하기
+      </button>
+      <div class="form-msg" id="purchaseFormMsg"></div>
+    </form>
+
+    <p class="form-note">*입금 확인 전 신청 접수만 되며, 확인 후 순차적으로 링크를 발송해 드립니다.</p>
   </div>
 </div>
 
@@ -1004,6 +1070,22 @@
   </div>
 </section>
 
+<!-- ⑧ 녹화본 구매 -->
+<section id="recording" style="background: var(--bg2); text-align: center;">
+  <div class="container">
+    <p class="section-label reveal">CAN'T MAKE IT LIVE</p>
+    <h2 class="reveal">혹시 참석이 어려우신가요?</h2>
+    <p class="section-desc reveal" style="margin: 0 auto 32px;">
+      라이브에 못 오셔도 괜찮아요. 녹화본으로 동일한 내용을 다시 볼 수 있습니다.
+    </p>
+
+    <div class="reveal" style="display:inline-flex; align-items:center; gap:14px; background: var(--bg3); border: 1px solid var(--border); border-radius: 999px; padding: 10px 12px 10px 24px; flex-wrap: wrap; justify-content: center;">
+      <span style="font-size: 15px; color: var(--text);">녹화본 <strong style="color:#f9a8d4;">30,000원</strong></span>
+      <button class="btn btn-outline" onclick="handlePurchase()">✦ 녹화본 구매 신청</button>
+    </div>
+  </div>
+</section>
+
 <!-- 푸터 -->
 <footer>
   <p>© 2026 SMAC EDU · <a href="/privacy.html" style="color: var(--muted); text-decoration: underline;">개인정보처리방침</a></p>
@@ -1031,8 +1113,26 @@
     if (e.target === document.getElementById('applyModal')) closeModal();
   }
 
+  function handlePurchase() {
+    document.getElementById('purchaseModal').classList.add('open');
+    document.getElementById('p-name').focus();
+  }
+
+  function closePurchaseModal() {
+    document.getElementById('purchaseModal').classList.remove('open');
+    document.getElementById('purchaseFormMsg').style.display = 'none';
+    document.getElementById('purchaseFormMsg').className = 'form-msg';
+    document.getElementById('purchaseForm').reset();
+    document.getElementById('purchaseSubmitBtn').disabled = false;
+    document.getElementById('purchaseSubmitBtn').textContent = '✦ 구매 신청하기';
+  }
+
+  function closePurchaseModalOutside(e) {
+    if (e.target === document.getElementById('purchaseModal')) closePurchaseModal();
+  }
+
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Escape') { closeModal(); closePurchaseModal(); }
   });
 
   /* ── 폼 제출 ── */
@@ -1063,6 +1163,40 @@
 
   function showMsg(type, text) {
     const el = document.getElementById('formMsg');
+    el.className = `form-msg ${type}`;
+    el.textContent = text;
+    el.style.display = 'block';
+  }
+
+  /* ── 녹화본 구매 폼 제출 ── */
+  async function submitPurchase(e) {
+    e.preventDefault();
+    const name      = document.getElementById('p-name').value.trim();
+    const depositor = document.getElementById('p-depositor').value.trim();
+    const email     = document.getElementById('p-email').value.trim();
+    const btn       = document.getElementById('purchaseSubmitBtn');
+
+    if (!name)  { showPurchaseMsg('error', '이름을 입력해 주세요.'); return; }
+    if (!email) { showPurchaseMsg('error', '이메일을 입력해 주세요.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showPurchaseMsg('error', '올바른 이메일 형식이 아닙니다.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = '신청 중…';
+
+    try {
+      const params = new URLSearchParams({ sheetType: 'midjourney-recording', name, depositor, email });
+      await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
+      showPurchaseMsg('success', `${name}님, 구매 신청이 접수됐습니다!\n입금 확인 후 24시간 이내 녹화본 링크를 보내드려요.`);
+      btn.textContent = '✓ 신청 완료';
+    } catch {
+      showPurchaseMsg('error', '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+      btn.disabled = false;
+      btn.textContent = '✦ 구매 신청하기';
+    }
+  }
+
+  function showPurchaseMsg(type, text) {
+    const el = document.getElementById('purchaseFormMsg');
     el.className = `form-msg ${type}`;
     el.textContent = text;
     el.style.display = 'block';
