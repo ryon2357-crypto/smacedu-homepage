@@ -599,14 +599,14 @@ function _sendMidjourneyConfirmEmail(name, email) {
   const html = `
 <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
   <div style="background:linear-gradient(135deg,#ec4899,#8b5cf6);padding:32px 28px;border-radius:12px 12px 0 0;text-align:center;">
-    <h1 style="color:#fff;margin:0;font-size:24px;font-weight:900;">신청이 완료됐습니다! 🎉</h1>
+    <h1 style="color:#fff;margin:0;font-size:24px;font-weight:900;">참석이 확정됐습니다 🎉</h1>
     <p style="color:rgba(255,255,255,0.85);margin:10px 0 0;font-size:15px;">미드저니 VIP 특강 — AI 이미지와 영상 만들기</p>
   </div>
   <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
-    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name)}</strong>님, 반갑습니다!</p>
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name)}</strong>님, VIP 특강에 초대합니다.</p>
     <p style="margin:0 0 20px;color:#475569;line-height:1.7;">
-      특강 신청이 정상적으로 접수됐어요.<br>
-      참여 링크와 미드저니(디스코드) 가입 방법은 특강 전날인 7월 31일(금)에 이 메일로 다시 안내드리겠습니다.
+      참석이 정상적으로 확정됐어요.<br>
+      참여 링크와 준비 안내는 특강 전날인 7월 31일(금)에 이 메일로 다시 보내드리겠습니다.
     </p>
 
     <div style="background:#fdf2f8;border:1px solid #fbcfe8;border-radius:10px;padding:14px 18px;margin-bottom:20px;text-align:center;">
@@ -625,7 +625,7 @@ function _sendMidjourneyConfirmEmail(name, email) {
         </tr>
         <tr>
           <td style="padding:7px 0;color:#64748b;">준비물</td>
-          <td style="color:#1e293b;">노트북, 미드저니 유료 플랜 (디스코드 연동 — 가입 방법 별도 안내)</td>
+          <td style="color:#1e293b;">노트북, 미드저니 계정 (준비 방법은 별도 안내)</td>
         </tr>
       </table>
     </div>
@@ -642,7 +642,7 @@ function _sendMidjourneyConfirmEmail(name, email) {
 
   MailApp.sendEmail({
     to:       email,
-    subject:  '[SMAC EDU] 미드저니 VIP 특강 신청 완료',
+    subject:  '[SMAC EDU] 미드저니 VIP 특강 참석이 확정됐습니다',
     htmlBody: html
   });
 }

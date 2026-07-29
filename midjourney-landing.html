@@ -9,11 +9,11 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.smacedu.kr/midjourney-landing" />
   <meta property="og:title" content="미드저니 VIP 특강 — AI 이미지와 영상 만들기" />
-  <meta property="og:description" content="텍스트 한 줄로 이미지를, 이미지 한 장으로 영상을 만듭니다. 8월 2일(일) 저녁 8시 무료 VIP 특강, 신청 즉시 안내 메일 발송." />
+  <meta property="og:description" content="텍스트 한 줄로 이미지를, 이미지 한 장으로 영상을 만듭니다. 8월 2일(일) 저녁 8시, VIP 회원만을 위한 단독 초청 특강." />
   <meta property="og:image" content="https://www.smacedu.kr/images/logo1.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="미드저니 VIP 특강 — AI 이미지와 영상 만들기" />
-  <meta name="twitter:description" content="텍스트 한 줄로 이미지를, 이미지 한 장으로 영상을 만듭니다. 8월 2일(일) 저녁 8시 무료 VIP 특강." />
+  <meta name="twitter:description" content="텍스트 한 줄로 이미지를, 이미지 한 장으로 영상을 만듭니다. 8월 2일(일) 저녁 8시, VIP 회원만을 위한 단독 초청 특강." />
   <meta name="twitter:image" content="https://www.smacedu.kr/images/logo1.png" />
 
   <style>
@@ -710,15 +710,15 @@
 <!-- 네비 -->
 <nav>
   <a class="nav-logo" href="https://www.smacedu.kr/">SMAC EDU</a>
-  <span class="nav-badge">VIP 특강</span>
+  <span class="nav-badge">VIP 초청</span>
 </nav>
 
 <!-- 신청 모달 -->
 <div class="modal-overlay" id="applyModal" onclick="closeModalOutside(event)">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <button class="modal-close" onclick="closeModal()" aria-label="닫기">✕</button>
-    <h3 id="modalTitle">VIP 특강 신청</h3>
-    <p class="modal-desc">이름과 이메일만 입력하시면 신청이 완료됩니다.<br>확인 메일을 즉시 발송해 드립니다.</p>
+    <h3 id="modalTitle">VIP 특강 참석 확정</h3>
+    <p class="modal-desc">이름과 이메일만 남겨주시면 자리가 확정됩니다.<br>확인 메일을 즉시 보내드립니다.</p>
 
     <form id="applyForm" onsubmit="submitApply(event)" novalidate>
       <div class="form-group">
@@ -730,7 +730,7 @@
         <input id="f-email" name="email" type="email" placeholder="example@email.com" required autocomplete="email" />
       </div>
       <button type="submit" class="btn btn-primary form-submit" id="submitBtn">
-        ✦ 신청 완료하기
+        ✦ 참석 확정하기
       </button>
       <div class="form-msg" id="formMsg"></div>
     </form>
@@ -744,7 +744,7 @@
   <div class="container">
     <div class="hero-badge reveal">
       <span></span>
-      미드저니 VIP 특강 오픈
+      VIP 회원 단독 초청
     </div>
 
     <div class="free-badge reveal" style="margin-top: 0; margin-bottom: 24px;">
@@ -758,12 +758,12 @@
     </h1>
 
     <p class="hero-sub reveal reveal-delay-1">
-      미드저니 하나면 충분합니다. 프롬프트 작성부터 이미지 생성, 영상 변환까지 — 실습으로 바로 체득하는 VIP 특강.
+      VIP 회원님만을 위해 준비한 단독 초청 특강입니다. 미드저니 하나로 프롬프트 작성부터 이미지 생성, 영상 변환까지 — 첫 클래스에서 직접 체득하세요.
     </p>
 
     <div class="hero-actions reveal reveal-delay-2">
       <button class="btn btn-primary" onclick="handleApply()">
-        ✦ 무료 신청하기
+        ✦ 참석 확정하기
       </button>
       <a class="btn btn-outline" href="#curriculum">커리큘럼 보기 ↓</a>
     </div>
@@ -780,8 +780,8 @@
       </div>
       <div class="hero-divider"></div>
       <div class="stat">
-        <span class="stat-num">100%</span>
-        <span class="stat-label">무료</span>
+        <span class="stat-num">VIP</span>
+        <span class="stat-label">회원 전용 초청</span>
       </div>
     </div>
 
@@ -849,15 +849,15 @@
       <div class="outcome-card reveal">
         <div class="outcome-num">✓</div>
         <div>
-          <h3>미드저니 유료 플랜</h3>
-          <p>실습은 미드저니 유료 플랜(디스코드 연동)으로 진행됩니다.</p>
+          <h3>미드저니 계정</h3>
+          <p>실습은 미드저니로 진행됩니다.</p>
         </div>
       </div>
       <div class="outcome-card reveal reveal-delay-1">
         <div class="outcome-num">★</div>
         <div>
           <h3>계정이 없어도 괜찮아요</h3>
-          <p>신청하시면 디스코드·미드저니 가입 방법을 특강 전에 안내드립니다.</p>
+          <p>참석이 확정되면 계정 준비 방법을 특강 전에 안내드립니다.</p>
         </div>
       </div>
     </div>
@@ -984,10 +984,10 @@
 <section id="cta">
   <div class="container">
     <div class="free-badge reveal">
-      ✦ 완전 무료 &nbsp;|&nbsp; 사전 지식 불필요
+      ✦ VIP 회원 단독 초청 &nbsp;|&nbsp; 사전 지식 불필요
     </div>
     <h2 class="reveal">
-      지금 바로 신청하세요<br>
+      지금 바로 참석을 확정하세요<br>
       <span style="background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">오늘이 첫 AI 이미지를 만드는 날</span>
     </h2>
     <p class="reveal reveal-delay-1">
@@ -997,9 +997,9 @@
 
     <div class="reveal reveal-delay-2">
       <button class="btn btn-primary" onclick="handleApply()" style="font-size: 18px; padding: 18px 48px;">
-        ✦ 무료 신청하기
+        ✦ 참석 확정하기
       </button>
-      <p class="cta-note">신청 즉시 안내 메일을 보내드립니다 · 참여 링크는 특강 전날(7/31) 다시 안내드려요</p>
+      <p class="cta-note">참석 확정 즉시 안내 메일을 보내드립니다 · 참여 링크는 특강 전날(7/31) 다시 안내드려요</p>
     </div>
   </div>
 </section>
@@ -1024,7 +1024,7 @@
     document.getElementById('formMsg').className = 'form-msg';
     document.getElementById('applyForm').reset();
     document.getElementById('submitBtn').disabled = false;
-    document.getElementById('submitBtn').textContent = '✦ 신청 완료하기';
+    document.getElementById('submitBtn').textContent = '✦ 참석 확정하기';
   }
 
   function closeModalOutside(e) {
@@ -1047,17 +1047,17 @@
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('error', '올바른 이메일 형식이 아닙니다.'); return; }
 
     btn.disabled = true;
-    btn.textContent = '신청 중…';
+    btn.textContent = '확정 중…';
 
     try {
       const params = new URLSearchParams({ sheetType: 'midjourney', name, email });
       await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
-      showMsg('success', `${name}님, 신청이 완료됐습니다!\n확인 메일을 보내드렸어요.`);
-      btn.textContent = '✓ 신청 완료';
+      showMsg('success', `${name}님, 참석이 확정됐습니다!\n확인 메일을 보내드렸어요.`);
+      btn.textContent = '✓ 참석 확정';
     } catch {
       showMsg('error', '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
       btn.disabled = false;
-      btn.textContent = '✦ 신청 완료하기';
+      btn.textContent = '✦ 참석 확정하기';
     }
   }
 
