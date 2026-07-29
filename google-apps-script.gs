@@ -50,6 +50,11 @@ function doGet(e) {
       return _handleLectureSignup(params);
     }
 
+    // ── 미드저니 VIP 특강 신청 처리 (GET 방식) ──
+    if (params.sheetType === 'midjourney') {
+      return _handleMidjourneySignup(params);
+    }
+
     // ── 출강·수강 문의 처리 (GET 방식) ──
     if (params.sheetType === 'contact') {
       return _handleContactInquiry(params);
@@ -103,6 +108,11 @@ function doPost(e) {
     // ── 특강 신청 처리 ──
     if (params.sheetType === 'lecture') {
       return _handleLectureSignup(params);
+    }
+
+    // ── 미드저니 VIP 특강 신청 처리 ──
+    if (params.sheetType === 'midjourney') {
+      return _handleMidjourneySignup(params);
     }
 
     const ss = SpreadsheetApp.openById('18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I');
@@ -544,6 +554,137 @@ function _sendLectureAdminDigest(sheet, total) {
   MailApp.sendEmail({
     to:       ADMIN_EMAIL,
     subject:  `[SMAC EDU 특강] 신청 누적 ${total}명 — 최근 ${batchSize}명 알림`,
+    htmlBody: html
+  });
+}
+
+// ════════════════════════════════════════════
+// 미드저니 VIP 특강 신청 처리
+// ════════════════════════════════════════════
+
+const MIDJOURNEY_SHEET_NAME = '0802 VIP 특강';
+
+function _handleMidjourneySignup(params) {
+  try {
+    const ss    = SpreadsheetApp.openById(SHEET_ID);
+    let   sheet = ss.getSheetByName(MIDJOURNEY_SHEET_NAME);
+
+    if (!sheet) {
+      sheet = ss.insertSheet(MIDJOURNEY_SHEET_NAME);
+      sheet.appendRow(['신청일시', '이름', '이메일']);
+      sheet.setFrozenRows(1);
+      sheet.getRange('A1:C1').setBackground('#8b5cf6').setFontColor('#ffffff').setFontWeight('bold');
+    }
+
+    const now       = new Date();
+    const timestamp = Utilities.formatDate(now, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss');
+    const name      = params.name  || '';
+    const email     = params.email || '';
+
+    sheet.appendRow([timestamp, name, email]);
+    const total = sheet.getLastRow() - 1;
+
+    if (email) _sendMidjourneyConfirmEmail(name, email);
+    if (total % 10 === 0) _sendMidjourneyAdminDigest(sheet, total);
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function _sendMidjourneyConfirmEmail(name, email) {
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <div style="background:linear-gradient(135deg,#ec4899,#8b5cf6);padding:32px 28px;border-radius:12px 12px 0 0;text-align:center;">
+    <h1 style="color:#fff;margin:0;font-size:24px;font-weight:900;">신청이 완료됐습니다! 🎉</h1>
+    <p style="color:rgba(255,255,255,0.85);margin:10px 0 0;font-size:15px;">미드저니 VIP 특강 — AI 이미지와 영상 만들기</p>
+  </div>
+  <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name)}</strong>님, 반갑습니다!</p>
+    <p style="margin:0 0 20px;color:#475569;line-height:1.7;">
+      특강 신청이 정상적으로 접수됐어요.<br>
+      참여 링크와 미드저니(디스코드) 가입 방법은 특강 전날인 7월 31일(금)에 이 메일로 다시 안내드리겠습니다.
+    </p>
+
+    <div style="background:#fdf2f8;border:1px solid #fbcfe8;border-radius:10px;padding:14px 18px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0;font-size:14px;font-weight:700;color:#be185d;">🗓 8월 2일(일) 저녁 8시 — 잊지 마세요!</p>
+    </div>
+
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:20px;">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <tr>
+          <td style="padding:7px 0;color:#64748b;width:90px;">강의명</td>
+          <td style="color:#1e293b;font-weight:600;">미드저니 VIP 특강 — AI 이미지와 영상 만들기</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 0;color:#64748b;">일시</td>
+          <td style="color:#1e293b;font-weight:600;">2026년 8월 2일(일) 저녁 8시</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 0;color:#64748b;">준비물</td>
+          <td style="color:#1e293b;">노트북, 미드저니 유료 플랜 (디스코드 연동 — 가입 방법 별도 안내)</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="text-align:center;margin-bottom:20px;">
+      <a href="https://www.smacedu.kr/midjourney-landing" style="display:inline-block;background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;text-decoration:none;font-size:14px;font-weight:700;padding:13px 32px;border-radius:999px;">특강 페이지 다시 보기</a>
+    </div>
+
+    <p style="margin:0;font-size:13px;color:#94a3b8;">
+      문의는 <a href="mailto:${ADMIN_EMAIL}" style="color:#ec4899;">${ADMIN_EMAIL}</a>로 보내주세요.
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       email,
+    subject:  '[SMAC EDU] 미드저니 VIP 특강 신청 완료',
+    htmlBody: html
+  });
+}
+
+// 신청 10명마다 한 번씩, 최근 10명을 모아서 알려줍니다.
+function _sendMidjourneyAdminDigest(sheet, total) {
+  const lastRow   = sheet.getLastRow();
+  const batchSize = Math.min(10, lastRow - 1);
+  const startRow  = lastRow - batchSize + 1;
+  // 열 순서: 신청일시(1), 이름(2), 이메일(3)
+  const rows = sheet.getRange(startRow, 1, batchSize, 3).getValues();
+
+  const rowsHtml = rows.map(r => `
+    <tr>
+      <td style="padding:6px 10px;font-size:13px;color:#64748b;">${r[0]}</td>
+      <td style="padding:6px 10px;font-size:13px;"><strong>${escapeHtml(r[1])}</strong></td>
+      <td style="padding:6px 10px;font-size:13px;">${escapeHtml(r[2])}</td>
+    </tr>`).join('');
+
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#8b5cf6;color:#fff;padding:18px 22px;margin:0;border-radius:8px 8px 0 0;">
+    ✦ 미드저니 VIP 특강 신청 알림 (누적 ${total}명 — 최근 ${batchSize}명)
+  </h2>
+  <div style="background:#f8fafc;padding:22px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid #e2e8f0;border-radius:6px;">
+      <tr style="background:#f1f5f9;font-size:12px;color:#64748b;">
+        <th style="padding:8px 10px;text-align:left;">신청일시</th>
+        <th style="padding:8px 10px;text-align:left;">이름</th>
+        <th style="padding:8px 10px;text-align:left;">이메일</th>
+      </tr>
+      ${rowsHtml}
+    </table>
+    <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
+      <a href="${SHEET_URL}">스프레드시트에서 전체 목록 확인 →</a>
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       ADMIN_EMAIL,
+    subject:  `[SMAC EDU 미드저니 특강] 신청 누적 ${total}명 — 최근 ${batchSize}명 알림`,
     htmlBody: html
   });
 }
