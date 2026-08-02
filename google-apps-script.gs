@@ -624,7 +624,7 @@ function _sendMidjourneyConfirmEmail(name, email) {
     <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name)}</strong>님, VIP 특강에 초대합니다.</p>
     <p style="margin:0 0 20px;color:#475569;line-height:1.7;">
       참석이 정상적으로 확정됐어요.<br>
-      참여 링크와 준비 안내는 특강 전날인 7월 31일(금)에 이 메일로 다시 보내드리겠습니다.
+      아래 ZOOM 링크로 시간에 맞춰 입장해 주세요.
     </p>
 
     <div style="background:#fdf2f8;border:1px solid #fbcfe8;border-radius:10px;padding:14px 18px;margin-bottom:20px;text-align:center;">
@@ -648,8 +648,25 @@ function _sendMidjourneyConfirmEmail(name, email) {
       </table>
     </div>
 
+    <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:20px;margin-bottom:20px;">
+      <p style="margin:0 0 10px;font-size:13px;font-weight:700;color:#4338ca;">🔗 특강 참여 ZOOM 링크</p>
+      <div style="text-align:center;margin-bottom:14px;">
+        <a href="https://us06web.zoom.us/j/88698931035?pwd=RqhFycElbTQsb8BpXfms3ODHtn6nU3.1" style="display:inline-block;background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;text-decoration:none;font-size:14px;font-weight:700;padding:13px 32px;border-radius:999px;">ZOOM으로 입장하기 →</a>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <tr>
+          <td style="padding:5px 0;color:#4338ca;width:80px;">회의 ID</td>
+          <td style="color:#312e81;font-weight:600;">886 9893 1035</td>
+        </tr>
+        <tr>
+          <td style="padding:5px 0;color:#4338ca;">암호</td>
+          <td style="color:#312e81;font-weight:600;">2470</td>
+        </tr>
+      </table>
+    </div>
+
     <div style="text-align:center;margin-bottom:20px;">
-      <a href="https://www.smacedu.kr/midjourney-landing" style="display:inline-block;background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;text-decoration:none;font-size:14px;font-weight:700;padding:13px 32px;border-radius:999px;">특강 페이지 다시 보기</a>
+      <a href="https://www.smacedu.kr/midjourney-landing" style="display:inline-block;background:transparent;border:1px solid #e2e8f0;color:#475569;text-decoration:none;font-size:13px;font-weight:600;padding:11px 28px;border-radius:999px;">특강 페이지 다시 보기</a>
     </div>
 
     <p style="margin:0;font-size:13px;color:#94a3b8;">
@@ -707,6 +724,29 @@ function _sendMidjourneyAdminDigest(sheet, total) {
     subject:  `[SMAC EDU 미드저니 특강] 신청 누적 ${total}명 — 최근 ${batchSize}명 알림`,
     htmlBody: html
   });
+}
+
+// 이미 신청 완료된 기존 등록자들에게 ZOOM 링크를 한 번에 재발송합니다.
+// Apps Script 편집기에서 이 함수를 직접 선택해 "실행" 버튼으로 수동 실행하세요.
+function resendZoomLinkToExistingMidjourneyRegistrants() {
+  const ss    = SpreadsheetApp.openById(SHEET_ID);
+  const sheet = ss.getSheetByName(MIDJOURNEY_SHEET_NAME);
+  if (!sheet) return;
+
+  const values = sheet.getDataRange().getValues().slice(1); // 헤더 제외
+  const sentTo = new Set();
+  let count = 0;
+
+  values.forEach(row => {
+    const name  = row[1];
+    const email = String(row[2] || '').trim().toLowerCase();
+    if (!email || sentTo.has(email)) return;
+    sentTo.add(email);
+    _sendMidjourneyConfirmEmail(name, email);
+    count++;
+  });
+
+  Logger.log(`ZOOM 링크 재발송 완료: ${count}명`);
 }
 
 // ════════════════════════════════════════════
