@@ -581,17 +581,25 @@ function _handleMidjourneySignup(params) {
 
     if (!sheet) {
       sheet = ss.insertSheet(MIDJOURNEY_SHEET_NAME);
-      sheet.appendRow(['신청일시', '이름', '이메일']);
+      sheet.appendRow(['신청일시', '이름', '이메일', '전화번호']);
       sheet.setFrozenRows(1);
-      sheet.getRange('A1:C1').setBackground('#8b5cf6').setFontColor('#ffffff').setFontWeight('bold');
+      sheet.getRange('A1:D1').setBackground('#8b5cf6').setFontColor('#ffffff').setFontWeight('bold');
+    } else {
+      const lastCol = sheet.getLastColumn();
+      const headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+      if (headers.indexOf('전화번호') === -1) {
+        sheet.getRange(1, lastCol + 1).setValue('전화번호')
+          .setBackground('#8b5cf6').setFontColor('#ffffff').setFontWeight('bold');
+      }
     }
 
     const now       = new Date();
     const timestamp = Utilities.formatDate(now, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss');
     const name      = params.name  || '';
     const email     = params.email || '';
+    const phone     = params.phone || '';
 
-    sheet.appendRow([timestamp, name, email]);
+    sheet.appendRow([timestamp, name, email, phone]);
     const total = sheet.getLastRow() - 1;
 
     if (email) _sendMidjourneyConfirmEmail(name, email);
@@ -662,14 +670,15 @@ function _sendMidjourneyAdminDigest(sheet, total) {
   const lastRow   = sheet.getLastRow();
   const batchSize = Math.min(10, lastRow - 1);
   const startRow  = lastRow - batchSize + 1;
-  // 열 순서: 신청일시(1), 이름(2), 이메일(3)
-  const rows = sheet.getRange(startRow, 1, batchSize, 3).getValues();
+  // 열 순서: 신청일시(1), 이름(2), 이메일(3), 전화번호(4)
+  const rows = sheet.getRange(startRow, 1, batchSize, 4).getValues();
 
   const rowsHtml = rows.map(r => `
     <tr>
       <td style="padding:6px 10px;font-size:13px;color:#64748b;">${r[0]}</td>
       <td style="padding:6px 10px;font-size:13px;"><strong>${escapeHtml(r[1])}</strong></td>
       <td style="padding:6px 10px;font-size:13px;">${escapeHtml(r[2])}</td>
+      <td style="padding:6px 10px;font-size:13px;">${escapeHtml(r[3])}</td>
     </tr>`).join('');
 
   const html = `
@@ -683,6 +692,7 @@ function _sendMidjourneyAdminDigest(sheet, total) {
         <th style="padding:8px 10px;text-align:left;">신청일시</th>
         <th style="padding:8px 10px;text-align:left;">이름</th>
         <th style="padding:8px 10px;text-align:left;">이메일</th>
+        <th style="padding:8px 10px;text-align:left;">전화번호</th>
       </tr>
       ${rowsHtml}
     </table>
@@ -714,9 +724,19 @@ function _handleMidjourneyRecordingPurchase(params) {
 
     if (!sheet) {
       sheet = ss.insertSheet(MIDJOURNEY_RECORDING_SHEET_NAME);
-      sheet.appendRow(['신청일시', '이름', '입금자명', '이메일', '입금확인']);
+      sheet.appendRow(['신청일시', '이름', '입금자명', '이메일', '전화번호', '입금확인']);
       sheet.setFrozenRows(1);
-      sheet.getRange('A1:E1').setBackground('#8b5cf6').setFontColor('#ffffff').setFontWeight('bold');
+      sheet.getRange('A1:F1').setBackground('#8b5cf6').setFontColor('#ffffff').setFontWeight('bold');
+    } else {
+      const lastCol = sheet.getLastColumn();
+      const headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+      if (headers.indexOf('전화번호') === -1) {
+        // '입금확인' 열 앞에 끼워 넣기
+        const insertAt = headers.indexOf('입금확인') !== -1 ? headers.indexOf('입금확인') + 1 : lastCol + 1;
+        sheet.insertColumnBefore(insertAt);
+        sheet.getRange(1, insertAt).setValue('전화번호')
+          .setBackground('#8b5cf6').setFontColor('#ffffff').setFontWeight('bold');
+      }
     }
 
     const now       = new Date();
@@ -724,11 +744,12 @@ function _handleMidjourneyRecordingPurchase(params) {
     const name      = params.name      || '';
     const depositor = params.depositor || '';
     const email     = params.email     || '';
+    const phone     = params.phone     || '';
 
-    sheet.appendRow([timestamp, name, depositor, email, '대기']);
+    sheet.appendRow([timestamp, name, depositor, email, phone, '대기']);
 
     if (email) _sendMidjourneyRecordingConfirmEmail(name, email);
-    _sendMidjourneyRecordingAdminAlert(timestamp, name, depositor, email);
+    _sendMidjourneyRecordingAdminAlert(timestamp, name, depositor, email, phone);
 
     return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -782,7 +803,7 @@ function _sendMidjourneyRecordingConfirmEmail(name, email) {
 }
 
 // 입금 확인이 필요한 구매 건이라 10건 단위 배치가 아니라 매번 즉시 알림.
-function _sendMidjourneyRecordingAdminAlert(timestamp, name, depositor, email) {
+function _sendMidjourneyRecordingAdminAlert(timestamp, name, depositor, email, phone) {
   const html = `
 <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#1e293b;">
   <h2 style="background:#8b5cf6;color:#fff;padding:16px 20px;margin:0;border-radius:8px 8px 0 0;">
@@ -794,6 +815,7 @@ function _sendMidjourneyRecordingAdminAlert(timestamp, name, depositor, email) {
       <tr><td style="padding:6px 0;color:#64748b;">이름</td><td><strong>${escapeHtml(name)}</strong></td></tr>
       <tr><td style="padding:6px 0;color:#64748b;">입금자명</td><td>${escapeHtml(depositor || '(이름과 동일)')}</td></tr>
       <tr><td style="padding:6px 0;color:#64748b;">이메일</td><td>${escapeHtml(email)}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">전화번호</td><td>${escapeHtml(phone)}</td></tr>
       <tr><td style="padding:6px 0;color:#64748b;">금액</td><td>${MIDJOURNEY_RECORDING_PRICE}</td></tr>
     </table>
     <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">

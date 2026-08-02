@@ -757,6 +757,10 @@
         <label for="f-email">이메일 <span style="color:#f9a8d4">*</span></label>
         <input id="f-email" name="email" type="email" placeholder="example@email.com" required autocomplete="email" />
       </div>
+      <div class="form-group">
+        <label for="f-phone">연락처 <span style="color:#f9a8d4">*</span></label>
+        <input id="f-phone" name="phone" type="tel" placeholder="010-1234-5678" required autocomplete="tel" />
+      </div>
       <button type="submit" class="btn btn-primary form-submit" id="submitBtn">
         ✦ 참석 확정하기
       </button>
@@ -795,6 +799,10 @@
       <div class="form-group">
         <label for="p-email">이메일 <span style="color:#f9a8d4">*</span></label>
         <input id="p-email" name="email" type="email" placeholder="example@email.com" required autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label for="p-phone">연락처 <span style="color:#f9a8d4">*</span></label>
+        <input id="p-phone" name="phone" type="tel" placeholder="010-1234-5678" required autocomplete="tel" />
       </div>
       <button type="submit" class="btn btn-primary form-submit" id="purchaseSubmitBtn">
         ✦ 구매 신청하기
@@ -1136,22 +1144,37 @@
     if (e.key === 'Escape') { closeModal(); closePurchaseModal(); }
   });
 
+  /* ── 연락처 자동 하이픈 ── */
+  function attachPhoneFormatter(id) {
+    const el = document.getElementById(id);
+    el.addEventListener('input', e => {
+      let digits = e.target.value.replace(/\D/g, '').slice(0, 11);
+      if (digits.length > 7) digits = `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+      else if (digits.length > 3) digits = `${digits.slice(0, 3)}-${digits.slice(3)}`;
+      e.target.value = digits;
+    });
+  }
+  attachPhoneFormatter('f-phone');
+  attachPhoneFormatter('p-phone');
+
   /* ── 폼 제출 ── */
   async function submitApply(e) {
     e.preventDefault();
     const name  = document.getElementById('f-name').value.trim();
     const email = document.getElementById('f-email').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
     const btn   = document.getElementById('submitBtn');
 
     if (!name)  { showMsg('error', '이름을 입력해 주세요.'); return; }
     if (!email) { showMsg('error', '이메일을 입력해 주세요.'); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('error', '올바른 이메일 형식이 아닙니다.'); return; }
+    if (!/^\d{3}-\d{4}-\d{4}$/.test(phone)) { showMsg('error', '연락처는 010-1234-5678 형식으로 입력해 주세요.'); return; }
 
     btn.disabled = true;
     btn.textContent = '확정 중…';
 
     try {
-      const params = new URLSearchParams({ sheetType: 'midjourney', name, email });
+      const params = new URLSearchParams({ sheetType: 'midjourney', name, email, phone });
       await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
       showMsg('success', `${name}님, 참석이 확정됐습니다!\n확인 메일을 보내드렸어요.`);
       btn.textContent = '✓ 참석 확정';
@@ -1175,17 +1198,19 @@
     const name      = document.getElementById('p-name').value.trim();
     const depositor = document.getElementById('p-depositor').value.trim();
     const email     = document.getElementById('p-email').value.trim();
+    const phone     = document.getElementById('p-phone').value.trim();
     const btn       = document.getElementById('purchaseSubmitBtn');
 
     if (!name)  { showPurchaseMsg('error', '이름을 입력해 주세요.'); return; }
     if (!email) { showPurchaseMsg('error', '이메일을 입력해 주세요.'); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showPurchaseMsg('error', '올바른 이메일 형식이 아닙니다.'); return; }
+    if (!/^\d{3}-\d{4}-\d{4}$/.test(phone)) { showPurchaseMsg('error', '연락처는 010-1234-5678 형식으로 입력해 주세요.'); return; }
 
     btn.disabled = true;
     btn.textContent = '신청 중…';
 
     try {
-      const params = new URLSearchParams({ sheetType: 'midjourney-recording', name, depositor, email });
+      const params = new URLSearchParams({ sheetType: 'midjourney-recording', name, depositor, email, phone });
       await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
       showPurchaseMsg('success', `${name}님, 구매 신청이 접수됐습니다!\n입금 확인 후 24시간 이내 녹화본 링크를 보내드려요.`);
       btn.textContent = '✓ 신청 완료';
