@@ -64,6 +64,7 @@
         .reveal {
             opacity: 0; transform: translateY(22px);
             transition: opacity .65s ease, transform .65s ease;
+            transition-delay: var(--d, 0ms);
         }
         .reveal.on { opacity: 1; transform: none; }
         .sec { padding: 80px 40px; }
@@ -251,44 +252,77 @@
         }
         .gate-features li::before { content: '✅'; flex-shrink: 0; }
 
-        /* ── 무료 공개 강의 (챕터 재생) ── */
-        .clip-layout { display: grid; grid-template-columns: 1.55fr 1fr; gap: 28px; align-items: start; }
-        .clip-meta {
-            margin-top: 16px; font-size: .85rem; color: var(--text-sub);
-            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+        /* ── 무료 공개 강의 (구간별 카드) ── */
+        .clip-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px 24px;
         }
-        .clip-meta .now {
-            background: var(--orange-lt); color: var(--orange);
-            font-weight: 700; padding: 4px 12px; border-radius: 100px; font-size: .8rem;
+        .clip-card {
+            background: var(--white); border: 1px solid var(--gray-line);
+            border-radius: 16px; overflow: hidden;
+            display: flex; flex-direction: column;
+            transition: border-color .25s, box-shadow .25s, transform .25s;
         }
-        .chapter-list {
-            border: 1px solid var(--gray-line); border-radius: 16px;
-            overflow: hidden; background: var(--white);
+        .clip-card:hover {
+            border-color: var(--orange);
+            box-shadow: 0 12px 32px rgba(23,37,84,.12);
+            transform: translateY(-3px);
         }
-        .chapter-list h3 {
-            font-size: .78rem; letter-spacing: 1.2px; text-transform: uppercase;
-            color: var(--text-sub); font-weight: 700;
-            padding: 16px 20px; border-bottom: 1px solid var(--gray-line);
-            background: var(--gray-bg);
+        .clip-card.playing { border-color: var(--orange); transform: none; }
+        .clip-stage {
+            position: relative; width: 100%; padding-bottom: 56.25%;
+            background: #0f172a; cursor: pointer; overflow: hidden;
         }
-        .chapter-btn {
-            display: block; width: 100%; text-align: left;
-            background: none; border: none; border-bottom: 1px solid var(--gray-line);
-            padding: 14px 20px; cursor: pointer; font-family: inherit;
-            transition: background .18s;
+        .clip-stage img {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            object-fit: cover; display: block;
+            transition: transform .45s ease, filter .25s ease;
         }
-        .chapter-btn:last-child { border-bottom: none; }
-        .chapter-btn:hover { background: var(--orange-lt); }
-        .chapter-btn.active { background: var(--orange-lt); box-shadow: inset 3px 0 0 var(--orange); }
-        .chapter-btn .ct {
-            display: block; font-size: .9rem; font-weight: 700;
-            color: var(--text-head); line-height: 1.5; word-break: keep-all;
+        .clip-card:hover .clip-stage img { transform: scale(1.045); filter: brightness(.92); }
+        .clip-stage iframe {
+            position: absolute; inset: 0; width: 100%; height: 100%; border: none;
         }
-        .chapter-btn.active .ct { color: var(--orange); }
-        .chapter-btn .cr {
-            display: block; margin-top: 4px;
-            font-size: .76rem; color: var(--text-sub); font-variant-numeric: tabular-nums;
+        .clip-play {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+            width: 54px; height: 54px; border-radius: 50%;
+            background: rgba(249,115,22,.94);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,.3);
+            transition: transform .25s ease, background .2s;
         }
+        .clip-card:hover .clip-play { transform: translate(-50%,-50%) scale(1.12); background: var(--orange); }
+        .clip-play svg { margin-left: 3px; }
+        .clip-dur {
+            position: absolute; right: 10px; bottom: 10px;
+            background: rgba(15,23,42,.86); color: #fff;
+            font-size: 12px; font-weight: 700; padding: 3px 9px;
+            border-radius: 6px; font-variant-numeric: tabular-nums;
+        }
+        .clip-no {
+            position: absolute; left: 10px; top: 10px;
+            background: rgba(255,255,255,.94); color: var(--navy);
+            font-size: 12px; font-weight: 800;
+            width: 26px; height: 26px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .clip-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 7px; flex-grow: 1; }
+        .clip-body h3 {
+            font-size: 1rem; font-weight: 800; color: var(--navy);
+            line-height: 1.45; letter-spacing: -.3px; word-break: keep-all;
+        }
+        .clip-body p {
+            font-size: .85rem; color: var(--text-sub); line-height: 1.7;
+            word-break: keep-all; flex-grow: 1;
+        }
+        .clip-time {
+            font-size: .75rem; color: var(--text-sub);
+            font-variant-numeric: tabular-nums; padding-top: 4px;
+            border-top: 1px solid var(--gray-line); margin-top: 4px;
+        }
+        .clip-source {
+            text-align: center; margin-top: 34px;
+            font-size: .875rem; color: var(--text-sub);
+        }
+        .clip-source a { color: var(--navy-mid); font-weight: 600; }
         .free-badge {
             display: inline-block; background: #dcfce7; color: #15803d;
             font-size: 11px; font-weight: 800; padding: 4px 12px;
@@ -351,7 +385,7 @@
         @media(max-width:900px) {
             .foot-grid { grid-template-columns: 1fr 1fr; }
             .foot-brand { grid-column: 1 / -1; }
-            .clip-layout { grid-template-columns: 1fr; }
+            .clip-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media(max-width:768px) {
             .nav-links { display:none; }
@@ -362,6 +396,7 @@
             .nav-brand-sub { display: none; }
             .sec { padding: 60px 20px; }
             .page-hero { padding: 120px 20px 56px; }
+            .clip-grid { grid-template-columns: 1fr; gap: 20px; }
             .foot-grid { grid-template-columns: 1fr; }
             .foot-bottom { flex-direction:column; text-align:center; }
         }
@@ -390,54 +425,107 @@
             <span class="tag-chip">FREE LECTURE</span>
             <h2 class="sec-title">벚꽃 인물사진, 이렇게 찍습니다<span class="free-badge">무료</span></h2>
             <div class="orange-bar"></div>
-            <p class="sec-desc">28분짜리 강의에서 핵심만 6개 구간으로 나눴습니다. 보고 싶은 주제를 바로 눌러 보세요.<br>벚꽃뿐 아니라 모든 꽃사진·나뭇잎·단풍에 그대로 적용되는 내용입니다.</p>
+            <p class="sec-desc">28분 강의를 주제별 6편으로 나눴습니다. 보고 싶은 편을 눌러 바로 재생하세요.<br>벚꽃뿐 아니라 모든 꽃사진·나뭇잎·단풍에 그대로 적용되는 내용입니다.</p>
         </div>
 
-        <div class="clip-layout reveal">
-            <div>
-                <div class="video-wrap">
-                    <iframe id="clipPlayer"
-                        src="https://www.youtube.com/embed/lXzZlOx_F9U?start=69&end=180&rel=0"
-                        title="벚꽃과 함께 환상적인 인물사진 잘 찍는 법"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="clip-meta">
-                    <span class="now" id="clipNow">1. 벚꽃의 특징부터 알아야 한다</span>
-                    <span id="clipRange">01:09 – 03:00</span>
-                    <a href="https://www.youtube.com/watch?v=lXzZlOx_F9U" target="_blank" rel="noopener" style="color:var(--text-sub);">전체 영상 보기 ↗</a>
-                </div>
-            </div>
+        <div class="clip-grid" id="clipGrid">
 
-            <div class="chapter-list" id="chapterList">
-                <h3>구간 선택</h3>
-                <button type="button" class="chapter-btn active" data-start="69"   data-end="180"  data-range="01:09 – 03:00">
-                    <span class="ct">1. 벚꽃의 특징부터 알아야 한다</span>
-                    <span class="cr">01:09 – 03:00 · 사진은 예술이기 전에 과학</span>
-                </button>
-                <button type="button" class="chapter-btn" data-start="179"  data-end="348"  data-range="02:59 – 05:48">
-                    <span class="ct">2. 화사하게 찍는 법 — 노출을 올려라</span>
-                    <span class="cr">02:59 – 05:48 · 스마트폰 밝기 보정까지</span>
-                </button>
-                <button type="button" class="chapter-btn" data-start="542"  data-end="655"  data-range="09:02 – 10:55">
-                    <span class="ct">3. 벚꽃엔 파란 하늘 — 순광에서 찍어라</span>
-                    <span class="cr">09:02 – 10:55 · 역광과 순광의 차이</span>
-                </button>
-                <button type="button" class="chapter-btn" data-start="1008" data-end="1115" data-range="16:48 – 18:35">
-                    <span class="ct">4. 배경과 인물을 분리하는 법</span>
-                    <span class="cr">16:48 – 18:35 · 아웃포커스 말고 색과 패턴으로</span>
-                </button>
-                <button type="button" class="chapter-btn" data-start="1319" data-end="1500" data-range="21:59 – 25:00">
-                    <span class="ct">5. 하이라이트가 하얗게 날아갈 때</span>
-                    <span class="cr">21:59 – 25:00 · 인물을 그늘에 두고 찍는다</span>
-                </button>
-                <button type="button" class="chapter-btn" data-start="1586" data-end="1712" data-range="26:26 – 28:32">
-                    <span class="ct">6. 역광 할레이션 — 감성은 빛과 함께 온다</span>
-                    <span class="cr">26:26 – 28:32 · 태양이 낮아졌을 때</span>
-                </button>
-            </div>
+            <article class="clip-card reveal" style="--d:0ms">
+                <div class="clip-stage" data-start="69" data-end="180" role="button" tabindex="0"
+                     aria-label="1. 벚꽃의 특징부터 알아야 한다 재생">
+                    <img src="images/replay/cherry-01.jpg" alt="벚꽃 아래에서 촬영한 인물사진 예시" loading="lazy">
+                    <span class="clip-no">1</span>
+                    <span class="clip-dur">1:51</span>
+                    <span class="clip-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="clip-body">
+                    <h3>벚꽃의 특징부터 알아야 한다</h3>
+                    <p>사진은 예술이기 전에 과학입니다. 개화부터 낙화까지 일주일, 그 시기를 어떻게 준비해야 하는지부터 짚습니다.</p>
+                    <span class="clip-time">01:09 – 03:00</span>
+                </div>
+            </article>
+
+            <article class="clip-card reveal" style="--d:80ms">
+                <div class="clip-stage" data-start="179" data-end="348" role="button" tabindex="0"
+                     aria-label="2. 화사하게 찍는 법 재생">
+                    <img src="images/replay/cherry-02.jpg" alt="파란 하늘을 배경으로 한 벚꽃 클로즈업" loading="lazy">
+                    <span class="clip-no">2</span>
+                    <span class="clip-dur">2:49</span>
+                    <span class="clip-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="clip-body">
+                    <h3>화사하게 찍는 법 — 노출을 올려라</h3>
+                    <p>카메라가 정한 적정 노출대로 찍으면 벚꽃이 칙칙해집니다. 밝게 찍어야 하는 이유와 스마트폰에서 밝기를 올리는 법.</p>
+                    <span class="clip-time">02:59 – 05:48</span>
+                </div>
+            </article>
+
+            <article class="clip-card reveal" style="--d:160ms">
+                <div class="clip-stage" data-start="542" data-end="655" role="button" tabindex="0"
+                     aria-label="3. 벚꽃엔 파란 하늘 재생">
+                    <img src="images/replay/cherry-03.jpg" alt="파란 하늘과 벚꽃 가지" loading="lazy">
+                    <span class="clip-no">3</span>
+                    <span class="clip-dur">1:53</span>
+                    <span class="clip-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="clip-body">
+                    <h3>벚꽃엔 파란 하늘 — 순광에서 찍어라</h3>
+                    <p>벚꽃은 파란색과 잘 어울립니다. 하늘을 파랗게 담으려면 역광이 아니라 순광에 서야 하는 이유.</p>
+                    <span class="clip-time">09:02 – 10:55</span>
+                </div>
+            </article>
+
+            <article class="clip-card reveal" style="--d:0ms">
+                <div class="clip-stage" data-start="1008" data-end="1115" role="button" tabindex="0"
+                     aria-label="4. 배경과 인물을 분리하는 법 재생">
+                    <img src="images/replay/cherry-04.jpg" alt="벚꽃을 배경으로 인물이 분리되어 보이는 사진" loading="lazy">
+                    <span class="clip-no">4</span>
+                    <span class="clip-dur">1:47</span>
+                    <span class="clip-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="clip-body">
+                    <h3>배경과 인물을 분리하는 법</h3>
+                    <p>아웃포커스만이 답은 아닙니다. 색과 패턴 차이로 주제를 배경에서 떼어내는 방법을 실제 사진을 비교하며 설명합니다.</p>
+                    <span class="clip-time">16:48 – 18:35</span>
+                </div>
+            </article>
+
+            <article class="clip-card reveal" style="--d:80ms">
+                <div class="clip-stage" data-start="1319" data-end="1500" role="button" tabindex="0"
+                     aria-label="5. 하이라이트가 하얗게 날아갈 때 재생">
+                    <img src="images/replay/cherry-05.jpg" alt="그늘에서 촬영한 벚꽃 인물사진" loading="lazy">
+                    <span class="clip-no">5</span>
+                    <span class="clip-dur">3:01</span>
+                    <span class="clip-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="clip-body">
+                    <h3>하이라이트가 하얗게 날아갈 때</h3>
+                    <p>강한 빛을 만나면 벚꽃이 하얗게 뭉갭니다. 가장 쉬운 해법은 인물을 그늘에 두는 것 — 어두워지지 않는 이유까지.</p>
+                    <span class="clip-time">21:59 – 25:00</span>
+                </div>
+            </article>
+
+            <article class="clip-card reveal" style="--d:160ms">
+                <div class="clip-stage" data-start="1586" data-end="1712" role="button" tabindex="0"
+                     aria-label="6. 역광 할레이션 재생">
+                    <img src="images/replay/cherry-06.jpg" alt="역광 할레이션이 들어간 벚꽃 인물사진" loading="lazy">
+                    <span class="clip-no">6</span>
+                    <span class="clip-dur">2:06</span>
+                    <span class="clip-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span>
+                </div>
+                <div class="clip-body">
+                    <h3>역광 할레이션 — 감성은 빛과 함께 온다</h3>
+                    <p>얼굴이 항상 선명해야 좋은 사진은 아닙니다. 뿌옇게 번지는 빛을 의도적으로 만드는 조건과 시간대.</p>
+                    <span class="clip-time">26:26 – 28:32</span>
+                </div>
+            </article>
+
         </div>
+
+        <p class="clip-source reveal">
+            원본 강의 <strong>「벚꽃과 함께 환상적인 인물사진 잘 찍는 법」</strong> (28분 32초) 중 핵심 구간입니다 ·
+            <a href="https://www.youtube.com/watch?v=lXzZlOx_F9U" target="_blank" rel="noopener">전체 영상 보기 ↗</a>
+        </p>
     </div>
 </section>
 
@@ -595,30 +683,39 @@
         })
     }
 
-    // ── 무료 공개 강의: 구간 선택 ──
-    // 유튜브 임베드의 start/end 파라미터로 구간을 지정한다.
-    // 원본을 내려받아 자르지 않으므로 화질 손실이 없고, 조회수도 채널에 그대로 쌓인다.
-    const clipPlayer = document.getElementById('clipPlayer')
-    const clipNow    = document.getElementById('clipNow')
-    const clipRange  = document.getElementById('clipRange')
-    const VIDEO_ID   = 'lXzZlOx_F9U'
+    // ── 무료 공개 강의: 카드별 구간 재생 ──
+    // 한 영상을 유튜브 임베드의 start/end 파라미터로 구간 재생한다.
+    // 원본을 내려받아 재인코딩하지 않으므로 화질 손실이 없고, 조회수도 채널에 쌓인다.
+    const VIDEO_ID = 'lXzZlOx_F9U'
+    let playingStage = null   // 현재 재생 중인 카드의 stage
 
-    document.querySelectorAll('#chapterList .chapter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const start = btn.dataset.start
-            const end   = btn.dataset.end
+    function restore(stage) {
+        if (!stage || !stage.dataset.thumb) return
+        stage.innerHTML = stage.dataset.thumb
+        stage.classList.remove('on')
+        stage.closest('.clip-card').classList.remove('playing')
+    }
 
-            document.querySelectorAll('#chapterList .chapter-btn').forEach(b => b.classList.remove('active'))
-            btn.classList.add('active')
+    function play(stage) {
+        if (stage === playingStage) return
+        restore(playingStage)
 
-            clipPlayer.src = `https://www.youtube.com/embed/${VIDEO_ID}?start=${start}&end=${end}&rel=0&autoplay=1`
-            clipNow.textContent   = btn.querySelector('.ct').textContent
-            clipRange.textContent = btn.dataset.range
+        if (!stage.dataset.thumb) stage.dataset.thumb = stage.innerHTML   // 썸네일 원본 보관
 
-            // 모바일에서는 목록을 누르면 화면이 아래에 있어 재생이 안 보인다
-            if (window.innerWidth <= 900) {
-                clipPlayer.closest('.video-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' })
-            }
+        const { start, end } = stage.dataset
+        stage.innerHTML =
+            `<iframe src="https://www.youtube.com/embed/${VIDEO_ID}?start=${start}&end=${end}&rel=0&autoplay=1"` +
+            ` title="${stage.getAttribute('aria-label')}"` +
+            ` allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"` +
+            ` allowfullscreen></iframe>`
+        stage.closest('.clip-card').classList.add('playing')
+        playingStage = stage
+    }
+
+    document.querySelectorAll('#clipGrid .clip-stage').forEach(stage => {
+        stage.addEventListener('click', () => play(stage))
+        stage.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(stage) }
         })
     })
 
