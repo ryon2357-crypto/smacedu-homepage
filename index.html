@@ -539,6 +539,32 @@
             font-size:11px; font-weight:700;
             padding:4px 12px; border-radius:100px;
         }
+        .cert-reg {
+            display:block; margin-top:10px;
+            font-size:11px; font-weight:600; color:var(--text-sub);
+            letter-spacing:.2px;
+        }
+        /* 민간자격 법정 고지 (자격기본법 제33조·시행령 제31조의5) */
+        .cert-legal {
+            margin-top:32px;
+            background:var(--white);
+            border:1px solid var(--gray-line);
+            border-left:4px solid var(--navy);
+            border-radius:12px; padding:22px 26px;
+        }
+        .cert-legal p {
+            font-size:.85rem; color:var(--text-body);
+            line-height:1.85; word-break:keep-all;
+        }
+        .cert-legal p + p { margin-top:8px; }
+        .cert-legal strong { font-weight:800; color:var(--navy); }
+        .cert-legal a { color:var(--navy-mid); font-weight:600; }
+        .cert-more {
+            display:inline-flex; align-items:center; gap:6px; margin-top:14px;
+            font-size:.85rem; font-weight:700; color:var(--orange);
+            text-decoration:none; transition:gap .2s;
+        }
+        .cert-more:hover { gap:11px; }
 
         /* ── DIRECTOR ── */
         .director-inner {
@@ -935,6 +961,12 @@
             flex-wrap:wrap; gap:10px;
         }
         .foot-bottom p { font-size: .84rem; color: rgba(255,255,255,.36); }
+        .foot-legal {
+            max-width: 1140px; margin: 0 auto 18px;
+            font-size: .78rem; color: rgba(255,255,255,.42);
+            line-height: 1.8; word-break: keep-all;
+        }
+        .foot-legal a { color: rgba(255,255,255,.6); }
 
         @keyframes fadeUp {
             from { opacity:0; transform:translateY(22px); }
@@ -1259,7 +1291,7 @@
             <span class="tag-chip">CERTIFICATION</span>
             <h2 class="sec-title">강사양성 · 자격증</h2>
             <div class="orange-bar"></div>
-            <p class="sec-desc">단순히 배우는 것을 넘어, 가르치는 전문가로 성장합니다.</p>
+            <p class="sec-desc">단순히 배우는 것을 넘어, 가르치는 전문가로 성장합니다.<br>「자격기본법」에 따라 등록한 민간자격 14종을 운영합니다.</p>
         </div>
         <div class="cert-grid">
 
@@ -1268,6 +1300,7 @@
                 <h3>스마트폰사진작가</h3>
                 <p>스마트폰으로 작가 수준의 사진을 찍는 전문 역량을 인증합니다.</p>
                 <span class="cert-chip">자격증</span>
+                <span class="cert-reg">등록번호 2025-005619</span>
             </div>
 
             <div class="cert-card reveal">
@@ -1275,6 +1308,7 @@
                 <h3>스마트폰사진전문가</h3>
                 <p>심화 촬영 기술과 편집 역량을 갖춘 사진 전문가 자격입니다.</p>
                 <span class="cert-chip">자격증</span>
+                <span class="cert-reg">등록번호 2025-001774</span>
             </div>
 
             <div class="cert-card reveal">
@@ -1282,6 +1316,7 @@
                 <h3>스마트폰활용지도사</h3>
                 <p>스마트폰 활용 교육을 지도할 수 있는 강사 자격입니다.</p>
                 <span class="cert-chip">지도사</span>
+                <span class="cert-reg">등록번호 2025-006114</span>
             </div>
 
             <div class="cert-card reveal">
@@ -1289,6 +1324,7 @@
                 <h3>스마트미디어강사</h3>
                 <p>스마트폰·미디어 전반을 교육할 수 있는 강사 자격입니다.</p>
                 <span class="cert-chip">강사자격</span>
+                <span class="cert-reg">등록번호 2025-006115</span>
             </div>
 
             <div class="cert-card reveal">
@@ -1296,6 +1332,7 @@
                 <h3>AI활용지도사</h3>
                 <p>AI 도구 활용 교육을 지도할 수 있는 전문 자격입니다.</p>
                 <span class="cert-chip">지도사</span>
+                <span class="cert-reg">등록번호 2025-006119</span>
             </div>
 
             <div class="cert-card reveal">
@@ -1303,6 +1340,7 @@
                 <h3>AI콘텐츠제작전문가</h3>
                 <p>AI로 글·이미지·영상 콘텐츠를 제작하는 전문 역량을 인증합니다.</p>
                 <span class="cert-chip">전문가</span>
+                <span class="cert-reg">등록번호 2025-005882</span>
             </div>
 
             <div class="cert-card reveal">
@@ -1310,6 +1348,7 @@
                 <h3>AI프롬프트전문가</h3>
                 <p>AI에게 효과적으로 지시하는 프롬프트 설계 전문 자격입니다.</p>
                 <span class="cert-chip">전문가</span>
+                <span class="cert-reg">등록번호 2025-006117</span>
             </div>
 
             <div class="cert-card reveal">
@@ -1317,6 +1356,7 @@
                 <h3>영상편집전문가</h3>
                 <p>모바일·PC 영상 편집 역량을 갖춘 콘텐츠 전문가 자격입니다.</p>
                 <span class="cert-chip">전문가</span>
+                <span class="cert-reg">등록번호 2025-006118</span>
             </div>
 
             <div class="cert-card reveal">
@@ -1324,6 +1364,7 @@
                 <h3>SNS마케팅지도사</h3>
                 <p>SNS 마케팅 교육을 체계적으로 지도할 수 있는 자격입니다.</p>
                 <span class="cert-chip">지도사</span>
+                <span class="cert-reg">등록번호 2026-000007</span>
             </div>
 
             <div class="cert-card reveal">
@@ -1331,6 +1372,7 @@
                 <h3>1인콘텐츠창작전문가</h3>
                 <p>혼자서 기획·제작·유통까지 하는 1인 미디어 전문가 자격입니다.</p>
                 <span class="cert-chip">전문가</span>
+                <span class="cert-reg">등록번호 2025-005066</span>
             </div>
 
             <div class="cert-card reveal">
@@ -1338,6 +1380,7 @@
                 <h3>여행사진작가</h3>
                 <p>여행지에서 감성 사진을 기록하고 표현하는 전문 작가 자격입니다.</p>
                 <span class="cert-chip">작가자격</span>
+                <span class="cert-reg">등록번호 2025-004792</span>
             </div>
 
             <div class="cert-card reveal">
@@ -1345,6 +1388,7 @@
                 <h3>사진힐링전문가</h3>
                 <p>사진 촬영을 활용한 심리치유·힐링 프로그램 운영 전문 자격입니다.</p>
                 <span class="cert-chip">전문가</span>
+                <span class="cert-reg">등록번호 2025-004791</span>
             </div>
 
             <div class="cert-card reveal">
@@ -1352,6 +1396,7 @@
                 <h3>디지털콘텐츠전문가</h3>
                 <p>디지털 환경에서 콘텐츠를 기획·제작·배포하는 전문 자격입니다.</p>
                 <span class="cert-chip">전문가</span>
+                <span class="cert-reg">등록번호 2026-002896</span>
             </div>
 
             <div class="cert-card reveal">
@@ -1359,8 +1404,28 @@
                 <h3>디지털디자인전문가</h3>
                 <p>Canva·AI 툴로 디지털 디자인 결과물을 만드는 전문 자격입니다.</p>
                 <span class="cert-chip">전문가</span>
+                <span class="cert-reg">등록번호 2026-001555</span>
             </div>
 
+        </div>
+
+        <!-- 민간자격 법정 고지 (자격기본법 제33조 표시의무 / 시행령 제31조의5) -->
+        <div class="cert-legal reveal">
+            <p>
+                위 자격은 「자격기본법」에 따라 등록한 <strong>등록 민간자격</strong>이며,
+                <strong>국가로부터 인정받은 공인자격이 아닙니다.</strong>
+            </p>
+            <p>
+                자격관리기관: 스마트미디어아트센터 (인천광역시 부평구 충선로209번길 41, 8층 801-35호) ·
+                <a href="tel:010-4717-0624">010-4717-0624</a><br>
+                등록 사실은 <a href="https://www.pqi.or.kr" target="_blank" rel="noopener">민간자격정보서비스(www.pqi.or.kr)</a>에서
+                종목별 등록번호로 확인하실 수 있습니다.
+            </p>
+            <p>
+                검정 비용은 매 검정 시행 공고 시 항목별 금액과 총액을 사전 안내하며,
+                환불 규정은 <a href="certificates.html#process">등록 민간자격 안내</a> 페이지에 고지되어 있습니다.
+            </p>
+            <a href="certificates.html" class="cert-more">종목별 등급 · 직무내용 · 검정 안내 자세히 보기 →</a>
         </div>
 
         <!-- 출강 연계 배너 -->
@@ -1880,6 +1945,10 @@
             </ul>
         </div>
     </div>
+    <p class="foot-legal">
+        본 기관이 안내하는 자격은 「자격기본법」에 따라 등록한 등록 민간자격이며, 국가로부터 인정받은 공인자격이 아닙니다.
+        종목별 등록번호와 상세 고지는 <a href="certificates.html">등록 민간자격 안내</a> 페이지에서 확인하실 수 있습니다.
+    </p>
     <div class="foot-bottom">
         <p>© 2026 스마트미디어아트센터. All rights reserved.</p>
         <p><a href="terms.html" style="color:rgba(255,255,255,.36);text-decoration:none;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(255,255,255,.36)'">이용약관</a> · <a href="privacy.html" style="color:rgba(255,255,255,.36);text-decoration:none;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(255,255,255,.36)'">개인정보처리방침</a></p>

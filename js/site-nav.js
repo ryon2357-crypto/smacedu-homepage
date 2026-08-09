@@ -1,5 +1,5 @@
-// 공용 상단 네비게이션 — index.html / replay.html / reviews.html 공용
-// 사용법: <div id="site-nav-root" data-page="index|replay|reviews"></div>
+// 공용 상단 네비게이션 — index.html / replay.html / reviews.html / certificates.html 공용
+// 사용법: <div id="site-nav-root" data-page="index|replay|reviews|certificates"></div>
 // supabase-js CDN + js/config.js 로드 이후, </body> 직전에서 <script src="js/site-nav.js"></script> 로 호출
 
 ;(function () {
@@ -15,7 +15,7 @@
         { label: '강사진',          anchor: 'instructors' },
         { label: '교육과정',        anchor: 'courses' },
         { label: '스마트폰 사진강의', href: 'smartphone-photo-lecture.html' },
-        { label: '자격증',          anchor: 'certification' },
+        { label: '자격증',          href: 'certificates.html', key: 'certificates' },
         { label: '수강후기',        href: 'reviews.html', key: 'reviews' },
         { label: '강의 다시보기',    href: 'replay.html',  key: 'replay' },
     ]
