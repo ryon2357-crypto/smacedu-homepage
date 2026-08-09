@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <script src="js/no-copy.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>등록 민간자격 안내 — 스마트미디어아트센터</title>
+    <meta name="description" content="스마트미디어아트센터가 「자격기본법」에 따라 등록한 민간자격 14종의 등록번호, 등급, 직무내용, 주무부처를 안내합니다. 민간자격정보서비스에서 직접 확인하실 수 있습니다.">
+    <meta property="og:title" content="등록 민간자격 안내 | 스마트미디어아트센터">
+    <meta property="og:description" content="「자격기본법」에 따라 등록한 민간자격 14종. 종목별 등록번호와 공식 등록정보 확인 링크를 제공합니다.">
+    <meta property="og:image" content="https://smacedu.kr/images/og-smartphone-lecture.jpg?v=1">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://smacedu.kr/certificates.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://smacedu.kr/images/og-smartphone-lecture.jpg?v=1">
+    <link rel="icon" href="images/logo1.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy:        #172554;
+            --navy-mid:    #1e3a8a;
+            --orange:      #f97316;
+            --orange-dk:   #ea6b0c;
+            --orange-lt:   #fff7ed;
+            --orange-soft: #ffedd5;
+            --white:       #ffffff;
+            --gray-bg:     #f8f9fa;
+            --gray-line:   #e5e7eb;
+            --text-head:   #172554;
+            --text-body:   #374151;
+            --text-sub:    #6b7280;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--white);
+            color: var(--text-body);
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 1140px; margin: 0 auto; }
+
+        .tag-chip {
+            display: inline-block;
+            background: var(--orange-lt); color: var(--orange);
+            font-size: 12px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            padding: 5px 14px; border-radius: 100px;
+            margin-bottom: 14px;
+        }
+        .sec-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 800; letter-spacing: -.8px; line-height: 1.25;
+            color: var(--text-head);
+        }
+        .sec-desc {
+            margin-top: 14px;
+            font-size: 1rem; color: var(--text-sub);
+            line-height: 1.85; max-width: 620px; margin-left: auto; margin-right: auto;
+            word-break: keep-all;
+        }
+        .sec-head { text-align: center; margin-bottom: 52px; }
+        .orange-bar {
+            width: 44px; height: 4px;
+            background: var(--orange); border-radius: 2px;
+            margin: 16px auto 0;
+        }
+        .reveal {
+            opacity: 0; transform: translateY(22px);
+            transition: opacity .65s ease, transform .65s ease;
+            transition-delay: var(--d, 0ms);
+        }
+        .reveal.on { opacity: 1; transform: none; }
+        .sec { padding: 80px 40px; }
+        .sec-white { background: var(--white); }
+        .sec-gray  { background: var(--gray-bg); }
+
+        /* ── 스크롤 진행바 ── */
+        #progress {
+            position: fixed; top:0; left:0; height:3px; width:0;
+            background: linear-gradient(90deg, var(--orange), #fbbf24);
+            z-index: 1000; transition: width .1s linear;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed; top:0; left:0; right:0; z-index:999;
+            height: 96px;
+            display: flex; align-items:center; justify-content:space-between;
+            padding: 0 48px;
+            background: rgba(255,255,255,.96);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid transparent;
+            transition: border-color .3s, box-shadow .3s;
+        }
+        nav.scrolled { border-color: var(--gray-line); box-shadow: 0 2px 16px rgba(0,0,0,.07); }
+        .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; flex-shrink:0; }
+        .logo-img { height: 72px; width:auto; display:block; object-fit:contain; }
+        .nav-brand-block { display:flex; flex-direction:column; gap:6px; justify-content:center; }
+        .nav-brand-name { font-size:24px; font-weight:700; color:#172554; letter-spacing:-.4px; white-space:nowrap; line-height:1; }
+        .nav-brand-sub  { font-size:13px; font-weight:500; color:#64748B; letter-spacing:.1px; white-space:nowrap; line-height:1; }
+
+        .nav-links { display:flex; gap:26px; list-style:none; align-items:center; }
+        .nav-links a {
+            text-decoration:none; color: var(--text-body);
+            font-size: 13.5px; font-weight: 500;
+            transition: color .2s; white-space: nowrap;
+        }
+        .nav-links a:hover { color: var(--orange); }
+        .nav-links .active a { color: var(--orange); font-weight: 700; }
+        .nav-links .cta a {
+            padding: 9px 22px; background: var(--orange); color:#fff;
+            border-radius: 8px; font-weight: 700;
+            transition: background .2s, transform .2s;
+        }
+        .nav-links .cta a:hover { background: var(--orange-dk); transform: translateY(-1px); }
+
+        .btn-nav-login { background: var(--orange); color:#fff; border:none; padding:7px 14px; border-radius:8px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; text-decoration:none; white-space:nowrap; transition:background .2s; }
+        .btn-nav-login:hover { background: var(--orange-dk); }
+        .btn-nav-mypage { background:transparent; color:var(--text-body); border:1.5px solid var(--gray-line); padding:7px 14px; border-radius:8px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; text-decoration:none; white-space:nowrap; transition:all .2s; }
+        .btn-nav-mypage:hover { border-color:var(--navy); color:var(--navy); }
+        .btn-nav-logout { background:transparent; color:var(--text-sub); border:none; font-size:12px; font-family:inherit; cursor:pointer; padding:4px; }
+        .nav-user-area { display:flex; align-items:center; gap:8px; }
+
+        .nav-dropdown { position:relative; }
+        .nav-dropdown::after { content:""; position:absolute; top:100%; left:0; right:0; height:16px; }
+        .nav-dropdown-toggle {
+            background:none; border:none; cursor:pointer; font-family:inherit; padding:0;
+            display:flex; align-items:center; gap:4px;
+            text-decoration:none; color: var(--text-body);
+            font-size: 13.5px; font-weight: 500;
+            transition: color .2s; white-space: nowrap;
+        }
+        .nav-dropdown-toggle:hover { color: var(--orange); }
+        .nav-dropdown-toggle .caret { font-size:10px; transition: transform .2s; }
+        .nav-dropdown:hover .nav-dropdown-toggle .caret,
+        .nav-dropdown:focus-within .nav-dropdown-toggle .caret { transform: rotate(180deg); }
+        .nav-dropdown-menu {
+            display:none; position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%);
+            background:#fff; border-radius:12px; box-shadow:0 12px 32px rgba(0,0,0,.14);
+            padding:8px; min-width:150px; list-style:none; z-index:200;
+        }
+        .nav-dropdown:hover .nav-dropdown-menu,
+        .nav-dropdown:focus-within .nav-dropdown-menu { display:block; }
+        .nav-dropdown-menu li a {
+            display:block; padding:9px 14px; border-radius:8px;
+            font-size:13.5px; font-weight:500; color: var(--text-body);
+            text-decoration:none; white-space:nowrap; transition: background .15s, color .15s;
+        }
+        .nav-dropdown-menu li a:hover { background: var(--orange-lt); color: var(--orange); }
+
+        .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:6px; }
+        .hamburger span { display:block; width:22px; height:2.5px; background: var(--navy); border-radius:2px; transition: all .28s ease; }
+
+        .mob-menu {
+            display:none; position:fixed;
+            top:82px; left:0; right:0; z-index:998;
+            background:#fff; border-bottom:1px solid var(--gray-line);
+            box-shadow: 0 8px 24px rgba(0,0,0,.09);
+        }
+        .mob-menu.open { display:block; }
+        .mob-menu ul { list-style:none; }
+        .mob-menu ul li a {
+            display:block; padding:15px 36px;
+            color: var(--text-body); text-decoration:none; font-size:15px;
+            border-bottom: 1px solid var(--gray-line); transition: all .2s;
+        }
+        .mob-menu ul li a:hover { color: var(--orange); padding-left:48px; background: var(--orange-lt); }
+
+        /* ── PAGE HERO ── */
+        .page-hero {
+            background: var(--navy);
+            padding: 148px 40px 72px;
+            text-align: center; position: relative; overflow: hidden;
+        }
+        .page-hero::before {
+            content:''; position:absolute; top:-120px; left:-100px;
+            width:420px; height:420px;
+            background: radial-gradient(circle, rgba(249,115,22,.14) 0%, transparent 65%);
+            border-radius:50%;
+        }
+        .page-hero::after {
+            content:''; position:absolute; bottom:-80px; right:-60px;
+            width:340px; height:340px;
+            background: radial-gradient(circle, rgba(99,102,241,.1) 0%, transparent 65%);
+            border-radius:50%;
+        }
+        .page-hero-inner { position:relative; z-index:1; }
+        .page-hero-badge {
+            display:inline-block;
+            background: rgba(249,115,22,.15);
+            border: 1px solid rgba(249,115,22,.38);
+            color: #fdba74;
+            padding: 6px 20px; border-radius:100px;
+            font-size:12px; font-weight:700; letter-spacing:1.5px;
+            text-transform:uppercase; margin-bottom:20px;
+        }
+        .page-hero h1 {
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            font-weight: 900; letter-spacing: -1.2px; line-height: 1.2;
+            color: #fff; margin-bottom: 14px;
+        }
+        .page-hero h1 .accent { color: var(--orange); }
+        .page-hero p { font-size: 1.05rem; color: rgba(255,255,255,.65); line-height: 1.85; word-break: keep-all; }
+
+        .hero-stats {
+            display:flex; justify-content:center; gap:56px; flex-wrap:wrap;
+            margin-top: 38px; padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,.12);
+        }
+        .hero-stat strong {
+            display:block; font-size: 2rem; font-weight:900; color:#fff; line-height:1.2;
+        }
+        .hero-stat span { font-size:.82rem; color: rgba(255,255,255,.5); letter-spacing:.3px; }
+
+        /* ── 법정 고지 (상단 요약) ── */
+        .legal-strip {
+            background: var(--orange-lt);
+            border-top: 1px solid var(--orange-soft);
+            border-bottom: 1px solid var(--orange-soft);
+            padding: 20px 40px;
+        }
+        .legal-strip-inner {
+            max-width: 1140px; margin: 0 auto;
+            display: flex; align-items: flex-start; gap: 14px;
+        }
+        .legal-strip .ic { font-size: 1.15rem; line-height: 1.5; flex-shrink: 0; }
+        .legal-strip p { font-size: .9rem; color: #7c2d12; line-height: 1.8; word-break: keep-all; }
+        .legal-strip strong { font-weight: 800; }
+
+        /* ── 자격증 카드 ── */
+        .cert-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+        }
+        .cert-card {
+            background: var(--white);
+            border: 1px solid var(--gray-line);
+            border-radius: 16px; padding: 26px 24px 20px;
+            display: flex; flex-direction: column; gap: 14px;
+            transition: border-color .25s, box-shadow .25s, transform .25s;
+        }
+        .cert-card:hover {
+            border-color: var(--orange);
+            box-shadow: 0 10px 30px rgba(23,37,84,.09);
+            transform: translateY(-3px);
+        }
+        .cert-card-top { display:flex; align-items:flex-start; gap:12px; }
+        .cert-ic {
+            font-size: 1.6rem; line-height: 1;
+            background: var(--orange-lt); border-radius: 12px;
+            width: 46px; height: 46px; flex-shrink: 0;
+            display:flex; align-items:center; justify-content:center;
+        }
+        .cert-nm h3 {
+            font-size: 1.06rem; font-weight: 800; color: var(--navy);
+            letter-spacing: -.4px; line-height: 1.35; word-break: keep-all;
+        }
+        .cert-eng {
+            display:block; font-size: .72rem; color: var(--text-sub);
+            letter-spacing: .3px; margin-top: 3px;
+        }
+        .cert-meta { display:flex; flex-wrap:wrap; gap:6px; }
+        .cert-reg {
+            background: var(--navy); color:#fff;
+            font-size: .72rem; font-weight: 700; letter-spacing: .2px;
+            padding: 4px 11px; border-radius: 100px;
+        }
+        .cert-grade {
+            background: var(--gray-bg); color: var(--text-body);
+            border: 1px solid var(--gray-line);
+            font-size: .72rem; font-weight: 700;
+            padding: 4px 11px; border-radius: 100px;
+        }
+        .cert-desc {
+            font-size: .875rem; color: var(--text-body);
+            line-height: 1.8; word-break: keep-all; flex-grow: 1;
+        }
+        .cert-duty summary {
+            cursor: pointer; list-style: none;
+            font-size: .8rem; font-weight: 700; color: var(--orange);
+            padding: 8px 0; user-select: none;
+        }
+        .cert-duty summary::-webkit-details-marker { display:none; }
+        .cert-duty summary::after { content: ' ▾'; font-size: .7rem; }
+        .cert-duty[open] summary::after { content: ' ▴'; }
+        .duty-body {
+            border-top: 1px solid var(--gray-line);
+            padding-top: 12px; display:flex; flex-direction:column; gap:12px;
+        }
+        .duty-row { display:flex; gap:10px; align-items:flex-start; }
+        .duty-grade {
+            flex-shrink:0; background: var(--orange-lt); color: var(--orange);
+            font-size: .7rem; font-weight: 800;
+            padding: 3px 9px; border-radius: 6px; margin-top: 2px;
+        }
+        .duty-row p { font-size: .8rem; color: var(--text-sub); line-height: 1.75; word-break: keep-all; }
+        .cert-foot {
+            border-top: 1px solid var(--gray-line); padding-top: 14px;
+            display:flex; align-items:center; justify-content:space-between;
+            gap: 10px; flex-wrap: wrap;
+        }
+        .cert-dept { font-size: .72rem; color: var(--text-sub); }
+        .cert-verify {
+            font-size: .74rem; font-weight: 700; color: var(--navy-mid);
+            text-decoration: none; white-space: nowrap;
+            border-bottom: 1px solid transparent; transition: border-color .2s, color .2s;
+        }
+        .cert-verify:hover { color: var(--orange); border-color: var(--orange); }
+
+        /* ── 안내 카드(검정·발급) ── */
+        .info-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+        .info-card {
+            background: var(--white); border:1px solid var(--gray-line);
+            border-radius: 16px; padding: 28px 26px;
+        }
+        .info-card h3 {
+            font-size: 1rem; font-weight: 800; color: var(--navy);
+            margin-bottom: 14px; display:flex; align-items:center; gap:8px;
+        }
+        .info-card ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
+        .info-card ul li {
+            font-size: .875rem; color: var(--text-body); line-height:1.75;
+            padding-left: 15px; position: relative; word-break: keep-all;
+        }
+        .info-card ul li::before {
+            content:''; position:absolute; left:0; top:.65em;
+            width:5px; height:5px; border-radius:50%; background: var(--orange);
+        }
+
+        /* ── 기관정보 표 ── */
+        .org-table {
+            background: var(--white); border:1px solid var(--gray-line);
+            border-radius: 16px; overflow: hidden; max-width: 760px; margin: 0 auto;
+        }
+        .org-row {
+            display:grid; grid-template-columns: 180px 1fr;
+            border-bottom: 1px solid var(--gray-line);
+        }
+        .org-row:last-child { border-bottom: none; }
+        .org-row dt {
+            background: var(--gray-bg); padding: 15px 22px;
+            font-size: .85rem; font-weight: 700; color: var(--navy);
+        }
+        .org-row dd {
+            padding: 15px 22px; font-size: .89rem; color: var(--text-body);
+            word-break: keep-all; line-height: 1.7;
+        }
+        .org-row dd a { color: var(--navy-mid); text-decoration: none; border-bottom: 1px solid var(--gray-line); }
+        .org-row dd a:hover { color: var(--orange); border-color: var(--orange); }
+
+        /* ── 하단 법정 고지 ── */
+        .legal-box {
+            background: var(--white); border: 2px solid var(--navy);
+            border-radius: 16px; padding: 34px 36px; max-width: 900px; margin: 0 auto;
+        }
+        .legal-box h3 {
+            font-size: 1.05rem; font-weight: 900; color: var(--navy);
+            margin-bottom: 18px; letter-spacing: -.3px;
+        }
+        .legal-box ol { list-style: none; counter-reset: lg; display:flex; flex-direction:column; gap:14px; }
+        .legal-box ol li {
+            counter-increment: lg; position: relative; padding-left: 30px;
+            font-size: .9rem; color: var(--text-body); line-height: 1.85; word-break: keep-all;
+        }
+        .legal-box ol li::before {
+            content: counter(lg); position: absolute; left: 0; top: .25em;
+            width: 20px; height: 20px; border-radius: 50%;
+            background: var(--navy); color: #fff;
+            font-size: .68rem; font-weight: 700;
+            display:flex; align-items:center; justify-content:center;
+        }
+        .legal-box .hl { background: var(--orange-soft); font-weight: 700; padding: 1px 4px; border-radius: 3px; }
+        .legal-box a { color: var(--navy-mid); font-weight: 600; }
+
+        /* ── 검정 비용 및 환불 규정 ── */
+        .fee-block { margin-top: 30px; }
+        .fee-card {
+            background: var(--white); border: 1px solid var(--gray-line);
+            border-radius: 16px; padding: 30px 32px; margin-bottom: 20px;
+        }
+        .fee-card h3 {
+            font-size: 1.02rem; font-weight: 800; color: var(--navy);
+            margin-bottom: 14px; display:flex; align-items:center; gap:8px;
+        }
+        .fee-card > p {
+            font-size: .89rem; color: var(--text-body);
+            line-height: 1.85; word-break: keep-all;
+        }
+        .fee-card > p + p { margin-top: 10px; }
+        .fee-note {
+            margin-top: 16px; padding: 14px 18px;
+            background: var(--orange-lt); border-radius: 10px;
+            font-size: .84rem; color: #7c2d12; line-height: 1.8; word-break: keep-all;
+        }
+        .refund-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+        .refund-table th, .refund-table td {
+            border-bottom: 1px solid var(--gray-line);
+            padding: 13px 14px; text-align: left;
+            font-size: .86rem; line-height: 1.7; word-break: keep-all;
+        }
+        .refund-table thead th {
+            background: var(--gray-bg); color: var(--navy);
+            font-weight: 800; font-size: .82rem; border-bottom: 2px solid var(--gray-line);
+        }
+        .refund-table td:last-child { white-space: nowrap; font-weight: 700; color: var(--navy); }
+        .refund-table tbody tr:last-child td { border-bottom: none; }
+        .refund-list { list-style:none; display:flex; flex-direction:column; gap:10px; margin-top: 4px; }
+        .refund-list li {
+            font-size: .875rem; color: var(--text-body); line-height:1.8;
+            padding-left: 15px; position: relative; word-break: keep-all;
+        }
+        .refund-list li::before {
+            content:''; position:absolute; left:0; top:.68em;
+            width:5px; height:5px; border-radius:50%; background: var(--orange);
+        }
+
+        /* ── CTA ── */
+        .cta-banner {
+            background: var(--navy); border-radius: 18px;
+            padding: 40px 44px; display:flex; align-items:center;
+            justify-content:space-between; flex-wrap:wrap; gap: 22px;
+        }
+        .cta-banner h3 { font-size: 1.25rem; font-weight: 800; color:#fff; margin-bottom: 6px; letter-spacing:-.4px; }
+        .cta-banner p  { font-size: .9rem; color: rgba(255,255,255,.6); line-height:1.7; word-break: keep-all; }
+        .btn-orange {
+            display:inline-block; padding: 14px 32px;
+            background: var(--orange); color:#fff;
+            border-radius: 10px; font-weight: 700; font-size: .95rem;
+            text-decoration:none; white-space:nowrap;
+            transition: background .2s, transform .2s, box-shadow .2s;
+        }
+        .btn-orange:hover { background: var(--orange-dk); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(249,115,22,.35); }
+
+        /* ── FOOTER ── */
+        footer { background: var(--navy); padding: 52px 48px 36px; }
+        .foot-grid {
+            max-width: 1140px; margin: 0 auto;
+            display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+            gap: 40px; margin-bottom: 40px;
+        }
+        .logo-img-footer { height: 80px; width:auto; object-fit:contain; display:block; margin-bottom:16px; }
+        .foot-brand p { font-size: .9rem; color: rgba(255,255,255,.55); line-height:1.9; max-width:400px; word-break:keep-all; }
+        .foot-col h4 { font-size:.76rem; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.45); margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,.08); }
+        .foot-col ul { list-style:none; display:flex; flex-direction:column; gap:12px; }
+        .foot-col ul li a { text-decoration:none; color:rgba(255,255,255,.62); font-size:.92rem; transition:color .2s; }
+        .foot-col ul li a:hover { color:var(--orange); }
+        .foot-bottom {
+            max-width:1140px; margin:0 auto;
+            padding-top:24px; border-top:1px solid rgba(255,255,255,.1);
+            display:flex; justify-content:space-between; align-items:center;
+            flex-wrap:wrap; gap:10px;
+        }
+        .foot-bottom p { font-size:.84rem; color:rgba(255,255,255,.36); }
+        .foot-legal {
+            max-width:1140px; margin: 18px auto 0;
+            font-size:.78rem; color:rgba(255,255,255,.42); line-height:1.8; word-break:keep-all;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width:1040px) {
+            .nav-links { display:none; }
+            .hamburger { display:flex; }
+            .cert-grid { grid-template-columns: repeat(2, 1fr); }
+            .info-grid { grid-template-columns: 1fr; }
+            .foot-grid { grid-template-columns: 1fr 1fr; gap:28px; }
+        }
+        @media (max-width:720px) {
+            nav { padding: 0 20px; height: 70px; }
+            .logo-img { height: 48px; }
+            .nav-brand-name { font-size: 16px; }
+            .nav-brand-sub { display:none; }
+            .page-hero { padding: 122px 20px 52px; }
+            .hero-stats { gap: 30px; }
+            .hero-stat strong { font-size: 1.5rem; }
+            .sec { padding: 56px 20px; }
+            .legal-strip { padding: 18px 20px; }
+            .cert-grid { grid-template-columns: 1fr; }
+            .org-row { grid-template-columns: 1fr; }
+            .org-row dt { padding: 12px 18px 4px; background: var(--white); }
+            .org-row dd { padding: 0 18px 14px; }
+            .legal-box { padding: 26px 20px; }
+            .fee-card { padding: 24px 20px; }
+            .refund-table th, .refund-table td { padding: 11px 8px; font-size: .8rem; }
+            .refund-table td:last-child { white-space: normal; }
+            .cta-banner { padding: 28px 22px; }
+            footer { padding: 44px 20px 30px; }
+            .foot-grid { grid-template-columns: 1fr; gap:24px; }
+            .foot-bottom { flex-direction: column; text-align:center; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- ══════ NAV (js/site-nav.js가 렌더링) ══════ -->
+<div id="site-nav-root" data-page="certificates"></div>
+
+
+<!-- ══════ PAGE HERO ══════ -->
+<div class="page-hero">
+    <div class="page-hero-inner">
+        <span class="page-hero-badge">CERTIFICATION</span>
+        <h1>스마트미디어아트센터<br><span class="accent">등록 민간자격</span> 안내</h1>
+        <p>「자격기본법」에 따라 등록한 민간자격 14종입니다.<br>종목마다 등록번호를 공개하며, 민간자격정보서비스에서 직접 확인하실 수 있습니다.</p>
+        <div class="hero-stats">
+            <div class="hero-stat"><strong>14종</strong><span>등록 민간자격</span></div>
+            <div class="hero-stat"><strong>3개 부처</strong><span>주무부처</span></div>
+            <div class="hero-stat"><strong>1·2급</strong><span>등급 체계</span></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ══════ 법정 고지 (상단 요약) ══════ -->
+<div class="legal-strip">
+    <div class="legal-strip-inner">
+        <span class="ic">ℹ️</span>
+        <p>
+            본 페이지에 안내된 자격은 「자격기본법」에 따라 등록한 <strong>등록 민간자격</strong>이며,
+            <strong>국가로부터 인정받은 공인자격이 아닙니다.</strong>
+            자격 등록 사실은 각 종목의 등록번호로 민간자격정보서비스(<a href="https://www.pqi.or.kr" target="_blank" rel="noopener" style="color:#7c2d12;font-weight:700;">www.pqi.or.kr</a>)에서 확인하실 수 있습니다.
+        </p>
+    </div>
+</div>
+
+
+<!-- ══════ 자격 종목 ══════ -->
+<section class="sec sec-white" id="list">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="tag-chip">REGISTERED QUALIFICATIONS</span>
+            <h2 class="sec-title">등록 자격 종목</h2>
+            <div class="orange-bar"></div>
+            <p class="sec-desc">각 종목의 등록번호와 등급, 직무내용입니다. 카드 하단의 &ldquo;공식 등록정보 확인&rdquo;을 누르면 한국직업능력연구원이 운영하는 민간자격정보서비스의 해당 자격 페이지로 바로 연결됩니다.</p>
+        </div>
+
+        <div class="cert-grid">
+            <article class="cert-card reveal" style="--d:0ms">
+                <div class="cert-card-top">
+                    <span class="cert-ic">📸</span>
+                    <div class="cert-nm">
+                        <h3>스마트폰사진작가</h3>
+                        <span class="cert-eng">SMART PHOTOGRAPHER</span>
+                    </div>
+                </div>
+                <div class="cert-meta">
+                    <span class="cert-reg">등록번호 2025-005619</span>
+                    <span class="cert-grade">1급 · 2급</span>
+                </div>
+                <p class="cert-desc">스마트폰 사진작가는 스마트폰을 활용하여 풍경, 인물, 사물 등 다양한 주제를 예술적이면서도 실용적인 시각으로 촬영하고, 이를 편집·활용하여 전시, 콘텐츠 제작, 교육 등 다양한 형태로 전달하는 사진 전문가로서, 모바일 환경에 적합한 촬영 기획, 감성 표현, 디지털 편집, 결과물 활용 등을 실무 중심으로 수행한다.</p>
+                <details class="cert-duty">
+                    <summary>등급별 직무내용 보기</summary>
+                    <div class="duty-body">
+                        <div class="duty-row"><span class="duty-grade">1급</span><p>촬영 기획, 주제 설정, 고급 촬영기법과 편집기술을 바탕으로 결과물을 작품화하며, 사진전 기획, 출품, 교육 활동까지 수행한다.</p></div>
+                        <div class="duty-row"><span class="duty-grade">2급</span><p>스마트폰으로 일상 및 주제 기반의 사진을 촬영하고, 간단한 편집과 구성으로 SNS 또는 콘텐츠 목적의 결과물을 제작한다.</p></div>
+                    </div>
+                </details>
+                <div class="cert-foot">
+                    <span class="cert-dept">주무부처 · 문화체육관광부</span>
+                    <a class="cert-verify" href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129689"
+                       target="_blank" rel="noopener">공식 등록정보 확인 ↗</a>
+                </div>
+            </article>
+            <article class="cert-card reveal" style="--d:90ms">
+                <div class="cert-card-top">
+                    <span class="cert-ic">🏅</span>
+                    <div class="cert-nm">
+                        <h3>스마트폰사진전문가</h3>
+                        <span class="cert-eng">SMART PHOTOGRAPHER</span>
+                    </div>
+                </div>
+                <div class="cert-meta">
+                    <span class="cert-reg">등록번호 2025-001774</span>
+                    <span class="cert-grade">단일등급</span>
+                </div>
+                <p class="cert-desc">스마트폰을 활용하여 고품질 사진을 기획하고 촬영하며, 사진 콘텐츠 제작에 필요한 기술과 창의성을 바탕으로 다양한 주제의 사진을 제작한다. 또한, 촬영된 사진을 편집 도구를 통해 보정하고 완성도를 높이며, 새로운 촬영 기법을 연구하고 실무적으로 활용 가능한 사진 콘텐츠를 개발한다.</p>
+                <details class="cert-duty">
+                    <summary>등급별 직무내용 보기</summary>
+                    <div class="duty-body">
+                        <div class="duty-row"><span class="duty-grade">단일등급</span><p>스마트폰을 활용하여 고품질 사진을 기획하고 촬영하며, 사진 콘텐츠 제작에 필요한 기술과 창의성을 바탕으로 다양한 주제의 사진을 제작한다. 또한, 촬영된 사진을 편집 도구를 통해 보정하고 완성도를 높이며, 새로운 촬영 기법을 연구하고 실무적으로 활용 가능한 사진 콘텐츠를 개발한다.</p></div>
+                    </div>
+                </details>
+                <div class="cert-foot">
+                    <span class="cert-dept">주무부처 · 문화체육관광부</span>
+                    <a class="cert-verify" href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=123610"
+                       target="_blank" rel="noopener">공식 등록정보 확인 ↗</a>
+                </div>
+            </article>
+            <article class="cert-card reveal" style="--d:180ms">
+                <div class="cert-card-top">
+                    <span class="cert-ic">📱</span>
+                    <div class="cert-nm">
+                        <h3>스마트폰활용지도사</h3>
+                        <span class="cert-eng">Certified Mobile Device Instructor</span>
+                    </div>
+                </div>
+                <div class="cert-meta">
+                    <span class="cert-reg">등록번호 2025-006114</span>
+                    <span class="cert-grade">1급 · 2급</span>
+                </div>
+                <p class="cert-desc">스마트폰활용지도사는 스마트폰의 주요 기능과 다양한 앱을 활용하여 사진·영상 촬영, 편집, 정보 검색, 문서 작성, 커뮤니케이션 등의 실생활 활용법을 교육하고, 교육 대상자의 수준과 목적에 맞는 실습 중심의 수업을 운영하는 업무를 수행한다.</p>
+                <details class="cert-duty">
+                    <summary>등급별 직무내용 보기</summary>
+                    <div class="duty-body">
+                        <div class="duty-row"><span class="duty-grade">1급</span><p>스마트폰 활용 교육 과정을 기획하고, 미디어 제작, 업무 앱 활용, 생활정보 실습 등 통합형 교육을 설계·운영하며, 수요자 맞춤형 실습 중심 강의를 현장에서 진행한다.</p></div>
+                        <div class="duty-row"><span class="duty-grade">2급</span><p>사진·영상 촬영과 편집, 기본 앱 사용법, 정보 검색 및 소통 도구 사용 등 실생활에서 활용 가능한 스마트폰 기능을 교육하고, 실습을 통해 학습자의 활용 능력을 향상시킨다.</p></div>
+                    </div>
+                </details>
+                <div class="cert-foot">
+                    <span class="cert-dept">주무부처 · 과학기술정보통신부</span>
+                    <a class="cert-verify" href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129727"
+                       target="_blank" rel="noopener">공식 등록정보 확인 ↗</a>
+                </div>
+            </article>
+            <article class="cert-card reveal" style="--d:0ms">
+                <div class="cert-card-top">
+                    <span class="cert-ic">🎓</span>
+                    <div class="cert-nm">
+                        <h3>스마트미디어강사</h3>
+                        <span class="cert-eng">Certified Smart Media Instructor</span>
+                    </div>
+                </div>
+                <div class="cert-meta">
+                    <span class="cert-reg">등록번호 2025-006115</span>
+                    <span class="cert-grade">1급 · 2급</span>
+                </div>
+                <p class="cert-desc">스마트미디어강사는 스마트기기와 디지털 플랫폼을 활용한 콘텐츠 제작 및 온라인 미디어 활용 교육을 기획하고, 교육 대상자의 수준에 맞는 강의와 실습을 운영하는 업무를 수행한다. 또한 교육 현장에서 필요한 콘텐츠 예시를 제공하고, 결과물을 실용적으로 활용할 수 있도록 안내하는 역할을 맡는다.</p>
+                <details class="cert-duty">
+                    <summary>등급별 직무내용 보기</summary>
+                    <div class="duty-body">
+                        <div class="duty-row"><span class="duty-grade">1급</span><p>스마트미디어 교육 과정을 설계하고, 콘텐츠 제작 실습, SNS 운영, 디지털 리터러시 등 통합 교육을 진행하며, 다양한 현장(학교, 기관 등)에서 실습 중심 강의를 운영한다.</p></div>
+                        <div class="duty-row"><span class="duty-grade">2급</span><p>스마트기기와 디지털 앱을 활용해 촬영, 편집, 게시 등 기초적인 미디어 활용법을 교육하고, 실습 중심 수업을 통해 학습자의 콘텐츠 제작과 표현 활동을 지원한다.</p></div>
+                    </div>
+                </details>
+                <div class="cert-foot">
+                    <span class="cert-dept">주무부처 · 문화체육관광부</span>
+                    <a class="cert-verify" href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129725"
+                       target="_blank" rel="noopener">공식 등록정보 확인 ↗</a>
+                </div>
+            </article>
+            <article class="cert-card reveal" style="--d:90ms">
+                <div class="cert-card-top">
+                    <span class="cert-ic">🤖</span>
+                    <div class="cert-nm">
+                        <h3>AI활용지도사</h3>
+                        <span class="cert-eng">AI Application Coach</span>
+                    </div>
+                </div>
+                <div class="cert-meta">
+                    <span class="cert-reg">등록번호 2025-006119</span>
+                    <span class="cert-grade">1급 · 2급</span>
+                </div>
+                <p class="cert-desc">AI활용지도사는 생성형 인공지능을 포함한 다양한 AI 도구를 활용하여 개인, 단체, 교육 대상자에게 텍스트 생성, 이미지 제작, 요약, 자동화 등의 기능을 실생활이나 교육, 업무 현장에 적용할 수 있도록 안내·지도하며, 실습 중심의 프로그램을 운영하고, 사용자의 이해 수준에 맞는 맞춤형 활용법을 설명하는 역할을 수행한다.</p>
+                <details class="cert-duty">
+                    <summary>등급별 직무내용 보기</summary>
+                    <div class="duty-body">
+                        <div class="duty-row"><span class="duty-grade">1급</span><p>생성형 AI의 응용사례 및 도구별 특징을 바탕으로 실생활 및 업무에 활용하는 방법을 교육하고, 학습자 수준에 맞춰 AI 실습 과정을 기획·운영하며, 강의와 실습 지도를 병행한다.</p></div>
+                        <div class="duty-row"><span class="duty-grade">2급</span><p>학습자나 일반인에게 텍스트 생성, 이미지 제작 등 다양한 AI 도구의 기초 기능을 설명하고, 실습을 통해 일상이나 업무에 적용할 수 있도록 안내하는 교육을 수행한다.</p></div>
+                    </div>
+                </details>
+                <div class="cert-foot">
+                    <span class="cert-dept">주무부처 · 과학기술정보통신부</span>
+                    <a class="cert-verify" href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129691"
+                       target="_blank" rel="noopener">공식 등록정보 확인 ↗</a>
+                </div>
+            </article>
+            <article class="cert-card reveal" style="--d:180ms">
+                <div class="cert-card-top">
+                    <span class="cert-ic">✨</span>
+                    <div class="cert-nm">
+                        <h3>AI콘텐츠제작전문가</h3>
+                        <span class="cert-eng">AI Content Creation Specialist</span>
+                    </div>
+                </div>
+                <div class="cert-meta">
+                    <span class="cert-reg">등록번호 2025-005882</span>
+                    <span class="cert-grade">1급 · 2급</span>
+                </div>
+                <p class="cert-desc">AI콘텐츠제작전문가는 생성형 인공지능 도구를 활용해 텍스트, 이미지, 영상 등 다양한 형식의 콘텐츠를 기획하고 제작·편집하여 홍보, 교육, 마케팅 등 목적에 맞게 활용하는 업무를 수행한다.</p>
+                <details class="cert-duty">
+                    <summary>등급별 직무내용 보기</summary>
+                    <div class="duty-body">
+                        <div class="duty-row"><span class="duty-grade">1급</span><p>콘텐츠 제작 기획안을 수립하고, 다양한 AI 도구를 활용해 복합 콘텐츠를 설계·제작하며, 콘텐츠 제작과 활용에 대한 실습을 지도하고 운영한다.</p></div>
+                        <div class="duty-row"><span class="duty-grade">2급</span><p>생성형 AI 도구를 활용해 단일 매체 중심의 콘텐츠를 제작·편집하고, 주어진 주제에 맞는 결과물을 완성하여 디지털 채널에 활용한다.</p></div>
+                    </div>
+                </details>
+                <div class="cert-foot">
+                    <span class="cert-dept">주무부처 · 문화체육관광부</span>
+                    <a class="cert-verify" href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129690"
+                       target="_blank" rel="noopener">공식 등록정보 확인 ↗</a>
+                </div>
+            </article>
+            <article class="cert-card reveal" style="--d:0ms">
+                <div class="cert-card-top">
+                    <span class="cert-ic">💬</span>
+                    <div class="cert-nm">
+                        <h3>AI프롬프트전문가</h3>
+                        <span class="cert-eng">AI Prompt Engineering Specialist</span>
+                    </div>
+                </div>
+                <div class="cert-meta">
+                    <span class="cert-reg">등록번호 2025-006117</span>
+                    <span class="cert-grade">1급 · 2급</span>
+                </div>
+                <p class="cert-desc">AI프롬프트전문가는 생성형 인공지능 도구에 입력할 명령어(프롬프트)를 목적에 맞게 구성하여, 콘텐츠 생성, 아이디어 도출, 작업 자동화 등 다양한 업무에 활용 가능한 결과물을 도출하는 업무를 수행한다. 또한 분야별 요구에 맞는 프롬프트를 설계하고, 반복적 실험을 통해 결과의 정확성과 효율성을 개선하는 역할을 맡는다.</p>
+                <details class="cert-duty">
+                    <summary>등급별 직무내용 보기</summary>
+                    <div class="duty-body">
+                        <div class="duty-row"><span class="duty-grade">1급</span><p>다양한 목적과 분야에 맞는 고급 프롬프트를 기획·작성하고, 결과물을 분석하여 활용 가능성을 평가하며, 프롬프트 사용법에 대한 교육 콘텐츠를 개발하고 실습을 운영한다.</p></div>
+                        <div class="duty-row"><span class="duty-grade">2급</span><p>생성형 AI 도구에 프롬프트를 입력하여 텍스트, 이미지, 요약문, 기획안 등의 결과물을 생성하고, 사용 목적에 맞게 기본적인 조정·수정을 수행한다.</p></div>
+                    </div>
+                </details>
+                <div class="cert-foot">
+                    <span class="cert-dept">주무부처 · 과학기술정보통신부</span>
+                    <a class="cert-verify" href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129695"
+                       target="_blank" rel="noopener">공식 등록정보 확인 ↗</a>
+                </div>
+            </article>
+            <article class="cert-card reveal" style="--d:90ms">
+                <div class="cert-card-top">
+                    <span class="cert-ic">🎬</span>
+                    <div class="cert-nm">
+                        <h3>영상편집전문가</h3>
+                        <span class="cert-eng">Certified Video Editing Specialist</span>
+                    </div>
+                </div>
+                <div class="cert-meta">
+                    <span class="cert-reg">등록번호 2025-006118</span>
+                    <span class="cert-grade">1급 · 2급</span>
+                </div>
+                <p class="cert-desc">영상편집전문가는 다양한 영상 콘텐츠의 기획 의도에 따라 장면을 구성하고, 영상, 음향, 자막, 시각 효과 등을 활용해 완성도 높은 결과물을 제작하여 디지털 매체에 적합하게 편집·출력하는 업무를 수행한다. 또한 콘텐츠 목적에 맞게 영상 흐름을 구성하고, 시청자 반응을 고려해 내용을 보완하거나 개선하는 역할을 맡는다.</p>
+                <details class="cert-duty">
+                    <summary>등급별 직무내용 보기</summary>
+                    <div class="duty-body">
+                        <div class="duty-row"><span class="duty-grade">1급</span><p>영상 편집 프로젝트의 흐름을 기획하고, 다양한 형식의 원본 자료를 종합적으로 편집하여 완성도 높은 콘텐츠를 제작하며, 후반작업 및 결과물의 출력·배포를 담당한다. 또한 영상편집 관련 실무 교육을 설계하고 운영한다.</p></div>
+                        <div class="duty-row"><span class="duty-grade">2급</span><p>주어진 기획 의도와 원본 영상에 따라 컷 편집, 자막 삽입, 배경음악 적용 등의 기본 편집 작업을 수행하고, 완성된 영상 콘텐츠를 채널별 요구에 맞게 출력·등록하는 업무를 담당한다.</p></div>
+                    </div>
+                </details>
+                <div class="cert-foot">
+                    <span class="cert-dept">주무부처 · 문화체육관광부</span>
+                    <a class="cert-verify" href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129694"
+                       target="_blank" rel="noopener">공식 등록정보 확인 ↗</a>
+                </div>
+            </article>
+            <article class="cert-card reveal" style="--d:180ms">
+                <div class="cert-card-top">
+                    <span class="cert-ic">📲</span>
+                    <div class="cert-nm">
+                        <h3>SNS마케팅지도사</h3>
+                        <span class="cert-eng">Social Media Marketing</span>
+                    </div>
+                </div>
+                <div class="cert-meta">
+                    <span class="cert-reg">등록번호 2026-000007</span>
+                    <span class="cert-grade">1급 · 2급</span>
+                </div>
+                <p class="cert-desc">SNS마케팅지도사는 사회관계망서비스(SNS)를 활용하여 상품·서비스·브랜드의 온라인 홍보 및 마케팅을 기획하고,이와 관련된 실무를 강의·실습 형식으로 지도하는 역할을 수행한다.</p>
+                <details class="cert-duty">
+                    <summary>등급별 직무내용 보기</summary>
+                    <div class="duty-body">
+                        <div class="duty-row"><span class="duty-grade">1급</span><p>마케팅 목적에 따라 SNS 채널별 콘텐츠 기획안을 작성하고, 광고 전략, 분석 도구, 홍보 콘텐츠 제작 방법 등을 교육하며, 현장 실무자 또는 학습자를 대상으로 실습 중심의 강의를 운영한다.</p></div>
+                        <div class="duty-row"><span class="duty-grade">2급</span><p>각종 SNS 플랫폼의 기본 구조와 활용법을 바탕으로 콘텐츠를 제작하고, 게시물 등록, 계정 운영, 기초 광고 집행 등을 안내하며, 현장에서 실무를 보조하거나 일반인에게 활용법을 설명한다.</p></div>
+                    </div>
+                </details>
+                <div class="cert-foot">
+                    <span class="cert-dept">주무부처 · 과학기술정보통신부</span>
+                    <a class="cert-verify" href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129692"
+                       target="_blank" rel="noopener">공식 등록정보 확인 ↗</a>
+                </div>
+            </article>
+            <article class="cert-card reveal" style="--d:0ms">
+                <div class="cert-card-top">
+                    <span class="cert-ic">🌟</span>
+                    <div class="cert-nm">
+                        <h3>1인콘텐츠창작전문가</h3>
+                        <span class="cert-eng">Certified Solo Content Creator</span>
+                    </div>
+                </div>
+                <div class="cert-meta">
+                    <span class="cert-reg">등록번호 2025-005066</span>
+                    <span class="cert-grade">1급 · 2급</span>
+                </div>
+                <p class="cert-desc">1인콘텐츠창작전문가는 기획, 촬영, 편집, 게시 등 콘텐츠 제작의 전 과정을 혼자 수행하며, 유튜브, 블로그, SNS 등 다양한 플랫폼에 적합한 콘텐츠를 제작하고 운영하는 업무를 담당한다. 또한 콘텐츠 주제 설정, 스토리 구성, 시청자 반응 분석 등을 통해 채널의 지속 운영과 성장을 도모하는 역할을 맡는다.</p>
+                <details class="cert-duty">
+                    <summary>등급별 직무내용 보기</summary>
+                    <div class="duty-body">
+                        <div class="duty-row"><span class="duty-grade">1급</span><p>콘텐츠 기획안을 작성하고, 복합 콘텐츠(영상·이미지·텍스트 등)를 제작하여 채널에 업로드하며, 조회수·반응 분석 및 채널 운영 전략을 수립하고, 콘텐츠 제작 실습 교육을 기획·운영한다.</p></div>
+                        <div class="duty-row"><span class="duty-grade">2급</span><p>주어진 주제에 따라 콘텐츠를 촬영·편집하고, 플랫폼에 적절히 게시하며, 기초적인 채널 관리와 반응 확인을 통해 콘텐츠를 수정·보완한다.</p></div>
+                    </div>
+                </details>
+                <div class="cert-foot">
+                    <span class="cert-dept">주무부처 · 방송미디어통신위원회</span>
+                    <a class="cert-verify" href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129726"
+                       target="_blank" rel="noopener">공식 등록정보 확인 ↗</a>
+                </div>
+            </article>
+            <article class="cert-card reveal" style="--d:90ms">
+                <div class="cert-card-top">
+                    <span class="cert-ic">✈️</span>
+                    <div class="cert-nm">
+                        <h3>여행사진작가</h3>
+                        <span class="cert-eng">Travel Photo Artist</span>
+                    </div>
+                </div>
+                <div class="cert-meta">
+                    <span class="cert-reg">등록번호 2025-004792</span>
+                    <span class="cert-grade">1급 · 2급</span>
+                </div>
+                <p class="cert-desc">여행사진작가는 여행지의 자연, 문화, 인물, 일상 등을 사진으로 기록하고, 콘텐츠로 활용할 수 있도록 기획·촬영·편집하여 전시, 출판, 온라인 채널 등에 제공하는 업무를 수행한다. 또한 촬영 목적과 대상에 맞는 장면을 연출하고, 현장의 특성을 반영한 스토리텔링형 사진 결과물을 제작한다.</p>
+                <details class="cert-duty">
+                    <summary>등급별 직무내용 보기</summary>
+                    <div class="duty-body">
+                        <div class="duty-row"><span class="duty-grade">1급</span><p>여행 콘텐츠 촬영 기획을 수립하고, 다양한 장소와 테마에 맞는 촬영을 진행하며, 사진 편집 및 스토리 구성 후 결과물을 온라인·오프라인 매체에 맞게 활용하고, 여행사진 제작 관련 교육을 운영한다.</p></div>
+                        <div class="duty-row"><span class="duty-grade">2급</span><p>일정이나 테마에 따라 현장에서 촬영을 수행하고, 촬영한 사진을 정리·편집하여 기록 또는 콘텐츠로 활용하며, SNS나 블로그 등 디지털 매체에 게시하는 업무를 담당한다.</p></div>
+                    </div>
+                </details>
+                <div class="cert-foot">
+                    <span class="cert-dept">주무부처 · 문화체육관광부</span>
+                    <a class="cert-verify" href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129730"
+                       target="_blank" rel="noopener">공식 등록정보 확인 ↗</a>
+                </div>
+            </article>
+            <article class="cert-card reveal" style="--d:180ms">
+                <div class="cert-card-top">
+                    <span class="cert-ic">🌿</span>
+                    <div class="cert-nm">
+                        <h3>사진힐링전문가</h3>
+                        <span class="cert-eng">Photo Healing Specialist</span>
+                    </div>
+                </div>
+                <div class="cert-meta">
+                    <span class="cert-reg">등록번호 2025-004791</span>
+                    <span class="cert-grade">1급 · 2급</span>
+                </div>
+                <p class="cert-desc">사진힐링전문가는 자연, 사물, 인물 등 다양한 대상을 사진으로 촬영하고, 이를 바탕으로 감정 표현, 정서적 환기, 자기 이해를 유도하는 시각 기반 활동을 기획하고 운영하는 업무를 수행한다. 또한 사진을 매개로 한 워크숍, 프로그램, 전시 등을 통해 참여자의 정서적 안정과 내면 소통을 도모하는 역할을 맡는다.</p>
+                <details class="cert-duty">
+                    <summary>등급별 직무내용 보기</summary>
+                    <div class="duty-body">
+                        <div class="duty-row"><span class="duty-grade">1급</span><p>사진 기반 힐링 프로그램을 기획·운영하고, 촬영 활동과 피드백을 연계하여 참여자의 감정 표현과 자기 성찰을 유도하며, 교육 현장이나 기관 등에서 사진활동 중심의 워크숍을 설계·지도한다.</p></div>
+                        <div class="duty-row"><span class="duty-grade">2급</span><p>촬영된 사진을 주제로 감정과 생각을 표현하는 활동을 안내하고, 참가자의 정서적 공감과 소통이 일어날 수 있도록 프로그램을 진행하며, 기초적인 사진 활동을 보조한다.</p></div>
+                    </div>
+                </details>
+                <div class="cert-foot">
+                    <span class="cert-dept">주무부처 · 문화체육관광부</span>
+                    <a class="cert-verify" href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129750"
+                       target="_blank" rel="noopener">공식 등록정보 확인 ↗</a>
+                </div>
+            </article>
+            <article class="cert-card reveal" style="--d:0ms">
+                <div class="cert-card-top">
+                    <span class="cert-ic">💻</span>
+                    <div class="cert-nm">
+                        <h3>디지털콘텐츠전문가</h3>
+                        <span class="cert-eng">Certified Digital Content Specialist</span>
+                    </div>
+                </div>
+                <div class="cert-meta">
+                    <span class="cert-reg">등록번호 2026-002896</span>
+                    <span class="cert-grade">1급 · 2급</span>
+                </div>
+                <p class="cert-desc">디지털콘텐츠전문가는 텍스트, 이미지, 영상, 오디오 등 다양한 형식의 디지털 콘텐츠를 목적에 맞게 기획·제작하고,온라인 플랫폼에 효과적으로 게시·운영·관리하는 업무를 수행한다. 또한 콘텐츠 품질 향상을 위해 사용자 반응을 분석하고 콘텐츠 전략을 조정하는 역할을 맡는다</p>
+                <details class="cert-duty">
+                    <summary>등급별 직무내용 보기</summary>
+                    <div class="duty-body">
+                        <div class="duty-row"><span class="duty-grade">1급</span><p>콘텐츠 기획안을 수립하고, 다양한 매체와 형식을 통합한 콘텐츠를 제작하여 디지털 채널에 운영하며, 콘텐츠 성과를 분석하고 개선안을 반영한다. 또한 콘텐츠 제작과 활용에 대한 실무 교육을 기획·운영한다.</p></div>
+                        <div class="duty-row"><span class="duty-grade">2급</span><p>주어진 주제와 목적에 따라 텍스트, 이미지, 영상 등 단일형 디지털 콘텐츠를 제작하고, 완성된 콘텐츠를 플랫폼에 등록·게시하며, 간단한 반응 분석이나 피드백에 따라 수정·보완하는 업무를 수행한다.</p></div>
+                    </div>
+                </details>
+                <div class="cert-foot">
+                    <span class="cert-dept">주무부처 · 과학기술정보통신부</span>
+                    <a class="cert-verify" href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129693"
+                       target="_blank" rel="noopener">공식 등록정보 확인 ↗</a>
+                </div>
+            </article>
+            <article class="cert-card reveal" style="--d:90ms">
+                <div class="cert-card-top">
+                    <span class="cert-ic">🎨</span>
+                    <div class="cert-nm">
+                        <h3>디지털디자인전문가</h3>
+                        <span class="cert-eng">Certified Digital Design Specialist</span>
+                    </div>
+                </div>
+                <div class="cert-meta">
+                    <span class="cert-reg">등록번호 2026-001555</span>
+                    <span class="cert-grade">1급 · 2급</span>
+                </div>
+                <p class="cert-desc">디지털디자인전문가는 디자인 소프트웨어와 디지털 도구를 활용하여 시각 콘텐츠를 기획·제작하고, 텍스트·이미지·색상·레이아웃 등을 목적에 맞게 구성하여 완성도 있는 결과물을 산출한다. 또한 다양한 매체와 플랫폼에 적합한 형식으로 디자인을 적용·편집하며, 콘텐츠 활용성과 전달 효과를 높이기 위한 시각적 완성도를 관리하는 실무를 수행한다.</p>
+                <details class="cert-duty">
+                    <summary>등급별 직무내용 보기</summary>
+                    <div class="duty-body">
+                        <div class="duty-row"><span class="duty-grade">1급</span><p>다양한 콘텐츠 목적과 채널 특성에 따라 시각 전략을 기획하고, 디자인 소프트웨어 및 디지털 도구를 융합하여 통합형 콘텐츠를 제작하며, 브랜드 방향성과 연계한 디자인 결과물을 운영·관리하는 실무를 수행한다.</p></div>
+                        <div class="duty-row"><span class="duty-grade">2급</span><p>디지털디자인의 기본 원리와 도구 사용법을 바탕으로 콘텐츠 목적에 맞는 시각 자료를 구성하고, 텍스트·이미지·색상·레이아웃 등을 활용하여 다양한 콘텐츠 유형을 실무 중심으로 제작한다.</p></div>
+                    </div>
+                </details>
+                <div class="cert-foot">
+                    <span class="cert-dept">주무부처 · 문화체육관광부</span>
+                    <a class="cert-verify" href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129724"
+                       target="_blank" rel="noopener">공식 등록정보 확인 ↗</a>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════ 검정·발급 안내 ══════ -->
+<section class="sec sec-gray" id="process">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="tag-chip">HOW IT WORKS</span>
+            <h2 class="sec-title">검정 및 자격 발급 안내</h2>
+            <div class="orange-bar"></div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card reveal" style="--d:0ms">
+                <h3>🧾 응시 자격</h3>
+                <ul>
+                    <li>연령·학력 제한이 없습니다.</li>
+                    <li>2급은 해당 분야를 처음 접하는 분도 응시할 수 있습니다.</li>
+                    <li>1급은 해당 종목의 실무·교육 역량을 갖춘 분을 대상으로 합니다.</li>
+                </ul>
+            </div>
+            <div class="info-card reveal" style="--d:90ms">
+                <h3>📋 등급 체계</h3>
+                <ul>
+                    <li>대부분의 종목이 <strong>1급·2급</strong>으로 구분됩니다.</li>
+                    <li>2급은 실무 수행, 1급은 실무에 더해 <strong>교육·지도 역량</strong>까지 평가합니다.</li>
+                    <li>스마트폰사진전문가는 <strong>단일등급</strong>으로 운영됩니다.</li>
+                </ul>
+            </div>
+            <div class="info-card reveal" style="--d:180ms">
+                <h3>🏅 자격증 발급</h3>
+                <ul>
+                    <li>합격자에게 스마트미디어아트센터 명의의 자격증을 발급합니다.</li>
+                    <li>자격증에는 성명·생년월일·자격명·자격번호와 <strong>자격 등록번호</strong>가 기재됩니다.</li>
+                    <li>검정 일정은 시행 전 별도 공고합니다.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 검정 비용 및 환불 규정 (자격기본법 시행령 제31조의5 표시사항)
+             ※ 응시료·발급비 금액이 확정되면 아래 "검정 비용"의 표 형태로 세부내역을 명시할 것. -->
+        <div class="fee-block">
+            <div class="fee-card reveal">
+                <h3>💳 검정 비용</h3>
+                <p>
+                    검정료와 자격증 발급 수수료를 포함한 <strong>자격 취득에 드는 총비용과 세부내역별 비용</strong>은
+                    검정 종목·등급·시행 회차에 따라 달라지므로, <strong>매 검정 시행 공고 시 사전에 안내</strong>합니다.
+                </p>
+                <p>
+                    공고에는 검정료, 자격증 발급 수수료, 재응시료 등 항목별 금액과 총액을 함께 표시하며,
+                    공고된 금액 외에 추가로 청구되는 비용은 없습니다. 교재비 등 별도 비용이 발생하는 경우에도 공고에 함께 표시합니다.
+                </p>
+                <div class="fee-note">
+                    현재 시행 예정인 검정의 비용이 궁금하시면 <a href="tel:010-4717-0624" style="color:#7c2d12;font-weight:700;">010-4717-0624</a> 또는
+                    <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=ryon2357@gmail.com" target="_blank" rel="noopener" style="color:#7c2d12;font-weight:700;">ryon2357@gmail.com</a>으로 문의해 주세요.
+                </div>
+            </div>
+
+            <div class="fee-card reveal">
+                <h3>↩️ 환불 규정</h3>
+                <p>납부하신 검정료는 아래 기준에 따라 반환합니다.</p>
+                <table class="refund-table">
+                    <thead>
+                        <tr><th>구분</th><th style="width:130px;">반환 금액</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>검정 시행기관의 사유로 검정을 시행하지 못한 경우</td><td>전액 반환</td></tr>
+                        <tr><td>접수 기간 중 접수를 취소한 경우</td><td>전액 반환</td></tr>
+                        <tr><td>접수 마감일 다음 날부터 검정 시행일 5일 전까지 취소한 경우</td><td>50% 반환</td></tr>
+                        <tr><td>검정 시행일 4일 전부터 검정 당일 및 그 이후 취소하거나 응시하지 않은 경우</td><td>반환하지 않음</td></tr>
+                        <tr><td>천재지변·본인의 질병·사고 등 부득이한 사유를 증빙서류로 소명한 경우</td><td>전액 반환 또는 차기 검정 이월</td></tr>
+                    </tbody>
+                </table>
+                <ul class="refund-list" style="margin-top:18px;">
+                    <li>자격증 <strong>발급 수수료</strong>는 자격증 제작에 착수하기 전까지는 전액 반환하며, 제작·발송이 시작된 이후에는 반환하지 않습니다.</li>
+                    <li>응시자의 착오로 <strong>중복 납부</strong>한 금액과 <strong>과오납금</strong>은 사유를 확인한 즉시 전액 반환합니다.</li>
+                    <li>환불 신청은 <a href="tel:010-4717-0624">010-4717-0624</a> 또는 <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=ryon2357@gmail.com" target="_blank" rel="noopener">ryon2357@gmail.com</a>으로 접수하며, 신청일로부터 <strong>영업일 기준 7일 이내</strong>에 납부하신 수단으로 반환합니다.</li>
+                    <li>계좌 이체로 반환하는 경우 발생하는 송금 수수료는 반환 금액에서 공제하지 않습니다.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════ 자격발급기관 정보 ══════ -->
+<section class="sec sec-white" id="issuer">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="tag-chip">ISSUER</span>
+            <h2 class="sec-title">자격발급기관 정보</h2>
+            <div class="orange-bar"></div>
+            <p class="sec-desc">민간자격정보서비스에 등록된 자격관리기관 정보와 동일합니다.</p>
+        </div>
+
+        <dl class="org-table reveal">
+            <div class="org-row"><dt>기관명</dt><dd>스마트미디어아트센터 (Smart Media Art Center)</dd></div>
+            <div class="org-row"><dt>기관 유형</dt><dd>개인(개인사업체)</dd></div>
+            <div class="org-row"><dt>대표자</dt><dd>박성욱</dd></div>
+            <div class="org-row"><dt>소재지</dt><dd>(21344) 인천광역시 부평구 충선로209번길 41 (삼산동) 8층 801-35호</dd></div>
+            <div class="org-row"><dt>대표전화</dt><dd><a href="tel:010-4717-0624">010-4717-0624</a></dd></div>
+            <div class="org-row"><dt>이메일</dt><dd><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=ryon2357@gmail.com" target="_blank" rel="noopener">ryon2357@gmail.com</a></dd></div>
+            <div class="org-row"><dt>등록 자격</dt><dd>등록 민간자격 14종 (공인자격 없음)</dd></div>
+            <div class="org-row"><dt>등록정보 확인</dt><dd><a href="https://www.pqi.or.kr/inf/qul/infQulList.do" target="_blank" rel="noopener">민간자격정보서비스(pqi.or.kr)</a>에서 자격관리기관 &ldquo;스마트미디어아트센터&rdquo;로 검색</dd></div>
+        </dl>
+    </div>
+</section>
+
+
+<!-- ══════ 법정 고지 ══════ -->
+<section class="sec sec-gray" id="legal">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="tag-chip">LEGAL NOTICE</span>
+            <h2 class="sec-title">민간자격 관련 법정 고지</h2>
+            <div class="orange-bar"></div>
+        </div>
+
+        <div class="legal-box reveal">
+            <h3>「자격기본법」에 따른 안내</h3>
+            <ol>
+                <li>
+                    본 자격은 「자격기본법」제17조제2항에 따라 <span class="hl">등록한 민간자격</span>입니다.
+                    종목별 등록번호는 위 &ldquo;등록 자격 종목&rdquo;에 각각 표기되어 있습니다.
+                </li>
+                <li>
+                    <span class="hl">국가로부터 인정받은 공인자격이 아닙니다.</span>
+                    등록은 자격의 신설·관리·운영 사실을 등록하는 절차이며, 국가가 자격의 내용이나 효력을 인정·보증하는 것이 아닙니다.
+                </li>
+                <li>
+                    자격의 등록 여부와 등록 내용은 한국직업능력연구원이 운영하는
+                    <a href="https://www.pqi.or.kr" target="_blank" rel="noopener">민간자격정보서비스(www.pqi.or.kr)</a>에서
+                    등록번호 또는 자격관리기관명으로 직접 확인하실 수 있습니다.
+                </li>
+                <li>
+                    자격관리기관: <strong>스마트미디어아트센터</strong> ·
+                    소재지 (21344) 인천광역시 부평구 충선로209번길 41 (삼산동) 8층 801-35호 ·
+                    연락처 <a href="tel:010-4717-0624">010-4717-0624</a>
+                </li>
+                <li>
+                    소비자 피해가 발생한 경우 <a href="https://www.ccn.go.kr" target="_blank" rel="noopener">1372 소비자상담센터</a> 또는
+                    <a href="https://www.kca.go.kr" target="_blank" rel="noopener">한국소비자원</a>에 상담·조정을 신청하실 수 있습니다.
+                </li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════ CTA ══════ -->
+<section class="sec sec-white">
+    <div class="container">
+        <div class="cta-banner reveal">
+            <div>
+                <h3>자격 취득 과정이 궁금하신가요?</h3>
+                <p>어떤 자격이 나에게 맞는지, 어떤 과정을 들어야 하는지 편하게 문의해 주세요.</p>
+            </div>
+            <a href="index.html#lecture-request" class="btn-orange">출강·수강 문의</a>
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+    <div class="foot-grid">
+        <div class="foot-brand">
+            <a href="index.html#home" class="foot-logo">
+                <img src="images/logo1.png" alt="스마트미디어아트센터" class="logo-img-footer">
+            </a>
+            <p>배움의 문턱을 낮추고, 쉽게 가르치고, 아낌없이 나누고,<br>함께 성장하는 교육 공간입니다.</p>
+        </div>
+        <div class="foot-col">
+            <h4>바로가기</h4>
+            <ul>
+                <li><a href="index.html#about">센터장 소개</a></li>
+                <li><a href="index.html#instructors">강사진</a></li>
+                <li><a href="index.html#courses">교육과정</a></li>
+                <li><a href="certificates.html">등록 민간자격 안내</a></li>
+                <li><a href="reviews.html">수강후기</a></li>
+            </ul>
+        </div>
+        <div class="foot-col">
+            <h4>더보기</h4>
+            <ul>
+                <li><a href="https://cafe.naver.com/elsnap7" target="_blank" rel="noopener">사진카페 포토피플</a></li>
+                <li><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener">스마트미디어아트센터 카페</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+                <li><a href="index.html#lecture-request">출강·수강 문의</a></li>
+            </ul>
+        </div>
+        <div class="foot-col">
+            <h4>연락처</h4>
+            <ul>
+                <li><a href="tel:010-4717-0624">📞 010-4717-0624</a></li>
+                <li><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=ryon2357@gmail.com" target="_blank" rel="noopener">✉️ ryon2357@gmail.com</a></li>
+                <li><a href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener">카카오 오픈채팅</a></li>
+                <li><a href="https://blog.naver.com/elanvital7" target="_blank" rel="noopener">네이버 블로그</a></li>
+            </ul>
+        </div>
+    </div>
+    <p class="foot-legal">
+        본 기관이 안내하는 자격은 「자격기본법」에 따라 등록한 등록 민간자격이며, 국가로부터 인정받은 공인자격이 아닙니다.
+        종목별 등록번호와 상세 고지는 <a href="certificates.html" style="color:rgba(255,255,255,.6);">등록 민간자격 안내</a> 페이지에서 확인하실 수 있습니다.
+    </p>
+    <div class="foot-bottom">
+        <p>© 2026 스마트미디어아트센터. All rights reserved.</p>
+        <p><a href="terms.html" style="color:rgba(255,255,255,.36);text-decoration:none;">이용약관</a> · <a href="privacy.html" style="color:rgba(255,255,255,.36);text-decoration:none;">개인정보처리방침</a></p>
+    </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script src="js/site-nav.js"></script>
+<script>
+    /* 스크롤 reveal */
+    const ro = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    /* 스크롤 진행바 */
+    const bar = document.getElementById('progress');
+    window.addEventListener('scroll', () => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
+    }, { passive: true });
+</script>
+
+</body>
+</html>
