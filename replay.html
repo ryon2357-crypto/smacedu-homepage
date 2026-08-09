@@ -195,9 +195,13 @@
         }
 
         /* ── ACCESS GATE ── */
+        /* 페이지 전체가 아니라 "유료 영상 블록"만 덮는다.
+           무료 공개 강의는 로그인 없이 볼 수 있어야 하므로 fixed → absolute 로 범위를 좁혔다. */
+        .paid-wrap { position: relative; }
         #accessCheck {
-            position: fixed; inset: 0; z-index: 9999;
+            position: absolute; inset: 0; z-index: 20;
             background: #fff; display: flex; align-items: center; justify-content: center;
+            border-radius: 16px; border: 1px solid var(--gray-line);
         }
         .gate-spinner {
             width: 40px; height: 40px; border: 3px solid var(--gray-line);
@@ -246,6 +250,50 @@
             display: flex; align-items: center; gap: 8px;
         }
         .gate-features li::before { content: '✅'; flex-shrink: 0; }
+
+        /* ── 무료 공개 강의 (챕터 재생) ── */
+        .clip-layout { display: grid; grid-template-columns: 1.55fr 1fr; gap: 28px; align-items: start; }
+        .clip-meta {
+            margin-top: 16px; font-size: .85rem; color: var(--text-sub);
+            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+        }
+        .clip-meta .now {
+            background: var(--orange-lt); color: var(--orange);
+            font-weight: 700; padding: 4px 12px; border-radius: 100px; font-size: .8rem;
+        }
+        .chapter-list {
+            border: 1px solid var(--gray-line); border-radius: 16px;
+            overflow: hidden; background: var(--white);
+        }
+        .chapter-list h3 {
+            font-size: .78rem; letter-spacing: 1.2px; text-transform: uppercase;
+            color: var(--text-sub); font-weight: 700;
+            padding: 16px 20px; border-bottom: 1px solid var(--gray-line);
+            background: var(--gray-bg);
+        }
+        .chapter-btn {
+            display: block; width: 100%; text-align: left;
+            background: none; border: none; border-bottom: 1px solid var(--gray-line);
+            padding: 14px 20px; cursor: pointer; font-family: inherit;
+            transition: background .18s;
+        }
+        .chapter-btn:last-child { border-bottom: none; }
+        .chapter-btn:hover { background: var(--orange-lt); }
+        .chapter-btn.active { background: var(--orange-lt); box-shadow: inset 3px 0 0 var(--orange); }
+        .chapter-btn .ct {
+            display: block; font-size: .9rem; font-weight: 700;
+            color: var(--text-head); line-height: 1.5; word-break: keep-all;
+        }
+        .chapter-btn.active .ct { color: var(--orange); }
+        .chapter-btn .cr {
+            display: block; margin-top: 4px;
+            font-size: .76rem; color: var(--text-sub); font-variant-numeric: tabular-nums;
+        }
+        .free-badge {
+            display: inline-block; background: #dcfce7; color: #15803d;
+            font-size: 11px; font-weight: 800; padding: 4px 12px;
+            border-radius: 100px; margin-left: 8px; vertical-align: middle;
+        }
 
         /* Nav user area */
         .nav-user-area { display: flex; align-items: center; gap: 10px; }
@@ -303,6 +351,7 @@
         @media(max-width:900px) {
             .foot-grid { grid-template-columns: 1fr 1fr; }
             .foot-brand { grid-column: 1 / -1; }
+            .clip-layout { grid-template-columns: 1fr; }
         }
         @media(max-width:768px) {
             .nav-links { display:none; }
@@ -320,11 +369,6 @@
 </head>
 <body>
 
-<!-- ══════ 접근 확인 오버레이 ══════ -->
-<div id="accessCheck">
-    <div class="gate-spinner"></div>
-</div>
-
 <!-- ══════ NAV (js/site-nav.js가 렌더링) ══════ -->
 <div id="site-nav-root" data-page="replay"></div>
 
@@ -334,13 +378,72 @@
     <div class="page-hero-inner">
         <span class="page-hero-badge">REPLAY</span>
         <h1>강의 <span class="accent">다시보기</span></h1>
-        <p>니콘 스쿨 온라인 강의를 다시 보실 수 있습니다.</p>
+        <p>무료로 공개된 강의와 니콘 스쿨 온라인 강의를 다시 보실 수 있습니다.</p>
     </div>
 </div>
 
 
-<!-- ══════ 영상 섹션 ══════ -->
-<section class="sec sec-white">
+<!-- ══════ 무료 공개 강의 ══════ -->
+<section class="sec sec-white" id="free">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="tag-chip">FREE LECTURE</span>
+            <h2 class="sec-title">벚꽃 인물사진, 이렇게 찍습니다<span class="free-badge">무료</span></h2>
+            <div class="orange-bar"></div>
+            <p class="sec-desc">28분짜리 강의에서 핵심만 6개 구간으로 나눴습니다. 보고 싶은 주제를 바로 눌러 보세요.<br>벚꽃뿐 아니라 모든 꽃사진·나뭇잎·단풍에 그대로 적용되는 내용입니다.</p>
+        </div>
+
+        <div class="clip-layout reveal">
+            <div>
+                <div class="video-wrap">
+                    <iframe id="clipPlayer"
+                        src="https://www.youtube.com/embed/lXzZlOx_F9U?start=69&end=180&rel=0"
+                        title="벚꽃과 함께 환상적인 인물사진 잘 찍는 법"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="clip-meta">
+                    <span class="now" id="clipNow">1. 벚꽃의 특징부터 알아야 한다</span>
+                    <span id="clipRange">01:09 – 03:00</span>
+                    <a href="https://www.youtube.com/watch?v=lXzZlOx_F9U" target="_blank" rel="noopener" style="color:var(--text-sub);">전체 영상 보기 ↗</a>
+                </div>
+            </div>
+
+            <div class="chapter-list" id="chapterList">
+                <h3>구간 선택</h3>
+                <button type="button" class="chapter-btn active" data-start="69"   data-end="180"  data-range="01:09 – 03:00">
+                    <span class="ct">1. 벚꽃의 특징부터 알아야 한다</span>
+                    <span class="cr">01:09 – 03:00 · 사진은 예술이기 전에 과학</span>
+                </button>
+                <button type="button" class="chapter-btn" data-start="179"  data-end="348"  data-range="02:59 – 05:48">
+                    <span class="ct">2. 화사하게 찍는 법 — 노출을 올려라</span>
+                    <span class="cr">02:59 – 05:48 · 스마트폰 밝기 보정까지</span>
+                </button>
+                <button type="button" class="chapter-btn" data-start="542"  data-end="655"  data-range="09:02 – 10:55">
+                    <span class="ct">3. 벚꽃엔 파란 하늘 — 순광에서 찍어라</span>
+                    <span class="cr">09:02 – 10:55 · 역광과 순광의 차이</span>
+                </button>
+                <button type="button" class="chapter-btn" data-start="1008" data-end="1115" data-range="16:48 – 18:35">
+                    <span class="ct">4. 배경과 인물을 분리하는 법</span>
+                    <span class="cr">16:48 – 18:35 · 아웃포커스 말고 색과 패턴으로</span>
+                </button>
+                <button type="button" class="chapter-btn" data-start="1319" data-end="1500" data-range="21:59 – 25:00">
+                    <span class="ct">5. 하이라이트가 하얗게 날아갈 때</span>
+                    <span class="cr">21:59 – 25:00 · 인물을 그늘에 두고 찍는다</span>
+                </button>
+                <button type="button" class="chapter-btn" data-start="1586" data-end="1712" data-range="26:26 – 28:32">
+                    <span class="ct">6. 역광 할레이션 — 감성은 빛과 함께 온다</span>
+                    <span class="cr">26:26 – 28:32 · 태양이 낮아졌을 때</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════ 니콘 스쿨 (유료) ══════ -->
+<section class="sec sec-gray" id="nikon">
     <div class="container">
         <div class="sec-head reveal">
             <span class="tag-chip">NIKON SCHOOL</span>
@@ -349,13 +452,19 @@
             <p class="sec-desc">니콘 스쿨 온라인 강의를 다시 보실 수 있습니다.</p>
         </div>
         <div class="reveal" style="max-width:860px; margin:0 auto;">
-            <div class="video-wrap">
-                <iframe
-                    src="https://www.youtube.com/embed/1xho-OEFQVo"
-                    title="니콘 스쿨 온라인 강의 다시 보기"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen>
-                </iframe>
+            <div class="paid-wrap">
+                <div class="video-wrap">
+                    <iframe
+                        src="https://www.youtube.com/embed/1xho-OEFQVo"
+                        title="니콘 스쿨 온라인 강의 다시 보기"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <!-- 접근 확인 오버레이 (이 블록만 덮는다) -->
+                <div id="accessCheck">
+                    <div class="gate-spinner"></div>
+                </div>
             </div>
             <p style="text-align:center; margin-top:28px;">
                 <a href="https://www.youtube.com/channel/UC59f-okz-UWLR-Hz4LQBtLA" target="_blank" rel="noopener" class="yt-channel-btn">
@@ -485,6 +594,33 @@
             showGate(false)
         })
     }
+
+    // ── 무료 공개 강의: 구간 선택 ──
+    // 유튜브 임베드의 start/end 파라미터로 구간을 지정한다.
+    // 원본을 내려받아 자르지 않으므로 화질 손실이 없고, 조회수도 채널에 그대로 쌓인다.
+    const clipPlayer = document.getElementById('clipPlayer')
+    const clipNow    = document.getElementById('clipNow')
+    const clipRange  = document.getElementById('clipRange')
+    const VIDEO_ID   = 'lXzZlOx_F9U'
+
+    document.querySelectorAll('#chapterList .chapter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const start = btn.dataset.start
+            const end   = btn.dataset.end
+
+            document.querySelectorAll('#chapterList .chapter-btn').forEach(b => b.classList.remove('active'))
+            btn.classList.add('active')
+
+            clipPlayer.src = `https://www.youtube.com/embed/${VIDEO_ID}?start=${start}&end=${end}&rel=0&autoplay=1`
+            clipNow.textContent   = btn.querySelector('.ct').textContent
+            clipRange.textContent = btn.dataset.range
+
+            // 모바일에서는 목록을 누르면 화면이 아래에 있어 재생이 안 보인다
+            if (window.innerWidth <= 900) {
+                clipPlayer.closest('.video-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' })
+            }
+        })
+    })
 
     const ro = new IntersectionObserver(entries => {
         entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); } });
