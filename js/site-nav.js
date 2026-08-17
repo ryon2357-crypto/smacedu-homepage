@@ -14,7 +14,8 @@
         { label: '대표소개',        anchor: 'about' },
         { label: '강사진',          anchor: 'instructors' },
         { label: '교육과정',        anchor: 'courses' },
-        { label: '스마트폰 사진강의', href: 'smartphone-photo-lecture.html' },
+        // twoLine: 좁은 데스크톱(1041~1500px)에서 두 줄로 접어 가로폭을 줄인다
+        { label: '스마트폰 사진강의', href: 'smartphone-photo-lecture.html', twoLine: true },
         { label: '자격증',          href: 'certificates.html', key: 'certificates' },
         { label: '수강후기',        href: 'reviews.html', key: 'reviews' },
         { label: '강의 다시보기',    href: 'replay.html',  key: 'replay' },
@@ -31,8 +32,11 @@
     }
 
     const desktopItems = NAV_ITEMS.map((item) => {
-        const active = item.key === page ? ' class="active"' : ''
-        return `<li${active}><a href="${itemHref(item)}">${item.label}</a></li>`
+        const cls = []
+        if (item.key === page) cls.push('active')
+        if (item.twoLine)      cls.push('nav-2line')
+        const attr = cls.length ? ` class="${cls.join(' ')}"` : ''
+        return `<li${attr}><a href="${itemHref(item)}">${item.label}</a></li>`
     }).join('')
 
     const mobileItems = NAV_ITEMS.map((item) =>
@@ -41,7 +45,7 @@
 
     const communityDesktop = `
         <li class="nav-dropdown">
-            <button type="button" class="nav-dropdown-toggle">💬 커뮤니티 <span class="caret">▾</span></button>
+            <button type="button" class="nav-dropdown-toggle">커뮤니티 <span class="caret">▾</span></button>
             <ul class="nav-dropdown-menu">
                 <li><a href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;">${KAKAO_ICON(14)}팀채팅</a></li>
                 <li><a href="https://cafe.naver.com/elsnap7" target="_blank" rel="noopener">사진카페 포토피플</a></li>
@@ -51,12 +55,12 @@
 
     const communityMobile = `
         <li><a href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;">${KAKAO_ICON(16)}팀채팅</a></li>
-        <li><a href="https://cafe.naver.com/elsnap7" target="_blank" rel="noopener">💬 사진카페 포토피플</a></li>
-        <li><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener">💬 스마트미디어아트센터 카페</a></li>`
+        <li><a href="https://cafe.naver.com/elsnap7" target="_blank" rel="noopener">사진카페 포토피플</a></li>
+        <li><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener">스마트미디어아트센터 카페</a></li>`
 
     const resourcesDesktop = `
         <li class="nav-dropdown">
-            <button type="button" class="nav-dropdown-toggle">📂 자료실 <span class="caret">▾</span></button>
+            <button type="button" class="nav-dropdown-toggle">자료실 <span class="caret">▾</span></button>
             <ul class="nav-dropdown-menu">
                 <li><a href="lecturer-jobs.html">강사모집 공고</a></li>
                 <li><a href="smartphone-video-editing.html">스마트폰 영상 촬영·편집</a></li>
@@ -64,8 +68,48 @@
         </li>`
 
     const resourcesMobile = `
-        <li><a href="lecturer-jobs.html">📂 강사모집 공고</a></li>
-        <li><a href="smartphone-video-editing.html">📂 스마트폰 영상 촬영·편집</a></li>`
+        <li><a href="lecturer-jobs.html">강사모집 공고</a></li>
+        <li><a href="smartphone-video-editing.html">스마트폰 영상 촬영·편집</a></li>`
+
+    // ── 좁은 데스크톱 대응 (2026-08-17) ─────────────────────────────
+    // 1041~1500px에서는 내비 항목이 넘쳐 오른쪽 "출강·수강 문의"·로그인이 잘렸다.
+    // 페이지별 <style> 뒤에 붙어야 이기므로 head 끝에 주입한다.
+    // 햄버거로 바뀌는 1040px 이하와 겹치지 않도록 min-width:1041px로 묶는다.
+    const compactCss = document.createElement('style')
+    compactCss.id = 'site-nav-compact'
+    compactCss.textContent = `
+@media (min-width:1041px) and (max-width:1640px) {
+    nav { padding: 0 32px; }
+    .nav-links { gap: 16px; }
+    .logo-img { height: 60px; }
+    .nav-brand-name { font-size: 21px; }
+    .nav-links li.nav-2line a {
+        display: inline-block; white-space: normal; word-break: keep-all;
+        width: min-content; text-align: center; line-height: 1.3;
+    }
+}
+@media (min-width:1041px) and (max-width:1400px) {
+    nav { padding: 0 20px; }
+    .nav-links { gap: 11px; }
+    .nav-links a, .nav-dropdown-toggle { font-size: 12.5px; }
+    .nav-links .cta a { padding: 8px 14px; }
+    .btn-nav-login, .btn-nav-mypage { padding: 7px 11px; font-size: 12.5px; }
+    .nav-user-area { gap: 6px; }
+    .logo-img { height: 52px; }
+    .nav-brand-name { font-size: 18px; }
+    .nav-brand-sub { font-size: 11.5px; }
+}
+/* 로그인 상태에서는 "마이페이지+로그아웃"이 로그인 버튼보다 넓어 한 번 더 줄인다 */
+@media (min-width:1041px) and (max-width:1160px) {
+    .nav-links { gap: 7px; }
+    .nav-links a, .nav-dropdown-toggle { font-size: 12px; }
+    .nav-links .cta a { padding: 8px 10px; }
+    .btn-nav-login, .btn-nav-mypage { padding: 6px 9px; font-size: 12px; }
+    .logo-img { height: 42px; }
+    .nav-brand-name { font-size: 15px; }
+    .nav-brand-sub { display: none; }
+}`
+    document.head.appendChild(compactCss)
 
     root.outerHTML = `
 <nav id="nav">
