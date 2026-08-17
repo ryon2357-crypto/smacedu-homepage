@@ -216,6 +216,30 @@
             .hamburger { display:flex; }
             .foot-grid { grid-template-columns:1fr 1fr; gap:28px; }
         }
+        /* 좁은 데스크톱 내비 압축 (2026-08-17) — js/site-nav.js의 규칙과 같은 값 */
+        @media (min-width:1041px) and (max-width:1640px) {
+            nav { padding:0 32px; }
+            .nav-links { gap:16px; }
+            .logo-img { height:60px; }
+            .nav-brand-name { font-size:21px; }
+        }
+        @media (min-width:1041px) and (max-width:1400px) {
+            nav { padding:0 20px; }
+            .nav-links { gap:11px; }
+            .nav-links a, .nav-dropdown-toggle { font-size:12.5px; }
+            .nav-links .cta a { padding:8px 14px; }
+            .logo-img { height:52px; }
+            .nav-brand-name { font-size:18px; }
+            .nav-brand-sub { font-size:11.5px; }
+        }
+        @media (min-width:1041px) and (max-width:1160px) {
+            .nav-links { gap:7px; }
+            .nav-links a, .nav-dropdown-toggle { font-size:12px; }
+            .nav-links .cta a { padding:8px 10px; }
+            .logo-img { height:42px; }
+            .nav-brand-name { font-size:15px; }
+            .nav-brand-sub { display:none; }
+        }
         @media (max-width:720px) {
             nav { padding:0 20px; height:70px; }
             .logo-img { height:48px; }
@@ -253,14 +277,14 @@
         <li><a href="reviews.html">수강후기</a></li>
         <li><a href="replay.html">강의 다시보기</a></li>
         <li class="nav-dropdown">
-            <button type="button" class="nav-dropdown-toggle">📂 자료실 <span class="caret">▾</span></button>
+            <button type="button" class="nav-dropdown-toggle">자료실 <span class="caret">▾</span></button>
             <ul class="nav-dropdown-menu">
                 <li><a href="lecturer-jobs.html">강사모집 공고</a></li>
                 <li><a href="smartphone-video-editing.html">스마트폰 영상 촬영·편집</a></li>
             </ul>
         </li>
         <li class="nav-dropdown">
-            <button type="button" class="nav-dropdown-toggle">💬 커뮤니티 <span class="caret">▾</span></button>
+            <button type="button" class="nav-dropdown-toggle">커뮤니티 <span class="caret">▾</span></button>
             <ul class="nav-dropdown-menu">
                 <li><a href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 36 36" style="flex-shrink:0"><rect width="36" height="36" rx="9" fill="#FEE500"/><path fill="#191919" d="M18 8c-7.18 0-13 4.58-13 10.24 0 3.62 2.42 6.8 6.06 8.62-.27.98-.97 3.58-1.11 4.13-.17.68.25.67.53.49.22-.14 3.5-2.38 4.92-3.35.85.12 1.72.19 2.6.19 7.18 0 13-4.58 13-10.24S25.18 8 18 8z"/></svg>팀채팅</a></li>
                 <li><a href="https://cafe.naver.com/elsnap7" target="_blank" rel="noopener">사진카페 포토피플</a></li>
@@ -282,11 +306,11 @@
         <li><a href="lectures.html"            onclick="closeMob()">강의</a></li>
         <li><a href="reviews.html"             onclick="closeMob()">수강후기</a></li>
         <li><a href="replay.html"              onclick="closeMob()">강의 다시보기</a></li>
-        <li><a href="lecturer-jobs.html"                onclick="closeMob()">📂 강사모집 공고</a></li>
-        <li><a href="smartphone-video-editing.html"     onclick="closeMob()">📂 스마트폰 영상 촬영·편집</a></li>
+        <li><a href="lecturer-jobs.html"                onclick="closeMob()">강사모집 공고</a></li>
+        <li><a href="smartphone-video-editing.html"     onclick="closeMob()">스마트폰 영상 촬영·편집</a></li>
         <li><a href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener" onclick="closeMob()" style="display:flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 36 36" style="flex-shrink:0"><rect width="36" height="36" rx="9" fill="#FEE500"/><path fill="#191919" d="M18 8c-7.18 0-13 4.58-13 10.24 0 3.62 2.42 6.8 6.06 8.62-.27.98-.97 3.58-1.11 4.13-.17.68.25.67.53.49.22-.14 3.5-2.38 4.92-3.35.85.12 1.72.19 2.6.19 7.18 0 13-4.58 13-10.24S25.18 8 18 8z"/></svg>팀채팅</a></li>
-        <li><a href="https://cafe.naver.com/elsnap7"  target="_blank" rel="noopener" onclick="closeMob()">💬 사진카페 포토피플</a></li>
-        <li><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener" onclick="closeMob()">💬 스마트미디어아트센터 카페</a></li>
+        <li><a href="https://cafe.naver.com/elsnap7"  target="_blank" rel="noopener" onclick="closeMob()">사진카페 포토피플</a></li>
+        <li><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener" onclick="closeMob()">스마트미디어아트센터 카페</a></li>
         <li><a href="index.html#lecture-request" onclick="closeMob()">출강·수강 문의</a></li>
     </ul>
 </div>
