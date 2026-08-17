@@ -14,7 +14,7 @@
         { label: '대표소개',        anchor: 'about' },
         { label: '강사진',          anchor: 'instructors' },
         { label: '교육과정',        anchor: 'courses' },
-        // twoLine: 좁은 데스크톱(1041~1500px)에서 두 줄로 접어 가로폭을 줄인다
+        // twoLine: 좁은 데스크톱(1041~1640px)에서 두 줄로 접어 가로폭을 줄인다
         { label: '스마트폰 사진강의', href: 'smartphone-photo-lecture.html', twoLine: true },
         { label: '자격증',          href: 'certificates.html', key: 'certificates' },
         { label: '수강후기',        href: 'reviews.html', key: 'reviews' },
