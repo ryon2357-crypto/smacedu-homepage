@@ -57,6 +57,14 @@ const YTPLANNER_TAB_NAME   = '기획서 제출';
 // 별도 탭에 기록합니다. 페이지에서 form=ytworkbook 으로 요청을 보냅니다.
 const WORKBOOK_TAB_NAME    = '워크북 리드';
 
+// ── 9월 3일 온라인 강의(nikon-live-0903.html) 신청자 기록 겸용 ──
+// 9/3(목) 저녁 8시 유튜브 라이브 "풍경사진 인물사진 잘 찍는 법" 강의 신청.
+// 니콘 카메라·렌즈 특별 할인 혜택은 라이브 방송 중에만 공개되며(사전 안내 없음),
+// 이 신청서는 강의 안내(리마인드) 목적의 명단입니다. 이 스크립트가 바인딩된
+// 사진특강 스프레드시트(활성 스프레드시트)에 전용 탭을 새로 만들어 기록합니다.
+// 페이지에서 form=livelecture0903 으로 요청을 보냅니다.
+const NIKONLIVE_TAB_NAME   = '9월3일 온라인강의 신청';
+
 function doGet(e) {
   const params0 = e.parameter || {};
   if (params0.form === 'reviewgift') {
@@ -67,6 +75,9 @@ function doGet(e) {
   }
   if (params0.form === 'ytworkbook') {
     return _handleWorkbookLead(params0);
+  }
+  if (params0.form === 'livelecture0903') {
+    return _handleNikonLiveSubmit(params0);
   }
 
   try {
@@ -557,6 +568,128 @@ function _sendWorkbookAdminEmail(name, phone, plan, timestamp) {
   MailApp.sendEmail({
     to:       ADMIN_EMAIL,
     subject:  `[SMAC EDU 유튜브 워크북 리드] ${name}님 (${phone}) 신청`,
+    htmlBody: html
+  });
+}
+
+// ════════════════════════════════════════════
+// 9월 3일 온라인 강의(유튜브 라이브) 신청 (nikon-live-0903.html)
+// 니콘 카메라·렌즈 혜택은 라이브 방송 중에만 공개되므로, 이 폼은 강의 신청(리마인드용)
+// 명단이지 혜택 사전 신청이 아닙니다. 이 스크립트가 바인딩된 활성 스프레드시트
+// (사진특강 신청서)에 전용 탭을 만들어 기록합니다.
+// ════════════════════════════════════════════
+function _getNikonLiveSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheets().find(s => s.getName() === NIKONLIVE_TAB_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(NIKONLIVE_TAB_NAME);
+    sheet.appendRow(['타임스탬프', '이름', '전화번호', '이메일', '개인정보 동의']);
+    sheet.getRange(1, 1, 1, 5).setFontWeight('bold');
+  }
+  return sheet;
+}
+
+function _handleNikonLiveSubmit(params) {
+  try {
+    const name    = params.name  || '';
+    const email   = params.email || '';
+    const phone   = params.phone || '';
+    const consent = params.consent === 'Y' ? '동의함' : '';
+
+    const sheet = _getNikonLiveSheet();
+
+    const now       = new Date();
+    const timestamp = _formatKoreanTimestamp(now, Session.getScriptTimeZone());
+
+    sheet.appendRow([timestamp, name, phone, email, consent]);
+    const total = sheet.getLastRow() - 1;
+
+    if (email) _sendNikonLiveConfirmEmail(name, email);
+    _sendNikonLiveAdminEmail(name, phone, email, timestamp, total);
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function _sendNikonLiveConfirmEmail(name, email) {
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <div style="background:linear-gradient(135deg,#f59e0b,#ef4444);padding:32px 28px;border-radius:12px 12px 0 0;text-align:center;">
+    <h1 style="color:#fff;margin:0;font-size:22px;font-weight:900;">온라인 강의 신청이 접수됐습니다 📸</h1>
+    <p style="color:rgba(255,255,255,0.85);margin:10px 0 0;font-size:14px;">풍경사진·인물사진 잘 찍는 법 — 유튜브 라이브</p>
+  </div>
+  <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name)}</strong>님, 반갑습니다!</p>
+    <p style="margin:0 0 20px;color:#475569;line-height:1.7;">
+      온라인 강의 신청이 정상적으로 접수됐습니다.<br>
+      라이브 시작 전 다시 한 번 안내 메일을 보내드리겠습니다.
+    </p>
+    <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:16px 18px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0;font-size:14px;font-weight:700;color:#c2410c;">🎁 니콘 카메라·렌즈 특별 할인 혜택은 라이브 방송 중에만 공개됩니다</p>
+      <p style="margin:8px 0 0;font-size:13px;color:#7c2d12;">사전 안내는 없으니, 혜택을 놓치지 않으려면 방송을 실시간으로 꼭 시청해 주세요. 니콘이 아니어도, 어떤 카메라·스마트폰을 쓰셔도 참여하실 수 있습니다.</p>
+    </div>
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:20px;">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <tr>
+          <td style="padding:7px 0;color:#64748b;width:90px;">주제</td>
+          <td style="color:#1e293b;font-weight:600;">풍경사진 인물사진 잘 찍는 법</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 0;color:#64748b;">일시</td>
+          <td style="color:#1e293b;font-weight:600;">2026년 9월 3일(목) 저녁 8시 (약 1시간)</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 0;color:#64748b;">진행 방식</td>
+          <td style="color:#1e293b;">유튜브 라이브 (엘란비탈 채널)</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 0;color:#64748b;">강사</td>
+          <td style="color:#1e293b;">엘란비탈 박성욱 작가 — 니콘이미징코리아 대표 강사</td>
+        </tr>
+      </table>
+    </div>
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:16px 18px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0 0 6px;font-size:14px;font-weight:700;color:#92400e;">🎁엘란비탈 무료특강 아카데미 단톡방에 들어오시면</p>
+      <p style="margin:0 0 12px;font-size:13px;color:#7c2d12;">라이브 알림과 다양한 무료 특강 소식을 가장 먼저 받아보실 수 있습니다.</p>
+      <a href="https://invite.kakao.com/tc/sEmjtp7axZ" style="display:inline-block;background:#FEE500;color:#3c1e1e;text-decoration:none;font-size:14px;font-weight:700;padding:11px 28px;border-radius:999px;">💬 단톡방 입장하기</a>
+    </div>
+    <p style="margin:0 0 8px;font-size:13px;color:#94a3b8;">
+      문의는 <a href="mailto:${ADMIN_EMAIL}" style="color:#f59e0b;">${ADMIN_EMAIL}</a>로 보내주세요.
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       email,
+    subject:  '[SMAC EDU] 온라인 강의 신청 접수 — 9월 3일(목) 저녁 8시 유튜브 라이브',
+    htmlBody: html
+  });
+}
+
+function _sendNikonLiveAdminEmail(name, phone, email, timestamp, total) {
+  const sheetUrl = `https://docs.google.com/spreadsheets/d/${SpreadsheetApp.getActiveSpreadsheet().getId()}/edit`;
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#17213B;color:#fff;padding:18px 22px;margin:0;border-radius:8px 8px 0 0;">
+    📸 9월3일 온라인강의 신청 — ${_escapeHtml(name)} (누적 ${total}명)
+  </h2>
+  <div style="background:#f8fafc;padding:22px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <p style="margin:0 0 6px;font-size:13px;color:#64748b;">${timestamp}</p>
+    <p style="margin:0 0 4px;font-size:14px;">전화번호: <strong>${_escapeHtml(phone || '미입력')}</strong></p>
+    <p style="margin:0 0 14px;font-size:14px;">이메일: <strong>${_escapeHtml(email || '미입력')}</strong></p>
+    <p style="margin:0;font-size:12px;color:#94a3b8;">
+      <a href="${sheetUrl}">스프레드시트에서 전체 목록 확인 →</a>
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       ADMIN_EMAIL,
+    subject:  `[SMAC EDU 9월3일 온라인강의] ${name}님 (${phone}) 신청`,
     htmlBody: html
   });
 }
