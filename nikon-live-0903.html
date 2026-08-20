@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
   <title>풍경사진 인물사진 잘 찍는 법 — 9월 3일 유튜브 라이브 (니콘 혜택)</title>
-  <meta name="description" content="9월 3일(목) 저녁 8시, 니콘 카메라·렌즈 특별 할인 혜택과 함께하는 1시간 유튜브 라이브. 풍경사진·인물사진 잘 찍는 법을 알려드립니다." />
+  <meta name="description" content="9월 3일(목) 저녁 8시, 니콘 카메라·렌즈 특별 할인 혜택과 함께하는 1시간 유튜브 라이브. 첫 카메라 구입, 니콘 기변, 렌즈 추가 구매를 고민 중이시라면 지금이 기회입니다." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.smacedu.kr/nikon-live-0903" />
   <meta property="og:title" content="풍경사진 인물사진 잘 찍는 법 — 9월 3일 유튜브 라이브" />
@@ -18,6 +18,8 @@
   <meta name="twitter:title" content="풍경사진 인물사진 잘 찍는 법 — 9월 3일 유튜브 라이브" />
   <meta name="twitter:description" content="니콘 카메라·렌즈 특별 할인 혜택과 함께하는 1시간 유튜브 라이브." />
   <meta name="twitter:image" content="https://www.smacedu.kr/images/photo-lecture-og.png?v=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -189,6 +191,16 @@
     .alt-card h3 { font-size: 19px; font-weight: 700; color: #fff; margin-bottom: 8px; }
     .alt-card p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 18px; }
 
+    /* ── FAQ 아코디언 ── */
+    .faq-list { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; }
+    .faq-item { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color 0.3s; }
+    .faq-item[open] { border-color: rgba(245,158,11,0.4); }
+    .faq-item summary { list-style: none; cursor: pointer; padding: 20px 24px; font-size: 15.5px; font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { content: '+'; flex-shrink: 0; font-size: 20px; font-weight: 400; color: #fbbf24; transition: transform 0.25s; }
+    .faq-item[open] summary::after { transform: rotate(45deg); }
+    .faq-item .faq-a { padding: 0 24px 20px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+
     #cta { text-align: center; position: relative; overflow: hidden; }
     #cta::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center bottom, rgba(245,158,11,0.15) 0%, transparent 70%); pointer-events: none; }
     #cta h2 { font-size: clamp(26px, 5vw, 48px); margin-bottom: 16px; }
@@ -198,26 +210,90 @@
 
     footer { text-align: center; padding: 36px 24px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; }
 
-    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.open { display: flex; }
-    .modal { background: var(--bg3); border: 1px solid rgba(245,158,11,0.35); border-radius: 20px; width: 100%; max-width: 460px; padding: 40px 36px; position: relative; box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 60px rgba(245,158,11,0.15); animation: modalIn 0.25s ease; }
+
+    /* ── 신청 모달: 밝은 "서류" 카드 (다크 배경 위에 대비) ── */
+    .modal {
+      --paper:    #fffdf9;
+      --ink:      #241f18;
+      --muted:    #756c5e;
+      --faint:    #a89d8c;
+      --hair:     #e4dcca;
+      --hair-2:   #ede6d6;
+      --req:      #c4432a;
+      background: var(--paper);
+      border: none;
+      border-radius: 18px;
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.04);
+      animation: modalIn 0.25s ease;
+      font-family: 'Public Sans', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    }
     @keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; line-height: 1; padding: 4px; }
-    .modal-close:hover { color: #fff; }
-    .modal h3 { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 6px; }
-    .modal p.modal-desc { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
-    .form-group { margin-bottom: 18px; }
-    .form-group label { display: block; font-size: 13px; font-weight: 600; color: #ccc; margin-bottom: 7px; }
-    .form-group input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; padding: 13px 16px; font-size: 15px; color: #fff; outline: none; transition: border-color 0.2s; }
-    .form-group input::placeholder { color: #555; }
-    .form-group input:focus { border-color: rgba(245,158,11,0.6); }
-    .form-checkbox label { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; font-weight: 400; color: #ccc; cursor: pointer; line-height: 1.5; }
-    .form-checkbox input[type="checkbox"] { flex-shrink: 0; width: 16px; height: 16px; margin-top: 1px; accent-color: #f59e0b; cursor: pointer; }
-    .form-submit { width: 100%; margin-top: 8px; }
-    .form-note { text-align: center; margin-top: 14px; font-size: 12px; color: var(--muted); }
-    .form-msg { display: none; margin-top: 16px; padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; text-align: center; }
-    .form-msg.success { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); color: #86efac; }
-    .form-msg.error { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
+    .modal-close { position: absolute; top: 18px; right: 20px; background: none; border: none; color: var(--faint); font-size: 20px; cursor: pointer; line-height: 1; padding: 4px; z-index: 2; }
+    .modal-close:hover { color: var(--ink); }
+
+    .modal-head { padding: 30px 34px 24px; border-bottom: 5px solid; border-image: var(--grad) 1; }
+    .modal-eyebrow {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10.5px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: #d6491f; margin-bottom: 12px;
+    }
+    .modal-eyebrow::before { content: '●'; font-size: 7px; }
+    .modal h3 { font-family: 'Zilla Slab', Georgia, serif; font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 8px; line-height: 1.3; }
+    .modal p.modal-desc { font-size: 13.5px; color: var(--muted); margin: 0; line-height: 1.6; }
+    .modal-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .modal-chip {
+      font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; color: var(--ink);
+      background: #f4f1eb; border: 1px solid var(--hair-2); border-radius: 999px; padding: 4px 11px 4px 9px;
+    }
+    .modal-chip b { color: var(--faint); font-weight: 600; margin-right: 4px; }
+
+    .modal-body { padding: 22px 34px 30px; }
+
+    .form-group { position: relative; background: #f4f1eb; border: 1px solid var(--hair-2); border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; }
+    .form-group .q-num { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10.5px; color: var(--faint); margin-bottom: 5px; }
+    .form-group label { display: block; font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 9px; }
+    .form-group label .req { color: var(--req); margin-left: 2px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; background: var(--paper); border: 1px solid var(--hair); border-bottom: 1.5px solid var(--faint);
+      border-radius: 4px 4px 0 0; padding: 11px 13px; font-size: 14.5px; color: var(--ink); outline: none;
+      transition: border-color 0.2s; font-family: inherit;
+    }
+    .form-group textarea { resize: vertical; min-height: 64px; }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--faint); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-bottom-color: #e07a1f; }
+    .form-group select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23a89d8c' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; padding-right: 34px; }
+    .form-group.optional-tag::after { content: '선택'; position: absolute; top: 16px; right: 18px; font-size: 10.5px; color: var(--faint); font-weight: 600; }
+
+    .form-checkbox { background: #fbeee0; border-color: #f0d9bd; }
+    .form-checkbox label { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; font-weight: 500; color: var(--ink); cursor: pointer; line-height: 1.55; margin-bottom: 0; }
+    .form-checkbox input[type="checkbox"] { flex-shrink: 0; width: 17px; height: 17px; margin-top: 1px; accent-color: #e07a1f; cursor: pointer; }
+
+    .legal-text { background: var(--paper); border: 1px solid var(--hair); border-radius: 8px; padding: 12px 14px; font-size: 12px; color: var(--muted); line-height: 1.7; margin: 10px 0 12px; max-height: 220px; overflow-y: auto; }
+    .legal-text p { margin: 0 0 10px; }
+    .legal-text p:last-child { margin-bottom: 0; }
+    .legal-text strong { color: var(--ink); }
+    .legal-text .legal-note { color: #b5541f; font-weight: 600; }
+    .legal-check { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; font-weight: 600; color: var(--ink); cursor: pointer; line-height: 1.5; }
+    .legal-check input[type="checkbox"] { flex-shrink: 0; width: 17px; height: 17px; margin-top: 1px; accent-color: #e07a1f; cursor: pointer; }
+
+    .form-submit {
+      width: 100%; margin-top: 6px; background: var(--grad); color: #fff; border: none; border-radius: 999px;
+      padding: 15px 32px; font-size: 15.5px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 24px rgba(224,122,31,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .form-submit:hover { transform: translateY(-1px); box-shadow: 0 10px 30px rgba(224,122,31,0.45); }
+    .form-submit:disabled { opacity: 0.6; cursor: default; transform: none; }
+    .form-note { text-align: center; margin-top: 14px; font-size: 11.5px; color: var(--faint); }
+    .form-msg { display: none; margin-top: 16px; padding: 13px 16px; border-radius: 10px; font-size: 13.5px; font-weight: 600; text-align: center; white-space: pre-line; }
+    .form-msg.success { background: #eef2e6; border: 1px solid #d3e0bd; color: #4c6b2e; }
+    .form-msg.error { background: #fbe9e5; border: 1px solid #f3c8bc; color: #a8402a; }
 
     @media (max-width: 640px) {
       section { padding: 72px 20px; }
@@ -249,9 +325,11 @@
   <div class="marquee">
     <span>📸 9월 3일(목) 저녁 8시 유튜브 라이브</span>
     <span>🎁 니콘 카메라·렌즈 특별 할인 혜택, 라이브 방송 중에만 공개</span>
+    <span>⏰ 첫 구입·기변·렌즈 추가, 지금이 딱 그 타이밍입니다</span>
     <span>📷 니콘이 아니어도, 어떤 카메라·스마트폰이든 참여 가능</span>
     <span>📸 9월 3일(목) 저녁 8시 유튜브 라이브</span>
     <span>🎁 니콘 카메라·렌즈 특별 할인 혜택, 라이브 방송 중에만 공개</span>
+    <span>⏰ 첫 구입·기변·렌즈 추가, 지금이 딱 그 타이밍입니다</span>
     <span>📷 니콘이 아니어도, 어떤 카메라·스마트폰이든 참여 가능</span>
   </div>
 </div>
@@ -260,35 +338,112 @@
 <div class="modal-overlay" id="applyModal" onclick="closeModalOutside(event)">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <button class="modal-close" onclick="closeModal()" aria-label="닫기">✕</button>
-    <h3 id="modalTitle">온라인 강의 신청</h3>
-    <p class="modal-desc">아래 정보를 입력하시면 신청이 완료됩니다.<br>라이브 시작 전 안내 메일을 다시 보내드립니다. 니콘 혜택은 방송 중에만 공개됩니다.</p>
 
-    <form id="applyForm" onsubmit="submitApply(event)" novalidate>
-      <div class="form-group">
-        <label for="f-name">이름 <span style="color:#fbbf24">*</span></label>
-        <input id="f-name" name="name" type="text" placeholder="홍길동" required autocomplete="name" />
+    <div class="modal-head">
+      <div class="modal-eyebrow">니콘 라이브 · 온라인 강의 신청서</div>
+      <h3 id="modalTitle">풍경사진 인물사진 잘 찍는 법</h3>
+      <p class="modal-desc">아래 정보를 입력하시면 신청이 완료됩니다. 라이브 시작 전 안내 메일을 다시 보내드립니다.<br>니콘 카메라·렌즈 혜택은 방송 중에만 공개됩니다.</p>
+      <div class="modal-meta">
+        <span class="modal-chip"><b>DATE</b>2026-09-03 THU</span>
+        <span class="modal-chip"><b>TIME</b>20:00 KST</span>
+        <span class="modal-chip"><b>CHANNEL</b>유튜브 라이브</span>
       </div>
-      <div class="form-group">
-        <label for="f-email">이메일 <span style="color:#fbbf24">*</span></label>
-        <input id="f-email" name="email" type="email" placeholder="example@email.com" required autocomplete="email" />
-      </div>
-      <div class="form-group">
-        <label for="f-phone">연락처 <span style="color:#fbbf24">*</span></label>
-        <input id="f-phone" name="phone" type="tel" placeholder="010-1234-5678" required autocomplete="tel" />
-      </div>
-      <div class="form-group form-checkbox">
-        <label for="f-consent">
-          <input id="f-consent" name="consent" type="checkbox" required />
-          개인정보는 강의 안내 목적으로만 사용됩니다. 동의합니다. <span style="color:#fbbf24">*</span>
-        </label>
-      </div>
-      <button type="submit" class="btn btn-primary form-submit" id="submitBtn">
-        ✦ 온라인 강의 신청하기
-      </button>
-      <div class="form-msg" id="formMsg"></div>
-    </form>
+    </div>
 
-    <p class="form-note">*제출 버튼을 클릭하시면 개인정보 수집 및 이용에 동의한 것으로 간주됩니다.</p>
+    <div class="modal-body">
+      <form id="applyForm" onsubmit="submitApply(event)" novalidate>
+        <div class="form-group">
+          <div class="q-num">Q1</div>
+          <label for="f-name">이름 <span class="req">*</span></label>
+          <input id="f-name" name="name" type="text" placeholder="홍길동" required autocomplete="name" />
+        </div>
+
+        <div class="form-group optional-tag">
+          <div class="q-num">Q2</div>
+          <label for="f-path">신청 경로</label>
+          <select id="f-path" name="path">
+            <option value="">선택 안 함</option>
+            <option value="오픈톡방">오픈톡방</option>
+            <option value="SNS 광고">SNS 광고</option>
+            <option value="메일">메일</option>
+            <option value="지인추천">지인추천</option>
+            <option value="사진카페">사진카페</option>
+            <option value="유튜브">유튜브</option>
+            <option value="기타">기타</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div class="q-num">Q3</div>
+          <label for="f-phone">연락처 <span class="req">*</span></label>
+          <input id="f-phone" name="phone" type="tel" placeholder="010-1234-5678" required autocomplete="tel" />
+        </div>
+
+        <div class="form-group">
+          <div class="q-num">Q4</div>
+          <label for="f-email">이메일 <span class="req">*</span></label>
+          <input id="f-email" name="email" type="email" placeholder="example@email.com" required autocomplete="email" />
+        </div>
+
+        <div class="form-group optional-tag">
+          <div class="q-num">Q5</div>
+          <label for="f-interest">니콘 카메라·렌즈, 어떤 게 궁금하신가요?</label>
+          <select id="f-interest" name="interest">
+            <option value="">선택 안 함</option>
+            <option value="처음 카메라 구입을 고민 중">처음 카메라 구입을 고민 중</option>
+            <option value="니콘으로 기변을 고민 중">니콘으로 기변을 고민 중</option>
+            <option value="렌즈 추가 구매를 고민 중">렌즈 추가 구매를 고민 중</option>
+            <option value="카메라 구매 계획은 없음 (촬영법만 궁금)">카메라 구매 계획은 없음 (촬영법만 궁금)</option>
+          </select>
+        </div>
+
+        <div class="form-group optional-tag">
+          <div class="q-num">Q6</div>
+          <label for="f-question">이번 라이브에서 궁금한 점이나 다뤄줬으면 하는 내용</label>
+          <textarea id="f-question" name="question" placeholder="자유롭게 남겨주세요"></textarea>
+        </div>
+
+        <div class="form-group">
+          <div class="q-num">Q7</div>
+          <label>개인정보 수집 및 이용 동의 <span class="req">*</span></label>
+          <div class="legal-text">
+            <p><strong>개인정보 수집 및 이용</strong><br>
+            개인정보 수집 주체 : 스마트미디어아트센터, 이엘포토그래피<br>
+            개인정보 수집 항목 : 성함, 연락처, 이메일<br>
+            개인정보 수집 및 이용목적 : 자료배포, 홍보, 광고 (이메일, 문자)<br>
+            개인정보 보유 및 이용기간 : 수집일로부터 2년 (고객 동의 철회 시 지체 없이 파기)</p>
+            <p><strong>개인정보 취급 위탁</strong><br>
+            개인정보 취급 위탁을 받는 자 : 스마트미디어아트센터, 이엘포토그래피<br>
+            개인정보 취급 위탁을 하는 업무의 내용 : 고객정보 저장 및 서버관리</p>
+            <p class="legal-note">상기 동의를 거부할 권리가 있으나, 수집 및 이용에 동의하지 않을 경우 무료 특강 참여와 특강 후 선물 제공 및 자료 배포가 불가능합니다.</p>
+          </div>
+          <label class="legal-check" for="f-consent">
+            <input id="f-consent" name="consent" type="checkbox" required />
+            위 개인정보 수집 및 이용에 동의합니다.
+          </label>
+        </div>
+
+        <div class="form-group">
+          <div class="q-num">Q8</div>
+          <label>저작권 안내 동의 <span class="req">*</span></label>
+          <div class="legal-text">
+            <p>✔ 스마트미디어아트센터에서 제공하는 수업자료를 재판매 및 타강의 목적으로 사용 시 저작권침해로 법적 처벌을 받을 수 있습니다.<br>
+            ✔ 강의 영상 복제 및 녹화, 유통은 저작권침해로 법적 처벌을 받으실 수 있습니다. 절대 금지입니다.</p>
+          </div>
+          <label class="legal-check" for="f-copyright">
+            <input id="f-copyright" name="copyright" type="checkbox" required />
+            위 내용에 동의합니다. (동의하지 않으시면 특강 참여가 불가능합니다)
+          </label>
+        </div>
+
+        <button type="submit" class="form-submit" id="submitBtn">
+          ✦ 온라인 강의 신청하기
+        </button>
+        <div class="form-msg" id="formMsg"></div>
+      </form>
+
+      <p class="form-note">*제출 버튼을 클릭하시면 개인정보 수집 및 이용에 동의한 것으로 간주됩니다.</p>
+    </div>
   </div>
 </div>
 
@@ -307,7 +462,8 @@
     </h1>
 
     <p class="hero-sub reveal reveal-delay-1">
-      9월 3일(목) 저녁 8시, 유튜브 라이브로 만나는 1시간. 풍경사진·인물사진을 잘 찍는 핵심을 짚어드립니다. 니콘이 아니어도, 어떤 카메라·스마트폰을 쓰셔도 참여할 수 있는 강의입니다.
+      9월 3일(목) 저녁 8시, 유튜브 라이브로 만나는 1시간. 풍경사진·인물사진을 잘 찍는 핵심을 짚어드립니다.
+      <strong style="color:#fbbf24;">처음 카메라를 장만하시는 분, 니콘으로 기변을 고민 중인 분, 가격 부담에 렌즈 구입을 미뤄오신 분</strong>이라면 지금이 바로 그 타이밍입니다.
     </p>
 
     <div class="hero-actions reveal reveal-delay-2">
@@ -320,6 +476,16 @@
     <p class="reveal reveal-delay-2" style="margin-top: 4px; margin-bottom: 0; font-size: 14px; color: #fbbf24; font-weight: 600;">
       🎁 니콘 카메라·렌즈 특별 할인 혜택, 라이브 방송 중에만 공개됩니다
     </p>
+
+    <div class="reveal reveal-delay-2" id="countdown" style="margin-top: 28px; display: inline-flex; gap: 14px; align-items: center; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: 14px; padding: 14px 22px;">
+      <span style="font-size: 13px; font-weight: 700; color: #fbbf24; white-space: nowrap;">⏰ 라이브까지</span>
+      <div style="display:flex; gap: 10px;" id="countdown-nums">
+        <div style="text-align:center;"><span id="cd-d" style="font-size:20px; font-weight:800; color:#fff;">–</span><div style="font-size:10px; color:var(--muted);">일</div></div>
+        <div style="text-align:center;"><span id="cd-h" style="font-size:20px; font-weight:800; color:#fff;">–</span><div style="font-size:10px; color:var(--muted);">시간</div></div>
+        <div style="text-align:center;"><span id="cd-m" style="font-size:20px; font-weight:800; color:#fff;">–</span><div style="font-size:10px; color:var(--muted);">분</div></div>
+        <div style="text-align:center;"><span id="cd-s" style="font-size:20px; font-weight:800; color:#fff;">–</span><div style="font-size:10px; color:var(--muted);">초</div></div>
+      </div>
+    </div>
 
     <div class="hero-stats reveal reveal-delay-3">
       <div class="stat">
@@ -356,9 +522,27 @@
   <div class="container">
     <p class="section-label reveal">DO YOU RELATE?</p>
     <h2 class="reveal">이런 고민, 한 번씩 해보셨죠?</h2>
-    <p class="section-desc reveal">풍경과 인물, 둘 다 잘 찍고 싶은데 늘 어느 한쪽이 아쉽습니다.</p>
+    <p class="section-desc reveal">풍경과 인물, 둘 다 잘 찍고 싶은데 늘 어느 한쪽이 아쉽습니다. 그리고 카메라·렌즈 얘기가 나오면 늘 망설여지죠.</p>
 
     <div class="persona-grid">
+      <div class="persona-card reveal">
+        <div class="persona-icon">📷</div>
+        <h3>처음 카메라를 구입하고 싶다</h3>
+        <p>브랜드도 모델도 처음이라 뭘 기준으로 골라야 할지 모르겠습니다. 지금이 시작하기 딱 좋은 타이밍입니다.</p>
+        <span class="persona-tag"># 첫 구입 · 지금이 기회</span>
+      </div>
+      <div class="persona-card reveal reveal-delay-1">
+        <div class="persona-icon">🔄</div>
+        <h3>니콘으로 기변을 하고 싶다</h3>
+        <p>쓰던 브랜드를 바꿀까 계속 고민만 하고 있습니다. 이번 혜택이면 그 고민을 끝낼 수 있습니다.</p>
+        <span class="persona-tag"># 니콘 기변 · 지금이 기회</span>
+      </div>
+      <div class="persona-card reveal reveal-delay-2">
+        <div class="persona-icon">💰</div>
+        <h3>사고 싶은 렌즈가 있는데 가격이 부담된다</h3>
+        <p>몇 달째 장바구니에만 담아두셨다면, 이번이 부담을 덜고 결정할 기회입니다.</p>
+        <span class="persona-tag"># 렌즈 추가 · 지금이 기회</span>
+      </div>
       <div class="persona-card reveal">
         <div class="persona-icon">🏞️</div>
         <h3>풍경은 찍을 때만 예쁘고 사진은 밋밋하다</h3>
@@ -372,28 +556,10 @@
         <span class="persona-tag"># 인물사진</span>
       </div>
       <div class="persona-card reveal reveal-delay-2">
-        <div class="persona-icon">🎥</div>
-        <h3>카메라를 바꾸면 나아질까 고민된다</h3>
-        <p>장비 탓인지 실력 탓인지 구분이 안 됩니다.</p>
-        <span class="persona-tag"># 장비 고민</span>
-      </div>
-      <div class="persona-card reveal">
         <div class="persona-icon">💡</div>
         <h3>어떤 빛에서 찍어야 좋은지 모르겠다</h3>
         <p>같은 장소인데 시간대에 따라 결과가 다릅니다.</p>
         <span class="persona-tag"># 빛과 구도</span>
-      </div>
-      <div class="persona-card reveal reveal-delay-1">
-        <div class="persona-icon">📷</div>
-        <h3>DSLR·미러리스가 처음부터 막막하다</h3>
-        <p>스마트폰과 달라서 어디서부터 배워야 할지 모릅니다.</p>
-        <span class="persona-tag"># 입문</span>
-      </div>
-      <div class="persona-card reveal reveal-delay-2">
-        <div class="persona-icon">🎁</div>
-        <h3>좋은 조건에 카메라를 장만하고 싶다</h3>
-        <p>제값 다 주고 사기 전에 혜택이 있는지 궁금합니다.</p>
-        <span class="persona-tag"># 장비 혜택</span>
       </div>
     </div>
   </div>
@@ -409,6 +575,43 @@
     </p>
     <p class="pivot-sub reveal reveal-delay-1">
       이번 유튜브 라이브는 단 1시간 만에 그 핵심을 짚어드립니다.
+    </p>
+  </div>
+</section>
+
+<!-- ③-1 지금이 기회인 이유 -->
+<section id="why-now">
+  <div class="container">
+    <p class="section-label reveal">WHY NOW</p>
+    <h2 class="reveal">왜 하필 지금이 기회일까요</h2>
+    <p class="section-desc reveal">망설이던 결정을, 부담 없이 내릴 수 있는 조건이 이번 라이브에만 열립니다.</p>
+
+    <div class="outcomes-grid">
+      <div class="outcome-card reveal">
+        <div class="outcome-num">📷</div>
+        <div>
+          <h3>처음이라면 — 지금이 가장 저렴하게 시작하는 시점</h3>
+          <p>첫 카메라는 초기 비용이 가장 부담스럽습니다. 이번 혜택으로 그 진입장벽을 낮추고 시작하세요</p>
+        </div>
+      </div>
+      <div class="outcome-card reveal reveal-delay-1">
+        <div class="outcome-num">🔄</div>
+        <div>
+          <h3>기변이라면 — 조건 보고 결정할 마지막 타이밍</h3>
+          <p>바꿀까 말까 미루는 동안 혜택은 지나갑니다. 라이브에서 조건을 직접 확인하고 결정하세요</p>
+        </div>
+      </div>
+      <div class="outcome-card reveal reveal-delay-2">
+        <div class="outcome-num">💰</div>
+        <div>
+          <h3>렌즈 추가라면 — 부담을 줄이고 담아둘 기회</h3>
+          <p>가격 때문에 미뤄온 렌즈, 제값 다 주고 사기 전에 이번 조건부터 확인하세요</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="reveal reveal-delay-3" style="margin-top: 32px; font-size: 14px; color: var(--muted);">
+      ⚠️ 혜택은 <strong style="color:#fbbf24;">라이브 방송 중에만</strong> 공개되며, 다시보기에는 제공되지 않습니다. 실시간으로 참여하셔야 받으실 수 있습니다.
     </p>
   </div>
 </section>
@@ -575,8 +778,40 @@
         <span class="alt-date">8월 28일(금) 저녁 9시 · 온라인</span>
         <h3>찍는 순간 작품이 되는 스마트폰 사진</h3>
         <p>ZOOM으로 진행되는 온라인 무료 특강입니다. 촬영·보정부터 AI 활용까지 다룹니다. 선착순 100명.</p>
-        <a class="btn btn-outline" href="https://blog.naver.com/elanvital7/224379392733" target="_blank" rel="noopener">신청서 보러 가기 ↗</a>
+        <a class="btn btn-outline" href="/photo-lecture-landing.html">강좌 자세히 보기 ↗</a>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑧-1 자주 묻는 질문 -->
+<section id="faq">
+  <div class="container">
+    <p class="section-label reveal">FAQ</p>
+    <h2 class="reveal">자주 묻는 질문</h2>
+    <p class="section-desc reveal">신청 전에 궁금하실 만한 내용을 미리 정리했습니다.</p>
+
+    <div class="faq-list">
+      <details class="faq-item reveal">
+        <summary>니콘 카메라가 없는데 참여해도 되나요?</summary>
+        <p class="faq-a">네, 물론입니다. 스마트폰이든 다른 브랜드 카메라든 상관없이 누구나 시청하실 수 있습니다. 니콘 혜택은 참고만 하셔도 되고, 필요 없으시면 촬영 노하우만 챙겨 가셔도 됩니다.</p>
+      </details>
+      <details class="faq-item reveal reveal-delay-1">
+        <summary>니콘 혜택은 정확히 어떤 내용인가요?</summary>
+        <p class="faq-a">구체적인 할인 조건은 라이브 방송 중에 공개됩니다. 첫 카메라 구입, 니콘으로의 기변, 렌즈 추가 구매 각각에 도움이 되는 조건을 안내해 드릴 예정입니다.</p>
+      </details>
+      <details class="faq-item reveal reveal-delay-2">
+        <summary>다시보기로 봐도 혜택을 받을 수 있나요?</summary>
+        <p class="faq-a">혜택은 실시간으로 시청하신 분께만 안내됩니다. 다시보기 영상에는 혜택 안내 구간이 포함되지 않으니, 9월 3일 저녁 8시에 맞춰 실시간으로 참여해 주세요.</p>
+      </details>
+      <details class="faq-item reveal">
+        <summary>구매를 강요하거나 강매하지는 않나요?</summary>
+        <p class="faq-a">전혀 아닙니다. 시청은 완전 무료이며 구매 여부는 전적으로 선택입니다. 혜택은 관심 있으신 분들만 참고하시라고 안내해 드리는 것입니다.</p>
+      </details>
+      <details class="faq-item reveal reveal-delay-1">
+        <summary>사진을 처음 배우는데 따라갈 수 있을까요?</summary>
+        <p class="faq-a">네, 카메라를 처음 만지시는 분도 이해할 수 있는 수준으로 쉽게 설명합니다. 어려운 전문 용어보다는 바로 적용할 수 있는 실전 팁 위주로 진행합니다.</p>
+      </details>
     </div>
   </div>
 </section>
@@ -592,8 +827,8 @@
       <span style="background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">가장 쉬운 방법</span>
     </h2>
     <p class="reveal reveal-delay-1">
-      9월 3일(목) 저녁 8시, 유튜브 라이브에서 뵙겠습니다.<br>
-      니콘 혜택은 방송 중에만 공개되니, 지금 신청하고 놓치지 마세요.
+      처음 카메라를 장만하시든, 니콘으로 기변을 고민 중이시든, 렌즈 구입을 미뤄오셨든<br>
+      9월 3일(목) 저녁 8시가 바로 그 타이밍입니다. 니콘 혜택은 방송 중에만 공개되니, 지금 신청하고 놓치지 마세요.
     </p>
 
     <div class="reveal reveal-delay-2">
@@ -642,11 +877,15 @@
 
   async function submitApply(e) {
     e.preventDefault();
-    const name    = document.getElementById('f-name').value.trim();
-    const email   = document.getElementById('f-email').value.trim();
-    const phone   = document.getElementById('f-phone').value.trim();
-    const consent = document.getElementById('f-consent').checked;
-    const btn     = document.getElementById('submitBtn');
+    const name      = document.getElementById('f-name').value.trim();
+    const email     = document.getElementById('f-email').value.trim();
+    const phone     = document.getElementById('f-phone').value.trim();
+    const path      = document.getElementById('f-path').value;
+    const interest  = document.getElementById('f-interest').value;
+    const question  = document.getElementById('f-question').value.trim();
+    const consent   = document.getElementById('f-consent').checked;
+    const copyright = document.getElementById('f-copyright').checked;
+    const btn       = document.getElementById('submitBtn');
 
     if (!name)  { showMsg('error', '이름을 입력해 주세요.'); return; }
     if (!email) { showMsg('error', '이메일을 입력해 주세요.'); return; }
@@ -654,12 +893,13 @@
     if (!phone) { showMsg('error', '연락처를 입력해 주세요.'); return; }
     if (!/^01[0-9]-\d{3,4}-\d{4}$/.test(phone)) { showMsg('error', '연락처는 010-1234-5678 형식으로 입력해 주세요.'); return; }
     if (!consent) { showMsg('error', '개인정보 수집·이용 동의에 체크해 주세요.'); return; }
+    if (!copyright) { showMsg('error', '저작권 안내 동의에 체크해 주세요.'); return; }
 
     btn.disabled = true;
     btn.textContent = '신청 중…';
 
     try {
-      const params = new URLSearchParams({ form: 'livelecture0903', name, email, phone, consent: 'Y' });
+      const params = new URLSearchParams({ form: 'livelecture0903', name, email, phone, path, interest, question, consent: 'Y', copyright: 'Y' });
       await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
       showMsg('success', `${name}님, 신청이 완료됐습니다!\n확인 메일을 보내드렸어요.`);
       btn.textContent = '✓ 신청 완료';
@@ -676,6 +916,28 @@
     el.textContent = text;
     el.style.display = 'block';
   }
+
+  /* ── 카운트다운 타이머 ── */
+  const LIVE_AT = new Date('2026-09-03T20:00:00+09:00').getTime();
+  function tickCountdown() {
+    const diff = LIVE_AT - Date.now();
+    const box = document.getElementById('countdown');
+    if (!box) return;
+    if (diff <= 0) {
+      document.getElementById('countdown-nums').innerHTML = '<span style="font-size:14px; font-weight:700; color:#fbbf24;">라이브 진행 중 또는 종료</span>';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-d').textContent = d;
+    document.getElementById('cd-h').textContent = String(h).padStart(2, '0');
+    document.getElementById('cd-m').textContent = String(m).padStart(2, '0');
+    document.getElementById('cd-s').textContent = String(s).padStart(2, '0');
+  }
+  tickCountdown();
+  setInterval(tickCountdown, 1000);
 
   /* ── 스크롤 진행바 ── */
   window.addEventListener('scroll', () => {

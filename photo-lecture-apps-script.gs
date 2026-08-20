@@ -149,7 +149,7 @@ function _sendConfirmEmail(name, email) {
     <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name)}</strong>님, 반갑습니다!</p>
     <p style="margin:0 0 20px;color:#475569;line-height:1.7;">
       특강 신청이 정상적으로 접수됐어요.<br>
-      참여 ZOOM 링크는 특강 당일인 7월 17일(금) 저녁 6시까지 이 메일로 다시 안내드리겠습니다.
+      참여 ZOOM 링크는 특강 당일인 8월 28일(금) 저녁 6시까지 이 메일로 다시 안내드리겠습니다.
     </p>
 
     <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:18px 18px 8px;margin-bottom:20px;">
@@ -199,7 +199,7 @@ function _sendConfirmEmail(name, email) {
     </div>
 
     <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 18px;margin-bottom:20px;text-align:center;">
-      <p style="margin:0;font-size:14px;font-weight:700;color:#dc2626;">🗓 7월 17일(금) 저녁 8시 — 잊지 마세요!</p>
+      <p style="margin:0;font-size:14px;font-weight:700;color:#dc2626;">🗓 8월 28일(금) 저녁 9시 — 잊지 마세요!</p>
     </div>
 
     <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:20px;">
@@ -210,7 +210,7 @@ function _sendConfirmEmail(name, email) {
         </tr>
         <tr>
           <td style="padding:7px 0;color:#64748b;">일시</td>
-          <td style="color:#1e293b;font-weight:600;">2026년 7월 17일(금) 저녁 8시</td>
+          <td style="color:#1e293b;font-weight:600;">2026년 8월 28일(금) 저녁 9시</td>
         </tr>
         <tr>
           <td style="padding:7px 0;color:#64748b;">진행 방식</td>
@@ -374,7 +374,7 @@ function _sendGiftEmail(name, email) {
     </div>
 
     <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:16px 18px;margin-bottom:20px;text-align:center;">
-      <p style="margin:0 0 6px;font-size:14px;font-weight:700;color:#92400e;">🗓 7월 17일(금) 저녁 8시 — 지금 열려 있는 무료 특강</p>
+      <p style="margin:0 0 6px;font-size:14px;font-weight:700;color:#92400e;">🗓 8월 28일(금) 저녁 9시 — 지금 열려 있는 무료 특강</p>
       <p style="margin:0 0 12px;font-size:13px;color:#7c2d12;">찍는 순간 작품이 되는 스마트폰 사진 — 촬영과 보정부터 AI 활용까지, ZOOM 온라인</p>
       <a href="https://www.smacedu.kr/photo-lecture-landing#curriculum" style="display:inline-block;background:#fff;color:#92400e;border:1px solid #fde68a;text-decoration:none;font-size:14px;font-weight:700;padding:11px 28px;border-radius:999px;">특강 커리큘럼 보기</a>
     </div>
@@ -583,29 +583,33 @@ function _getNikonLiveSheet() {
   let sheet = ss.getSheets().find(s => s.getName() === NIKONLIVE_TAB_NAME);
   if (!sheet) {
     sheet = ss.insertSheet(NIKONLIVE_TAB_NAME);
-    sheet.appendRow(['타임스탬프', '이름', '전화번호', '이메일', '개인정보 동의']);
-    sheet.getRange(1, 1, 1, 5).setFontWeight('bold');
+    sheet.appendRow(['타임스탬프', '이름', '전화번호', '이메일', '신청경로', '니콘 관심사', '궁금한 점', '개인정보 동의', '저작권 동의']);
+    sheet.getRange(1, 1, 1, 9).setFontWeight('bold');
   }
   return sheet;
 }
 
 function _handleNikonLiveSubmit(params) {
   try {
-    const name    = params.name  || '';
-    const email   = params.email || '';
-    const phone   = params.phone || '';
-    const consent = params.consent === 'Y' ? '동의함' : '';
+    const name      = params.name      || '';
+    const email     = params.email     || '';
+    const phone     = params.phone     || '';
+    const path      = params.path      || '';
+    const interest  = params.interest  || '';
+    const question  = params.question  || '';
+    const consent   = params.consent   === 'Y' ? '동의함' : '';
+    const copyright = params.copyright === 'Y' ? '동의함' : '';
 
     const sheet = _getNikonLiveSheet();
 
     const now       = new Date();
     const timestamp = _formatKoreanTimestamp(now, Session.getScriptTimeZone());
 
-    sheet.appendRow([timestamp, name, phone, email, consent]);
+    sheet.appendRow([timestamp, name, phone, email, path, interest, question, consent, copyright]);
     const total = sheet.getLastRow() - 1;
 
     if (email) _sendNikonLiveConfirmEmail(name, email);
-    _sendNikonLiveAdminEmail(name, phone, email, timestamp, total);
+    _sendNikonLiveAdminEmail(name, phone, email, path, interest, question, timestamp, total);
 
     return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -670,7 +674,7 @@ function _sendNikonLiveConfirmEmail(name, email) {
   });
 }
 
-function _sendNikonLiveAdminEmail(name, phone, email, timestamp, total) {
+function _sendNikonLiveAdminEmail(name, phone, email, path, interest, question, timestamp, total) {
   const sheetUrl = `https://docs.google.com/spreadsheets/d/${SpreadsheetApp.getActiveSpreadsheet().getId()}/edit`;
   const html = `
 <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
@@ -680,7 +684,10 @@ function _sendNikonLiveAdminEmail(name, phone, email, timestamp, total) {
   <div style="background:#f8fafc;padding:22px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
     <p style="margin:0 0 6px;font-size:13px;color:#64748b;">${timestamp}</p>
     <p style="margin:0 0 4px;font-size:14px;">전화번호: <strong>${_escapeHtml(phone || '미입력')}</strong></p>
-    <p style="margin:0 0 14px;font-size:14px;">이메일: <strong>${_escapeHtml(email || '미입력')}</strong></p>
+    <p style="margin:0 0 4px;font-size:14px;">이메일: <strong>${_escapeHtml(email || '미입력')}</strong></p>
+    <p style="margin:0 0 4px;font-size:14px;">신청경로: ${_escapeHtml(path || '미입력')}</p>
+    <p style="margin:0 0 4px;font-size:14px;">니콘 관심사: ${_escapeHtml(interest || '미입력')}</p>
+    <p style="margin:0 0 14px;font-size:14px;">궁금한 점: ${_escapeHtml(question || '없음')}</p>
     <p style="margin:0;font-size:12px;color:#94a3b8;">
       <a href="${sheetUrl}">스프레드시트에서 전체 목록 확인 →</a>
     </p>
