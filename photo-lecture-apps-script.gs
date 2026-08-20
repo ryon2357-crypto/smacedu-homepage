@@ -11,7 +11,7 @@
 // 5. 배포 후 나온 웹 앱 URL을 photo-lecture-landing.html과 review-gift-landing.html의 SCRIPT_URL에 붙여넣습니다.
 //    (여러 랜딩페이지가 같은 웹 앱 URL을 공유하고, 요청에 form 파라미터로 분기합니다:
 //     review-gift-landing.html → form=reviewgift, youtube-planner-수강생용.html → form=ytplanner,
-//     youtube-planner.html(리드마그넷 워크북) → form=ytworkbook.)
+//     youtube-planner.html(리드마그넷 워크북) → form=ytworkbook, cert-correction.html → form=certcorrection.)
 // 6. 구글폼(forms.gle)으로 직접 제출해도 확인 메일이 가도록 트리거를 한 번 등록해야 합니다:
 //    Apps Script 편집기 좌측 "트리거"(시계 아이콘) → 트리거 추가
 //    → 실행할 함수: onFormSubmit / 이벤트 소스: 스프레드시트에서 / 이벤트 유형: 양식 제출 시 → 저장
@@ -65,6 +65,14 @@ const WORKBOOK_TAB_NAME    = '워크북 리드';
 // 페이지에서 form=livelecture0903 으로 요청을 보냅니다.
 const NIKONLIVE_TAB_NAME   = '9월3일 온라인강의 신청';
 
+// ── 자격증 정보 정정 신청(cert-correction.html) 기록 겸용 ──
+// 신청 시 이메일/생년월일을 잘못 입력한 회원이 직접 정정 신청하는 폼. 페이지 자체는
+// smacedu-homepage에 정적 HTML로 배포되고, 제출만 이 이미 인증된 프로젝트로 GET+no-cors
+// 요청을 보냅니다(form=certcorrection). 처리(재발급·발송)는 로컬 자동화(cert_correction.py)가
+// 매일 이 시트를 읽어 처리합니다 — 이 스크립트는 "응답 저장 + 관리자 알림"까지만 담당합니다.
+const CERTFIX_SHEET_ID     = '17OiQ7FStjGPgZb6dZknXAQQ6VGI5GMaF9vDpghiB9Y8'; // 자격증 정정 신청 (응답)
+const CERTFIX_TAB_NAME     = '시트1';
+
 function doGet(e) {
   const params0 = e.parameter || {};
   if (params0.form === 'reviewgift') {
@@ -78,6 +86,9 @@ function doGet(e) {
   }
   if (params0.form === 'livelecture0903') {
     return _handleNikonLiveSubmit(params0);
+  }
+  if (params0.form === 'certcorrection') {
+    return _handleCertCorrectionSubmit(params0);
   }
 
   try {
@@ -699,4 +710,51 @@ function _sendNikonLiveAdminEmail(name, phone, email, path, interest, question, 
     subject:  `[SMAC EDU 9월3일 온라인강의] ${name}님 (${phone}) 신청`,
     htmlBody: html
   });
+}
+
+// ════════════════════════════════════════════
+// 자격증 정보 정정 신청 (cert-correction.html)
+// ════════════════════════════════════════════
+function _getCertFixSheet() {
+  const ss = SpreadsheetApp.openById(CERTFIX_SHEET_ID);
+  return ss.getSheetByName(CERTFIX_TAB_NAME) || ss.getSheets()[0];
+}
+
+function _handleCertCorrectionSubmit(params) {
+  try {
+    const name    = (params.name    || '').trim();
+    const cert    = (params.cert    || '').trim();
+    const certNo  = (params.certNo  || '').trim();
+    const email   = (params.email   || '').trim();
+    const birth   = (params.birth   || '').trim();
+    const note    = (params.note    || '').trim();
+
+    if (!name || !cert || !email) {
+      return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: '필수 항목 누락' }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const sheet = _getCertFixSheet();
+    const now       = new Date();
+    const timestamp = _formatKoreanTimestamp(now, Session.getScriptTimeZone());
+
+    // 열 순서: 타임스탬프, 성명, 자격증명, 원래자격번호, 정정할이메일, 정정할생년월일, 비고, 처리상태, 처리일시, 발송메시지ID
+    sheet.appendRow([timestamp, name, cert, certNo, email, birth, note, '', '', '']);
+
+    try {
+      MailApp.sendEmail({
+        to: ADMIN_EMAIL,
+        subject: `[SMAC EDU] 자격증 정정 신청 접수 (${name})`,
+        body: `${name}님이 자격증 정보 정정을 신청했습니다.\n\n자격증: ${cert}\n원래 자격번호: ${certNo || '미기재'}\n정정할 이메일: ${email}\n정정할 생년월일: ${birth || '변경 없음'}\n비고: ${note || '없음'}\n\n오늘 정해진 시간에 자동으로 확인·재발급됩니다. 별도 조치 필요 없습니다.`
+      });
+    } catch (mailErr) {
+      console.error('관리자 알림 발송 실패: ' + mailErr.message);
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }
