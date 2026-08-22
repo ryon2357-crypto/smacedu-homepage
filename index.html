@@ -629,7 +629,7 @@
             transform: translateY(-5px);
         }
         .inst-photo {
-            height: 200px;
+            aspect-ratio: 8 / 5;
             background: var(--orange-lt);
             display: flex; align-items: center; justify-content: center;
             font-size: 4rem; position: relative; overflow: hidden;
@@ -639,7 +639,7 @@
         .inst-photo-purple { background: #faf5ff; }
         .inst-photo img {
             width: 100%; height: 100%;
-            object-fit: cover; object-position: top center;
+            object-fit: cover; object-position: center center;
             display: block;
         }
         .inst-badge {
@@ -1511,7 +1511,7 @@
 
             <div class="instructor-card reveal">
                 <div class="inst-photo inst-photo-blue">
-                    <img src="images/instructors/go-hyegyeong.png" alt="고혜경 강사">
+                    <img src="images/instructors/go-hyegyeong.jpg" alt="고혜경 강사">
                     <span class="inst-badge">영상 · AI 콘텐츠</span>
                 </div>
                 <div class="inst-body">
@@ -1530,7 +1530,7 @@
 
             <div class="instructor-card reveal">
                 <div class="inst-photo inst-photo-green">
-                    <img src="images/instructors/kwon-jeonga.png" alt="권정아 강사">
+                    <img src="images/instructors/kwon-jeonga.jpg" alt="권정아 강사">
                     <span class="inst-badge">사진 · AI 활용</span>
                 </div>
                 <div class="inst-body">
@@ -1544,6 +1544,25 @@
                         <span class="inst-tag">생성형 AI</span>
                     </div>
                     <p class="inst-desc">스마트폰 사진과 스마트폰 활용 교육 전문 강사로 AI 활용방법을 안내합니다. 시니어부터 공공기관까지 실전 중심으로 강의하고 있습니다.</p>
+                </div>
+            </div>
+
+            <div class="instructor-card reveal">
+                <div class="inst-photo inst-photo-purple">
+                    <img src="images/instructors/instructor-03-candidate.jpg" alt="AI 활용 강사">
+                    <span class="inst-badge">AI · 콘텐츠</span>
+                </div>
+                <div class="inst-body">
+                    <p class="inst-name">AI 활용 강사</p>
+                    <p class="inst-role">생성형 AI 콘텐츠 제작 전문강사</p>
+                    <div class="inst-tags">
+                        <span class="inst-tag">챗GPT</span>
+                        <span class="inst-tag">미드저니</span>
+                        <span class="inst-tag">AI 이미지</span>
+                        <span class="inst-tag">프롬프트 설계</span>
+                        <span class="inst-tag">콘텐츠 자동화</span>
+                    </div>
+                    <p class="inst-desc">챗GPT·미드저니 등 생성형 AI 도구를 활용해 이미지·영상·콘텐츠를 만드는 방법을 실습 중심으로 안내합니다. 처음 접하는 분도 바로 따라할 수 있도록 쉽게 가르칩니다.</p>
                 </div>
             </div>
 
