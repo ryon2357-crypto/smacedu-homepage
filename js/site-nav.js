@@ -12,7 +12,7 @@
     const NAV_ITEMS = [
         { label: 'HOME',           anchor: 'home' },
         { label: '대표소개',        anchor: 'about' },
-        { label: '강사진',          anchor: 'instructors' },
+        { label: '강사진',          href: 'instructors.html', key: 'instructors' },
         { label: '교육과정',        anchor: 'courses' },
         // twoLine: 좁은 데스크톱(1041~1640px)에서 두 줄로 접어 가로폭을 줄인다
         { label: '스마트폰 사진강의', href: 'smartphone-photo-lecture.html', twoLine: true },
