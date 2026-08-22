@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <script src="js/no-copy.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강사진 — 스마트미디어아트센터</title>
+    <meta name="description" content="스마트미디어아트센터 검증된 강사진을 소개합니다. 스마트폰 사진·영상·AI 활용까지 각 분야 전문 강사가 기관 예산과 목적에 맞게 출강합니다.">
+    <link rel="icon" href="images/logo1.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy:        #172554;
+            --navy-mid:    #1e3a8a;
+            --orange:      #f97316;
+            --orange-dk:   #ea6b0c;
+            --orange-lt:   #fff7ed;
+            --orange-soft: #ffedd5;
+            --white:       #ffffff;
+            --gray-bg:     #f8f9fa;
+            --gray-line:   #e5e7eb;
+            --text-head:   #172554;
+            --text-body:   #374151;
+            --text-sub:    #6b7280;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--white);
+            color: var(--text-body);
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 1140px; margin: 0 auto; }
+
+        .tag-chip {
+            display: inline-block;
+            background: var(--orange-lt); color: var(--orange);
+            font-size: 12px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            padding: 5px 14px; border-radius: 100px;
+            margin-bottom: 14px;
+        }
+        .sec-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 800; letter-spacing: -.8px; line-height: 1.25;
+            color: var(--text-head);
+        }
+        .sec-desc {
+            margin-top: 14px;
+            font-size: 1rem; color: var(--text-sub);
+            line-height: 1.85; max-width: 520px; margin-left: auto; margin-right: auto;
+        }
+        .sec-head { text-align: center; margin-bottom: 56px; }
+        .orange-bar {
+            width: 44px; height: 4px;
+            background: var(--orange); border-radius: 2px;
+            margin: 16px auto 0;
+        }
+        .reveal {
+            opacity: 0; transform: translateY(22px);
+            transition: opacity .65s ease, transform .65s ease;
+        }
+        .reveal.on { opacity: 1; transform: none; }
+        .sec { padding: 80px 40px; }
+        .sec-white { background: var(--white); }
+        .sec-gray  { background: var(--gray-bg); }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed; top:0; left:0; right:0; z-index:999;
+            height: 96px;
+            display: flex; align-items:center; justify-content:space-between;
+            padding: 0 48px;
+            background: rgba(255,255,255,.96);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid transparent;
+            transition: border-color .3s, box-shadow .3s;
+        }
+        nav.scrolled {
+            border-color: var(--gray-line);
+            box-shadow: 0 2px 16px rgba(0,0,0,.07);
+        }
+        .nav-logo {
+            display: flex; align-items: center; gap: 12px;
+            text-decoration: none; flex-shrink: 0;
+        }
+        .logo-img { height: 72px; width: auto; display: block; object-fit: contain; }
+        .nav-brand-block { display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+        .nav-brand-name { font-size: 24px; font-weight: 700; color: #172554; letter-spacing: -.4px; white-space: nowrap; line-height: 1; }
+        .nav-brand-sub  { font-size: 13px; font-weight: 500; color: #64748B; letter-spacing: .1px; white-space: nowrap; line-height: 1; }
+
+        .nav-links { display:flex; gap:26px; list-style:none; align-items:center; }
+        .nav-links a {
+            text-decoration:none; color: var(--text-body);
+            font-size: 13.5px; font-weight: 500;
+            transition: color .2s; white-space: nowrap;
+        }
+        .nav-links a:hover { color: var(--orange); }
+        .nav-links .active a { color: var(--orange); font-weight: 700; }
+        .nav-links .cta a {
+            padding: 9px 22px;
+            background: var(--orange); color:#fff;
+            border-radius: 8px; font-weight: 700;
+            transition: background .2s, transform .2s;
+        }
+        .nav-links .cta a:hover { background: var(--orange-dk); transform: translateY(-1px); }
+
+        .btn-nav-login { background: var(--orange); color:#fff; border:none; padding:7px 14px; border-radius:8px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; text-decoration:none; white-space:nowrap; transition:background .2s; }
+        .btn-nav-login:hover { background: var(--orange-dk); }
+        .btn-nav-mypage { background:transparent; color:var(--text-body); border:1.5px solid var(--gray-line); padding:7px 14px; border-radius:8px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; text-decoration:none; white-space:nowrap; transition:all .2s; }
+        .btn-nav-mypage:hover { border-color:var(--navy); color:var(--navy); }
+        .btn-nav-logout { background:transparent; color:var(--text-sub); border:none; font-size:12px; font-family:inherit; cursor:pointer; padding:4px; }
+        .nav-user-area { display:flex; align-items:center; gap:8px; }
+
+        .nav-dropdown { position:relative; }
+        .nav-dropdown::after { content:""; position:absolute; top:100%; left:0; right:0; height:16px; }
+        .nav-dropdown-toggle {
+            background:none; border:none; cursor:pointer; font-family:inherit; padding:0;
+            display:flex; align-items:center; gap:4px;
+            text-decoration:none; color: var(--text-body);
+            font-size: 13.5px; font-weight: 500;
+            transition: color .2s; white-space: nowrap;
+        }
+        .nav-dropdown-toggle:hover { color: var(--orange); }
+        .nav-dropdown-toggle .caret { font-size:10px; transition: transform .2s; }
+        .nav-dropdown:hover .nav-dropdown-toggle .caret,
+        .nav-dropdown:focus-within .nav-dropdown-toggle .caret { transform: rotate(180deg); }
+        .nav-dropdown-menu {
+            display:none; position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%);
+            background:#fff; border-radius:12px; box-shadow:0 12px 32px rgba(0,0,0,.14);
+            padding:8px; min-width:150px; list-style:none; z-index:200;
+        }
+        .nav-dropdown:hover .nav-dropdown-menu,
+        .nav-dropdown:focus-within .nav-dropdown-menu { display:block; }
+        .nav-dropdown-menu li a {
+            display:block; padding:9px 14px; border-radius:8px;
+            font-size:13.5px; font-weight:500; color: var(--text-body);
+            text-decoration:none; white-space:nowrap; transition: background .15s, color .15s;
+        }
+        .nav-dropdown-menu li a:hover { background: var(--orange-lt); color: var(--orange); }
+
+        .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:6px; }
+        .hamburger span { display:block; width:22px; height:2.5px; background: var(--navy); border-radius:2px; transition: all .28s ease; }
+
+        .mob-menu {
+            display:none; position:fixed;
+            top:82px; left:0; right:0; z-index:998;
+            background: #fff; border-bottom: 1px solid var(--gray-line);
+            box-shadow: 0 8px 24px rgba(0,0,0,.09);
+        }
+        .mob-menu.open { display:block; }
+        .mob-menu ul { list-style:none; }
+        .mob-menu ul li a {
+            display:block; padding:15px 36px;
+            color: var(--text-body); text-decoration:none; font-size:15px;
+            border-bottom: 1px solid var(--gray-line); transition: all .2s;
+        }
+        .mob-menu ul li a:hover { color: var(--orange); padding-left:48px; background: var(--orange-lt); }
+
+        /* ── PAGE HERO ── */
+        .page-hero {
+            background: var(--navy);
+            padding: 148px 40px 72px;
+            text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .page-hero::before {
+            content:''; position:absolute; top:-120px; left:-100px;
+            width:420px; height:420px;
+            background: radial-gradient(circle, rgba(249,115,22,.14) 0%, transparent 65%);
+            border-radius:50%;
+        }
+        .page-hero::after {
+            content:''; position:absolute; bottom:-80px; right:-60px;
+            width:340px; height:340px;
+            background: radial-gradient(circle, rgba(99,102,241,.1) 0%, transparent 65%);
+            border-radius:50%;
+        }
+        .page-hero-inner { position:relative; z-index:1; }
+        .page-hero-badge {
+            display:inline-block;
+            background: rgba(249,115,22,.15);
+            border: 1px solid rgba(249,115,22,.38);
+            color: #fdba74;
+            padding: 6px 20px; border-radius:100px;
+            font-size:12px; font-weight:700; letter-spacing:1.5px;
+            text-transform:uppercase; margin-bottom:20px;
+        }
+        .page-hero h1 {
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            font-weight: 900; letter-spacing: -1.2px; line-height: 1.2;
+            color: #fff; margin-bottom: 14px;
+        }
+        .page-hero h1 .accent { color: var(--orange); }
+        .page-hero p {
+            font-size: 1.05rem; color: rgba(255,255,255,.65); line-height: 1.85;
+        }
+
+        /* ── INSTRUCTORS ── */
+        .instructors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .instructor-card {
+            background: var(--white);
+            border: 2px solid var(--gray-line);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all .3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,.04);
+        }
+        .instructor-card:hover {
+            border-color: var(--orange);
+            box-shadow: 0 14px 44px rgba(249,115,22,.12);
+            transform: translateY(-5px);
+        }
+        .inst-photo {
+            aspect-ratio: 8 / 5;
+            background: var(--orange-lt);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 4rem; position: relative; overflow: hidden;
+        }
+        .inst-photo-blue   { background: #eff6ff; }
+        .inst-photo-green  { background: #f0fdf4; }
+        .inst-photo-purple { background: #faf5ff; }
+        .inst-photo img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center center;
+            display: block;
+        }
+        .inst-badge {
+            position: absolute; top: 14px; right: 14px;
+            background: var(--navy); color: #fff;
+            font-size: 11px; font-weight: 700; letter-spacing: .5px;
+            padding: 4px 10px; border-radius: 100px;
+        }
+        .inst-body { padding: 24px; }
+        .inst-name { font-size: 1.15rem; font-weight: 900; color: var(--navy); margin-bottom: 4px; }
+        .inst-role { font-size: .82rem; color: var(--orange); font-weight: 700; margin-bottom: 14px; line-height: 1.5; }
+        .inst-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+        .inst-tag {
+            font-size: 11.5px; color: var(--text-sub);
+            background: var(--gray-bg);
+            padding: 3px 10px; border-radius: 100px;
+        }
+        .inst-desc { font-size: .845rem; color: var(--text-sub); line-height: 1.78; }
+
+        .btn-white {
+            padding: 15px 44px;
+            background: #fff; color:var(--orange);
+            border:none; border-radius:8px;
+            font-size:15px; font-weight:800; cursor:pointer;
+            text-decoration:none; display:inline-block;
+            transition: all .25s;
+        }
+        .btn-white:hover { background:#fff7ed; transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,0,0,.15); }
+
+        .dispatch-banner {
+            background: linear-gradient(135deg, var(--navy) 0%, #1e3a8a 100%);
+            border-radius: 20px; padding: 44px 48px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 28px;
+        }
+        .dispatch-banner-text h3 {
+            font-size: 1.4rem; font-weight: 900; color: #fff;
+            margin-bottom: 10px; letter-spacing: -.5px; line-height: 1.35;
+        }
+        .dispatch-banner-text p { font-size: .92rem; color: rgba(255,255,255,.72); line-height: 1.85; }
+        .dispatch-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+        .dispatch-badge {
+            background: rgba(255,255,255,.12); color: rgba(255,255,255,.9);
+            font-size: 12px; font-weight: 700; padding: 5px 14px;
+            border-radius: 100px; border: 1px solid rgba(255,255,255,.2);
+        }
+        @media (max-width:720px) {
+            .dispatch-banner { padding: 32px 24px; }
+            .dispatch-banner-text h3 { font-size: 1.15rem; }
+        }
+
+        /* ── FOOTER ── */
+        footer { background: var(--navy); padding: 52px 48px 36px; }
+        .foot-grid {
+            max-width: 1140px; margin: 0 auto;
+            display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+            gap: 40px; margin-bottom: 40px;
+        }
+        .logo-img-footer { height: 80px; width: auto; object-fit: contain; display: block; margin-bottom: 16px; }
+        .foot-brand p { font-size: .9rem; color: rgba(255,255,255,.55); line-height: 1.9; max-width: 400px; word-break: keep-all; }
+        .foot-col h4 { font-size: .76rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,.08); }
+        .foot-col ul { list-style:none; display:flex; flex-direction:column; gap:12px; }
+        .foot-col ul li a { text-decoration:none; color:rgba(255,255,255,.62); font-size:.92rem; transition:color .2s; }
+        .foot-col ul li a:hover { color:var(--orange); }
+        .foot-bottom {
+            max-width: 1140px; margin: 0 auto;
+            padding-top: 24px; border-top: 1px solid rgba(255,255,255,.1);
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 10px;
+        }
+        .foot-bottom p { font-size: .84rem; color: rgba(255,255,255,.36); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width:1040px) {
+            .nav-links { display:none; }
+            .hamburger { display:flex; }
+            .foot-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+        }
+        @media (max-width:720px) {
+            nav { padding: 0 20px; height: 70px; }
+            .logo-img { height: 48px; }
+            .nav-brand-name { font-size: 16px; }
+            .nav-brand-sub { display: none; }
+            .page-hero { padding: 128px 20px 56px; }
+            .sec { padding: 56px 20px; }
+            footer { padding: 44px 20px 30px; }
+            .foot-grid { grid-template-columns: 1fr; gap: 24px; }
+            .foot-bottom { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══════ NAV (js/site-nav.js가 렌더링) ══════ -->
+<div id="site-nav-root" data-page="instructors"></div>
+
+
+<!-- ══════ PAGE HERO ══════ -->
+<div class="page-hero">
+    <div class="page-hero-inner">
+        <span class="page-hero-badge">OUR INSTRUCTORS</span>
+        <h1>검증된 강사진과 <span class="accent">함께합니다</span></h1>
+        <p>센터장을 포함해 각 분야 전문 강사 9명이 함께합니다.<br>기관의 예산과 목적에 맞는 강사를 파견해 드립니다.</p>
+    </div>
+</div>
+
+
+<!-- ══════ 강사진 전체 목록 ══════ -->
+<section class="sec sec-white">
+    <div class="container">
+
+        <div class="instructors-grid">
+
+            <div class="instructor-card reveal">
+                <div class="inst-photo inst-photo-blue">
+                    <img src="images/instructors/go-hyegyeong.jpg" alt="고혜경 강사">
+                    <span class="inst-badge">영상 · AI 콘텐츠</span>
+                </div>
+                <div class="inst-body">
+                    <p class="inst-name">고혜경 강사</p>
+                    <p class="inst-role">스마트폰 사진·영상 · 생성형 AI 활용 전문강사</p>
+                    <div class="inst-tags">
+                        <span class="inst-tag">스마트폰 사진</span>
+                        <span class="inst-tag">영상</span>
+                        <span class="inst-tag">생성형 AI</span>
+                        <span class="inst-tag">유튜브 콘텐츠</span>
+                        <span class="inst-tag">강사 역량강화</span>
+                    </div>
+                    <p class="inst-desc">스마트폰 하나로 사진, 영상, AI 콘텐츠 제작까지 누구나 쉽게 배울 수 있도록 실습 중심으로 교육합니다. 유튜브와 SNS 콘텐츠 제작은 물론 생성형 AI 활용과 강사 역량 강화까지 현장에서 바로 활용할 수 있는 실용 교육을 제공합니다.</p>
+                </div>
+            </div>
+
+            <div class="instructor-card reveal">
+                <div class="inst-photo inst-photo-green">
+                    <img src="images/instructors/kwon-jeonga.jpg" alt="권정아 강사">
+                    <span class="inst-badge">사진 · AI 활용</span>
+                </div>
+                <div class="inst-body">
+                    <p class="inst-name">권정아 강사</p>
+                    <p class="inst-role">스마트폰 활용 전문강사 · 스마트폰 사진작가 · AI 활용 교육 전문가</p>
+                    <div class="inst-tags">
+                        <span class="inst-tag">스마트폰 활용</span>
+                        <span class="inst-tag">스마트폰 사진</span>
+                        <span class="inst-tag">AI 활용</span>
+                        <span class="inst-tag">디지털문해교육</span>
+                        <span class="inst-tag">생성형 AI</span>
+                    </div>
+                    <p class="inst-desc">스마트폰 카메라 하나로 사진을 찍고 생성형 AI로 콘텐츠까지 완성하는 실전 수업을 진행합니다. 디지털 기기가 낯선 시니어부터 실무에 바로 적용해야 하는 공공기관 담당자까지, 눈높이에 맞춘 커리큘럼으로 디지털 문해력과 AI 활용 능력을 함께 키워드립니다.</p>
+                </div>
+            </div>
+
+            <div class="instructor-card reveal">
+                <div class="inst-photo inst-photo-purple">
+                    <img src="images/instructors/instructor-03-candidate.jpg" alt="신민아 강사">
+                    <span class="inst-badge">AI · 콘텐츠</span>
+                </div>
+                <div class="inst-body">
+                    <p class="inst-name">신민아 강사</p>
+                    <p class="inst-role">생성형 AI 콘텐츠 제작 전문강사</p>
+                    <div class="inst-tags">
+                        <span class="inst-tag">챗GPT</span>
+                        <span class="inst-tag">미드저니</span>
+                        <span class="inst-tag">AI 이미지</span>
+                        <span class="inst-tag">프롬프트 설계</span>
+                        <span class="inst-tag">콘텐츠 자동화</span>
+                    </div>
+                    <p class="inst-desc">챗GPT·미드저니 등 생성형 AI 도구를 활용해 이미지·영상·콘텐츠를 만드는 방법을 실습 중심으로 안내합니다. 처음 접하는 분도 바로 따라할 수 있도록 쉽게 가르칩니다.</p>
+                </div>
+            </div>
+
+            <div class="instructor-card reveal">
+                <div class="inst-photo inst-photo-blue">
+                    <img src="images/instructors/kim-jihyeon.jpg" alt="김지현 강사">
+                    <span class="inst-badge">SNS · 마케팅</span>
+                </div>
+                <div class="inst-body">
+                    <p class="inst-name">김지현 강사</p>
+                    <p class="inst-role">SNS 마케팅 전문가 · 1인 콘텐츠 창작 지도사</p>
+                    <div class="inst-tags">
+                        <span class="inst-tag">인스타그램</span>
+                        <span class="inst-tag">유튜브</span>
+                        <span class="inst-tag">블로그</span>
+                        <span class="inst-tag">브랜딩</span>
+                    </div>
+                    <p class="inst-desc">10년 이상의 SNS 운영 경험을 바탕으로 실전 마케팅 전략을 쉽게 풀어냅니다. 팔로워 성장부터 수익화까지 단계별로 안내합니다.</p>
+                </div>
+            </div>
+
+            <div class="instructor-card reveal">
+                <div class="inst-photo inst-photo-purple">
+                    <img src="images/instructors/lee-junho.jpg" alt="이준호 강사">
+                    <span class="inst-badge">AI · 디지털</span>
+                </div>
+                <div class="inst-body">
+                    <p class="inst-name">이준호 강사</p>
+                    <p class="inst-role">AI 활용 지도사 · 디지털 콘텐츠 전문 강사</p>
+                    <div class="inst-tags">
+                        <span class="inst-tag">AI 이미지</span>
+                        <span class="inst-tag">영상 제작</span>
+                        <span class="inst-tag">프롬프트</span>
+                        <span class="inst-tag">자동화</span>
+                    </div>
+                    <p class="inst-desc">AI 도구를 처음 접하는 분도 쉽게 따라올 수 있도록 실습 중심으로 안내합니다. 챗GPT, 미드저니, 클로드 등 최신 도구를 다룹니다.</p>
+                </div>
+            </div>
+
+            <div class="instructor-card reveal">
+                <div class="inst-photo inst-photo-green">
+                    <img src="images/instructors/park-mikyung.jpg" alt="박미경 강사">
+                    <span class="inst-badge">사진 · 출판</span>
+                </div>
+                <div class="inst-body">
+                    <p class="inst-name">박미경 강사</p>
+                    <p class="inst-role">스마트폰 사진작가 · 출판 전문가 · 사진치유 지도사</p>
+                    <div class="inst-tags">
+                        <span class="inst-tag">스마트폰 사진</span>
+                        <span class="inst-tag">사진 편집</span>
+                        <span class="inst-tag">책 출판</span>
+                        <span class="inst-tag">사진치유</span>
+                    </div>
+                    <p class="inst-desc">스마트폰 한 대로 작품 사진을 찍고 내 이야기를 책으로 엮는 법을 가르칩니다. 시니어부터 직장인까지 폭넓게 강의하고 있습니다.</p>
+                </div>
+            </div>
+
+            <div class="instructor-card reveal">
+                <div class="inst-photo inst-photo-green">
+                    <img src="images/instructors/yoon-gyeongsun.jpg" alt="윤경순 강사">
+                    <span class="inst-badge">사진 · 힐링</span>
+                </div>
+                <div class="inst-body">
+                    <p class="inst-name">윤경순 강사</p>
+                    <p class="inst-role">스마트폰사진작가 · 사진힐링전문가</p>
+                    <div class="inst-tags">
+                        <span class="inst-tag">스마트폰 사진</span>
+                        <span class="inst-tag">사진힐링</span>
+                        <span class="inst-tag">시니어 교육</span>
+                        <span class="inst-tag">감성사진</span>
+                    </div>
+                    <p class="inst-desc">스마트폰 카메라로 일상을 기록하며 마음을 다독이는 사진치유 수업을 진행합니다. 사진 한 장에 담긴 이야기를 함께 나누며, 카메라를 처음 잡는 분도 부담 없이 배울 수 있도록 안내합니다.</p>
+                </div>
+            </div>
+
+            <div class="instructor-card reveal">
+                <div class="inst-photo inst-photo-blue">
+                    <img src="images/instructors/kim-doyoon.jpg" alt="김도윤 강사">
+                    <span class="inst-badge">사진 · 영상</span>
+                </div>
+                <div class="inst-body">
+                    <p class="inst-name">김도윤 강사</p>
+                    <p class="inst-role">스마트폰사진작가 · 영상편집전문가</p>
+                    <div class="inst-tags">
+                        <span class="inst-tag">스마트폰 사진</span>
+                        <span class="inst-tag">영상편집</span>
+                        <span class="inst-tag">브이로그</span>
+                        <span class="inst-tag">컷편집·자막</span>
+                    </div>
+                    <p class="inst-desc">스마트폰 하나로 사진부터 영상 편집까지 완성하는 실전 수업을 진행합니다. 촬영한 소스를 바로 편집해 완성작으로 만드는 과정을 통해 결과물을 직접 눈으로 확인하며 배울 수 있습니다.</p>
+                </div>
+            </div>
+
+            <div class="instructor-card reveal">
+                <div class="inst-photo inst-photo-purple">
+                    <img src="images/instructors/lee-jian.jpg" alt="이지안 강사">
+                    <span class="inst-badge">사진 · 여행</span>
+                </div>
+                <div class="inst-body">
+                    <p class="inst-name">이지안 강사</p>
+                    <p class="inst-role">스마트폰사진작가 · 여행사진작가</p>
+                    <div class="inst-tags">
+                        <span class="inst-tag">스마트폰 사진</span>
+                        <span class="inst-tag">여행사진</span>
+                        <span class="inst-tag">구도·인물사진</span>
+                        <span class="inst-tag">감성보정</span>
+                    </div>
+                    <p class="inst-desc">여행지에서 만나는 순간들을 스마트폰으로 아름답게 담는 법을 가르칩니다. 구도와 빛을 읽는 눈부터 현장에서 바로 쓰는 보정 노하우까지, 사진 한 장의 완성도를 높이는 실전 팁을 전합니다.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 예산 맞춤 강사 파견 배너 -->
+        <div class="dispatch-banner reveal">
+            <div class="dispatch-banner-text">
+                <h3>기관 예산에 맞는 강사를<br>직접 파견해 드립니다</h3>
+                <p>
+                    소규모 특강부터 장기 정규 과정까지, 예산과 일정에 맞춰 최적의 강사를 연결해 드립니다.<br>
+                    복지관, 도서관, 기업, 학교 어디든 찾아갑니다. 견적 문의는 무료입니다.
+                </p>
+                <div class="dispatch-badges">
+                    <span class="dispatch-badge">✓ 1회 특강</span>
+                    <span class="dispatch-badge">✓ 단기 집중 과정</span>
+                    <span class="dispatch-badge">✓ 월정기 정규 강의</span>
+                    <span class="dispatch-badge">✓ 소규모 맞춤 워크숍</span>
+                    <span class="dispatch-badge">✓ 무료 견적 상담</span>
+                </div>
+            </div>
+            <a href="index.html#lecture-request" class="btn-white" style="flex-shrink:0; white-space:nowrap;">출강 문의하기</a>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+    <div class="foot-grid">
+        <div class="foot-brand">
+            <a href="index.html#home">
+                <img src="images/logo1.png" alt="스마트미디어아트센터" class="logo-img-footer">
+            </a>
+            <p>배움의 문턱을 낮추고, 쉽게 가르치고, 아낌없이 나누고,<br>함께 성장하는 교육 공간입니다.</p>
+        </div>
+        <div class="foot-col">
+            <h4>바로가기</h4>
+            <ul>
+                <li><a href="index.html#about">센터장 소개</a></li>
+                <li><a href="instructors.html">강사진</a></li>
+                <li><a href="index.html#courses">교육과정</a></li>
+                <li><a href="index.html#certification">강사양성·자격증</a></li>
+                <li><a href="reviews.html">수강후기</a></li>
+            </ul>
+        </div>
+        <div class="foot-col">
+            <h4>더보기</h4>
+            <ul>
+                <li><a href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 36 36" style="flex-shrink:0"><rect width="36" height="36" rx="9" fill="#FEE500"/><path fill="#191919" d="M18 8c-7.18 0-13 4.58-13 10.24 0 3.62 2.42 6.8 6.06 8.62-.27.98-.97 3.58-1.11 4.13-.17.68.25.67.53.49.22-.14 3.5-2.38 4.92-3.35.85.12 1.72.19 2.6.19 7.18 0 13-4.58 13-10.24S25.18 8 18 8z"/></svg>팀채팅</a></li>
+                <li><a href="https://cafe.naver.com/elsnap7"  target="_blank" rel="noopener">사진카페 포토피플</a></li>
+                <li><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener">스마트미디어아트센터 카페</a></li>
+            </ul>
+        </div>
+        <div class="foot-col">
+            <h4>연락처</h4>
+            <ul>
+                <li><a href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener">카카오 오픈채팅</a></li>
+                <li><a href="https://blog.naver.com/elanvital7" target="_blank" rel="noopener">네이버 블로그</a></li>
+                <li><a href="https://www.instagram.com/elanvital7/" target="_blank" rel="noopener">인스타그램</a></li>
+                <li><a href="https://www.youtube.com/channel/UC59f-okz-UWLR-Hz4LQBtLA" target="_blank" rel="noopener">유튜브</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="foot-bottom">
+        <p>© 2026 스마트미디어아트센터. All rights reserved.</p>
+        <p><a href="terms.html" style="color:rgba(255,255,255,.36);text-decoration:none;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(255,255,255,.36)'">이용약관</a> · <a href="privacy.html" style="color:rgba(255,255,255,.36);text-decoration:none;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(255,255,255,.36)'">개인정보처리방침</a></p>
+    </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script src="js/site-nav.js"></script>
+<script>
+    /* 스크롤 reveal */
+    const ro = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+</script>
+
+</body>
+</html>
