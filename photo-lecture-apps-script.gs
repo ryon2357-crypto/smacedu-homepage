@@ -713,6 +713,143 @@ function _sendNikonLiveAdminEmail(name, phone, email, path, interest, question, 
 }
 
 // ════════════════════════════════════════════
+// 9월 3일 온라인 강의 — 실제 Google Form 생성 (커스텀 apply 페이지와는 별개 채널)
+// 새 Apps Script 프로젝트로 FormApp.create()를 실행하면 미인증 앱으로 "차단된 앱" 화면이
+// 뜬다(2026-08-23 확인). 이 프로젝트는 이미 배포·인증이 끝난 상태라 여기서 실행해야
+// 그 문제 없이 바로 만들어진다. 위쪽의 ADMIN_EMAIL·_escapeHtml·_formatKoreanTimestamp와
+// _sendNikonLiveConfirmEmail·_sendNikonLiveAdminEmail(9월3일 온라인강의 신청 섹션)을 그대로 재사용한다.
+//
+// 실행 방법: 함수 선택 드롭다운에서 setupNikonLiveForm 을 고르고 ▶ 실행 (최초 1회).
+// 실행 로그에 찍히는 신청서 URL·편집기 URL·응답 스프레드시트 URL을 확인할 것.
+// 재실행하면 새 Form이 또 생기니 재실행 금지 — 문항 수정은 편집기 URL에서 직접.
+// ════════════════════════════════════════════
+function setupNikonLiveForm() {
+  const form = FormApp.create('온라인 강의 신청서 — 풍경사진 인물사진 잘 찍는 법');
+  form.setDescription(
+    '스마트미디어아트센터 · 온라인 강의 신청서\n' +
+    '일시: 2026-09-03(목) 저녁 8시 (KST) · 진행: 유튜브 라이브\n\n' +
+    '아래 정보를 입력하시면 신청이 완료됩니다. 라이브 시작 전 안내 메일을 다시 보내드립니다.'
+  );
+  form.setConfirmationMessage('신청이 완료됐습니다! 확인 메일을 보내드렸어요. 라이브 시작 전 다시 안내드리겠습니다.');
+  form.setCollectEmail(false); // 이메일은 아래 별도 문항으로 받음
+  form.setAllowResponseEdits(false);
+  form.setLimitOneResponsePerUser(false);
+  form.setRequireLogin(false);
+
+  form.addTextItem().setTitle('이름').setRequired(true);
+
+  form.addListItem()
+    .setTitle('신청 경로')
+    .setChoiceValues(['오픈톡방', 'SNS 광고', '메일', '지인추천', '사진카페', '유튜브', '기타'])
+    .setRequired(false);
+
+  const phoneValidation = FormApp.createTextValidation()
+    .setHelpText('010-1234-5678 형식으로 입력해 주세요.')
+    .requireTextMatchesPattern('^01[0-9]-\\d{3,4}-\\d{4}$')
+    .build();
+  form.addTextItem()
+    .setTitle('연락처')
+    .setHelpText('예: 010-1234-5678')
+    .setRequired(true)
+    .setValidation(phoneValidation);
+
+  const emailValidation = FormApp.createTextValidation()
+    .setHelpText('올바른 이메일 형식이 아닙니다.')
+    .requireTextIsEmail()
+    .build();
+  form.addTextItem()
+    .setTitle('이메일')
+    .setRequired(true)
+    .setValidation(emailValidation);
+
+  form.addListItem()
+    .setTitle('니콘 카메라·렌즈, 어떤 게 궁금하신가요?')
+    .setChoiceValues([
+      '처음 카메라 구입을 고민 중',
+      '니콘으로 기변을 고민 중',
+      '렌즈 추가 구매를 고민 중',
+      '카메라 구매 계획은 없음 (촬영법만 궁금)'
+    ])
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('이번 라이브에서 궁금한 점이나 다뤄줬으면 하는 내용')
+    .setRequired(false);
+
+  form.addCheckboxItem()
+    .setTitle('개인정보 수집 및 이용 동의')
+    .setHelpText(
+      '[개인정보 수집 및 이용]\n' +
+      '개인정보 수집 주체 : 스마트미디어아트센터, 이엘포토그래피\n' +
+      '개인정보 수집 항목 : 성함, 연락처, 이메일\n' +
+      '개인정보 수집 및 이용목적 : 자료배포, 홍보, 광고 (이메일, 문자)\n' +
+      '개인정보 보유 및 이용기간 : 수집일로부터 2년 (고객 동의 철회 시 지체 없이 파기)\n\n' +
+      '[개인정보 취급 위탁]\n' +
+      '개인정보 취급 위탁을 받는 자 : 스마트미디어아트센터, 이엘포토그래피\n' +
+      '개인정보 취급 위탁을 하는 업무의 내용 : 고객정보 저장 및 서버관리\n\n' +
+      '상기 동의를 거부할 권리가 있으나, 수집 및 이용에 동의하지 않을 경우 무료 특강 참여와 특강 후 선물 제공 및 자료 배포가 불가능합니다.'
+    )
+    .setChoiceValues(['위 개인정보 수집 및 이용에 동의합니다.'])
+    .setRequired(true);
+
+  form.addCheckboxItem()
+    .setTitle('저작권 안내 동의')
+    .setHelpText(
+      '✔ 스마트미디어아트센터에서 제공하는 수업자료를 재판매 및 타강의 목적으로 사용 시 저작권침해로 법적 처벌을 받을 수 있습니다.\n' +
+      '✔ 강의 영상 복제 및 녹화, 유통은 저작권침해로 법적 처벌을 받으실 수 있습니다. 절대 금지입니다.'
+    )
+    .setChoiceValues(['위 내용에 동의합니다. (동의하지 않으시면 특강 참여가 불가능합니다)'])
+    .setRequired(true);
+
+  const ss = SpreadsheetApp.create('9월3일 온라인강의 신청 (Google Form 응답)');
+  form.setDestination(FormApp.DestinationType.SPREADSHEET, ss.getId());
+
+  const already = ScriptApp.getProjectTriggers().some(t => t.getHandlerFunction() === 'onNikonLiveGoogleFormSubmit');
+  if (!already) {
+    ScriptApp.newTrigger('onNikonLiveGoogleFormSubmit').forForm(form).onFormSubmit().create();
+  }
+
+  Logger.log('신청서(응답 입력) URL: ' + form.getPublishedUrl());
+  Logger.log('편집기 URL: ' + form.getEditUrl());
+  Logger.log('응답 스프레드시트: ' + ss.getUrl());
+}
+
+// 2026-08-23: 구글폼 응답을 자체 스프레드시트(setupNikonLiveForm이 만든 "9월3일 온라인강의 신청
+// (Google Form 응답)")에만 남기면 랜딩페이지(nikon-live-0903.html) 신청자 명단과 갈라진다.
+// 그래서 여기서도 doGet의 _handleNikonLiveSubmit과 같은 탭(_getNikonLiveSheet, 메인
+// "사진특강 신청서" 스프레드시트의 "9월3일 온라인강의 신청" 탭)에 같은 열 순서로 합쳐서 적는다.
+// 구글폼 자체의 연결 스프레드시트는 그대로 두되(원본 백업), 실제 취합 명단은 이 탭 하나다.
+function onNikonLiveGoogleFormSubmit(e) {
+  try {
+    const resp = e.response;
+    const answers = {};
+    resp.getItemResponses().forEach(ir => {
+      answers[ir.getItem().getTitle()] = ir.getResponse();
+    });
+
+    const name      = answers['이름'] || '';
+    const path      = answers['신청 경로'] || '';
+    const phone     = answers['연락처'] || '';
+    const email     = answers['이메일'] || '';
+    const interest  = answers['니콘 카메라·렌즈, 어떤 게 궁금하신가요?'] || '';
+    const question  = answers['이번 라이브에서 궁금한 점이나 다뤄줬으면 하는 내용'] || '';
+    const consent   = answers['개인정보 수집 및 이용 동의'] ? '동의함' : '';
+    const copyright = answers['저작권 안내 동의'] ? '동의함' : '';
+
+    const timestamp = _formatKoreanTimestamp(new Date(), Session.getScriptTimeZone());
+
+    const sheet = _getNikonLiveSheet();
+    sheet.appendRow([timestamp, name, phone, email, path + ' (구글폼)', interest, question, consent, copyright]);
+    const total = sheet.getLastRow() - 1;
+
+    if (email) _sendNikonLiveConfirmEmail(name, email);
+    _sendNikonLiveAdminEmail(name, phone, email, path, interest, question, timestamp, total);
+  } catch (err) {
+    console.error('onNikonLiveGoogleFormSubmit 오류: ' + err.message);
+  }
+}
+
+// ════════════════════════════════════════════
 // 자격증 정보 정정 신청 (cert-correction.html)
 // ════════════════════════════════════════════
 function _getCertFixSheet() {
