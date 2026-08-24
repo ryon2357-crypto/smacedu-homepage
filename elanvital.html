@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="엘란비탈 박성욱 작가 — 홈페이지, 카카오톡 문의, 오픈채팅방, 블로그, 인스타그램, 유튜브를 한 곳에서 만나보세요.">
+    <title>엘란비탈 박성욱 | 스마트미디어아트센터</title>
+    <link rel="icon" href="images/logo1.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <meta property="og:title" content="엘란비탈 박성욱 | 스마트미디어아트센터">
+    <meta property="og:description" content="홈페이지·카카오톡 문의·오픈채팅방·블로그·인스타그램·유튜브를 한 곳에서.">
+    <meta property="og:image" content="https://www.smacedu.kr/images/director.jpg?v=2">
+    <meta property="og:type" content="profile">
+
+    <style>
+        :root {
+            --navy: #172554;
+            --navy-light: #243b79;
+            --orange: #f97316;
+            --orange-dark: #e85f08;
+            --orange-soft: #fff7ed;
+            --paper: #ffffff;
+            --canvas: #f4f6fb;
+            --line: #e4e7ee;
+            --text: #253047;
+            --muted: #70798b;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { min-height: 100%; }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 8% 0%, rgba(249, 115, 22, .14), transparent 26rem),
+                radial-gradient(circle at 96% 92%, rgba(37, 59, 121, .13), transparent 30rem),
+                var(--canvas);
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        a { text-decoration: none; }
+
+        main {
+            display: flex;
+            justify-content: center;
+            width: min(460px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 48px 0 60px;
+        }
+
+        .card {
+            width: 100%;
+            padding: 40px 30px 34px;
+            background: var(--paper);
+            border: 1px solid rgba(228, 231, 238, .85);
+            border-radius: 28px;
+            box-shadow: 0 24px 70px rgba(23, 37, 84, .13);
+        }
+
+        .avatar-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 112px;
+            height: 112px;
+            object-fit: cover;
+            border: 4px solid var(--orange-soft);
+            border-radius: 50%;
+            box-shadow: 0 10px 26px rgba(23, 37, 84, .18);
+        }
+
+        .identity {
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+            padding: 6px 13px;
+            color: var(--orange-dark);
+            background: var(--orange-soft);
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .08em;
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 25px;
+            letter-spacing: -.03em;
+        }
+
+        .role {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            margin-top: 28px;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            height: 60px;
+            padding: 0 20px;
+            color: var(--navy);
+            background: #fbfcfe;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            font-size: 15.5px;
+            font-weight: 700;
+            transition: transform .15s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
+        }
+
+        .link-btn:hover {
+            background: white;
+            border-color: var(--orange);
+            box-shadow: 0 10px 22px rgba(23, 37, 84, .1);
+            transform: translateY(-2px);
+        }
+
+        .link-btn .icon {
+            display: grid;
+            flex: 0 0 40px;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            font-size: 19px;
+            background: var(--orange-soft);
+            border-radius: 12px;
+        }
+
+        .link-btn .label { flex: 1; }
+        .link-btn .sub {
+            display: block;
+            margin-top: 2px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .link-btn .arrow {
+            color: #c7cce0;
+            font-size: 17px;
+        }
+
+        .link-btn.primary {
+            color: white;
+            background: var(--navy);
+            border-color: var(--navy);
+        }
+
+        .link-btn.primary:hover {
+            background: var(--navy-light);
+            border-color: var(--navy-light);
+        }
+
+        .link-btn.primary .icon { background: rgba(255,255,255,.14); }
+        .link-btn.primary .sub { color: rgba(255,255,255,.7); }
+        .link-btn.primary .arrow { color: rgba(255,255,255,.55); }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--muted);
+            font-size: 12.5px;
+            font-weight: 600;
+        }
+
+        footer a:hover { color: var(--orange); }
+
+        .promo {
+            display: block;
+            margin-top: 22px;
+            padding: 20px 22px;
+            background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+            border-radius: 18px;
+            box-shadow: 0 14px 30px rgba(249, 115, 22, .3);
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+
+        .promo:hover {
+            box-shadow: 0 18px 36px rgba(249, 115, 22, .38);
+            transform: translateY(-2px);
+        }
+
+        .promo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+            padding: 4px 11px;
+            color: var(--orange-dark);
+            background: white;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .04em;
+        }
+
+        .promo-title {
+            margin: 0 0 4px;
+            color: white;
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -.02em;
+        }
+
+        .promo-sub {
+            margin: 0 0 14px;
+            color: rgba(255,255,255,.88);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .promo-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--orange-dark);
+            background: white;
+            padding: 9px 16px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 800;
+        }
+
+        .promo + .promo { margin-top: 12px; }
+
+        .promo-alt {
+            background: linear-gradient(135deg, var(--navy-light), var(--navy));
+            box-shadow: 0 14px 30px rgba(23, 37, 84, .28);
+        }
+
+        .promo-alt:hover { box-shadow: 0 18px 36px rgba(23, 37, 84, .34); }
+        .promo-alt .promo-badge, .promo-alt .promo-cta { color: var(--navy); }
+
+        @media (max-width: 380px) {
+            main { padding: 32px 0 44px; }
+            .card { padding: 32px 20px 28px; border-radius: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="card">
+            <div class="avatar-wrap">
+                <img class="avatar" src="images/director.jpg" alt="엘란비탈 박성욱 작가">
+            </div>
+            <div class="identity">
+                <div class="eyebrow">✦ SMART MEDIA ART CENTER</div>
+                <h1>엘란비탈 박성욱</h1>
+                <p class="role">사진·AI 활용 강사 · 스마트미디어아트센터 대표</p>
+            </div>
+
+            <div class="links">
+                <a class="link-btn primary" href="https://www.smacedu.kr" target="_blank" rel="noopener">
+                    <span class="icon">🏠</span>
+                    <span class="label">홈페이지<span class="sub">smacedu.kr</span></span>
+                    <span class="arrow">→</span>
+                </a>
+                <a class="link-btn" href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener">
+                    <span class="icon">💬</span>
+                    <span class="label">엘란비탈 무료특강 아카데미<span class="sub">팀채팅 바로 참여하기</span></span>
+                    <span class="arrow">→</span>
+                </a>
+                <a class="link-btn" href="https://open.kakao.com/o/ghTP7g8g" target="_blank" rel="noopener">
+                    <span class="icon">👥</span>
+                    <span class="label">오픈채팅방<span class="sub">수강생 커뮤니티 참여하기</span></span>
+                    <span class="arrow">→</span>
+                </a>
+                <a class="link-btn" href="https://blog.naver.com/elanvital7" target="_blank" rel="noopener">
+                    <span class="icon">📝</span>
+                    <span class="label">네이버 블로그<span class="sub">강의 후기와 사진 이야기</span></span>
+                    <span class="arrow">→</span>
+                </a>
+                <a class="link-btn" href="https://www.instagram.com/elanvital7/" target="_blank" rel="noopener">
+                    <span class="icon">📷</span>
+                    <span class="label">인스타그램<span class="sub">@elanvital7</span></span>
+                    <span class="arrow">→</span>
+                </a>
+                <a class="link-btn" href="https://www.youtube.com/@elanvital0624" target="_blank" rel="noopener">
+                    <span class="icon">▶️</span>
+                    <span class="label">유튜브<span class="sub">쉽게 배우는 사진과 보정</span></span>
+                    <span class="arrow">→</span>
+                </a>
+            </div>
+
+            <a class="promo" href="https://www.smacedu.kr/photo-lecture-landing" target="_blank" rel="noopener">
+                <span class="promo-badge">🔥 진행중인 무료 특강</span>
+                <p class="promo-title">찍는 순간 작품이 되는 스마트폰 사진</p>
+                <p class="promo-sub">8월 28일(금) 저녁 9시 — ZOOM, 선착순 100명</p>
+                <span class="promo-cta">신청하러 가기 →</span>
+            </a>
+
+            <a class="promo promo-alt" href="https://www.smacedu.kr/nikon-live-0903" target="_blank" rel="noopener">
+                <span class="promo-badge">📅 다음 특강 예정</span>
+                <p class="promo-title">풍경사진 · 인물사진 잘 찍는 법</p>
+                <p class="promo-sub">9월 3일 유튜브 라이브 — 지금 신청하세요</p>
+                <span class="promo-cta">신청하러 가기 →</span>
+            </a>
+
+            <footer>
+                <a href="https://www.smacedu.kr">스마트미디어아트센터 전체 서비스 보기</a>
+            </footer>
+        </section>
+    </main>
+</body>
+</html>
