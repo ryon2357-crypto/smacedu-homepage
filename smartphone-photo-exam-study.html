@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <script src="js/no-copy.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+  <title>스마트폰사진작가 필기 스터디 — 스마트미디어아트센터</title>
+  <meta name="description" content="스마트폰사진작가 1급·2급 필기시험 대비 학습 페이지. 과목별 20문항을 퀴즈로 풀거나 정답보기 모드로 한번에 훑어볼 수 있습니다." />
+  <meta name="robots" content="noindex" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.smacedu.kr/smartphone-photo-exam-study.html" />
+  <meta property="og:title" content="스마트폰사진작가 필기 스터디 — 스마트미디어아트센터" />
+  <meta property="og:description" content="스마트폰사진작가 1급·2급 필기시험 대비 학습 페이지. 과목별 20문항을 퀴즈로 풀거나 정답보기 모드로 한번에 훑어볼 수 있습니다." />
+  <link rel="icon" href="images/logo1.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f2efe6;
+      --paper-raised: #fbf9f3;
+      --ink: #21261f;
+      --ink-soft: #5a5f52;
+      --line: #d8d2bf;
+      --line-soft: #e6e1d1;
+      --accent: #d99a2b;
+      --accent-ink: #4a3510;
+      --accent-soft: #f4dfae;
+      --good: #3f7a52;
+      --good-soft: #dceadb;
+      --bad: #b0483d;
+      --bad-soft: #f3ddd8;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Libre Franklin", -apple-system, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+    }
+
+    body {
+      min-height: 100%;
+      padding: 0 0 6rem;
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 2.2rem 1.25rem 0;
+    }
+
+    .backlink {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      text-decoration: none;
+      margin-bottom: 1rem;
+    }
+    .backlink:hover { color: var(--ink); }
+
+    /* ---- Header : instrument-panel style ---- */
+    header.masthead {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .masthead-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    h1 {
+      font-family: var(--sans);
+      font-weight: 800;
+      font-size: clamp(1.5rem, 4vw, 2.05rem);
+      letter-spacing: -0.01em;
+      margin: 0.15rem 0 0;
+      text-wrap: balance;
+    }
+
+    .sub {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      max-width: 60ch;
+      line-height: 1.55;
+    }
+
+    /* ---- Level dial ---- */
+    .dial {
+      display: flex;
+      gap: 0.5rem;
+      border: 1px solid var(--line);
+      background: var(--paper-raised);
+      border-radius: 999px;
+      padding: 0.3rem;
+      width: fit-content;
+    }
+
+    .dial button {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.02em;
+      border: none;
+      background: transparent;
+      color: var(--ink-soft);
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .dial button.active {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .dial button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* ---- Subject tabs ---- */
+    .subject-row {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin: 1.1rem 0 0.4rem;
+    }
+
+    .subject-tab {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+      background: var(--paper-raised);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.55rem 0.85rem;
+      cursor: pointer;
+      text-align: left;
+      flex: 1 1 220px;
+    }
+
+    .subject-tab .tag {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--accent-ink);
+      background: var(--accent-soft);
+      border-radius: 5px;
+      padding: 0.1rem 0.4rem;
+    }
+
+    .subject-tab.active {
+      border-color: var(--ink);
+      color: var(--ink);
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    .subject-tab:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* ---- Exposure meter (progress) ---- */
+    .meter-block {
+      margin: 1.3rem 0 0.2rem;
+      border: 1px solid var(--line);
+      background: var(--paper-raised);
+      border-radius: 12px;
+      padding: 0.9rem 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .meter-label {
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .meter-track {
+      position: relative;
+      flex: 1;
+      height: 8px;
+      border-radius: 999px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--line-soft) 0 1px,
+        transparent 1px 20px
+      );
+      background-color: var(--line-soft);
+      overflow: visible;
+    }
+
+    .meter-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--good));
+      width: 0%;
+      transition: width 0.35s ease;
+    }
+
+    .meter-needle {
+      position: absolute;
+      top: -4px;
+      width: 2px;
+      height: 16px;
+      background: var(--ink);
+      left: 0%;
+      transform: translateX(-1px);
+      transition: left 0.35s ease;
+    }
+
+    .meter-score {
+      font-family: var(--mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    /* ---- Mode toggle + reset ---- */
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      margin: 1rem 0 1.4rem;
+      flex-wrap: wrap;
+    }
+
+    .toggle {
+      display: inline-flex;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--paper-raised);
+      padding: 0.25rem;
+    }
+
+    .toggle button {
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: var(--ink-soft);
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .toggle button.active {
+      background: var(--accent);
+      color: var(--accent-ink);
+    }
+
+    .reset-btn {
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.45rem 0.8rem;
+      cursor: pointer;
+    }
+
+    .reset-btn:hover { border-color: var(--ink-soft); color: var(--ink); }
+
+    /* ---- 실전 시험 응시 CTA ---- */
+    .exam-cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin: 0.7rem 0 0;
+      padding: 0.9rem 1.1rem;
+      border-radius: 12px;
+      background: var(--ink);
+      color: var(--paper);
+      text-decoration: none;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+    .exam-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(33, 38, 31, 0.18);
+    }
+    .exam-cta-text { display: flex; flex-direction: column; gap: 0.15rem; }
+    .exam-cta-text strong {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--accent-soft);
+    }
+    .exam-cta-text span {
+      font-size: 0.8rem;
+      color: #d8d5c8;
+    }
+    .exam-cta-arrow {
+      font-family: var(--mono);
+      font-size: 1.2rem;
+      color: var(--accent-soft);
+      flex: none;
+    }
+    .exam-cta:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* ---- Question cards ---- */
+    .qlist {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .qcard {
+      border: 1px solid var(--line);
+      background: var(--paper-raised);
+      border-radius: 14px;
+      padding: 1.1rem 1.15rem 1.2rem;
+    }
+
+    .qcard.answered.correct { border-color: var(--good); }
+    .qcard.answered.incorrect { border-color: var(--bad); }
+
+    .hint-line {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--bad);
+      margin: -0.15rem 0 0.6rem;
+    }
+
+    .hint-line .bulb {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent-ink);
+      background: var(--accent-soft);
+      border-radius: 5px;
+      padding: 0.05rem 0.4rem;
+    }
+
+    .qhead {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      margin-bottom: 0.55rem;
+    }
+
+    .qframe {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .qtext {
+      font-size: 1.01rem;
+      font-weight: 600;
+      line-height: 1.5;
+      text-wrap: balance;
+    }
+
+    .opts {
+      display: grid;
+      gap: 0.5rem;
+      margin-top: 0.7rem;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-align: left;
+      font-family: var(--sans);
+      font-size: 0.94rem;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 0.6rem 0.8rem;
+      cursor: pointer;
+      line-height: 1.4;
+    }
+
+    .opt .bullet {
+      flex: none;
+      width: 1.3rem;
+      height: 1.3rem;
+      border-radius: 50%;
+      border: 1.5px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--ink-soft);
+    }
+
+    .opt:hover:not(.locked) {
+      border-color: var(--ink-soft);
+    }
+
+    .opt:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .opt.locked { cursor: default; }
+
+    .opt.correct-pick {
+      background: var(--good-soft);
+      border-color: var(--good);
+    }
+    .opt.correct-pick .bullet {
+      background: var(--good);
+      border-color: var(--good);
+      color: #fff;
+    }
+
+    .opt.wrong-pick {
+      background: var(--bad-soft);
+      border-color: var(--bad);
+    }
+    .opt.wrong-pick .bullet {
+      background: var(--bad);
+      border-color: var(--bad);
+      color: #fff;
+    }
+
+    .opt.reveal-correct:not(.wrong-pick) {
+      border-color: var(--good);
+    }
+
+    /* 오답으로 걸러진 보기 - 다시 고를 수 없게 흐리게 처리(과정 소거식 힌트) */
+    .opt.eliminated {
+      background: var(--paper);
+      border-color: var(--line-soft);
+      color: var(--ink-soft);
+      text-decoration: line-through;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .opt.eliminated .bullet {
+      background: var(--bad-soft);
+      border-color: var(--bad);
+      color: var(--bad);
+    }
+
+    /* review (all-answers) mode */
+    .qcard.review .answer-line {
+      margin-top: 0.75rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      font-size: 0.94rem;
+      padding-top: 0.7rem;
+      border-top: 1px dashed var(--line);
+    }
+
+    .answer-line .lbl {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--good);
+      white-space: nowrap;
+    }
+
+    .answer-line .val {
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    footer.note {
+      max-width: 760px;
+      margin: 2.2rem auto 0;
+      padding: 0 1.25rem;
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .meter-fill, .meter-needle { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="backlink" href="certificates.html">← 등록 민간자격 안내로 돌아가기</a>
+
+    <header class="masthead">
+      <div class="masthead-top">
+        <div>
+          <div class="eyebrow">스마트미디어아트센터 · 검정 대비</div>
+          <h1>스마트폰사진작가 필기 스터디</h1>
+        </div>
+      </div>
+      <p class="sub">등급·과목별 20문항. 문제를 눌러 바로 채점하거나, 정답보기 모드로 한 번에 훑어보세요. 과목당 40점, 평균 60점 이상이 합격 기준입니다.</p>
+
+      <div class="dial" id="levelDial"></div>
+      <div class="subject-row" id="subjectRow"></div>
+    </header>
+
+    <div class="meter-block">
+      <span class="meter-label" id="meterLabel">노출계</span>
+      <div class="meter-track">
+        <div class="meter-fill" id="meterFill"></div>
+        <div class="meter-needle" id="meterNeedle"></div>
+      </div>
+      <span class="meter-score" id="meterScore">0 / 20</span>
+    </div>
+
+    <a class="exam-cta" id="examCta" href="#" target="_blank" rel="noopener">
+      <span class="exam-cta-text">
+        <strong id="examCtaTitle">준비됐으면 바로 실전 시험 응시</strong>
+        <span id="examCtaSub">이 과목 필기시험(20문항, 과목당 40점 이상)으로 이동합니다</span>
+      </span>
+      <span class="exam-cta-arrow">→</span>
+    </a>
+
+    <div class="controls">
+      <div class="toggle" id="modeToggle">
+        <button data-mode="quiz" class="active">퀴즈 모드</button>
+        <button data-mode="review">정답보기 모드</button>
+      </div>
+      <button class="reset-btn" id="resetBtn">다시 풀기</button>
+    </div>
+
+    <div class="qlist" id="qlist"></div>
+
+    <footer class="note">
+      합격 기준은 관리운영규정 제9·10조 기준입니다(과목당 40점 이상, 등급 전체 2과목 평균 60점 이상). 최종 합격은 이 필기 결과와 별도 실기 심사를 종합해 결정됩니다. 이 페이지의 채점 기록은 이 브라우저에만 저장되며 서버로 전송되지 않습니다.
+    </footer>
+  </div>
+
+  <script>
+  (function () {
+    "use strict";
+
+    var DATA = {
+      "2-1": {
+        level: 2, subjectNo: 1, name: "스마트폰 사진촬영 기초 이론",
+        questions: [
+          {q:"사진에서 화면 전체의 밝고 어두운 정도를 나타내는 말은?", options:["노출","채도","초점","화이트밸런스"], answer:"노출"},
+          {q:"스마트폰 카메라의 '그리드(격자)' 기능이 돕는 것은?", options:["수평과 구도 맞추기","파일 용량 줄이기","자동 초점 끄기","야간 감도 높이기"], answer:"수평과 구도 맞추기"},
+          {q:"인물 사진에서 배경을 흐리게 만들어주는 촬영 모드는?", options:["인물모드(포트레이트)","파노라마 모드","타임랩스 모드","야간모드"], answer:"인물모드(포트레이트)"},
+          {q:"조명에 따라 사진이 노랗거나 파랗게 나오는 것을 바로잡는 기능은?", options:["화이트밸런스","셔터스피드","줌","타이머"], answer:"화이트밸런스"},
+          {q:"화면을 가로·세로 3등분해 교차점에 피사체를 배치하는 구도는?", options:["삼분할 구도","대칭 구도","역광 구도","망원 구도"], answer:"삼분할 구도"},
+          {q:"스마트폰으로 야경을 흔들림 없이 찍는 가장 좋은 방법은?", options:["삼각대나 고정된 곳에 놓고 찍는다","손을 최대한 빨리 움직인다","화면을 최대한 확대한다","플래시를 계속 켠다"], answer:"삼각대나 고정된 곳에 놓고 찍는다"},
+          {q:"화면을 손가락으로 눌러 밝기를 조절하는 기능을 무엇이라 하는가?", options:["노출 조절","초점 고정만","해상도 변경","파일 형식 변경"], answer:"노출 조절"},
+          {q:"디지털 줌을 과도하게 사용할 때 생기는 단점은?", options:["화질이 떨어진다","배터리가 늘어난다","저장 공간이 늘어난다","초점이 항상 정확해진다"], answer:"화질이 떨어진다"},
+          {q:"여러 장을 빠르게 연속으로 찍어 잘 나온 컷을 고르는 촬영 방식은?", options:["연속촬영(버스트샷)","타임랩스","슬로우모션","파노라마"], answer:"연속촬영(버스트샷)"},
+          {q:"인물의 눈높이에서 촬영하면 얻을 수 있는 효과는?", options:["자연스럽고 안정적인 느낌을 준다","인물이 항상 작게 나온다","배경이 사라진다","역광이 항상 생긴다"], answer:"자연스럽고 안정적인 느낌을 준다"},
+          {q:"스마트폰 화면에서 원하는 곳을 톡 눌러 초점을 맞추는 동작은?", options:["탭 포커스(초점 잠금)","더블탭 줌","길게 눌러 삭제","핀치 줌"], answer:"탭 포커스(초점 잠금)"},
+          {q:"렌즈에 지문이나 먼지가 묻어 있을 때 사진에 생기는 문제는?", options:["사진이 뿌옇게 흐려진다","색이 더 진해진다","해상도가 올라간다","배터리가 빨리 닳는다"], answer:"사진이 뿌옇게 흐려진다"},
+          {q:"스마트폰 촬영 시 손떨림을 줄이는 올바른 자세는?", options:["양팔을 몸에 붙이고 안정적으로 잡는다","한 손으로 최대한 멀리 뻗는다","걸으면서 촬영한다","화면을 계속 확대한 채 찍는다"], answer:"양팔을 몸에 붙이고 안정적으로 잡는다"},
+          {q:"역광으로 인물이 어둡게 나올 때 밝기를 보정하는 기능은?", options:["노출 보정(밝기 슬라이더)","타이머 설정","해상도 변경","파일 형식 변환"], answer:"노출 보정(밝기 슬라이더)"},
+          {q:"스마트폰의 광각 렌즈로 촬영하면 얻는 효과는?", options:["더 넓은 화각을 한 장에 담을 수 있다","배경이 항상 흐려진다","색이 항상 진해진다","줌이 더 이상 안 된다"], answer:"더 넓은 화각을 한 장에 담을 수 있다"},
+          {q:"사진 속 수평선이 기울어졌을 때 바로잡는 편집 기능은?", options:["수평 맞추기(회전/보정)","노이즈 감소","채도 조절","워터마크 삽입"], answer:"수평 맞추기(회전/보정)"},
+          {q:"태양을 등지고 피사체를 향해 촬영하면 얻는 효과는?", options:["피사체가 밝고 선명하게 나온다","피사체가 항상 실루엣이 된다","화이트밸런스가 깨진다","초점이 맞지 않는다"], answer:"피사체가 밝고 선명하게 나온다"},
+          {q:"사진의 윤곽을 또렷하게 보이도록 인위적으로 높이는 보정 기능은?", options:["샤픈(선명도)","블러(흐림)","노이즈 추가","타임랩스"], answer:"샤픈(선명도)"},
+          {q:"피사체를 아주 가까이서 확대해 찍는 촬영을 무엇이라 하는가?", options:["접사(매크로) 촬영","파노라마 촬영","타임랩스 촬영","야간 촬영"], answer:"접사(매크로) 촬영"},
+          {q:"촬영 전 배터리와 저장 공간을 미리 확인해야 하는 이유는?", options:["촬영 도중 중단되지 않도록 하기 위해","화질을 자동으로 높이기 위해","화이트밸런스를 고정하기 위해","초점을 자동으로 맞추기 위해"], answer:"촬영 도중 중단되지 않도록 하기 위해"}
+        ]
+      },
+      "2-2": {
+        level: 2, subjectNo: 2, name: "SNS 콘텐츠 활용 및 이미지 최적화 이론",
+        questions: [
+          {q:"사진에 붙이는 짧은 설명 글을 무엇이라 하는가?", options:["캡션","워터마크","메타데이터","썸네일"], answer:"캡션"},
+          {q:"SNS에서 검색과 노출을 돕기 위해 사진에 붙이는 키워드 표시는?", options:["해시태그","캡션","워터마크","필터"], answer:"해시태그"},
+          {q:"인스타그램 게시물에 흔히 쓰이는 정사각형 비율은?", options:["1:1","16:9","3:2","21:9"], answer:"1:1"},
+          {q:"사진에 문구나 로고를 넣어 출처를 표시하는 것을 무엇이라 하는가?", options:["워터마크","캡션","해시태그","그리드"], answer:"워터마크"},
+          {q:"SNS 업로드 전 파일 크기를 줄여 로딩 속도를 높이는 작업을 무엇이라 하는가?", options:["이미지 최적화(압축)","사진 인화","필터 적용","메타데이터 삭제"], answer:"이미지 최적화(압축)"},
+          {q:"SNS에 올리기 전 사진 원본을 따로 보관해야 하는 이유는?", options:["나중에 다시 편집하거나 인쇄할 때를 대비하기 위해","용량을 늘리기 위해","화질을 낮추기 위해","업로드 속도를 늦추기 위해"], answer:"나중에 다시 편집하거나 인쇄할 때를 대비하기 위해"},
+          {q:"블로그나 SNS에 사진을 올릴 때 흔히 쓰이는 파일 형식은?", options:["JPG","PSD","AI","RAW"], answer:"JPG"},
+          {q:"여러 장의 사진을 한 게시물에 넣어 넘겨보게 올리는 방식을 무엇이라 하는가?", options:["슬라이드(여러 장) 게시물","라이브 방송","다이렉트 메시지","댓글창"], answer:"슬라이드(여러 장) 게시물"},
+          {q:"SNS 게시물에 달리는 좋아요·댓글 같은 반응을 이르는 말은?", options:["반응(참여)","노출","초점","채도"], answer:"반응(참여)"},
+          {q:"사진에 위치정보(GPS)가 그대로 남은 채 SNS에 올리면 생길 수 있는 문제는?", options:["내 위치가 다른 사람에게 노출될 수 있다","파일 용량이 줄어든다","화질이 자동으로 좋아진다","업로드 속도가 빨라진다"], answer:"내 위치가 다른 사람에게 노출될 수 있다"},
+          {q:"여러 장의 사진을 순서대로 이어 하나의 이야기를 전달하는 콘텐츠 형식은?", options:["카드뉴스","단일 썸네일","워터마크","메타데이터"], answer:"카드뉴스"},
+          {q:"SNS에 올릴 사진을 고를 때 가장 먼저 살펴볼 점은?", options:["주제와 잘 어울리는지","파일 이름 길이","촬영한 요일","카메라 기종"], answer:"주제와 잘 어울리는지"},
+          {q:"다른 사람의 사진을 허락 없이 SNS에 올려서 쓰면 생기는 문제는?", options:["저작권 문제가 생길 수 있다","화질이 저절로 좋아진다","업로드 속도가 빨라진다","아무 문제 없다"], answer:"저작권 문제가 생길 수 있다"},
+          {q:"SNS 게시물의 첫인상을 좌우하는 요소는?", options:["대표 사진(썸네일)","파일명","촬영 시간","카메라 기종"], answer:"대표 사진(썸네일)"},
+          {q:"사진 편집 앱에서 밝기·색감을 조절하는 기본 작업을 무엇이라 하는가?", options:["보정","인코딩","포맷팅","렌더링"], answer:"보정"},
+          {q:"계정에 올리는 사진들에 같은 톤과 느낌을 유지하는 이유는?", options:["통일된 느낌을 주기 위해","파일 용량을 줄이기 위해","업로드 속도를 높이기 위해","저작권을 피하기 위해"], answer:"통일된 느낌을 주기 위해"},
+          {q:"게시물을 더 많은 사람에게 보이게 하려면 어떻게 하는 것이 좋은가?", options:["꾸준히 올리고 알맞은 해시태그를 붙인다","하루에 딱 한 번만 접속한다","해시태그를 전혀 쓰지 않는다","사진 없이 글만 올린다"], answer:"꾸준히 올리고 알맞은 해시태그를 붙인다"},
+          {q:"해시태그를 붙이는 주된 이유는?", options:["관련 게시물이 검색에 잘 걸리도록 하기 위해","사진 용량을 줄이기 위해","화질을 높이기 위해","댓글을 막기 위해"], answer:"관련 게시물이 검색에 잘 걸리도록 하기 위해"},
+          {q:"사진 설명 글(캡션)을 쓸 때 좋은 방법은?", options:["사진과 어울리는 짧고 자연스러운 문장을 쓴다","사진과 상관없는 긴 글을 쓴다","설명 없이 해시태그만 나열한다","다른 사람의 글을 그대로 복사한다"], answer:"사진과 어울리는 짧고 자연스러운 문장을 쓴다"},
+          {q:"SNS용 사진을 고를 때 화질 면에서 피해야 할 것은?", options:["흔들리거나 초점이 안 맞은 사진","밝은 사진","구도가 좋은 사진","색감이 자연스러운 사진"], answer:"흔들리거나 초점이 안 맞은 사진"}
+        ]
+      },
+      "1-1": {
+        level: 1, subjectNo: 1, name: "사진 촬영 원리 및 시각 표현 기법",
+        questions: [
+          {q:"조리개 값(F값)이 작을수록 나타나는 효과는?", options:["배경이 흐려진다(아웃포커싱)","사진이 어두워진다","초점이 안 맞는다","화이트밸런스가 바뀐다"], answer:"배경이 흐려진다(아웃포커싱)"},
+          {q:"셔터스피드를 느리게 설정했을 때 나타나는 효과는?", options:["움직임이 흐르듯 표현된다","사진이 항상 선명해진다","화이트밸런스가 자동으로 맞춰진다","노이즈가 사라진다"], answer:"움직임이 흐르듯 표현된다"},
+          {q:"ISO를 높였을 때 생기는 변화로 옳은 것은?", options:["어두운 곳에서도 밝게 찍히지만 노이즈가 늘어난다","사진이 항상 선명해진다","색온도가 낮아진다","셔터스피드가 자동으로 빨라진다"], answer:"어두운 곳에서도 밝게 찍히지만 노이즈가 늘어난다"},
+          {q:"피사체를 실루엣으로 표현하고 싶을 때 활용하는 빛은?", options:["역광","정면광","측광","플래시광"], answer:"역광"},
+          {q:"길이나 난간처럼 선을 이용해 시선을 피사체로 유도하는 기법은?", options:["리딩라인","대칭 구도","여백 구도","역광 구도"], answer:"리딩라인"},
+          {q:"창문이나 문 등으로 피사체를 액자처럼 감싸 촬영하는 기법은?", options:["프레임 인 프레임","리딩라인","삼분할 구도","대칭 구도"], answer:"프레임 인 프레임"},
+          {q:"색상 대비를 이용해 피사체를 두드러지게 하는 방법은?", options:["보색 대비를 활용한다","채도를 0으로 낮춘다","흑백으로만 촬영한다","노출을 최대로 높인다"], answer:"보색 대비를 활용한다"},
+          {q:"화면에 여백을 살려 감성적인 분위기를 표현하는 기법은?", options:["여백의 미","프레임 인 프레임","리딩라인","고감도 촬영"], answer:"여백의 미"},
+          {q:"같은 피사체를 다른 방향·높이에서 촬영해 다른 느낌을 주는 것은?", options:["앵글(구도) 변화","노출 변화","화이트밸런스 변화","파일 형식 변화"], answer:"앵글(구도) 변화"},
+          {q:"화면의 좌우(또는 상하)가 균형을 이루도록 배치하는 구도는?", options:["대칭 구도","여백 구도","역광 구도","망원 구도"], answer:"대칭 구도"},
+          {q:"피사계 심도가 얕다는 것은 무슨 뜻인가?", options:["초점이 맞는 범위가 좁아 배경이 흐려진다","사진 전체가 다 선명하게 나온다","노출이 항상 과다해진다","색온도가 낮아진다"], answer:"초점이 맞는 범위가 좁아 배경이 흐려진다"},
+          {q:"광각 렌즈로 가까이서 인물을 찍을 때 나타나는 왜곡은?", options:["신체 비율이 과장되어 보이는 왜곡","인물이 항상 흑백으로 보인다","배경이 항상 사라진다","색감이 반전된다"], answer:"신체 비율이 과장되어 보이는 왜곡"},
+          {q:"망원 렌즈(줌)로 촬영할 때 나타나는 특징은?", options:["원근감이 압축되어 배경이 가깝게 보인다","화각이 항상 넓어진다","피사체가 항상 어둡게 나온다","심도가 항상 깊어진다"], answer:"원근감이 압축되어 배경이 가깝게 보인다"},
+          {q:"사진에서 피사체의 '질감'을 강조하기 위한 촬영 방법은?", options:["측광(옆에서 비추는 빛)을 활용한다","정면광만 사용한다","노출을 최대한 낮춘다","흑백으로만 촬영한다"], answer:"측광(옆에서 비추는 빛)을 활용한다"},
+          {q:"노출 삼각형(조리개·셔터스피드·ISO)을 이해해야 하는 이유는?", options:["세 요소가 서로 영향을 주며 최종 밝기와 표현을 결정하기 때문","셔터스피드만 사진의 전부를 결정하기 때문","ISO는 색감에만 영향을 주기 때문","조리개는 밝기와 무관하기 때문"], answer:"세 요소가 서로 영향을 주며 최종 밝기와 표현을 결정하기 때문"},
+          {q:"색온도가 낮은 광원(예: 촛불) 아래서 사진에 나타나는 색감은?", options:["붉고 따뜻한 색감","푸르고 차가운 색감","흑백에 가까운 색감","채도가 사라진 색감"], answer:"붉고 따뜻한 색감"},
+          {q:"인물 촬영 시 반사판을 사용하는 주된 목적은?", options:["그림자 부분에 빛을 보충하기 위해","배경을 흐리게 하기 위해","셔터스피드를 늦추기 위해","색온도를 낮추기 위해"], answer:"그림자 부분에 빛을 보충하기 위해"},
+          {q:"사진에서 '패턴(반복되는 형태)'을 활용한 표현의 효과는?", options:["반복되는 형태로 시각적 리듬감을 준다","사진을 항상 흑백으로 보이게 한다","초점을 흐리게 만든다","노출을 자동으로 낮춘다"], answer:"반복되는 형태로 시각적 리듬감을 준다"},
+          {q:"실루엣 사진을 찍을 때 노출은 어디에 맞추는가?", options:["밝은 배경(하늘 등)에 맞춘다","어두운 피사체에 맞춘다","카메라 자동 설정에만 의존한다","노출을 아예 사용하지 않는다"], answer:"밝은 배경(하늘 등)에 맞춘다"},
+          {q:"사진의 '톤(명암 분포)'을 조절하는 후보정 작업은?", options:["커브·레벨 조정","파일명 변경","메타데이터 삭제","해시태그 등록"], answer:"커브·레벨 조정"}
+        ]
+      },
+      "1-2": {
+        level: 1, subjectNo: 2, name: "스토리텔링 및 전시 기획 이론",
+        questions: [
+          {q:"여러 장의 사진으로 하나의 주제를 전달하는 것을 무엇이라 하는가?", options:["연작(시리즈)","단발 사진","즉석 사진","속사(버스트)"], answer:"연작(시리즈)"},
+          {q:"전시할 사진을 선별할 때 가장 중요한 기준은?", options:["주제와의 연결성 및 완성도","촬영한 날짜 순서","파일 용량","사진 개수"], answer:"주제와의 연결성 및 완성도"},
+          {q:"사진 옆에 붙이는 작가의 설명 글을 무엇이라 하는가?", options:["작가 노트","캡션","워터마크","해시태그"], answer:"작가 노트"},
+          {q:"전시 공간에서 사진을 배치하는 순서를 정하는 기준으로 알맞은 것은?", options:["이야기 흐름(감정선)","파일 크기","촬영 기종","화면 비율"], answer:"이야기 흐름(감정선)"},
+          {q:"관람객의 동선과 감상 흐름을 고려해 사진을 배치·구성하는 일을 무엇이라 하는가?", options:["전시 기획(큐레이션)","이미지 압축","필터 적용","해시태그 등록"], answer:"전시 기획(큐레이션)"},
+          {q:"사진전의 주제를 한 문장으로 압축해 표현한 것은?", options:["전시 제목(컨셉)","작가 노트","캡션","워터마크"], answer:"전시 제목(컨셉)"},
+          {q:"사진 시리즈에 통일감을 주는 요소로 알맞은 것은?", options:["색감·톤의 일관성","사진마다 다른 필터","사진마다 다른 비율","무작위 배열"], answer:"색감·톤의 일관성"},
+          {q:"사진에 담긴 이야기를 관람객에게 효과적으로 전달하는 방법은?", options:["스토리텔링 구성","해상도만 높이기","파일명 정리","무조건 사진 수 늘리기"], answer:"스토리텔링 구성"},
+          {q:"전시 인쇄물의 크기를 정할 때 고려해야 할 기준은?", options:["전시 공간과 감상 거리","촬영 날짜","카메라 기종","파일명 길이"], answer:"전시 공간과 감상 거리"},
+          {q:"작품에 대한 관람객의 이해를 돕기 위해 제공하는 자료는?", options:["작가 노트·설명 패널","해시태그","워터마크","메타데이터"], answer:"작가 노트·설명 패널"},
+          {q:"전시 제목과 함께 관람 동선을 안내하는 자료는?", options:["전시 도록·안내 패널","작가의 개인 SNS","촬영 장비 목록","파일 저장 폴더"], answer:"전시 도록·안내 패널"},
+          {q:"사진 연작을 기획할 때 가장 먼저 정해야 하는 것은?", options:["전달하고자 하는 주제와 메시지","사용할 액자 색상","인화 매수","전시 기간"], answer:"전달하고자 하는 주제와 메시지"},
+          {q:"전시 공간의 조명이 작품에 미치는 영향은?", options:["색감과 분위기 전달에 영향을 준다","작품 크기를 바꾼다","관람 시간을 결정한다","작가 노트 내용을 바꾼다"], answer:"색감과 분위기 전달에 영향을 준다"},
+          {q:"관람객의 몰입을 돕기 위해 사진 사이에 배치하는 요소는?", options:["여백이나 전환용 이미지","무작위 텍스트","무관한 광고","빈 액자만 나열"], answer:"여백이나 전환용 이미지"},
+          {q:"사진집(포토북)의 표지 사진이 갖는 역할은?", options:["전체 스토리를 함축해 보여주는 대표 이미지","가장 최근에 찍은 사진을 무조건 사용","가장 밝은 사진을 무조건 사용","표지는 내용과 무관해도 된다"], answer:"전체 스토리를 함축해 보여주는 대표 이미지"},
+          {q:"전시 홍보물(포스터, 리플렛)에 반드시 들어가야 할 핵심 정보는?", options:["전시 제목·일정·장소·대표 이미지","작가의 개인 취미","촬영 장비 사양","파일 저장 위치"], answer:"전시 제목·일정·장소·대표 이미지"},
+          {q:"사진 시리즈의 마지막(엔딩) 사진이 갖는 역할은?", options:["이야기를 마무리하고 여운을 남긴다","가장 화질이 낮은 사진을 배치한다","제목과 무관한 사진을 배치한다","역할은 특별히 없다"], answer:"이야기를 마무리하고 여운을 남긴다"},
+          {q:"관람객 피드백을 반영해 전시를 개선하는 과정을 무엇이라 하는가?", options:["전시 평가 및 보완","작가 노트 삭제","사진 재촬영 금지","홍보 중단"], answer:"전시 평가 및 보완"},
+          {q:"전시 전 작품을 인화할 때 반드시 확인해야 할 것은?", options:["색감·해상도가 의도한 대로 나오는지","인화지 브랜드","액자의 무게","인화소 위치"], answer:"색감·해상도가 의도한 대로 나오는지"},
+          {q:"좋은 전시 스토리텔링 구성의 핵심 요소는?", options:["시작-전개-절정-마무리의 흐름","사진 수를 최대한 늘리는 것","화려한 필터의 종류","액자의 색상 통일"], answer:"시작-전개-절정-마무리의 흐름"}
+        ]
+      }
+    };
+
+    var SUBJECT_ORDER = { 2: ["2-1", "2-2"], 1: ["1-1", "1-2"] };
+    var EXAM_LINKS = {
+      "2-1": "https://docs.google.com/forms/d/e/1FAIpQLSdbxWEKlXA0vvYoYJQ43XHDNTBaskL671z8_VKVHeum5A60Ew/viewform",
+      "2-2": "https://docs.google.com/forms/d/e/1FAIpQLSdJ67djDTekhmSmfHK0t8R1rtUzGWOw1ijRdP4nGR1h8k6lmw/viewform",
+      "1-1": "https://docs.google.com/forms/d/e/1FAIpQLSeB2vdHNdo-4afMLi1ADGFnypuoadbDUASSW1GmIhVl6o3h0w/viewform",
+      "1-2": "https://docs.google.com/forms/d/e/1FAIpQLSesLvCykbh4q2XaUUUxC4eiRZM6d7G6BzT354P8juMd0oYMxA/viewform"
+    };
+    var STORAGE_KEY = "smi-sp-exam-study-v1";
+
+    var state = {
+      level: 2,
+      subjectKey: "2-1",
+      mode: "quiz" // 'quiz' | 'review'
+    };
+
+    // { subjectKey: { questionIndex: { solved: bool, wrong: [pickedOptionText, ...] } } }
+    var picks = {};
+
+    function loadPicks() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) picks = JSON.parse(raw) || {};
+      } catch (e) { picks = {}; }
+      // 이전 버전(정답 하나만 저장) 데이터가 있으면 새 구조로 옮겨온다
+      Object.keys(picks).forEach(function (key) {
+        var subj = picks[key];
+        Object.keys(subj).forEach(function (qi) {
+          var v = subj[qi];
+          if (typeof v === "string") {
+            var d = DATA[key];
+            var q = d && d.questions[qi];
+            var isCorrect = q && v === q.answer;
+            subj[qi] = { solved: !!isCorrect, wrong: isCorrect ? [] : [v] };
+          }
+        });
+      });
+    }
+    function savePicks() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(picks)); } catch (e) {}
+    }
+
+    function el(tag, cls, text) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text !== undefined) e.textContent = text;
+      return e;
+    }
+
+    function renderDial() {
+      var dial = document.getElementById("levelDial");
+      dial.innerHTML = "";
+      [2, 1].forEach(function (lvl) {
+        var b = el("button", null, lvl + "급");
+        if (lvl === state.level) b.classList.add("active");
+        b.addEventListener("click", function () {
+          state.level = lvl;
+          state.subjectKey = SUBJECT_ORDER[lvl][0];
+          renderAll();
+        });
+        dial.appendChild(b);
+      });
+    }
+
+    function renderSubjectRow() {
+      var row = document.getElementById("subjectRow");
+      row.innerHTML = "";
+      SUBJECT_ORDER[state.level].forEach(function (key) {
+        var d = DATA[key];
+        var btn = el("button", "subject-tab");
+        if (key === state.subjectKey) btn.classList.add("active");
+        var tag = el("span", "tag", d.subjectNo + "과목");
+        btn.appendChild(tag);
+        btn.appendChild(document.createTextNode(d.name));
+        btn.addEventListener("click", function () {
+          state.subjectKey = key;
+          renderAll();
+        });
+        row.appendChild(btn);
+      });
+    }
+
+    function currentPicks() {
+      if (!picks[state.subjectKey]) picks[state.subjectKey] = {};
+      return picks[state.subjectKey];
+    }
+
+    function renderMeter() {
+      var d = DATA[state.subjectKey];
+      var p = currentPicks();
+      var solved = 0, retried = 0;
+      d.questions.forEach(function (q, i) {
+        var rec = p[i];
+        if (rec && rec.solved) {
+          solved++;
+          if (rec.wrong && rec.wrong.length) retried++;
+        }
+      });
+      var total = d.questions.length;
+      var pct = total ? Math.round((solved / total) * 100) : 0;
+      document.getElementById("meterFill").style.width = pct + "%";
+      document.getElementById("meterNeedle").style.left = pct + "%";
+      document.getElementById("meterLabel").textContent = d.level + "급 · " + d.subjectNo + "과목";
+      document.getElementById("meterScore").textContent = solved + " / " + total +
+        (retried ? "  (재도전 " + retried + "문항)" : "");
+
+      var cta = document.getElementById("examCta");
+      cta.href = EXAM_LINKS[state.subjectKey];
+      var title = document.getElementById("examCtaTitle");
+      var sub = document.getElementById("examCtaSub");
+      if (solved === total) {
+        title.textContent = "이 과목 20문항 전부 맞혔어요 — 지금 바로 실전 시험 응시";
+        sub.textContent = "잊기 전에 바로 응시하는 게 가장 효율적입니다";
+      } else {
+        title.textContent = "준비됐으면 바로 실전 시험 응시";
+        sub.textContent = "이 과목 필기시험(20문항, 40점 이상 필요)으로 이동합니다";
+      }
+    }
+
+    function renderQuiz() {
+      var list = document.getElementById("qlist");
+      list.innerHTML = "";
+      var d = DATA[state.subjectKey];
+      var p = currentPicks();
+      var review = state.mode === "review";
+
+      d.questions.forEach(function (q, i) {
+        var card = el("div", "qcard" + (review ? " review" : ""));
+        var rec = p[i]; // { solved, wrong: [] } | undefined
+        var solved = !!(rec && rec.solved);
+        var wrongList = (rec && rec.wrong) || [];
+        if (!review && rec) {
+          card.classList.add("answered", solved ? "correct" : "incorrect");
+        }
+
+        var head = el("div", "qhead");
+        head.appendChild(el("span", "qframe", String(i + 1).padStart(2, "0") + "/" + d.questions.length));
+        head.appendChild(el("div", "qtext", q.q));
+        card.appendChild(head);
+
+        if (review) {
+          var line = el("div", "answer-line");
+          line.appendChild(el("span", "lbl", "정답"));
+          line.appendChild(el("span", "val", q.answer));
+          card.appendChild(line);
+        } else {
+          if (!solved && wrongList.length) {
+            var hint = el("div", "hint-line");
+            var bulb = el("span", "bulb", "힌트");
+            hint.appendChild(bulb);
+            var remaining = q.options.length - wrongList.length;
+            hint.appendChild(document.createTextNode(
+              "오답이에요. 소거된 보기는 다시 못 고르니, 남은 " + remaining + "개 중에서 골라보세요."
+            ));
+            card.appendChild(hint);
+          }
+
+          var opts = el("div", "opts");
+          var letters = ["A", "B", "C", "D"];
+          q.options.forEach(function (optText, oi) {
+            var opt = el("button", "opt");
+            var isWrongTried = wrongList.indexOf(optText) !== -1;
+            var locked = solved || isWrongTried;
+            if (locked) opt.classList.add("locked");
+            if (solved && optText === q.answer) opt.classList.add("correct-pick");
+            else if (isWrongTried) opt.classList.add("eliminated");
+            var bullet = el("span", "bullet", letters[oi]);
+            opt.appendChild(bullet);
+            opt.appendChild(document.createTextNode(optText));
+            opt.disabled = locked;
+            opt.addEventListener("click", function () {
+              var cur = currentPicks();
+              if (cur[i] && cur[i].solved) return;
+              if (!cur[i]) cur[i] = { solved: false, wrong: [] };
+              if (optText === q.answer) {
+                cur[i].solved = true;
+              } else if (cur[i].wrong.indexOf(optText) === -1) {
+                cur[i].wrong.push(optText);
+              }
+              savePicks();
+              renderQuiz();
+              renderMeter();
+            });
+            opts.appendChild(opt);
+          });
+          card.appendChild(opts);
+        }
+
+        list.appendChild(card);
+      });
+    }
+
+    function renderModeToggle() {
+      var buttons = document.querySelectorAll("#modeToggle button");
+      buttons.forEach(function (b) {
+        b.classList.toggle("active", b.dataset.mode === state.mode);
+      });
+    }
+
+    function renderAll() {
+      renderDial();
+      renderSubjectRow();
+      renderModeToggle();
+      renderMeter();
+      renderQuiz();
+    }
+
+    document.getElementById("modeToggle").addEventListener("click", function (e) {
+      var btn = e.target.closest("button[data-mode]");
+      if (!btn) return;
+      state.mode = btn.dataset.mode;
+      renderAll();
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", function () {
+      picks[state.subjectKey] = {};
+      savePicks();
+      renderAll();
+    });
+
+    loadPicks();
+    renderAll();
+  })();
+  </script>
+</body>
+</html>
