@@ -517,6 +517,155 @@
     @media (prefers-reduced-motion: reduce) {
       .meter-fill, .meter-needle { transition: none; }
     }
+
+    /* ---- Speed round ---- */
+    .speed-start {
+      border: 1px dashed var(--line);
+      background: var(--paper-raised);
+      border-radius: 14px;
+      padding: 2.2rem 1.5rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .speed-start h2 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin: 0;
+    }
+    .speed-start p {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      max-width: 42ch;
+      line-height: 1.55;
+      margin: 0;
+    }
+    .speed-start-btn {
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--paper);
+      background: var(--ink);
+      border: none;
+      border-radius: 999px;
+      padding: 0.75rem 1.8rem;
+      cursor: pointer;
+      margin-top: 0.3rem;
+    }
+    .speed-start-btn:hover { background: #2f362b; }
+
+    .speed-hud {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+    }
+    .speed-hud .hud-item { display: flex; align-items: baseline; gap: 0.35rem; }
+    .speed-hud .hud-val {
+      font-weight: 700;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+    .speed-hud .hud-streak.on .hud-val { color: var(--accent-ink); }
+
+    .speed-card {
+      border: 2px solid var(--line);
+      background: var(--paper-raised);
+      border-radius: 16px;
+      padding: 1.6rem 1.4rem;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .speed-card.flash-correct { border-color: var(--good); background: var(--good-soft); }
+    .speed-card.flash-wrong { border-color: var(--bad); background: var(--bad-soft); }
+
+    .speed-qtext {
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.5;
+      text-wrap: balance;
+      margin-bottom: 1.1rem;
+    }
+
+    .speed-opts {
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .speed-opt {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-align: left;
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.8rem 0.95rem;
+      cursor: pointer;
+    }
+    .speed-opt:hover:not(:disabled) { border-color: var(--ink-soft); }
+    .speed-opt:disabled { cursor: default; }
+    .speed-opt.pick-correct { background: var(--good-soft); border-color: var(--good); }
+    .speed-opt.pick-wrong { background: var(--bad-soft); border-color: var(--bad); }
+    .speed-opt.reveal { border-color: var(--good); }
+    .speed-opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .speed-result {
+      border: 1px solid var(--line);
+      background: var(--paper-raised);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .speed-result .score {
+      font-family: var(--mono);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+    .speed-result .verdict {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent-ink);
+    }
+    .speed-result .stats {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+    }
+    .speed-result-actions {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .speed-retry-btn {
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.6rem 1.3rem;
+      cursor: pointer;
+    }
+    .speed-retry-btn:hover { border-color: var(--ink-soft); }
   </style>
 </head>
 <body>
@@ -557,6 +706,7 @@
       <div class="toggle" id="modeToggle">
         <button data-mode="quiz" class="active">퀴즈 모드</button>
         <button data-mode="review">정답보기 모드</button>
+        <button data-mode="speed">스피드 라운드</button>
       </div>
       <button class="reset-btn" id="resetBtn">다시 풀기</button>
     </div>
@@ -636,7 +786,7 @@
           {q:"화면에 여백을 살려 감성적인 분위기를 표현하는 기법은?", options:["여백의 미","프레임 인 프레임","리딩라인","고감도 촬영"], answer:"여백의 미"},
           {q:"같은 피사체를 다른 방향·높이에서 촬영해 다른 느낌을 주는 것은?", options:["앵글(구도) 변화","노출 변화","화이트밸런스 변화","파일 형식 변화"], answer:"앵글(구도) 변화"},
           {q:"화면의 좌우(또는 상하)가 균형을 이루도록 배치하는 구도는?", options:["대칭 구도","여백 구도","역광 구도","망원 구도"], answer:"대칭 구도"},
-          {q:"피사계 심도가 얕다는 것은 무슨 뜻인가?", options:["초점이 맞는 범위가 좁아 배경이 흐려진다","사진 전체가 다 선명하게 나온다","노출이 항상 과다해진다","색온도가 낮아진다"], answer:"초점이 맞는 범위가 좁아 배경이 흐려진다"},
+          {q:"이동하는 피사체를 카메라로 따라가며 찍어 배경은 흐르고 피사체는 선명하게 나오는 촬영 기법은?", options:["패닝(팔로우) 샷","고정 촬영","접사 촬영","다중노출"], answer:"패닝(팔로우) 샷"},
           {q:"광각 렌즈로 가까이서 인물을 찍을 때 나타나는 왜곡은?", options:["신체 비율이 과장되어 보이는 왜곡","인물이 항상 흑백으로 보인다","배경이 항상 사라진다","색감이 반전된다"], answer:"신체 비율이 과장되어 보이는 왜곡"},
           {q:"망원 렌즈(줌)로 촬영할 때 나타나는 특징은?", options:["원근감이 압축되어 배경이 가깝게 보인다","화각이 항상 넓어진다","피사체가 항상 어둡게 나온다","심도가 항상 깊어진다"], answer:"원근감이 압축되어 배경이 가깝게 보인다"},
           {q:"사진에서 피사체의 '질감'을 강조하기 위한 촬영 방법은?", options:["측광(옆에서 비추는 빛)을 활용한다","정면광만 사용한다","노출을 최대한 낮춘다","흑백으로만 촬영한다"], answer:"측광(옆에서 비추는 빛)을 활용한다"},
@@ -732,6 +882,7 @@
         b.addEventListener("click", function () {
           state.level = lvl;
           state.subjectKey = SUBJECT_ORDER[lvl][0];
+          if (state.mode === "speed") startSpeedRound();
           renderAll();
         });
         dial.appendChild(b);
@@ -750,6 +901,7 @@
         btn.appendChild(document.createTextNode(d.name));
         btn.addEventListener("click", function () {
           state.subjectKey = key;
+          if (state.mode === "speed") startSpeedRound();
           renderAll();
         });
         row.appendChild(btn);
@@ -793,7 +945,180 @@
       }
     }
 
+    // ---- Speed round (게임형 스피드 학습) ----
+    var speed = {
+      order: [], idx: 0, correct: 0, streak: 0, bestStreak: 0,
+      startTime: 0, finished: false, locked: false, flash: null, lastPicked: null
+    };
+    var speedTimerHandle = null;
+
+    function shuffle(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
+    }
+
+    function fmtElapsed(ms) {
+      var sec = ms / 1000;
+      return sec.toFixed(1) + "s";
+    }
+
+    function startSpeedRound() {
+      var d = DATA[state.subjectKey];
+      clearInterval(speedTimerHandle);
+      speed.order = shuffle(d.questions.map(function (_, i) { return i; }));
+      speed.idx = 0;
+      speed.correct = 0;
+      speed.streak = 0;
+      speed.bestStreak = 0;
+      speed.finished = false;
+      speed.locked = false;
+      speed.flash = null;
+      speed.lastPicked = null;
+      speed.startTime = Date.now();
+      speedTimerHandle = setInterval(function () {
+        var el = document.getElementById("speedTimer");
+        if (el) el.textContent = fmtElapsed(Date.now() - speed.startTime);
+      }, 100);
+    }
+
+    function stopSpeedTimer() {
+      clearInterval(speedTimerHandle);
+      speedTimerHandle = null;
+    }
+
+    function renderSpeedRound() {
+      var list = document.getElementById("qlist");
+      list.innerHTML = "";
+      var d = DATA[state.subjectKey];
+
+      if (!speed.order.length && !speed.finished) {
+        var start = el("div", "speed-start");
+        start.appendChild(el("h2", null, "스피드 라운드"));
+        start.appendChild(el("p", null,
+          "문제가 무작위 순서로 하나씩 나옵니다. 얼마나 빠르고 정확하게 다 맞히는지 도전해보세요."));
+        var btn = el("button", "speed-start-btn", "라운드 시작");
+        btn.addEventListener("click", function () {
+          startSpeedRound();
+          renderSpeedRound();
+        });
+        start.appendChild(btn);
+        list.appendChild(start);
+        return;
+      }
+
+      if (speed.finished) {
+        stopSpeedTimer();
+        var total = d.questions.length;
+        var elapsedSec = ((Date.now() - speed.startTime) / 1000).toFixed(1);
+        var pct = Math.round((speed.correct / total) * 100);
+        var verdict;
+        if (pct === 100) verdict = "퍼펙트! 이 과목은 완전히 익혔어요.";
+        else if (pct >= 70) verdict = "합격선(60점)을 여유 있게 넘는 감각이에요.";
+        else if (pct >= 60) verdict = "합격선은 넘겼어요. 조금만 더 다지면 안정권.";
+        else verdict = "아직 합격선(60점) 전이에요. 한 번 더 돌려볼까요.";
+
+        var res = el("div", "speed-result");
+        res.appendChild(el("div", "score", speed.correct + " / " + total));
+        res.appendChild(el("div", "verdict", verdict));
+        res.appendChild(el("div", "stats",
+          "총 " + elapsedSec + "s · 최고 연속 " + speed.bestStreak + "문항"));
+
+        var actions = el("div", "speed-result-actions");
+        var retryBtn = el("button", "speed-retry-btn", "다시 도전");
+        retryBtn.addEventListener("click", function () {
+          startSpeedRound();
+          renderSpeedRound();
+        });
+        actions.appendChild(retryBtn);
+
+        var examBtn = el("a", "speed-start-btn", "실전 시험 응시 →");
+        examBtn.href = EXAM_LINKS[state.subjectKey];
+        examBtn.target = "_blank";
+        examBtn.rel = "noopener";
+        actions.appendChild(examBtn);
+
+        res.appendChild(actions);
+        list.appendChild(res);
+        return;
+      }
+
+      var qIndex = speed.order[speed.idx];
+      var q = d.questions[qIndex];
+
+      var hud = el("div", "speed-hud");
+      var left = el("span", "hud-item");
+      left.appendChild(document.createTextNode("문제 "));
+      left.appendChild(el("span", "hud-val", (speed.idx + 1) + "/" + speed.order.length));
+      var mid = el("span", "hud-item hud-streak" + (speed.streak > 0 ? " on" : ""));
+      mid.appendChild(document.createTextNode("연속 "));
+      mid.appendChild(el("span", "hud-val", String(speed.streak)));
+      var right = el("span", "hud-item");
+      right.appendChild(document.createTextNode("경과 "));
+      var timerSpan = el("span", "hud-val", fmtElapsed(Date.now() - speed.startTime));
+      timerSpan.id = "speedTimer";
+      right.appendChild(timerSpan);
+      hud.appendChild(left);
+      hud.appendChild(mid);
+      hud.appendChild(right);
+      list.appendChild(hud);
+
+      var card = el("div", "speed-card" + (speed.flash ? " flash-" + speed.flash : ""));
+      card.appendChild(el("div", "speed-qtext", q.q));
+
+      var opts = el("div", "speed-opts");
+      q.options.forEach(function (optText) {
+        var opt = el("button", "speed-opt", optText);
+        var showFlash = !!speed.flash;
+        if (showFlash) {
+          opt.disabled = true;
+          if (optText === speed.lastPicked && optText === q.answer) opt.classList.add("pick-correct");
+          else if (optText === speed.lastPicked) opt.classList.add("pick-wrong");
+          else if (optText === q.answer) opt.classList.add("reveal");
+        } else {
+          opt.addEventListener("click", function () {
+            if (speed.locked) return;
+            speed.locked = true;
+            speed.lastPicked = optText;
+            var isCorrect = optText === q.answer;
+
+            var cur = currentPicks();
+            if (!cur[qIndex]) cur[qIndex] = { solved: false, wrong: [] };
+            if (isCorrect) {
+              cur[qIndex].solved = true;
+              speed.correct++;
+              speed.streak++;
+              if (speed.streak > speed.bestStreak) speed.bestStreak = speed.streak;
+            } else {
+              if (cur[qIndex].wrong.indexOf(optText) === -1) cur[qIndex].wrong.push(optText);
+              speed.streak = 0;
+            }
+            savePicks();
+            speed.flash = isCorrect ? "correct" : "wrong";
+            renderSpeedRound();
+            renderMeter();
+
+            setTimeout(function () {
+              speed.idx++;
+              speed.locked = false;
+              speed.flash = null;
+              speed.lastPicked = null;
+              if (speed.idx >= speed.order.length) speed.finished = true;
+              renderSpeedRound();
+            }, isCorrect ? 450 : 900);
+          });
+        }
+        opts.appendChild(opt);
+      });
+      card.appendChild(opts);
+      list.appendChild(card);
+    }
+
     function renderQuiz() {
+      if (state.mode === "speed") { renderSpeedRound(); return; }
       var list = document.getElementById("qlist");
       list.innerHTML = "";
       var d = DATA[state.subjectKey];
@@ -871,6 +1196,8 @@
       buttons.forEach(function (b) {
         b.classList.toggle("active", b.dataset.mode === state.mode);
       });
+      document.getElementById("resetBtn").style.display =
+        state.mode === "speed" ? "none" : "";
     }
 
     function renderAll() {
@@ -885,6 +1212,12 @@
       var btn = e.target.closest("button[data-mode]");
       if (!btn) return;
       state.mode = btn.dataset.mode;
+      if (state.mode === "speed") {
+        startSpeedRound();
+      } else {
+        stopSpeedTimer();
+        speed.order = [];
+      }
       renderAll();
     });
 
