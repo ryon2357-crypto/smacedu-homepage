@@ -60,6 +60,16 @@ function doGet(e) {
       return _handleMidjourneyRecordingPurchase(params);
     }
 
+    // ── 바이브코딩 VIP 특강 신청 처리 (GET 방식) ──
+    if (params.sheetType === 'vibecoding') {
+      return _handleVibecodingSignup(params);
+    }
+
+    // ── 바이브코딩 VIP 특강 녹화본 구매 처리 (GET 방식) ──
+    if (params.sheetType === 'vibecoding-recording') {
+      return _handleVibecodingRecordingPurchase(params);
+    }
+
     // ── 출강·수강 문의 처리 (GET 방식) ──
     if (params.sheetType === 'contact') {
       return _handleContactInquiry(params);
@@ -123,6 +133,16 @@ function doPost(e) {
     // ── 미드저니 VIP 특강 녹화본 구매 처리 ──
     if (params.sheetType === 'midjourney-recording') {
       return _handleMidjourneyRecordingPurchase(params);
+    }
+
+    // ── 바이브코딩 VIP 특강 신청 처리 ──
+    if (params.sheetType === 'vibecoding') {
+      return _handleVibecodingSignup(params);
+    }
+
+    // ── 바이브코딩 VIP 특강 녹화본 구매 처리 ──
+    if (params.sheetType === 'vibecoding-recording') {
+      return _handleVibecodingRecordingPurchase(params);
     }
 
     const ss = SpreadsheetApp.openById('18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I');
@@ -857,6 +877,269 @@ function _sendMidjourneyRecordingAdminAlert(timestamp, name, depositor, email, p
       <tr><td style="padding:6px 0;color:#64748b;">이메일</td><td>${escapeHtml(email)}</td></tr>
       <tr><td style="padding:6px 0;color:#64748b;">전화번호</td><td>${escapeHtml(phone)}</td></tr>
       <tr><td style="padding:6px 0;color:#64748b;">금액</td><td>${MIDJOURNEY_RECORDING_PRICE}</td></tr>
+    </table>
+    <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
+      입금 확인 후 <a href="${SHEET_URL}">스프레드시트</a>의 '입금확인' 열을 갱신하고, 녹화본 링크를 직접 회신해 주세요.
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       ADMIN_EMAIL,
+    subject:  `[SMAC EDU 녹화본] ${name} — 입금 확인 필요`,
+    htmlBody: html
+  });
+}
+
+// ════════════════════════════════════════════
+// 바이브코딩 VIP 특강 신청 처리
+// ════════════════════════════════════════════
+
+const VIBECODING_SHEET_NAME = '0830 VIP 특강';
+
+function _handleVibecodingSignup(params) {
+  try {
+    const ss    = SpreadsheetApp.openById(SHEET_ID);
+    let   sheet = ss.getSheetByName(VIBECODING_SHEET_NAME);
+
+    if (!sheet) {
+      sheet = ss.insertSheet(VIBECODING_SHEET_NAME);
+      sheet.appendRow(['신청일시', '이름', '이메일', '전화번호']);
+      sheet.setFrozenRows(1);
+      sheet.getRange('A1:D1').setBackground('#8b5cf6').setFontColor('#ffffff').setFontWeight('bold');
+    }
+
+    const now       = new Date();
+    const timestamp = Utilities.formatDate(now, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss');
+    const name      = params.name  || '';
+    const email     = params.email || '';
+    const phone     = params.phone || '';
+
+    sheet.appendRow([timestamp, name, email, phone]);
+    const total = sheet.getLastRow() - 1;
+
+    if (email) _sendVibecodingConfirmEmail(name, email);
+    if (total % 10 === 0) _sendVibecodingAdminDigest(sheet, total);
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function _sendVibecodingConfirmEmail(name, email) {
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <div style="background:linear-gradient(135deg,#ec4899,#8b5cf6);padding:32px 28px;border-radius:12px 12px 0 0;text-align:center;">
+    <h1 style="color:#fff;margin:0;font-size:24px;font-weight:900;">참석이 확정됐습니다 🎉</h1>
+    <p style="color:rgba(255,255,255,0.85);margin:10px 0 0;font-size:15px;">AI 도구의 이해 &amp; 바이브코딩 VIP 특강</p>
+  </div>
+  <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name)}</strong>님, VIP 특강에 초대합니다.</p>
+    <p style="margin:0 0 20px;color:#475569;line-height:1.7;">
+      참석이 정상적으로 확정됐어요.<br>
+      아래 ZOOM 링크로 시간에 맞춰 입장해 주세요.
+    </p>
+
+    <div style="background:#fdf2f8;border:1px solid #fbcfe8;border-radius:10px;padding:14px 18px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0;font-size:14px;font-weight:700;color:#be185d;">🗓 8월 30일(일) 저녁 8시 — 잊지 마세요!</p>
+    </div>
+
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:20px;">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <tr>
+          <td style="padding:7px 0;color:#64748b;width:90px;">강의명</td>
+          <td style="color:#1e293b;font-weight:600;">AI 도구의 이해 &amp; 바이브코딩 VIP 특강 — 업무자동화 웹·앱 만들기</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 0;color:#64748b;">일시</td>
+          <td style="color:#1e293b;font-weight:600;">2026년 8월 30일(일) 저녁 8시</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 0;color:#64748b;">준비물</td>
+          <td style="color:#1e293b;">노트북 (2교시 실습은 챗GPT Plus 또는 클로드 Pro 계정 필요)</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:20px;margin-bottom:20px;">
+      <p style="margin:0 0 10px;font-size:13px;font-weight:700;color:#4338ca;">🔗 특강 참여 ZOOM 링크</p>
+      <div style="text-align:center;margin-bottom:14px;">
+        <a href="https://us06web.zoom.us/j/88698931035?pwd=RqhFycElbTQsb8BpXfms3ODHtn6nU3.1" style="display:inline-block;background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;text-decoration:none;font-size:14px;font-weight:700;padding:13px 32px;border-radius:999px;">ZOOM으로 입장하기 →</a>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <tr>
+          <td style="padding:5px 0;color:#4338ca;width:80px;">회의 ID</td>
+          <td style="color:#312e81;font-weight:600;">886 9893 1035</td>
+        </tr>
+        <tr>
+          <td style="padding:5px 0;color:#4338ca;">암호</td>
+          <td style="color:#312e81;font-weight:600;">2470</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="text-align:center;margin-bottom:20px;">
+      <a href="https://www.smacedu.kr/vibecoding-landing" style="display:inline-block;background:transparent;border:1px solid #e2e8f0;color:#475569;text-decoration:none;font-size:13px;font-weight:600;padding:11px 28px;border-radius:999px;">특강 페이지 다시 보기</a>
+    </div>
+
+    <p style="margin:0;font-size:13px;color:#94a3b8;">
+      문의는 <a href="mailto:${ADMIN_EMAIL}" style="color:#ec4899;">${ADMIN_EMAIL}</a>로 보내주세요.
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       email,
+    subject:  '[SMAC EDU] AI 도구·바이브코딩 VIP 특강 참석이 확정됐습니다',
+    htmlBody: html
+  });
+}
+
+// 신청 10명마다 한 번씩, 최근 10명을 모아서 알려줍니다.
+function _sendVibecodingAdminDigest(sheet, total) {
+  const lastRow   = sheet.getLastRow();
+  const batchSize = Math.min(10, lastRow - 1);
+  const startRow  = lastRow - batchSize + 1;
+  // 열 순서: 신청일시(1), 이름(2), 이메일(3), 전화번호(4)
+  const rows = sheet.getRange(startRow, 1, batchSize, 4).getValues();
+
+  const rowsHtml = rows.map(r => `
+    <tr>
+      <td style="padding:6px 10px;font-size:13px;color:#64748b;">${r[0]}</td>
+      <td style="padding:6px 10px;font-size:13px;"><strong>${escapeHtml(r[1])}</strong></td>
+      <td style="padding:6px 10px;font-size:13px;">${escapeHtml(r[2])}</td>
+      <td style="padding:6px 10px;font-size:13px;">${escapeHtml(r[3])}</td>
+    </tr>`).join('');
+
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#8b5cf6;color:#fff;padding:18px 22px;margin:0;border-radius:8px 8px 0 0;">
+    ✦ 바이브코딩 VIP 특강 신청 알림 (누적 ${total}명 — 최근 ${batchSize}명)
+  </h2>
+  <div style="background:#f8fafc;padding:22px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid #e2e8f0;border-radius:6px;">
+      <tr style="background:#f1f5f9;font-size:12px;color:#64748b;">
+        <th style="padding:8px 10px;text-align:left;">신청일시</th>
+        <th style="padding:8px 10px;text-align:left;">이름</th>
+        <th style="padding:8px 10px;text-align:left;">이메일</th>
+        <th style="padding:8px 10px;text-align:left;">전화번호</th>
+      </tr>
+      ${rowsHtml}
+    </table>
+    <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
+      <a href="${SHEET_URL}">스프레드시트에서 전체 목록 확인 →</a>
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       ADMIN_EMAIL,
+    subject:  `[SMAC EDU 바이브코딩 특강] 신청 누적 ${total}명 — 최근 ${batchSize}명 알림`,
+    htmlBody: html
+  });
+}
+
+// ════════════════════════════════════════════
+// 바이브코딩 VIP 특강 녹화본 구매 처리
+// ════════════════════════════════════════════
+
+const VIBECODING_RECORDING_SHEET_NAME = '0830 VIP 녹화본';
+const VIBECODING_RECORDING_PRICE      = '30,000원';
+const VIBECODING_RECORDING_ACCOUNT    = '신한 110-050-892636 (박성욱)';
+
+function _handleVibecodingRecordingPurchase(params) {
+  try {
+    const ss    = SpreadsheetApp.openById(SHEET_ID);
+    let   sheet = ss.getSheetByName(VIBECODING_RECORDING_SHEET_NAME);
+
+    if (!sheet) {
+      sheet = ss.insertSheet(VIBECODING_RECORDING_SHEET_NAME);
+      sheet.appendRow(['신청일시', '이름', '입금자명', '이메일', '전화번호', '입금확인']);
+      sheet.setFrozenRows(1);
+      sheet.getRange('A1:F1').setBackground('#8b5cf6').setFontColor('#ffffff').setFontWeight('bold');
+    }
+
+    const now       = new Date();
+    const timestamp = Utilities.formatDate(now, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss');
+    const name      = params.name      || '';
+    const depositor = params.depositor || '';
+    const email     = params.email     || '';
+    const phone     = params.phone     || '';
+
+    sheet.appendRow([timestamp, name, depositor, email, phone, '대기']);
+
+    if (email) _sendVibecodingRecordingConfirmEmail(name, email);
+    _sendVibecodingRecordingAdminAlert(timestamp, name, depositor, email, phone);
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function _sendVibecodingRecordingConfirmEmail(name, email) {
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <div style="background:linear-gradient(135deg,#ec4899,#8b5cf6);padding:32px 28px;border-radius:12px 12px 0 0;text-align:center;">
+    <h1 style="color:#fff;margin:0;font-size:24px;font-weight:900;">구매 신청이 접수됐습니다</h1>
+    <p style="color:rgba(255,255,255,0.85);margin:10px 0 0;font-size:15px;">AI 도구·바이브코딩 VIP 특강 녹화본</p>
+  </div>
+  <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name)}</strong>님, 신청 감사합니다.</p>
+    <p style="margin:0 0 20px;color:#475569;line-height:1.7;">
+      입금 확인 후 <strong>24시간 이내</strong>에 녹화본 링크를 이 메일로 보내드립니다.
+    </p>
+
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:20px;">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <tr>
+          <td style="padding:7px 0;color:#64748b;width:90px;">상품</td>
+          <td style="color:#1e293b;font-weight:600;">AI 도구·바이브코딩 VIP 특강 녹화본 — 업무자동화 웹·앱 만들기</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 0;color:#64748b;">금액</td>
+          <td style="color:#1e293b;font-weight:600;">${VIBECODING_RECORDING_PRICE}</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 0;color:#64748b;">입금 계좌</td>
+          <td style="color:#1e293b;">${VIBECODING_RECORDING_ACCOUNT}</td>
+        </tr>
+      </table>
+    </div>
+
+    <p style="margin:0;font-size:13px;color:#94a3b8;">
+      이미 입금하셨다면 별도 조치 없이 기다려 주세요. 문의는 <a href="mailto:${ADMIN_EMAIL}" style="color:#ec4899;">${ADMIN_EMAIL}</a>로 보내주세요.
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       email,
+    subject:  '[SMAC EDU] 바이브코딩 VIP 특강 녹화본 구매 신청 접수',
+    htmlBody: html
+  });
+}
+
+// 입금 확인이 필요한 구매 건이라 10건 단위 배치가 아니라 매번 즉시 알림.
+function _sendVibecodingRecordingAdminAlert(timestamp, name, depositor, email, phone) {
+  const html = `
+<div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#8b5cf6;color:#fff;padding:16px 20px;margin:0;border-radius:8px 8px 0 0;">
+    💰 녹화본 구매 신청 — 입금 확인 필요
+  </h2>
+  <div style="background:#f8fafc;padding:20px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <table style="width:100%;border-collapse:collapse;font-size:14px;">
+      <tr><td style="padding:6px 0;color:#64748b;width:80px;">신청일시</td><td>${timestamp}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">이름</td><td><strong>${escapeHtml(name)}</strong></td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">입금자명</td><td>${escapeHtml(depositor || '(이름과 동일)')}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">이메일</td><td>${escapeHtml(email)}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">전화번호</td><td>${escapeHtml(phone)}</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">금액</td><td>${VIBECODING_RECORDING_PRICE}</td></tr>
     </table>
     <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
       입금 확인 후 <a href="${SHEET_URL}">스프레드시트</a>의 '입금확인' 열을 갱신하고, 녹화본 링크를 직접 회신해 주세요.
