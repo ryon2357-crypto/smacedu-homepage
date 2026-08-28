@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <script src="js/no-copy.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+  <title>찍는 순간 작품이 되는 스마트폰 사진 — 무료 특강 티저</title>
+  <meta name="description" content="같은 폰, 같은 풍경인데 왜 그 사람 사진만 작품이 될까요? 슬라이드로 빠르게 훑어보는 스마트폰 사진 무료 특강 예고." />
+  <meta name="robots" content="noindex" />
+
+  <!-- 카톡·오픈톡방 공유용 미리보기. 메인 랜딩(photo-lecture-landing.html)과 같은 8/28 OG 이미지를
+       쓰되, 카카오가 URL 단위로 캐싱하므로 ?v= 버전 쿼리를 반드시 붙여둔다. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.smacedu.kr/photo-lecture-teaser.html" />
+  <meta property="og:title" content="찍는 순간 작품이 되는 스마트폰 사진 — 무료 특강 예고" />
+  <meta property="og:description" content="같은 폰, 같은 풍경인데 왜 그 사람 사진만 작품이 될까요? 8월 28일(금) 저녁 9시 무료특강, 슬라이드로 1분 만에 훑어보기. 선착순 100명." />
+  <meta property="og:image" content="https://www.smacedu.kr/images/photo-lecture-og-0828.png?v=1" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="찍는 순간 작품이 되는 스마트폰 사진 — 무료 특강 예고" />
+  <meta name="twitter:description" content="8월 28일(금) 저녁 9시, 선착순 100명. 슬라이드로 1분 만에 훑어보기." />
+  <meta name="twitter:image" content="https://www.smacedu.kr/images/photo-lecture-og-0828.png?v=1" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0a;
+      --bg2:       #121212;
+      --border:    rgba(255,255,255,0.08);
+      --text:      #f0f0f0;
+      --muted:     #8a8a8a;
+      --grad:      linear-gradient(135deg, #f59e0b, #ef4444);
+      --grad-text: linear-gradient(135deg, #fbbf24, #fb7185);
+      --lime:      #d9f24a;
+      --pink:      #ff3d81;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    body {
+      color: var(--text);
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+    }
+
+    /* ── 슬라이드 덱 ── */
+    .deck {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+    .deck::-webkit-scrollbar { display: none; }
+    .deck { scrollbar-width: none; -ms-overflow-style: none; }
+
+    .slide {
+      flex: 0 0 100vw;
+      width: 100vw;
+      height: 100vh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 40px 32px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .slide-inner {
+      max-width: 760px;
+      width: 100%;
+    }
+
+    /* ── 슬라이드별 등장 애니메이션 ── */
+    .pop {
+      opacity: 0;
+      transform: translateY(28px) scale(0.97);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .pop.show { opacity: 1; transform: translateY(0) scale(1); }
+    .d1 { transition-delay: 0.05s; }
+    .d2 { transition-delay: 0.1s; }
+    .d3 { transition-delay: 0.15s; }
+    .d4 { transition-delay: 0.2s; }
+    .d5 { transition-delay: 0.25s; }
+
+    .label {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 18px;
+    }
+
+    .huge {
+      font-size: clamp(30px, 6vw, 60px);
+      font-weight: 900;
+      line-height: 1.25;
+      color: #fff;
+    }
+    .grad { background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .grad-lime { color: var(--lime); }
+    .grad-pink { color: var(--pink); }
+
+    .sub {
+      margin-top: 18px;
+      font-size: clamp(15px, 2vw, 19px);
+      color: var(--muted);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      border: 1px solid rgba(245,158,11,0.4);
+      color: #fbbf24;
+      background: rgba(245,158,11,0.1);
+    }
+
+    .glow-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--lime); animation: pulse 1.4s infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.35; transform:scale(.6); } }
+
+    /* ── 상/하 네비게이션 ── */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 26px;
+      pointer-events: none;
+    }
+    .topbar .brand {
+      font-size: 13px;
+      font-weight: 800;
+      background: var(--grad-text);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      pointer-events: auto;
+    }
+    .topbar .counter {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+      pointer-events: auto;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 999px;
+    }
+
+    .dots {
+      position: fixed;
+      bottom: 22px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      display: flex;
+      gap: 8px;
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(8px);
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+    .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      cursor: pointer;
+      transition: background 0.25s, transform 0.25s;
+      border: none;
+      padding: 0;
+    }
+    .dot.on { background: var(--lime); transform: scale(1.35); }
+
+    .frag-dots {
+      position: fixed;
+      bottom: 62px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      display: none;
+      gap: 7px;
+    }
+    .frag-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.22);
+      transition: background 0.25s, transform 0.25s;
+    }
+    .frag-dot.on { background: var(--pink); box-shadow: 0 0 8px rgba(255,61,129,0.7); transform: scale(1.3); }
+
+    .arrows {
+      position: fixed;
+      right: 22px; bottom: 22px;
+      z-index: 50;
+      display: flex;
+      gap: 10px;
+    }
+    .arrow-btn {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+    .arrow-btn:hover { border-color: rgba(217,242,74,0.5); background: rgba(217,242,74,0.08); }
+    .arrow-btn:active { transform: scale(0.92); }
+    .arrow-btn:disabled { opacity: 0.25; cursor: default; }
+
+    .hint {
+      position: fixed;
+      left: 22px; bottom: 24px;
+      z-index: 50;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    @media (max-width: 640px) { .hint { display: none; } }
+
+    /* ── 개별 슬라이드 요소 ── */
+
+    /* S2: 신뢰 배지 */
+    .no-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin: 28px 0;
+    }
+    .no-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,61,129,0.35);
+      color: #ff8fb5;
+      font-size: 14px;
+      font-weight: 700;
+      background: rgba(255,61,129,0.08);
+    }
+
+    /* S3: 돌발 퀴즈 */
+    .quiz-mark {
+      font-size: clamp(60px, 10vw, 96px);
+      font-weight: 900;
+      color: var(--lime);
+      margin-top: 12px;
+      line-height: 1;
+    }
+
+    /* S4: 다시보기 없음 */
+    .urgent-icon {
+      width: 62px; height: 62px;
+      border-radius: 50%;
+      border: 2px solid var(--pink);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      margin: 22px auto;
+      color: var(--pink);
+    }
+    .bullet-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 22px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .bullet-row span::before { content: '● '; color: var(--lime); }
+
+    /* S5: 문턱 / 프로그레스바 */
+    .bar-block { margin: 20px 0; text-align: left; }
+    .bar-label { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; margin-bottom: 8px; color: #ddd; }
+    .bar-track { height: 10px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+    .bar-fill { height: 100%; width: 0%; border-radius: 999px; background: linear-gradient(90deg, var(--pink), var(--lime)); transition: width 1.4s cubic-bezier(.2,.8,.2,1); }
+    .bar-block.show .bar-fill { width: var(--fill, 20%); }
+
+    /* S6: 걸어오신 길 */
+    .timeline-h {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin: 40px 0 12px;
+    }
+    .tl-node { display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; z-index: 1; }
+    .tl-dot { width: 16px; height: 16px; border-radius: 50%; background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3); }
+    .tl-dot.now { background: var(--lime); border-color: var(--lime); box-shadow: 0 0 18px rgba(217,242,74,0.6); }
+    .tl-label { font-size: 13px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+    .tl-label.now { color: var(--lime); font-weight: 800; }
+    .tl-line { width: clamp(50px, 12vw, 140px); height: 2px; background: linear-gradient(90deg, rgba(255,255,255,0.2), var(--pink)); margin-bottom: 30px; }
+    .tl-flag { font-size: 12px; color: var(--pink); font-weight: 800; margin-bottom: 4px; }
+
+    /* S7: 마트 시식 */
+    .step-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+    .step-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 26px;
+      min-width: 140px;
+    }
+    .step-card .ic { font-size: 26px; margin-bottom: 8px; }
+    .step-card h4 { font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .step-card p { font-size: 12px; color: var(--muted); }
+    .step-arrow { font-size: 20px; color: var(--muted); }
+    .step-card.final { border-color: rgba(255,61,129,0.4); }
+
+    /* S8: 기분 흔들림 */
+    .wave-wrap { margin: 30px auto; max-width: 480px; }
+    .wave-row { display: flex; justify-content: space-between; font-size: 13px; margin-top: 14px; color: var(--muted); }
+    .wave-row b.up { color: var(--lime); }
+    .wave-row b.down { color: var(--pink); }
+
+    /* S9: 진짜 질문 (비교) */
+    .vs-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+    .vs-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 30px;
+      min-width: 170px;
+    }
+    .vs-card .ic { font-size: 30px; margin-bottom: 10px; }
+    .vs-card .t { font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+    .vs-card .v { font-size: 15px; font-weight: 800; color: #fff; }
+    .vs-card.win { border-color: rgba(217,242,74,0.5); box-shadow: 0 0 30px rgba(217,242,74,0.12); }
+    .vs-x { font-size: 16px; font-weight: 900; color: var(--muted); }
+
+    /* S11: 있다/없다 */
+    .choice-row { display: flex; gap: 16px; justify-content: center; margin-top: 26px; flex-wrap: wrap; }
+    .choice-btn {
+      padding: 16px 44px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 800;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s, background 0.2s;
+    }
+    .choice-btn:hover { border-color: var(--lime); color: var(--lime); transform: translateY(-2px); }
+    .choice-btn.picked { border-color: var(--lime); background: rgba(217,242,74,0.12); color: var(--lime); }
+
+    /* S12: 최종 CTA */
+    .cta-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px 34px;
+      margin: 26px auto 30px;
+      max-width: 520px;
+      text-align: left;
+    }
+    .cta-row { display: flex; gap: 18px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; flex-wrap: wrap; }
+    .cta-row:last-child { border-bottom: none; }
+    .cta-row .k { flex: 0 0 84px; font-weight: 800; color: #fbbf24; }
+    .cta-row .v { flex: 1; color: #eee; min-width: 200px; }
+
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 17px 40px;
+      border-radius: 999px;
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      background: var(--grad);
+      text-decoration: none;
+      box-shadow: 0 0 30px rgba(245,158,11,0.45);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 0 44px rgba(245,158,11,0.65); }
+    .btn-cta:active { transform: scale(0.97); }
+
+    @media (max-width: 640px) {
+      .slide { padding: 32px 20px; }
+      .cta-row .k { flex: 0 0 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="brand">SMAC EDU</span>
+  <span class="counter"><span id="curNum">1</span> / <span id="totalNum">12</span></span>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- 1. 후킹 -->
+  <section class="slide" data-idx="0">
+    <div class="slide-inner">
+      <p class="pill pop"><span class="glow-dot"></span> 스마트폰 사진 무료 특강</p>
+      <h1 class="huge pop d1" data-step="1" style="margin-top:22px;">
+        <span class="grad">2시간, 완전 무료</span>
+      </h1>
+      <p class="sub pop d2" data-step="2">선착순 100명 · 마감되면 신청 종료</p>
+      <p class="sub pop d3" data-step="2" style="margin-top:26px; color:#fbbf24; font-weight:700;">
+        🎁 신청만 해도 유료급 자료 증정
+      </p>
+      <p class="sub pop d4" data-step="2" style="margin-top:34px; font-size:13px;">→ 다음으로 계속 (방향키/휠/클릭)</p>
+    </div>
+  </section>
+
+  <!-- 2. 신뢰 배지 -->
+  <section class="slide" data-idx="1">
+    <div class="slide-inner">
+      <p class="pop" style="font-size:40px;">🛡️</p>
+      <h2 class="huge pop d1" style="font-size:clamp(22px,4vw,34px);">장비도, 이론도 필요 없는 특강</h2>
+      <div class="no-list">
+        <span class="no-item pop d2" data-step="1">🚫 비싼 장비</span>
+        <span class="no-item pop d3" data-step="1">🚫 복잡한 이론</span>
+        <span class="no-item pop d4" data-step="1">🚫 감으로만 찍기</span>
+      </div>
+      <p class="sub pop d5" data-step="2">촬영·보정·AI 활용까지 — 이 순서 그대로만 따라오면 됩니다</p>
+    </div>
+  </section>
+
+  <!-- 3. 돌발 퀴즈 -->
+  <section class="slide" data-idx="2">
+    <div class="slide-inner">
+      <p class="label pop">돌발 퀴즈</p>
+      <h2 class="huge pop d1">
+        같은 폰, 같은 풍경인데<br>
+        왜 <span class="grad-lime">그 사람 사진만</span><br>작품이 될까요?
+      </h2>
+      <p class="quiz-mark pop d2" data-step="1">?</p>
+      <p class="sub pop d3" data-step="2">정답은 오늘 특강에서 확인하세요</p>
+    </div>
+  </section>
+
+  <!-- 4. 다시보기 없음 -->
+  <section class="slide" data-idx="3">
+    <div class="slide-inner">
+      <p class="label pop" style="color:var(--pink);">딱 하나만 미리</p>
+      <h2 class="huge pop d1">이 특강, <span class="grad-pink">다시보기</span><br>없습니다</h2>
+      <div class="urgent-icon pop d2" data-step="1">⏺</div>
+      <div class="bullet-row pop d3" data-step="2">
+        <span>ZOOM 라이브로만 진행</span>
+        <span>지금 이 시간에만 참여 가능</span>
+        <span>선착순 100명, 마감되면 신청 종료</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 문턱 -->
+  <section class="slide" data-idx="4">
+    <div class="slide-inner">
+      <p class="label pop">이유 ①</p>
+      <h2 class="huge pop d1" style="font-size:clamp(22px,4vw,34px);">인생샷엔 <span class="grad-lime">문턱</span>이 있습니다</h2>
+      <div style="margin-top:36px;">
+        <div class="bar-block pop d2" data-step="1">
+          <div class="bar-label"><span>촬영 감각</span><span>제자리</span></div>
+          <div class="bar-track"><div class="bar-fill" style="--fill:22%"></div></div>
+        </div>
+        <div class="bar-block pop d3" data-step="2">
+          <div class="bar-label"><span>🎨 보정 실력</span><span>거의 0</span></div>
+          <div class="bar-track"><div class="bar-fill" style="--fill:14%"></div></div>
+        </div>
+      </div>
+      <p class="sub pop d4" data-step="2">매일 찍어도… 몇 달째 제자리인 경우, 많으시죠?</p>
+    </div>
+  </section>
+
+  <!-- 6. 걸어오신 길 -->
+  <section class="slide" data-idx="5">
+    <div class="slide-inner">
+      <h2 class="huge pop" style="font-size:clamp(22px,4vw,34px);">여러분이 걸어오신 길</h2>
+      <div class="timeline-h">
+        <div class="tl-node pop d1" data-step="1">
+          <div class="tl-dot"></div>
+          <div class="tl-label">스마트폰 구입</div>
+        </div>
+        <div class="tl-line pop d2" data-step="1"></div>
+        <div class="tl-node pop d2" data-step="1">
+          <div class="tl-dot"></div>
+          <div class="tl-label">그냥 찍기 시작</div>
+        </div>
+        <div class="tl-line pop d3" data-step="2"></div>
+        <div class="tl-node pop d3" data-step="2">
+          <div class="tl-flag">지금 여기!</div>
+          <div class="tl-dot now"></div>
+          <div class="tl-label now">무료 특강</div>
+        </div>
+      </div>
+      <p class="sub pop d4" data-step="2" style="margin-top:14px;">한 걸음씩, 스스로 여기까지 들어오신 겁니다</p>
+    </div>
+  </section>
+
+  <!-- 7. 마트 시식 -->
+  <section class="slide" data-idx="6">
+    <div class="slide-inner">
+      <h2 class="huge pop" style="font-size:clamp(22px,4vw,34px);">마트 시식 코너랑 똑같아요 🍡</h2>
+      <div class="step-row">
+        <div class="step-card pop d1" data-step="1">
+          <div class="ic">🚪</div>
+          <h4>입구</h4>
+          <p>지금 이 특강 — 발길을 멈추게</p>
+        </div>
+        <span class="step-arrow pop d1" data-step="1">→</span>
+        <div class="step-card pop d2" data-step="1">
+          <div class="ic">🍡</div>
+          <h4>시식</h4>
+          <p>무료 커리큘럼 — 맛보기</p>
+        </div>
+        <span class="step-arrow pop d2" data-step="1">→</span>
+        <div class="step-card final pop d3" data-step="2">
+          <div class="ic">📷</div>
+          <h4>본품</h4>
+          <p>사진작가·사진강사 과정</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. 기분 흔들림 -->
+  <section class="slide" data-idx="7">
+    <div class="slide-inner">
+      <h2 class="huge pop" style="font-size:clamp(22px,4vw,34px);">그 반응에 — <span class="grad-pink">내 기분</span>이 흔들립니다</h2>
+      <div class="wave-wrap pop d1" data-step="1">
+        <svg viewBox="0 0 300 60" width="100%" height="60" preserveAspectRatio="none">
+          <path d="M0,30 C 25,5 50,55 75,30 C 100,5 125,55 150,30 C 175,5 200,55 225,30 C 250,5 275,55 300,30"
+                fill="none" stroke="var(--pink)" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <div class="wave-row pop d2" data-step="2">
+        <span>잘 나오면 → <b class="up">기분 UP</b></span>
+        <span>안 나오면 → <b class="down">"나는 소질 없나봐"</b></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. 진짜 질문 -->
+  <section class="slide" data-idx="8">
+    <div class="slide-inner">
+      <h2 class="huge pop" style="font-size:clamp(22px,4vw,34px);">진짜 질문은 <span class="grad-lime">따로</span> 있습니다</h2>
+      <div class="vs-row">
+        <div class="vs-card pop d1" data-step="1">
+          <div class="ic">🗑️</div>
+          <div class="t">그냥 찍은 사진</div>
+          <div class="v">결국 휴지통 행</div>
+        </div>
+        <span class="vs-x pop d1" data-step="1">VS</span>
+        <div class="vs-card win pop d2" data-step="2">
+          <div class="ic">📸</div>
+          <div class="t">배우고 찍은 사진</div>
+          <div class="v">2시간 만에 달라짐</div>
+        </div>
+      </div>
+      <p class="sub pop d3" data-step="3">어느 쪽이 더 오래, 더 좋아 보일까요?</p>
+    </div>
+  </section>
+
+  <!-- 10. 직접 해봐야 -->
+  <section class="slide" data-idx="9">
+    <div class="slide-inner">
+      <h2 class="huge pop" data-step="1">
+        보고만 있으면<br><span style="text-decoration:line-through;text-decoration-color:var(--pink);">내 사진이 안 됩니다</span>
+      </h2>
+      <p class="huge pop d1 grad-lime" data-step="2" style="margin-top:24px; font-size:clamp(24px,4.5vw,42px);">직접 찍어봐야, 내 사진</p>
+    </div>
+  </section>
+
+  <!-- 11. 있다/없다 -->
+  <section class="slide" data-idx="10">
+    <div class="slide-inner">
+      <h2 class="huge pop" style="font-size:clamp(22px,4vw,34px);">여러분은 어느 쪽이세요?</h2>
+      <p class="sub pop d1" data-step="1">사진 찍다가 "이게 최선인가" 아쉬웠던 적</p>
+      <div class="choice-row">
+        <button class="choice-btn pop d2" data-step="2" onclick="pick(this)">있다</button>
+        <button class="choice-btn pop d2" data-step="2" onclick="pick(this)">없다</button>
+      </div>
+      <p class="sub pop d3" data-step="2" style="margin-top:22px; font-size:13px;">👀 신청하고 라이브에서 답해보세요</p>
+    </div>
+  </section>
+
+  <!-- 12. 최종 CTA -->
+  <section class="slide" data-idx="11">
+    <div class="slide-inner">
+      <p class="pill pop"><span class="glow-dot"></span> 완전 무료 · 선착순 100명</p>
+      <h2 class="huge pop d1" data-step="1" style="margin-top:18px; font-size:clamp(24px,4.5vw,40px);">
+        찍는 순간 <span class="grad">작품</span>이 되는<br>스마트폰 사진
+      </h2>
+
+      <div class="cta-card pop d2" data-step="2">
+        <div class="cta-row"><div class="k">일시</div><div class="v">2026년 8월 28일(금) 저녁 9시</div></div>
+        <div class="cta-row"><div class="k">방식</div><div class="v">ZOOM 온라인 — 전국 어디서든</div></div>
+        <div class="cta-row"><div class="k">강사</div><div class="v">엘란비탈 박성욱 작가 · 스마트미디어아트센터 대표</div></div>
+      </div>
+
+      <a class="btn-cta pop d3" data-step="3" href="https://www.smacedu.kr/photo-lecture-landing.html">
+        ✦ 무료 신청하러 가기
+      </a>
+      <p class="sub pop d4" data-step="3" style="margin-top:16px; color:#fbbf24; font-weight:700; font-size:13px;">
+        🎁 신청만 해도 유료급 강의 자료를 보내 드립니다
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<div class="dots" id="dots"></div>
+<div class="frag-dots" id="fragDots"></div>
+
+<div class="arrows">
+  <button class="arrow-btn" id="prevBtn" aria-label="이전">‹</button>
+  <button class="arrow-btn" id="nextBtn" aria-label="다음">›</button>
+</div>
+
+<div class="hint">← → 로 진행 · 다 보면 다음 슬라이드로</div>
+
+<script>
+  const deck     = document.getElementById('deck');
+  const slides   = Array.from(deck.querySelectorAll('.slide'));
+  const dotsEl   = document.getElementById('dots');
+  const fragDotsEl = document.getElementById('fragDots');
+  const curNum   = document.getElementById('curNum');
+  const totalNum = document.getElementById('totalNum');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+
+  totalNum.textContent = slides.length;
+
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot';
+    d.setAttribute('aria-label', `${i + 1}번 슬라이드로 이동`);
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+  const dots = Array.from(dotsEl.children);
+
+  let current  = 0;   // 현재 슬라이드 인덱스
+  let fragStep = 0;   // 현재 슬라이드 안에서 진행된 단계
+
+  function maxStep(slide) {
+    let m = 0;
+    slide.querySelectorAll('[data-step]').forEach(el => {
+      const s = Number(el.dataset.step);
+      if (s > m) m = s;
+    });
+    return m;
+  }
+
+  function showFragments(slide, step) {
+    slide.querySelectorAll('.pop').forEach(el => {
+      const s = Number(el.dataset.step || 0);
+      el.classList.toggle('show', s <= step);
+    });
+  }
+
+  function renderFragDots(slide, step) {
+    const count = maxStep(slide);
+    fragDotsEl.innerHTML = '';
+    if (count === 0) { fragDotsEl.style.display = 'none'; return; }
+    fragDotsEl.style.display = 'flex';
+    for (let i = 1; i <= count; i++) {
+      const d = document.createElement('span');
+      d.className = 'frag-dot' + (i <= step ? ' on' : '');
+      fragDotsEl.appendChild(d);
+    }
+  }
+
+  function goTo(i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    slides[i].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+  }
+
+  function updateNavButtons() {
+    prevBtn.disabled = current === 0 && fragStep === 0;
+    nextBtn.disabled = current === slides.length - 1 && fragStep === maxStep(slides[current]);
+  }
+
+  function setActive(i) {
+    current  = i;
+    fragStep = 0;
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    dots.forEach((d, idx) => d.classList.toggle('on', idx === i));
+    curNum.textContent = i + 1;
+    showFragments(slides[i], 0);
+    renderFragDots(slides[i], 0);
+    updateNavButtons();
+  }
+
+  /* 화면에 들어온 슬라이드를 활성화 (내부 단계는 처음부터 다시 시작) */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && e.intersectionRatio > 0.6) {
+        const idx = Number(e.target.dataset.idx);
+        if (idx !== current) setActive(idx);
+      }
+    });
+  }, { root: deck, threshold: [0.6] });
+
+  slides.forEach(s => io.observe(s));
+
+  /* 다음: 슬라이드 안에 아직 안 보여준 단계가 있으면 한 단계씩, 다 보여줬으면 다음 슬라이드로 */
+  function nextStep() {
+    const slide = slides[current];
+    const max = maxStep(slide);
+    if (fragStep < max) {
+      fragStep++;
+      showFragments(slide, fragStep);
+      renderFragDots(slide, fragStep);
+      updateNavButtons();
+    } else if (current < slides.length - 1) {
+      goTo(current + 1);
+    }
+  }
+
+  /* 이전: 단계가 진행된 상태면 한 단계 되돌리고, 처음 단계면 이전 슬라이드로 */
+  function prevStep() {
+    if (fragStep > 0) {
+      fragStep--;
+      showFragments(slides[current], fragStep);
+      renderFragDots(slides[current], fragStep);
+      updateNavButtons();
+    } else if (current > 0) {
+      goTo(current - 1);
+    }
+  }
+
+  prevBtn.addEventListener('click', prevStep);
+  nextBtn.addEventListener('click', nextStep);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); nextStep(); }
+    if (e.key === 'ArrowLeft'  || e.key === 'PageUp')                   { e.preventDefault(); prevStep(); }
+  });
+
+  /* 마우스 휠(세로 입력)을 단계 진행으로 변환 */
+  let wheelLock = false;
+  deck.addEventListener('wheel', (e) => {
+    if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return; // 트랙패드 가로 스와이프는 그대로 둠
+    e.preventDefault();
+    if (wheelLock) return;
+    wheelLock = true;
+    if (e.deltaY > 0) nextStep(); else prevStep();
+    setTimeout(() => { wheelLock = false; }, 450);
+  }, { passive: false });
+
+  /* 슬라이드 빈 공간 클릭으로도 다음 단계 진행 (버튼·링크는 제외) */
+  deck.addEventListener('click', (e) => {
+    if (e.target.closest('a, button, .choice-btn')) return;
+    nextStep();
+  });
+
+  function pick(btn) {
+    btn.parentElement.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('picked'));
+    btn.classList.add('picked');
+  }
+
+  setActive(0);
+</script>
+</body>
+</html>
