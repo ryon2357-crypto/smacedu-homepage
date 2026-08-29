@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="텍스트, 링크, 연락처를 QR 코드로 만들고 PNG 이미지로 저장하세요.">
+    <title>QR 코드 만들기 | 스마트미디어아트센터</title>
+    <link rel="icon" href="images/logo1.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #172554;
+            --navy-light: #243b79;
+            --orange: #f97316;
+            --orange-dark: #e85f08;
+            --orange-soft: #fff7ed;
+            --paper: #ffffff;
+            --canvas: #f4f6fb;
+            --line: #e4e7ee;
+            --text: #253047;
+            --muted: #70798b;
+            --shadow: 0 24px 70px rgba(23, 37, 84, .13);
+        }
+
+        * { box-sizing: border-box; }
+
+        html { min-height: 100%; }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 6% 2%, rgba(249, 115, 22, .13), transparent 28rem),
+                radial-gradient(circle at 96% 94%, rgba(37, 59, 121, .12), transparent 30rem),
+                var(--canvas);
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        button, input, textarea, select { font: inherit; }
+        button { cursor: pointer; }
+
+        .topbar {
+            height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 26px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 11px;
+            color: var(--navy);
+            font-weight: 800;
+            text-decoration: none;
+            letter-spacing: -.03em;
+        }
+
+        .brand img {
+            width: 43px;
+            height: 43px;
+            object-fit: contain;
+        }
+
+        .home-link {
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .home-link:hover { color: var(--orange); }
+
+        main {
+            width: min(1120px, calc(100% - 36px));
+            margin: 26px auto 70px;
+        }
+
+        .intro {
+            margin: 0 auto 34px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 11px;
+            padding: 7px 13px;
+            color: var(--orange-dark);
+            background: var(--orange-soft);
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: .08em;
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--navy);
+            font-size: clamp(30px, 4vw, 48px);
+            line-height: 1.2;
+            letter-spacing: -.055em;
+        }
+
+        .intro p {
+            margin: 13px 0 0;
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        .app {
+            display: grid;
+            grid-template-columns: minmax(0, 1.12fr) minmax(330px, .88fr);
+            overflow: hidden;
+            background: var(--paper);
+            border: 1px solid rgba(228, 231, 238, .85);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+        }
+
+        .editor { padding: 38px; }
+
+        .preview-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 610px;
+            padding: 38px;
+            background:
+                linear-gradient(145deg, rgba(255,255,255,.96), rgba(255,247,237,.78)),
+                var(--orange-soft);
+            border-left: 1px solid var(--line);
+        }
+
+        .section-title {
+            margin: 0 0 7px;
+            color: var(--navy);
+            font-size: 21px;
+            letter-spacing: -.035em;
+        }
+
+        .section-help {
+            margin: 0 0 25px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .type-tabs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 7px;
+            margin-bottom: 24px;
+            padding: 5px;
+            background: #f2f4f8;
+            border-radius: 14px;
+        }
+
+        .type-tab {
+            min-height: 42px;
+            color: var(--muted);
+            background: transparent;
+            border: 0;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: .18s ease;
+        }
+
+        .type-tab:hover { color: var(--navy); }
+
+        .type-tab.active {
+            color: var(--navy);
+            background: white;
+            box-shadow: 0 3px 12px rgba(23, 37, 84, .09);
+        }
+
+        .field { margin-bottom: 18px; }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 13px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #354057;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            color: var(--text);
+            background: #fbfcfe;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            outline: none;
+            transition: border-color .18s, box-shadow .18s, background .18s;
+        }
+
+        input, select { height: 48px; padding: 0 14px; }
+        textarea { min-height: 124px; padding: 13px 14px; line-height: 1.65; resize: vertical; }
+
+        input:focus, textarea:focus, select:focus {
+            background: white;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, .1);
+        }
+
+        .dynamic-fields { min-height: 175px; }
+
+        .customize {
+            margin-top: 24px;
+            padding-top: 23px;
+            border-top: 1px solid var(--line);
+        }
+
+        .custom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.2fr;
+            gap: 13px;
+        }
+
+        .color-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            height: 48px;
+            padding: 6px 12px 6px 7px;
+            background: #fbfcfe;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+        }
+
+        input[type="color"] {
+            width: 34px;
+            height: 34px;
+            flex: 0 0 34px;
+            padding: 0;
+            overflow: hidden;
+            background: none;
+            border: 0;
+            border-radius: 9px;
+            box-shadow: none;
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 8px; }
+        .hex { color: var(--muted); font-size: 12px; font-weight: 600; }
+
+        .preview-label {
+            margin-bottom: 18px;
+            color: var(--navy);
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .qr-shell {
+            position: relative;
+            display: grid;
+            place-items: center;
+            width: min(310px, 100%);
+            aspect-ratio: 1;
+            padding: 18px;
+            overflow: hidden;
+            background: white;
+            border: 1px solid rgba(228, 231, 238, .9);
+            border-radius: 25px;
+            box-shadow: 0 18px 45px rgba(23, 37, 84, .14);
+        }
+
+        #qrCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+            border-radius: 8px;
+        }
+
+        .empty-state {
+            position: absolute;
+            inset: 18px;
+            display: none;
+            place-items: center;
+            padding: 22px;
+            color: var(--muted);
+            background: #f8f9fc;
+            border: 2px dashed #d8dce5;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .empty-state.show { display: grid; }
+
+        .qr-meta {
+            width: min(310px, 100%);
+            margin: 16px 0 20px;
+            color: var(--muted);
+            font-size: 12px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr;
+            gap: 9px;
+            width: min(310px, 100%);
+        }
+
+        .btn {
+            height: 49px;
+            border-radius: 13px;
+            font-weight: 800;
+            transition: transform .15s, background .15s, border-color .15s;
+        }
+
+        .btn:hover { transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+
+        .btn-primary {
+            color: white;
+            background: var(--orange);
+            border: 1px solid var(--orange);
+            box-shadow: 0 9px 18px rgba(249, 115, 22, .22);
+        }
+
+        .btn-primary:hover { background: var(--orange-dark); }
+
+        .btn-secondary {
+            color: var(--navy);
+            background: white;
+            border: 1px solid #d9dde6;
+        }
+
+        .btn-secondary:hover { border-color: var(--navy); }
+
+        .tip {
+            display: flex;
+            gap: 9px;
+            width: min(310px, 100%);
+            margin-top: 20px;
+            padding: 13px 14px;
+            color: #6c5b4b;
+            background: rgba(255,255,255,.7);
+            border-radius: 12px;
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        .email-capture {
+            width: min(310px, 100%);
+            margin-top: 20px;
+            padding: 16px 16px 17px;
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+        }
+
+        .email-capture-label {
+            margin-bottom: 4px;
+            color: var(--navy);
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .email-capture-help {
+            margin-bottom: 11px;
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.55;
+        }
+
+        .email-capture-row {
+            display: flex;
+            gap: 7px;
+        }
+
+        .email-capture-row input {
+            flex: 1;
+            height: 42px;
+            font-size: 13px;
+        }
+
+        .email-capture-row button {
+            flex: 0 0 auto;
+            height: 42px;
+            padding: 0 15px;
+            font-size: 13px;
+        }
+
+        .email-capture-msg {
+            margin-top: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .email-capture-msg.ok { color: #1a8f4c; }
+        .email-capture-msg.err { color: #d64545; }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 28px;
+            z-index: 20;
+            padding: 12px 18px;
+            color: white;
+            background: #172554;
+            border-radius: 999px;
+            box-shadow: 0 8px 30px rgba(0,0,0,.2);
+            font-size: 13px;
+            font-weight: 700;
+            opacity: 0;
+            transform: translate(-50%, 14px);
+            pointer-events: none;
+            transition: .22s ease;
+        }
+
+        .toast.show { opacity: 1; transform: translate(-50%, 0); }
+        #qrSource { position: fixed; left: -9999px; top: -9999px; }
+
+        @media (max-width: 820px) {
+            .app { grid-template-columns: 1fr; }
+            .preview-panel { min-height: auto; border-left: 0; border-top: 1px solid var(--line); }
+            .editor, .preview-panel { padding: 30px; }
+        }
+
+        @media (max-width: 520px) {
+            .topbar { height: 68px; padding: 0 18px; }
+            .brand span { display: none; }
+            main { width: min(100% - 22px, 1120px); margin-top: 16px; }
+            .intro { margin-bottom: 24px; }
+            .intro p { padding: 0 15px; font-size: 14px; }
+            .app { border-radius: 21px; }
+            .editor, .preview-panel { padding: 24px 19px; }
+            .type-tabs { grid-template-columns: 1fr 1fr; }
+            .field-row, .custom-grid { grid-template-columns: 1fr; }
+            .dynamic-fields { min-height: 0; }
+            .qr-shell { width: min(280px, 100%); }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="index.html">
+            <img src="images/logo1.png" alt="">
+            <span>스마트미디어아트센터</span>
+        </a>
+        <a class="home-link" href="index.html">홈으로 돌아가기 →</a>
+    </header>
+
+    <main>
+        <section class="intro">
+            <div class="eyebrow">✦ FREE QR MAKER</div>
+            <h1>필요한 정보를 QR 코드로</h1>
+            <p>링크부터 연락처까지, 입력하는 즉시 QR 코드가 만들어집니다.</p>
+        </section>
+
+        <section class="app" aria-label="QR 코드 생성기">
+            <div class="editor">
+                <h2 class="section-title">정보 입력</h2>
+                <p class="section-help">QR 코드를 스캔했을 때 보여줄 내용을 선택하세요.</p>
+
+                <div class="type-tabs" role="tablist" aria-label="QR 코드 종류">
+                    <button class="type-tab active" type="button" data-type="url">링크</button>
+                    <button class="type-tab" type="button" data-type="text">텍스트</button>
+                    <button class="type-tab" type="button" data-type="email">이메일</button>
+                    <button class="type-tab" type="button" data-type="phone">전화</button>
+                </div>
+
+                <div id="dynamicFields" class="dynamic-fields"></div>
+
+                <div class="customize">
+                    <h2 class="section-title">디자인 설정</h2>
+                    <p class="section-help">용도에 맞게 색상과 이미지 크기를 바꿔보세요.</p>
+
+                    <div class="custom-grid">
+                        <div class="field">
+                            <label for="darkColor">QR 색상</label>
+                            <div class="color-input">
+                                <input id="darkColor" type="color" value="#172554" aria-label="QR 색상">
+                                <span id="darkHex" class="hex">#172554</span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="lightColor">배경 색상</label>
+                            <div class="color-input">
+                                <input id="lightColor" type="color" value="#ffffff" aria-label="배경 색상">
+                                <span id="lightHex" class="hex">#FFFFFF</span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="qrSize">저장 크기</label>
+                            <select id="qrSize">
+                                <option value="512">512 × 512 px</option>
+                                <option value="768">768 × 768 px</option>
+                                <option value="1024">1024 × 1024 px</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="preview-panel">
+                <div class="preview-label">QR 코드 미리보기</div>
+                <div class="qr-shell">
+                    <canvas id="qrCanvas" width="512" height="512" aria-label="생성된 QR 코드"></canvas>
+                    <div id="emptyState" class="empty-state">내용을 입력하면<br>QR 코드가 나타납니다.</div>
+                </div>
+                <div id="qrMeta" class="qr-meta">https://smacedu.com</div>
+                <div class="actions">
+                    <button id="downloadBtn" class="btn btn-primary" type="button">PNG 저장</button>
+                    <button id="copyBtn" class="btn btn-secondary" type="button">내용 복사</button>
+                </div>
+                <div class="tip"><span>💡</span><span>인쇄하기 전에 휴대폰 카메라로 QR 코드가 잘 열리는지 꼭 확인하세요.</span></div>
+
+                <div class="email-capture">
+                    <div class="email-capture-label">📩 이 QR 코드, 이메일로 받아보기</div>
+                    <div class="email-capture-help">이메일을 남겨주시면 만든 QR 코드를 보내드리고, 앞으로 스마트미디어아트센터의 강의 소식도 안내해드려요. (선택, 언제든 수신거부 가능)</div>
+                    <div class="email-capture-row">
+                        <input id="captureEmail" type="email" placeholder="you@example.com" autocomplete="email">
+                        <button id="captureBtn" class="btn btn-primary" type="button">받기</button>
+                    </div>
+                    <div id="captureMsg" class="email-capture-msg"></div>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <div id="qrSource" aria-hidden="true"></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        const fields = document.getElementById("dynamicFields");
+        const source = document.getElementById("qrSource");
+        const canvas = document.getElementById("qrCanvas");
+        const emptyState = document.getElementById("emptyState");
+        const qrMeta = document.getElementById("qrMeta");
+        const darkColor = document.getElementById("darkColor");
+        const lightColor = document.getElementById("lightColor");
+        const qrSize = document.getElementById("qrSize");
+        const darkHex = document.getElementById("darkHex");
+        const lightHex = document.getElementById("lightHex");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const copyBtn = document.getElementById("copyBtn");
+        const toast = document.getElementById("toast");
+
+        let currentType = "url";
+        let currentValue = "";
+        let timer;
+
+        const templates = {
+            url: `
+                <div class="field">
+                    <label for="urlInput">웹사이트 주소</label>
+                    <input id="urlInput" data-role="primary" type="url" value="https://smacedu.com" placeholder="https://example.com" autocomplete="url">
+                </div>`,
+            text: `
+                <div class="field">
+                    <label for="textInput">내용</label>
+                    <textarea id="textInput" data-role="primary" placeholder="QR 코드에 담을 문장을 입력하세요."></textarea>
+                </div>`,
+            email: `
+                <div class="field">
+                    <label for="emailInput">받는 사람 이메일</label>
+                    <input id="emailInput" data-role="email" type="email" placeholder="hello@example.com" autocomplete="email">
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label for="subjectInput">제목</label>
+                        <input id="subjectInput" data-role="subject" type="text" placeholder="문의드립니다">
+                    </div>
+                    <div class="field">
+                        <label for="bodyInput">메시지</label>
+                        <input id="bodyInput" data-role="body" type="text" placeholder="안녕하세요">
+                    </div>
+                </div>`,
+            phone: `
+                <div class="field">
+                    <label for="phoneInput">전화번호</label>
+                    <input id="phoneInput" data-role="primary" type="tel" placeholder="010-1234-5678" autocomplete="tel">
+                </div>`
+        };
+
+        function escapeValue(value) {
+            return encodeURIComponent(value.trim());
+        }
+
+        function getValue() {
+            if (currentType === "email") {
+                const email = fields.querySelector('[data-role="email"]').value.trim();
+                const subject = fields.querySelector('[data-role="subject"]').value.trim();
+                const body = fields.querySelector('[data-role="body"]').value.trim();
+                if (!email) return "";
+                const params = new URLSearchParams();
+                if (subject) params.set("subject", subject);
+                if (body) params.set("body", body);
+                return `mailto:${email}${params.toString() ? "?" + params.toString() : ""}`;
+            }
+
+            const primary = fields.querySelector('[data-role="primary"]').value.trim();
+            if (!primary) return "";
+            if (currentType === "phone") return `tel:${primary.replace(/[^\d+]/g, "")}`;
+            if (currentType === "url" && !/^[a-z][a-z\d+.-]*:/i.test(primary)) return `https://${primary}`;
+            return primary;
+        }
+
+        function renderFields(type) {
+            fields.innerHTML = templates[type];
+            fields.querySelectorAll("input, textarea").forEach((element) => {
+                element.addEventListener("input", scheduleGenerate);
+            });
+            generate();
+            requestAnimationFrame(() => fields.querySelector("input, textarea")?.focus());
+        }
+
+        function scheduleGenerate() {
+            clearTimeout(timer);
+            timer = setTimeout(generate, 120);
+        }
+
+        function generate() {
+            currentValue = getValue();
+            darkHex.textContent = darkColor.value.toUpperCase();
+            lightHex.textContent = lightColor.value.toUpperCase();
+
+            if (!currentValue) {
+                emptyState.classList.add("show");
+                qrMeta.textContent = "내용을 입력해 주세요";
+                downloadBtn.disabled = true;
+                copyBtn.disabled = true;
+                return;
+            }
+
+            if (typeof QRCode === "undefined") {
+                emptyState.innerHTML = "QR 라이브러리를 불러오지 못했습니다.<br>인터넷 연결을 확인해 주세요.";
+                emptyState.classList.add("show");
+                qrMeta.textContent = "연결 오류";
+                return;
+            }
+
+            const size = Number(qrSize.value);
+            const margin = Math.round(size * .075);
+            const innerSize = size - margin * 2;
+            source.innerHTML = "";
+
+            try {
+                new QRCode(source, {
+                    text: currentValue,
+                    width: innerSize,
+                    height: innerSize,
+                    colorDark: darkColor.value,
+                    colorLight: lightColor.value,
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+
+                requestAnimationFrame(() => {
+                    const generated = source.querySelector("canvas");
+                    if (!generated) return;
+                    canvas.width = size;
+                    canvas.height = size;
+                    const context = canvas.getContext("2d");
+                    context.fillStyle = lightColor.value;
+                    context.fillRect(0, 0, size, size);
+                    context.imageSmoothingEnabled = false;
+                    context.drawImage(generated, margin, margin, innerSize, innerSize);
+                    emptyState.classList.remove("show");
+                    qrMeta.textContent = currentValue;
+                    downloadBtn.disabled = false;
+                    copyBtn.disabled = false;
+                });
+            } catch (error) {
+                emptyState.textContent = "내용이 너무 깁니다. 조금 줄여서 입력해 주세요.";
+                emptyState.classList.add("show");
+                qrMeta.textContent = "QR 코드를 만들 수 없습니다";
+            }
+        }
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add("show");
+            clearTimeout(showToast.timer);
+            showToast.timer = setTimeout(() => toast.classList.remove("show"), 1800);
+        }
+
+        document.querySelectorAll(".type-tab").forEach((tab) => {
+            tab.addEventListener("click", () => {
+                document.querySelector(".type-tab.active").classList.remove("active");
+                tab.classList.add("active");
+                currentType = tab.dataset.type;
+                renderFields(currentType);
+            });
+        });
+
+        [darkColor, lightColor, qrSize].forEach((element) => element.addEventListener("input", generate));
+
+        downloadBtn.addEventListener("click", () => {
+            if (!currentValue) return;
+            const link = document.createElement("a");
+            link.download = `qr-code-${Date.now()}.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+            showToast("QR 코드 이미지를 저장했습니다.");
+        });
+
+        copyBtn.addEventListener("click", async () => {
+            if (!currentValue) return;
+            try {
+                await navigator.clipboard.writeText(currentValue);
+                showToast("QR 코드 내용을 복사했습니다.");
+            } catch {
+                const helper = document.createElement("textarea");
+                helper.value = currentValue;
+                document.body.appendChild(helper);
+                helper.select();
+                document.execCommand("copy");
+                helper.remove();
+                showToast("QR 코드 내용을 복사했습니다.");
+            }
+        });
+
+        // 방문자가 남긴 이메일을 저장하는 전용 구글폼(이 페이지 전용, 다른 페이지의 리드 수집과는 별도).
+        const EMAIL_CAPTURE = {
+            submitUrl: "https://docs.google.com/forms/d/e/1FAIpQLSfPIcIUrvQIj_ij-9L1N8l-WDgw6K7-UVVgfqoupVxP0lYoHw/formResponse",
+            entryId: "entry.1789749522"
+        };
+
+        const captureEmail = document.getElementById("captureEmail");
+        const captureBtn = document.getElementById("captureBtn");
+        const captureMsg = document.getElementById("captureMsg");
+
+        captureBtn.addEventListener("click", () => {
+            const email = captureEmail.value.trim();
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                captureMsg.textContent = "올바른 이메일 주소를 입력해 주세요.";
+                captureMsg.className = "email-capture-msg err";
+                return;
+            }
+
+            captureBtn.disabled = true;
+            const body = new URLSearchParams();
+            body.set(EMAIL_CAPTURE.entryId, email);
+
+            fetch(EMAIL_CAPTURE.submitUrl, { method: "POST", mode: "no-cors", body })
+                .catch(() => {})
+                .finally(() => {
+                    captureBtn.disabled = false;
+                    captureMsg.textContent = "저장했어요! 감사합니다.";
+                    captureMsg.className = "email-capture-msg ok";
+                    captureEmail.value = "";
+                });
+        });
+
+        renderFields(currentType);
+    </script>
+</body>
+</html>
