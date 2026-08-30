@@ -20,25 +20,25 @@
     /* ─── Reset & Base ─────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:        #050a16;
-      --bg2:       #0a1530;
-      --bg3:       #0e1c3e;
+      --bg:        #0a0806;
+      --bg2:       #15110d;
+      --bg3:       #1d1712;
       --border:    rgba(201,168,92,.16);
       --gold-deep: #8a6d23;
       --gold:      #c6a35c;
       --gold-lt:   #e9d49a;
-      --text:      #eef1f7;
-      --muted:     #8d96ab;
+      --text:      #f1ede6;
+      --muted:     #9a9188;
       --red:       #e0667a;
       --radius:    14px;
     }
     html { scroll-behavior: smooth; }
     body {
       background:
-        radial-gradient(circle at 14% -8%, rgba(201,168,92,.09) 0%, transparent 40%),
-        radial-gradient(circle at 90% 6%, rgba(58,92,180,.28) 0%, transparent 48%),
-        radial-gradient(circle at 50% 110%, rgba(40,70,150,.18) 0%, transparent 55%),
-        linear-gradient(180deg, #050a16 0%, #081230 55%, #050a16 100%);
+        radial-gradient(circle at 14% -8%, rgba(201,168,92,.12) 0%, transparent 42%),
+        radial-gradient(circle at 90% 6%, rgba(201,168,92,.07) 0%, transparent 48%),
+        radial-gradient(circle at 50% 110%, rgba(201,168,92,.05) 0%, transparent 55%),
+        linear-gradient(180deg, #0a0806 0%, #120e0a 55%, #0a0806 100%);
       color: var(--text);
       font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
       line-height: 1.7;
@@ -927,11 +927,15 @@
         </p>
       </div>
 
-      <button class="btn-primary" onclick="handleApply('full')">
-        ✦ 지금 바로 신청하기
+      <button class="btn-primary" onclick="handleApply('light')">
+        ✦ 2시간 라이트로 먼저 시작하기 (15만원)
       </button>
       <p class="deadline-note">신청하시고 입금 확인되면 빠르게 확인 드립니다.</p>
-      <p class="deadline-note">먼저 가볍게 시작하고 싶다면 <a href="#lite" style="color:#e9d49a;text-decoration:underline;">2시간 라이트(15만원)</a>도 있어요.</p>
+
+      <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--border);">
+        <p class="deadline-note" style="margin-top:0;margin-bottom:14px;">처음부터 끝까지 제대로 함께하고 싶다면?</p>
+        <button onclick="handleApply('full')" style="background:transparent;border:1px solid rgba(201,168,92,.5);color:var(--gold-lt);font-weight:700;padding:14px 32px;border-radius:99px;cursor:pointer;font-family:inherit;font-size:.95rem;">✦ VIP 얼리버드 신청하기 (50만원)</button>
+      </div>
     </div>
   </div>
 </section>
