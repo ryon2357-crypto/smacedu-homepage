@@ -741,10 +741,6 @@
             showStatus('success', '✅ 후기가 성공적으로 제출되었습니다! 검토 후 게시됩니다.<br>소중한 후기 감사합니다 😊');
             prependReview(reviewData);
             reviewForm.reset();
-            const hint = document.querySelector('.star-group + p');
-            hint.textContent = '별을 클릭해 별점을 선택해주세요';
-            hint.style.color = '';
-            hint.style.fontWeight = '';
             document.getElementById('reviewsGrid').scrollIntoView({ behavior:'smooth', block:'start' });
         } catch(err) {
             showStatus('error', '❌ 제출 중 오류가 발생했습니다.<br>카카오 팀채팅으로 문의해주세요.');
