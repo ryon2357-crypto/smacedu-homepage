@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AI 초보자가 질문부터 프롬프트, 결과물 제작, 코워크와 코드까지 한 번에 이해하는 60분 실습형 강의">
+  <title>AI와 친해지는 1시간 | 스마트미디어아트센터</title>
+  <style>
+    :root {
+      color-scheme: only light;
+      --navy: #102f4b;
+      --blue: #1677c8;
+      --blue-dark: #0d5797;
+      --blue-soft: #eaf5fd;
+      --teal: #079981;
+      --teal-soft: #e7f7f3;
+      --yellow: #ffbb2e;
+      --yellow-soft: #fff7dd;
+      --ink: #172b3a;
+      --body: #344b5d;
+      --muted: #657b8d;
+      --line: #dbe6ee;
+      --paper: #ffffff;
+      --wash: #f5f9fc;
+      --shadow: 0 22px 60px rgba(26, 73, 108, .12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Pretendard, "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+      font-size: 18px;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+    button, input { font: inherit; }
+    a { color: inherit; }
+    img { display: block; max-width: 100%; }
+    section { scroll-margin-top: 92px; }
+    .wrap { width: min(1120px, calc(100% - 48px)); margin: 0 auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255,255,255,.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+    .header-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--blue);
+      color: white;
+      font-size: 15px;
+      letter-spacing: -.03em;
+    }
+    .nav { display: flex; align-items: center; gap: 24px; }
+    .nav a {
+      color: var(--body);
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .nav a:hover { color: var(--blue); }
+
+    .hero {
+      overflow: hidden;
+      padding: 94px 0 76px;
+      background:
+        radial-gradient(circle at 88% 10%, rgba(22,119,200,.12), transparent 34%),
+        linear-gradient(180deg, #fff 0%, #f6fbff 100%);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      color: var(--blue-dark);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 4px;
+      border-radius: 9px;
+      background: var(--blue);
+    }
+    .hero h1 {
+      max-width: 820px;
+      margin: 0;
+      font-size: clamp(44px, 7vw, 80px);
+      line-height: 1.12;
+      letter-spacing: -.055em;
+    }
+    .hero h1 em { color: var(--blue); font-style: normal; }
+    .hero-copy {
+      max-width: 720px;
+      margin: 28px 0 0;
+      color: var(--body);
+      font-size: clamp(19px, 2vw, 23px);
+      line-height: 1.7;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+    .button {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: white;
+      color: var(--navy);
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .button.primary { border-color: var(--blue); background: var(--blue); color: white; }
+    .button:hover { transform: translateY(-1px); }
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      margin-top: 64px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--line);
+      box-shadow: var(--shadow);
+    }
+    .hero-point { padding: 28px; background: white; }
+    .hero-point b { display: block; margin-bottom: 5px; font-size: 21px; }
+    .hero-point span { color: var(--muted); font-size: 16px; }
+
+    .section { padding: 104px 0; }
+    .section.tint { background: var(--wash); }
+    .section.dark { background: var(--navy); color: white; }
+    .section-head { max-width: 790px; margin-bottom: 52px; }
+    .section-number {
+      display: inline-block;
+      margin-bottom: 14px;
+      color: var(--blue);
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+    .dark .section-number { color: #6fc7ff; }
+    h2 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1.2;
+      letter-spacing: -.045em;
+    }
+    .section-head p {
+      margin: 20px 0 0;
+      color: var(--body);
+      font-size: 20px;
+    }
+    .dark .section-head p { color: #d5e5ef; }
+
+    .conversation {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .phone-scene {
+      padding: 36px;
+      border-radius: 26px;
+      background: var(--navy);
+      box-shadow: var(--shadow);
+    }
+    .chat { display: grid; gap: 16px; }
+    .bubble {
+      width: fit-content;
+      max-width: 88%;
+      padding: 16px 19px;
+      border-radius: 18px;
+      font-weight: 700;
+      line-height: 1.55;
+    }
+    .bubble.me { margin-left: auto; border-bottom-right-radius: 5px; background: var(--yellow); color: #493100; }
+    .bubble.ai { border-bottom-left-radius: 5px; background: white; color: var(--ink); }
+    .explain-list { display: grid; gap: 22px; }
+    .explain-row { display: grid; grid-template-columns: 44px 1fr; gap: 15px; }
+    .explain-row .num {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--blue-soft);
+      color: var(--blue-dark);
+      font-weight: 900;
+    }
+    .explain-row h3 { margin: 0 0 3px; font-size: 21px; }
+    .explain-row p { margin: 0; color: var(--body); font-size: 16px; }
+
+    .journey-figure { margin: 0; }
+    .journey-figure img {
+      width: 100%;
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+    .journey-figure figcaption {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 15px;
+      text-align: center;
+    }
+
+    .formula {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .formula-card {
+      min-height: 220px;
+      padding: 30px;
+      border-top: 6px solid var(--blue);
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 12px 34px rgba(26,73,108,.08);
+    }
+    .formula-card:nth-child(2) { border-color: var(--teal); }
+    .formula-card:nth-child(3) { border-color: var(--yellow); }
+    .formula-card small { color: var(--muted); font-weight: 800; }
+    .formula-card h3 { margin: 14px 0 10px; font-size: 28px; }
+    .formula-card p { margin: 0; color: var(--body); }
+
+    .prompt-example {
+      margin-top: 38px;
+      padding: 34px;
+      border-radius: 20px;
+      background: var(--navy);
+      color: white;
+    }
+    .prompt-label { color: #83d2ff; font-size: 14px; font-weight: 900; letter-spacing: .08em; }
+    .prompt-example blockquote {
+      margin: 12px 0 24px;
+      font-size: clamp(21px, 2.5vw, 29px);
+      font-weight: 800;
+      line-height: 1.65;
+    }
+    .copy-button {
+      min-height: 46px;
+      padding: 0 18px;
+      border: 1px solid rgba(255,255,255,.34);
+      border-radius: 10px;
+      background: transparent;
+      color: white;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .outputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .output {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: white;
+    }
+    .output-visual {
+      min-height: 180px;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background: var(--blue-soft);
+    }
+    .output:nth-child(2) .output-visual { background: var(--teal-soft); }
+    .output:nth-child(3) .output-visual { background: var(--yellow-soft); }
+    .poster-mini {
+      width: 126px;
+      min-height: 142px;
+      padding: 18px;
+      border-radius: 6px;
+      background: white;
+      box-shadow: 0 12px 28px rgba(16,47,75,.15);
+    }
+    .mini-line { height: 7px; margin: 8px 0; border-radius: 9px; background: #c9d9e5; }
+    .mini-line.strong { width: 72%; height: 13px; background: var(--blue); }
+    .steps-mini { display: flex; align-items: center; gap: 8px; }
+    .steps-mini span {
+      width: 52px; height: 52px; display: grid; place-items: center;
+      border-radius: 50%; background: white; color: var(--teal); font-weight: 900;
+      box-shadow: 0 8px 22px rgba(16,47,75,.1);
+    }
+    .slides-mini { display: grid; grid-template-columns: repeat(2, 82px); gap: 8px; transform: rotate(-3deg); }
+    .slides-mini span { height: 54px; border-radius: 5px; background: white; box-shadow: 0 7px 18px rgba(16,47,75,.12); }
+    .output-copy { padding: 26px; }
+    .output-copy h3 { margin: 0 0 8px; font-size: 25px; }
+    .output-copy p { margin: 0; color: var(--body); font-size: 16px; }
+
+    .artifact-demo {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 52px;
+      align-items: center;
+    }
+    .artifact-copy h3 { margin: 0 0 15px; font-size: 32px; }
+    .artifact-copy p { color: var(--body); }
+    .checklist {
+      padding: 32px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: white;
+      box-shadow: var(--shadow);
+    }
+    .check-head { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+    .check-head strong { font-size: 22px; }
+    .check-count { color: var(--blue); font-weight: 900; }
+    .check-progress { height: 10px; overflow: hidden; margin-bottom: 22px; border-radius: 99px; background: var(--blue-soft); }
+    .check-progress span { display: block; width: 0; height: 100%; background: var(--blue); transition: width .2s ease; }
+    .check-items { display: grid; gap: 8px; }
+    .check-items label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 48px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .check-items label:hover { background: var(--wash); }
+    .check-items input { width: 21px; height: 21px; accent-color: var(--blue); }
+
+    .mode-table {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 22px;
+      background: rgba(255,255,255,.18);
+    }
+    .mode { min-height: 320px; padding: 34px; background: var(--navy); }
+    .mode-tag { color: #7bd1ff; font-size: 15px; font-weight: 900; }
+    .mode:nth-child(2) .mode-tag { color: #68e0c7; }
+    .mode:nth-child(3) .mode-tag { color: #ffd260; }
+    .mode h3 { margin: 13px 0 22px; font-size: 31px; }
+    .mode b { display: block; margin-bottom: 10px; font-size: 19px; }
+    .mode p { margin: 0; color: #c9dbe7; font-size: 16px; }
+    .mode-use { margin-top: 26px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.16); }
+
+    .closing { padding: 110px 0; text-align: center; }
+    .closing strong {
+      display: block;
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: clamp(34px, 5vw, 57px);
+      line-height: 1.35;
+      letter-spacing: -.045em;
+    }
+    .closing strong em { color: var(--blue); font-style: normal; }
+    .closing p { margin: 24px 0 0; color: var(--body); font-size: 20px; }
+    .site-footer { padding: 34px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+
+    @media (max-width: 900px) {
+      .nav { display: none; }
+      .hero-points, .formula, .outputs, .mode-table { grid-template-columns: 1fr; }
+      .conversation, .artifact-demo { grid-template-columns: 1fr; }
+      .formula-card { min-height: 0; }
+      .mode { min-height: 0; }
+    }
+    @media (max-width: 600px) {
+      body { font-size: 17px; }
+      .wrap { width: min(100% - 30px, 1120px); }
+      .header-inner { min-height: 62px; }
+      .brand span:last-child { font-size: 15px; }
+      .hero { padding: 66px 0 54px; }
+      .hero h1 { font-size: 44px; }
+      .hero-actions .button { width: 100%; }
+      .hero-points { margin-top: 42px; }
+      .hero-point { padding: 22px; }
+      .section { padding: 76px 0; }
+      .section-head { margin-bottom: 36px; }
+      .phone-scene, .prompt-example, .checklist { padding: 24px; }
+      .journey-figure img { border-radius: 16px; }
+      .formula-card { padding: 24px; }
+      .output-visual { min-height: 150px; }
+      .mode { padding: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top" aria-label="페이지 맨 위로 이동">
+        <span class="brand-mark">AI</span>
+        <span>스마트미디어아트센터</span>
+      </a>
+      <nav class="nav" aria-label="주요 내용">
+        <a href="#conversation">말로 시작하기</a>
+        <a href="#prompt">프롬프트</a>
+        <a href="#output">결과물</a>
+        <a href="#artifact">아티팩트</a>
+        <a href="#modes">활용 방식</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap">
+        <span class="eyebrow">AI 초중급 1강 · 60분 실습형</span>
+        <h1>AI를 배우기보다<br><em>내 일을 맡겨봅니다</em></h1>
+        <p class="hero-copy">AI는 어려운 명령어를 외우는 기술이 아닙니다. 사람에게 부탁하듯 말하고, 자료를 보여주고, 원하는 결과가 나올 때까지 대화를 이어가는 새로운 일의 방식입니다.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#conversation">수업 시작하기 ↓</a>
+          <a class="button" href="#modes">무엇을 쓸지 먼저 보기</a>
+        </div>
+        <div class="hero-points" aria-label="오늘 배울 세 가지">
+          <div class="hero-point"><b>말로 질문하기</b><span>잘 쓰려고 애쓰지 않아도 됩니다.</span></div>
+          <div class="hero-point"><b>결과물 만들기</b><span>포스터·인포그래픽·PPT로 바꿉니다.</span></div>
+          <div class="hero-point"><b>일의 범위 넓히기</b><span>대화에서 코워크와 코드로 확장합니다.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="conversation">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-number">01 · 첫 대화</span>
+          <h2>처음에는 그냥 말을 걸어보세요</h2>
+          <p>첫 질문부터 완벽할 필요는 없습니다. 짧게 묻고, 답을 본 다음, 원하는 방향으로 다시 부탁하는 것이 AI 대화의 기본입니다.</p>
+        </div>
+        <div class="conversation">
+          <div class="phone-scene" aria-label="AI 대화 예시">
+            <div class="chat">
+              <div class="bubble me">오늘 저녁 메뉴를 추천해줘.</div>
+              <div class="bubble ai">냉장고에 있는 재료나 좋아하는 음식을 알려주시면 더 잘 골라드릴게요.</div>
+              <div class="bubble me">복잡한 건 싫어. 20분 안에 만들 수 있게 해줘.</div>
+              <div class="bubble ai">그렇다면 달걀볶음밥과 간단한 된장국 조합이 좋아요. 순서도 세 단계로 정리해드릴게요.</div>
+            </div>
+          </div>
+          <div class="explain-list">
+            <div class="explain-row"><span class="num">1</span><div><h3>짧게 시작합니다</h3><p>무엇이 궁금한지 한 문장으로 먼저 물어보세요.</p></div></div>
+            <div class="explain-row"><span class="num">2</span><div><h3>답을 보고 조건을 더합니다</h3><p>“조금 더 짧게”, “전문용어 없이”, “초보자에게 설명하듯”이라고 말하면 됩니다.</p></div></div>
+            <div class="explain-row"><span class="num">3</span><div><h3>사진과 문서도 보여줍니다</h3><p>영수증 합계, 제품 사용법, 긴 문서의 핵심처럼 눈앞의 자료도 바로 질문할 수 있습니다.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tint" aria-labelledby="journey-title">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-number">AI 활용 흐름</span>
+          <h2 id="journey-title">질문이 결과물이 되고, 반복되는 일은 자동화가 됩니다</h2>
+          <p>AI 활용은 한 번에 어려워지는 것이 아닙니다. 대화로 시작해 필요한 자료를 만들고, 자주 반복하는 일만 더 큰 방식으로 확장하면 됩니다.</p>
+        </div>
+        <figure class="journey-figure">
+          <img src="images/ai-learning-journey.png" alt="스마트폰으로 AI에게 질문하고, 노트북으로 자료를 만들고, 반복 업무를 자동화하는 세 단계의 AI 활용 과정">
+          <figcaption>질문하기 → 결과물 만들기 → 반복 업무 자동화</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" id="prompt">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-number">02 · 프롬프트</span>
+          <h2>좋은 부탁에는 세 가지가 들어갑니다</h2>
+          <p>프롬프트는 명령어가 아니라 AI에게 일을 설명하는 문장입니다. 상황, 원하는 결과, 조건을 알려주면 답이 훨씬 정확해집니다.</p>
+        </div>
+        <div class="formula">
+          <article class="formula-card"><small>WHY</small><h3>상황</h3><p>누구를 위한 것인지, 왜 필요한지 알려줍니다.</p></article>
+          <article class="formula-card"><small>WHAT</small><h3>결과</h3><p>문자, 안내문, 포스터, PPT처럼 무엇을 만들지 말합니다.</p></article>
+          <article class="formula-card"><small>HOW</small><h3>조건</h3><p>분량, 말투, 형식, 꼭 넣을 내용과 빼야 할 내용을 정합니다.</p></article>
+        </div>
+        <div class="prompt-example">
+          <span class="prompt-label">그대로 따라 해보세요</span>
+          <blockquote>사진 강의 수강생에게 보낼 개강 안내 문자를 작성해줘. 친절한 말투로 5줄 이내로 쓰고, 준비물도 넣어줘.</blockquote>
+          <button class="copy-button" type="button" data-copy="사진 강의 수강생에게 보낼 개강 안내 문자를 작성해줘. 친절한 말투로 5줄 이내로 쓰고, 준비물도 넣어줘.">문장 복사</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tint" id="output">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-number">03 · ChatGPT 실습</span>
+          <h2>답변을 받는 데서 멈추지 말고 결과물을 만드세요</h2>
+          <p>같은 내용도 목적에 따라 포스터, 한 장짜리 안내 자료, 여러 장의 수업 자료로 바꿀 수 있습니다. 중요한 것은 결과물의 형태를 구체적으로 말하는 것입니다.</p>
+        </div>
+        <div class="outputs">
+          <article class="output">
+            <div class="output-visual"><div class="poster-mini"><div class="mini-line strong"></div><div class="mini-line"></div><div class="mini-line"></div><div class="mini-line"></div><div class="mini-line" style="width:58%"></div></div></div>
+            <div class="output-copy"><h3>포스터</h3><p>제목, 날짜, 장소, 대상, 신청 방법이 한눈에 보이도록 만듭니다.</p></div>
+          </article>
+          <article class="output">
+            <div class="output-visual"><div class="steps-mini"><span>1</span><b>→</b><span>2</span><b>→</b><span>3</span></div></div>
+            <div class="output-copy"><h3>인포그래픽</h3><p>복잡한 설명을 순서와 아이콘 중심의 한 장 자료로 정리합니다.</p></div>
+          </article>
+          <article class="output">
+            <div class="output-visual"><div class="slides-mini"><span></span><span></span><span></span><span></span></div></div>
+            <div class="output-copy"><h3>PPT</h3><p>대상, 장수, 한 장에 담을 내용과 강사용 설명까지 함께 요청합니다.</p></div>
+          </article>
+        </div>
+        <div class="prompt-example">
+          <span class="prompt-label">PPT 만들기 예시</span>
+          <blockquote>사진 초보자를 위한 구도 기초 수업 PPT를 10장으로 만들어줘. 한 슬라이드에는 한 가지 내용만 넣고, 글자는 크게 해줘. 각 장마다 강사가 설명할 한 문장도 넣어줘.</blockquote>
+          <button class="copy-button" type="button" data-copy="사진 초보자를 위한 구도 기초 수업 PPT를 10장으로 만들어줘. 한 슬라이드에는 한 가지 내용만 넣고, 글자는 크게 해줘. 각 장마다 강사가 설명할 한 문장도 넣어줘.">문장 복사</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="artifact">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-number">04 · Gemini 아티팩트</span>
+          <h2>설명만 듣지 말고, 바로 써보는 화면으로 만드세요</h2>
+          <p>아티팩트는 웹페이지, 체크리스트, 학습 카드, 계산 도구처럼 눈앞에서 누르고 확인할 수 있는 결과물입니다. 무엇을 만들지, 누가 쓸지, 필요한 기능이 무엇인지 말하면 됩니다.</p>
+        </div>
+        <div class="artifact-demo">
+          <div class="artifact-copy">
+            <h3>작은 기능 하나부터 시작합니다</h3>
+            <p>아래 체크리스트는 아티팩트의 가장 단순한 예입니다. 항목을 누르면 완료 개수와 진행률이 바로 바뀝니다.</p>
+            <p><strong>요청 예시:</strong><br>“여행 준비 체크리스트를 만들어줘. 항목을 체크하면 완료 개수가 표시되게 하고, 사용법이 복잡하지 않게 해줘.”</p>
+          </div>
+          <div class="checklist" aria-label="여행 준비 체크리스트 실습">
+            <div class="check-head"><strong>여행 준비</strong><span class="check-count" aria-live="polite">0 / 5 완료</span></div>
+            <div class="check-progress" role="progressbar" aria-label="준비 진행률" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span></span></div>
+            <div class="check-items">
+              <label><input type="checkbox"> 신분증과 지갑</label>
+              <label><input type="checkbox"> 휴대전화 충전기</label>
+              <label><input type="checkbox"> 세면도구</label>
+              <label><input type="checkbox"> 날씨에 맞는 옷</label>
+              <label><input type="checkbox"> 예약 확인서</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark" id="modes">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-number">05 · 무엇을 쓸까</span>
+          <h2>일의 크기에 맞는 방식을 고릅니다</h2>
+          <p>복잡한 도구부터 시작할 필요는 없습니다. 오늘 한 번 물어볼 일인지, 여러 자료로 완성할 일인지, 앞으로 계속 반복할 일인지 구분하면 됩니다.</p>
+        </div>
+        <div class="mode-table">
+          <article class="mode"><span class="mode-tag">대화형 채팅</span><h3>답을 받습니다</h3><b>오늘 한 번 물어볼 일</b><p>질문, 요약, 글쓰기처럼 한 번의 요청을 중심으로 해결합니다.</p><p class="mode-use">내 역할: 계속 지시하고 확인하기</p></article>
+          <article class="mode"><span class="mode-tag">코워크</span><h3>일을 맡깁니다</h3><b>여러 자료로 완성할 일</b><p>자료 정리, 분석, 산출물 제작을 여러 단계에 걸쳐 이어갑니다.</p><p class="mode-use">내 역할: 목표와 기준 제시하기</p></article>
+          <article class="mode"><span class="mode-tag">코드</span><h3>도구를 만듭니다</h3><b>앞으로 계속 반복할 일</b><p>웹, 자동화, 반복 작업처럼 여러 번 사용할 기능을 실제 프로그램으로 만듭니다.</p><p class="mode-use">내 역할: 무엇이 필요한지 설계하기</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="wrap">
+        <strong>AI를 잘 아는 것이 아니라,<br><em>내 문제를 AI로 풀어내는 것</em>이 경쟁력입니다.</strong>
+        <p>대화로 시작하고 → 필요한 결과물을 만들고 → 반복되는 일만 코워크와 코드로 확장하세요.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">스마트미디어아트센터 · AI 초중급 1강</div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('[data-copy]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const original = button.textContent;
+        try {
+          await navigator.clipboard.writeText(button.dataset.copy);
+          button.textContent = '복사했습니다';
+        } catch (error) {
+          button.textContent = '문장을 선택해 복사해주세요';
+        }
+        window.setTimeout(() => { button.textContent = original; }, 1600);
+      });
+    });
+
+    const checklist = document.querySelector('.checklist');
+    const boxes = [...checklist.querySelectorAll('input[type="checkbox"]')];
+    const count = checklist.querySelector('.check-count');
+    const progress = checklist.querySelector('.check-progress');
+    const progressBar = progress.querySelector('span');
+    checklist.addEventListener('change', () => {
+      const done = boxes.filter((box) => box.checked).length;
+      count.textContent = `${done} / ${boxes.length} 완료`;
+      progress.setAttribute('aria-valuenow', String(done));
+      progressBar.style.width = `${(done / boxes.length) * 100}%`;
+    });
+  </script>
+</body>
+</html>
