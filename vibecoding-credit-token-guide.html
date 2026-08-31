@@ -152,23 +152,15 @@
   footer{margin-top:50px;font-size:12px;color:var(--text-dim);text-align:center;line-height:1.7;}
   .disclaimer{font-size:12.5px;color:var(--text-dim);background:var(--bg);border:1px dashed var(--border);border-radius:10px;padding:12px 16px;margin-top:14px;}
 
-  /* ── 리드 캡처 폼 ───────────────────────── */
-  .lead-card{background:var(--bg-card);border:2px solid var(--clay);border-radius:22px;padding:34px 32px;margin-top:56px;}
-  .lead-card .tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.04em;padding:5px 14px;border-radius:999px;margin-bottom:16px;background:var(--clay-dim);color:var(--clay-text);}
-  .lead-card h3{font-size:20px;margin:0 0 10px;font-weight:800;line-height:1.4;}
-  .lead-card > p{font-size:15px;margin:0 0 22px;line-height:1.7;color:var(--text-dim);}
-  .lead-form .form-group{margin-bottom:14px;}
-  .lead-form label{display:block;font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px;}
-  .lead-form input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:15px;color:var(--text);outline:none;transition:border-color .2s;font-family:inherit;}
-  .lead-form input::placeholder{color:#b3aa96;}
-  .lead-form input:focus{border-color:var(--clay);background:#fff;}
-  .lead-form .consent{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--text-dim);cursor:pointer;line-height:1.6;margin:16px 0;}
-  .lead-form .consent input{flex-shrink:0;width:16px;height:16px;margin-top:2px;accent-color:var(--clay);cursor:pointer;}
-  .lead-form button{width:100%;padding:15px;border:none;border-radius:999px;background:var(--accent);color:#fff;font-weight:800;font-size:15.5px;cursor:pointer;font-family:inherit;}
-  .lead-form button:disabled{opacity:.6;cursor:default;}
-  .lead-msg{display:none;margin-top:14px;padding:13px 16px;border-radius:10px;font-size:14px;font-weight:700;text-align:center;white-space:pre-line;}
-  .lead-msg.success{background:#eafaf0;border:1px solid #b9ecc7;color:#1e8a4a;display:block;}
-  .lead-msg.error{background:#fdecec;border:1px solid #f3c9c9;color:#b3392f;display:block;}
+  /* ── 다가올 무료강의 안내 ───────────────────────── */
+  .upcoming-card{background:var(--bg-card);border:2px solid var(--clay);border-radius:22px;padding:34px 32px;margin-top:56px;}
+  .upcoming-card .tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.04em;padding:5px 14px;border-radius:999px;margin-bottom:16px;background:var(--clay-dim);color:var(--clay-text);}
+  .upcoming-card h3{font-size:20px;margin:0 0 22px;font-weight:800;line-height:1.4;}
+  .upcoming-list{display:grid;gap:12px;}
+  .upcoming-item{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:16px 20px;}
+  .upcoming-item .when{font-size:13px;font-weight:800;color:var(--clay-text);white-space:nowrap;margin-bottom:4px;}
+  .upcoming-item .what{font-size:15px;font-weight:700;color:var(--text);}
+  .upcoming-item a.btn-sm{flex-shrink:0;display:inline-block;padding:10px 20px;border-radius:999px;background:var(--accent);color:#fff;font-weight:800;font-size:13.5px;text-decoration:none;white-space:nowrap;}
 
   @media (max-width:600px){
     body{font-size:15.5px;}
@@ -500,30 +492,23 @@
     </ol>
   </div>
 
-  <div class="lead-card" id="apply">
-    <div class="tag">📥 자료 소장하기</div>
-    <h3>이 자료를 PDF로 소장하고, 새 자료 나올 때 안내받기</h3>
-    <p>이름·이메일만 남겨주시면 지금 이 자료의 PDF본을 이메일로 보내드리고, 앞으로 나올 심화 학습자료·특강 소식도 가장 먼저 안내해드립니다.</p>
-    <form class="lead-form" id="leadForm" onsubmit="submitLead(event)" novalidate>
-      <div class="form-group">
-        <label for="l-name">성명 <span style="color:var(--clay)">*</span></label>
-        <input id="l-name" name="name" type="text" placeholder="홍길동" required autocomplete="name">
+  <div class="upcoming-card">
+    <div class="tag">📢 이어지는 무료 강의 안내</div>
+    <h3>지금 바로 참여하실 수 있는 무료 강의입니다</h3>
+    <div class="upcoming-list">
+      <div class="upcoming-item">
+        <div><div class="when">🗓 9월 3일(목) 20:00</div><div class="what">니콘 유튜브 라이브 — 풍경사진·인물사진 잘 찍는 법</div></div>
+        <a class="btn-sm" href="https://smacedu.kr/nikon-live-0903-apply.html" target="_blank" rel="noopener">신청하기 →</a>
       </div>
-      <div class="form-group">
-        <label for="l-email">이메일 <span style="color:var(--clay)">*</span></label>
-        <input id="l-email" name="email" type="email" placeholder="example@email.com" required autocomplete="email">
+      <div class="upcoming-item">
+        <div><div class="when">🗓 9월 4일(금) 21:00</div><div class="what">스마트폰 사진 온라인 무료특강</div></div>
+        <a class="btn-sm" href="https://forms.gle/c6RmSJAGbjgDkutC9" target="_blank" rel="noopener">신청하기 →</a>
       </div>
-      <div class="form-group">
-        <label for="l-phone">연락처 <span style="color:var(--clay)">*</span></label>
-        <input id="l-phone" name="phone" type="tel" placeholder="010-1234-5678" required autocomplete="tel">
+      <div class="upcoming-item">
+        <div><div class="when">🗓 9월 6일(일) 14:00~17:00</div><div class="what">오프라인 사진특강 (5호선 마곡역 도보 3분)</div></div>
+        <a class="btn-sm" href="https://forms.gle/4uVsgdVTgKKRJLPC7" target="_blank" rel="noopener">신청하기 →</a>
       </div>
-      <label class="consent" for="l-consent">
-        <input id="l-consent" name="consent" type="checkbox" required>
-        입력하신 정보는 자료 발송·강의 소식 안내 목적으로만 사용되며, 이에 동의합니다. <span style="color:var(--clay)">*</span>
-      </label>
-      <button type="submit" id="leadSubmitBtn">🎁 자료 받고 소식 받아보기</button>
-      <div class="lead-msg" id="leadMsg"></div>
-    </form>
+    </div>
   </div>
 
   <div class="cta">
@@ -543,40 +528,5 @@
 
   <footer>스마트미디어아트센터 · VIP 특강 후기 선물 심화 학습자료 · 작성일 2026-08-31<br>가격·수치는 이해를 돕기 위한 예시이며 실제 요금은 각 서비스 공식 페이지 기준입니다.</footer>
 </div>
-
-<script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz47FQesvuy7rBzB_VYye85Vj6cjDpstFYTVvdNnDdjsNyb_HgD4DQM-vi6udtSZApa/exec';
-
-  async function submitLead(e) {
-    e.preventDefault();
-    const name    = document.getElementById('l-name').value.trim();
-    const email   = document.getElementById('l-email').value.trim();
-    const phone   = document.getElementById('l-phone').value.trim();
-    const consent = document.getElementById('l-consent').checked;
-    const btn     = document.getElementById('leadSubmitBtn');
-    const msg     = document.getElementById('leadMsg');
-
-    const showMsg = (type, text) => { msg.className = `lead-msg ${type}`; msg.textContent = text; };
-
-    if (!name)  { showMsg('error', '성명을 입력해 주세요.'); return; }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('error', '올바른 이메일을 입력해 주세요.'); return; }
-    if (!phone || !/^01[0-9]-\d{3,4}-\d{4}$/.test(phone)) { showMsg('error', '연락처는 010-1234-5678 형식으로 입력해 주세요.'); return; }
-    if (!consent) { showMsg('error', '개인정보 이용 동의에 체크해 주세요.'); return; }
-
-    btn.disabled = true;
-    btn.textContent = '신청 중…';
-
-    try {
-      const params = new URLSearchParams({ name, email, phone, consent: 'Y', form: 'vibecodingcredittoken' });
-      await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
-      showMsg('success', `${name}님, 신청이 완료됐습니다! 🎁\nPDF 자료를 이메일로 보내드렸어요. 메일이 안 보이면 스팸함도 확인해 주세요.`);
-      btn.textContent = '✓ 신청 완료';
-    } catch {
-      showMsg('error', '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
-      btn.disabled = false;
-      btn.textContent = '🎁 자료 받고 소식 받아보기';
-    }
-  }
-</script>
 </body>
 </html>
