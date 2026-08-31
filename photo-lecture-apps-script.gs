@@ -73,6 +73,12 @@ const NIKONLIVE_TAB_NAME   = '9월3일 온라인강의 신청';
 const CERTFIX_SHEET_ID     = '17OiQ7FStjGPgZb6dZknXAQQ6VGI5GMaF9vDpghiB9Y8'; // 자격증 정정 신청 (응답)
 const CERTFIX_TAB_NAME     = '시트1';
 
+// ── VIP 특강 후기 선물 심화자료(vibecoding-credit-token-guide.html) 리드마그넷 겸용 ──
+// 프롬프트·크레딧·토큰 완전정복 페이지 방문자 리드 수집. 이 스크립트가 바인딩된
+// 활성 스프레드시트(사진특강 신청서)에 전용 탭을 새로 만들어 기록합니다.
+// 페이지에서 form=vibecodingcredittoken 으로 요청을 보냅니다.
+const VIBECODING_TAB_NAME  = '바이브코딩자료 리드';
+
 function doGet(e) {
   const params0 = e.parameter || {};
   if (params0.form === 'reviewgift') {
@@ -89,6 +95,9 @@ function doGet(e) {
   }
   if (params0.form === 'certcorrection') {
     return _handleCertCorrectionSubmit(params0);
+  }
+  if (params0.form === 'vibecodingcredittoken') {
+    return _handleVibecodingLeadSubmit(params0);
   }
 
   try {
@@ -894,4 +903,85 @@ function _handleCertCorrectionSubmit(params) {
     return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+// ════════════════════════════════════════════
+// VIP 특강 후기 선물 심화자료(vibecoding-credit-token-guide.html) 리드마그넷
+// ════════════════════════════════════════════
+function _getVibecodingSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheets().find(s => s.getName() === VIBECODING_TAB_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(VIBECODING_TAB_NAME);
+    sheet.appendRow(['타임스탬프', '이름', '전화번호', '이메일', '개인정보 동의']);
+    sheet.getRange(1, 1, 1, 5).setFontWeight('bold');
+  }
+  return sheet;
+}
+
+function _handleVibecodingLeadSubmit(params) {
+  try {
+    const name    = params.name    || '';
+    const email   = params.email   || '';
+    const phone   = params.phone   || '';
+    const consent = params.consent === 'Y' ? '동의함' : '';
+
+    const sheet = _getVibecodingSheet();
+
+    const now       = new Date();
+    const timestamp = _formatKoreanTimestamp(now, Session.getScriptTimeZone());
+
+    sheet.appendRow([timestamp, name, phone, email, consent]);
+    const total = sheet.getLastRow() - 1;
+
+    if (email) _sendVibecodingConfirmEmail(name, email);
+    _sendVibecodingAdminEmail(name, phone, email, timestamp, total);
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function _sendVibecodingConfirmEmail(name, email) {
+  const pdfUrl = 'https://www.smacedu.kr/documents/vibecoding-credit-token-guide.pdf';
+  let attachment = null;
+  try {
+    attachment = UrlFetchApp.fetch(pdfUrl).getBlob().setName('AI_프롬프트_크레딧_토큰_완전정복.pdf');
+  } catch (fetchErr) {
+    console.error('PDF 첨부 실패(링크만 발송): ' + fetchErr.message);
+  }
+
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#2b2823;">
+  <div style="background:#3b3a36;padding:32px 28px;border-radius:12px 12px 0 0;text-align:center;">
+    <h1 style="color:#fff;margin:0;font-size:21px;font-weight:900;">신청이 접수됐습니다 🎁</h1>
+    <p style="color:rgba(255,255,255,0.75);margin:10px 0 0;font-size:14px;">AI 프롬프트·크레딧·토큰 완전정복 자료</p>
+  </div>
+  <div style="background:#f8f7f2;padding:28px;border:1px solid #e2ddd0;border-top:none;border-radius:0 0 12px 12px;">
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name)}</strong>님, 반갑습니다!</p>
+    <p style="margin:0 0 20px;color:#6b6558;line-height:1.7;">
+      요청하신 심화 학습자료를 ${attachment ? 'PDF로 첨부해' : '아래 링크로'} 보내드립니다. 프롬프트 이론부터 크레딧·토큰 계산까지, 초등학생도 이해할 수 있게 정리했습니다.
+    </p>
+    <div style="text-align:center;margin-bottom:22px;">
+      <a href="https://www.smacedu.kr/vibecoding-credit-token-guide" style="display:inline-block;background:#d97757;color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:13px 30px;border-radius:999px;">웹페이지로 바로 보기 →</a>
+    </div>
+    <p style="margin:0;font-size:12.5px;color:#9a9384;">감사합니다 — 스마트미디어아트센터</p>
+  </div>
+</div>`;
+
+  const mailOptions = { to: email, subject: `[SMAC EDU] ${name}님, AI 프롬프트·크레딧·토큰 자료 안내드립니다`, htmlBody: html };
+  if (attachment) mailOptions.attachments = [attachment];
+  MailApp.sendEmail(mailOptions);
+}
+
+function _sendVibecodingAdminEmail(name, phone, email, timestamp, total) {
+  const sheetUrl = `https://docs.google.com/spreadsheets/d/${SpreadsheetApp.getActiveSpreadsheet().getId()}/edit`;
+  MailApp.sendEmail({
+    to:      ADMIN_EMAIL,
+    subject: `[SMAC EDU 바이브코딩 자료 리드] ${name}님 (누적 ${total}건)`,
+    body:    `${name}님이 "AI 프롬프트·크레딧·토큰 완전정복" 자료를 신청했습니다.\n\n전화번호: ${phone || '미기재'}\n이메일: ${email || '미기재'}\n시각: ${timestamp}\n\n스프레드시트: ${sheetUrl}`
+  });
 }

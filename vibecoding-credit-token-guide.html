@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 프롬프트부터 크레딧·토큰까지 완전정복 | 스마트미디어아트센터</title>
+<meta name="description" content="8/30 VIP 특강 정리노트의 심화판. 프롬프트 이론, 클로드 코드·코덱스·안티그래비티 비교, 토큰·크레딧 개념과 1K당 실제 비용까지 초등학생도 이해할 수 있게 풀어쓴 학습자료">
+<style>
+  :root{
+    --bg:#f0eee6;
+    --bg-card:#ffffff;
+    --text:#2b2823;
+    --text-dim:#6b6558;
+    --border:#e2ddd0;
+    --clay:#d97757;
+    --clay-dim:#f3e3da;
+    --clay-text:#a3502f;
+    --accent:#3b3a36;
+    --blue:#3f6fb0;
+    --blue-dim:#e6edf6;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    font-size:16.5px;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+    word-break:keep-all;
+    overflow-wrap:break-word;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 110px;}
+
+  header{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:40px 34px;
+    margin-bottom:36px;
+  }
+  header .eyebrow{
+    display:inline-block;
+    font-size:12.5px;font-weight:800;color:var(--clay);
+    letter-spacing:.04em;text-transform:uppercase;
+    background:var(--clay-dim);padding:5px 13px;border-radius:999px;
+    margin-bottom:16px;
+  }
+  header h1{font-size:28px;margin:0 0 14px;font-weight:800;line-height:1.5;letter-spacing:-.01em;}
+  header .sub{font-size:16px;color:var(--text-dim);margin:0 0 18px;}
+  header .meta{display:flex;flex-wrap:wrap;gap:10px 20px;font-size:14px;color:var(--text-dim);padding-top:16px;border-top:1px solid var(--border);}
+  header .meta span{display:inline-flex;align-items:center;gap:6px;}
+  header .watch{display:flex;flex-wrap:wrap;gap:12px 24px;margin:16px 0 0;padding-top:16px;border-top:1px solid var(--border);}
+  header .watch a{display:inline-flex;align-items:center;gap:8px;color:var(--clay);font-weight:800;font-size:14.5px;text-decoration:none;}
+  header .watch a:hover{text-decoration:underline;}
+
+  .lede{font-size:15.5px;color:var(--text-dim);margin:0 0 44px;padding:0 2px;}
+  .lede b{color:var(--text);font-weight:700;}
+
+  .toc{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:22px 26px;margin-bottom:48px;}
+  .toc .toc-label{font-size:12.5px;font-weight:800;color:var(--text-dim);letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px;}
+  .toc ul{list-style:none;margin:0;padding:0;display:grid;gap:9px;}
+  .toc a{display:flex;align-items:baseline;gap:10px;font-size:15px;font-weight:600;color:var(--text);text-decoration:none;}
+  .toc a .n{color:var(--clay);font-weight:800;min-width:20px;}
+
+  .part-divider{margin:64px 0 30px;padding-top:6px;}
+  .part-divider .part-label{font-size:12.5px;font-weight:800;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+  .part-divider h2{font-size:23px;font-weight:800;margin:0;padding-bottom:18px;border-bottom:3px solid var(--accent);letter-spacing:-.01em;}
+
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px 30px;margin-bottom:22px;scroll-margin-top:24px;}
+  .card h3{margin:0 0 14px;font-size:18px;font-weight:800;line-height:1.4;}
+  .card > p{margin:0 0 14px;font-size:15.5px;color:var(--text);}
+  .card > p:last-child{margin-bottom:0;}
+  .card ul{margin:0;padding-left:22px;}
+  .card ul + p{margin-top:14px;}
+  .card li{margin:9px 0;font-size:15.5px;}
+  .card li:first-child{margin-top:0;}
+  .card li:last-child{margin-bottom:0;}
+  .card li ul{margin-top:10px;}
+  .card li li{font-size:14.5px;margin:7px 0;}
+  .card code{background:var(--clay-dim);color:var(--clay-text);padding:2px 8px;border-radius:6px;font-size:14px;font-family:inherit;font-weight:700;}
+  .card ol{margin:0;padding-left:22px;}
+  .card ol li{margin:9px 0;font-size:15.5px;}
+
+  .eli5{background:var(--blue-dim);border:1px solid #cddaeb;border-radius:14px;padding:18px 22px;margin:18px 0 0;font-size:15px;line-height:1.8;}
+  .eli5 .label{display:block;font-size:11.5px;font-weight:800;color:var(--blue);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;}
+
+  .tip, .warn{border-radius:14px;padding:20px 24px;margin:20px 0 0;font-size:15.5px;line-height:1.8;}
+  .card .tip, .card .warn, .card .eli5{margin-top:16px;}
+  .tip{background:var(--clay-dim);border:1px solid #ecc7b3;}
+  .tip .label{display:block;font-size:12px;font-weight:800;color:var(--clay-text);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;}
+  .warn{background:#fdecec;border:1px solid #f3c9c9;}
+  .warn .label{display:block;font-size:12px;font-weight:800;color:#b3392f;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;}
+  .warn ul{margin:0;padding-left:20px;}
+  .warn li{margin:8px 0;font-size:15px;}
+
+  .ba{display:grid;gap:10px;margin-top:14px;}
+  .ba .row{display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:12px;font-size:14.5px;line-height:1.7;}
+  .ba .row.bad{background:#fdecec;border:1px solid #f3c9c9;}
+  .ba .row.good{background:#eaf3ec;border:1px solid #c9e3cf;}
+  .ba .mark{font-weight:800;font-size:15px;}
+  .ba .row.bad .mark{color:#b3392f;}
+  .ba .row.good .mark{color:#3a7a4a;}
+
+  .stage-flow{display:grid;gap:14px;margin-top:4px;}
+  .stage{display:grid;grid-template-columns:44px 1fr;gap:16px;padding:16px 18px;background:var(--bg);border:1px solid var(--border);border-radius:12px;}
+  .stage .num{width:44px;height:44px;border-radius:12px;background:var(--accent);color:#f0eee6;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;}
+  .stage h4{margin:0 0 4px;font-size:15.5px;font-weight:800;}
+  .stage p{margin:0;font-size:14.5px;color:var(--text-dim);line-height:1.7;}
+  .stage .arrow{text-align:center;color:var(--clay);font-weight:800;font-size:13px;margin:-4px 0;}
+
+  table.cmp{width:100%;border-collapse:collapse;margin-top:4px;font-size:14.5px;}
+  table.cmp th{text-align:left;padding:10px 8px;border-bottom:2px solid var(--accent);font-size:12.5px;color:var(--text-dim);font-weight:800;letter-spacing:.02em;}
+  table.cmp td{padding:12px 8px;border-bottom:1px solid var(--border);vertical-align:top;}
+  table.cmp tr:last-child td{border-bottom:none;}
+  table.cmp td.name{font-weight:800;color:var(--clay-text);white-space:nowrap;}
+
+  .token-viz{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 6px;}
+  .token-viz span{display:inline-block;padding:6px 10px;border-radius:8px;font-size:14px;font-weight:700;color:#fff;}
+  .tk1{background:#d97757;} .tk2{background:#3f6fb0;} .tk3{background:#5a9367;} .tk4{background:#b3392f;} .tk5{background:#a3502f;} .tk6{background:#6b6558;}
+
+  .price-table{width:100%;border-collapse:collapse;margin-top:6px;font-size:14.5px;}
+  .price-table th{text-align:left;padding:10px 8px;border-bottom:2px solid var(--accent);font-size:12px;color:var(--text-dim);font-weight:800;}
+  .price-table td{padding:13px 8px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  .price-table tr:last-child td{border-bottom:none;}
+  .price-table td.tier{font-weight:800;}
+  .price-table .bar-wrap{display:flex;align-items:center;gap:8px;}
+  .price-table .bar{height:10px;border-radius:6px;background:var(--clay);}
+  .price-table .bar.out{background:var(--clay-text);}
+  .price-table .amt{font-size:13.5px;color:var(--text-dim);white-space:nowrap;min-width:118px;}
+
+  .calc-box{background:var(--accent);color:#f0eee6;border-radius:16px;padding:24px 26px;margin-top:18px;}
+  .calc-box .calc-label{font-size:12px;font-weight:800;color:#f0b599;letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;}
+  .calc-box .calc-line{display:flex;justify-content:space-between;font-size:14.5px;color:#d8d4c8;padding:6px 0;border-bottom:1px dashed #55524c;}
+  .calc-box .calc-line:last-of-type{border-bottom:none;}
+  .calc-box .calc-total{margin-top:10px;padding-top:12px;border-top:1px solid #55524c;font-size:17px;font-weight:800;color:#fff;display:flex;justify-content:space-between;}
+
+  .keytips{background:var(--accent);color:#f0eee6;border-radius:20px;padding:34px 32px;margin:56px 0 0;}
+  .keytips h3{margin:0 0 22px;font-size:20px;font-weight:800;}
+  .keytips ol{margin:0;padding-left:22px;display:grid;gap:14px;}
+  .keytips li{font-size:15.5px;line-height:1.75;color:#d8d4c8;}
+  .keytips li b{color:#f0b599;font-weight:800;}
+
+  .cta{border-radius:22px;padding:34px 32px;margin-top:28px;text-align:center;background:var(--bg-card);border:2px solid var(--clay);}
+  .cta .tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.04em;padding:5px 14px;border-radius:999px;margin-bottom:16px;background:var(--clay-dim);color:var(--clay-text);}
+  .cta h3{font-size:20px;margin:0 0 12px;font-weight:800;line-height:1.4;}
+  .cta > p{font-size:15px;margin:0 0 20px;line-height:1.7;color:var(--text-dim);}
+  .cta a.btn{display:inline-block;padding:14px 30px;border-radius:999px;font-weight:800;font-size:15px;text-decoration:none;background:var(--accent);color:#fff;}
+
+  footer{margin-top:50px;font-size:12px;color:var(--text-dim);text-align:center;line-height:1.7;}
+  .disclaimer{font-size:12.5px;color:var(--text-dim);background:var(--bg);border:1px dashed var(--border);border-radius:10px;padding:12px 16px;margin-top:14px;}
+
+  /* ── 리드 캡처 폼 ───────────────────────── */
+  .lead-card{background:var(--bg-card);border:2px solid var(--clay);border-radius:22px;padding:34px 32px;margin-top:56px;}
+  .lead-card .tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.04em;padding:5px 14px;border-radius:999px;margin-bottom:16px;background:var(--clay-dim);color:var(--clay-text);}
+  .lead-card h3{font-size:20px;margin:0 0 10px;font-weight:800;line-height:1.4;}
+  .lead-card > p{font-size:15px;margin:0 0 22px;line-height:1.7;color:var(--text-dim);}
+  .lead-form .form-group{margin-bottom:14px;}
+  .lead-form label{display:block;font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px;}
+  .lead-form input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:15px;color:var(--text);outline:none;transition:border-color .2s;font-family:inherit;}
+  .lead-form input::placeholder{color:#b3aa96;}
+  .lead-form input:focus{border-color:var(--clay);background:#fff;}
+  .lead-form .consent{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--text-dim);cursor:pointer;line-height:1.6;margin:16px 0;}
+  .lead-form .consent input{flex-shrink:0;width:16px;height:16px;margin-top:2px;accent-color:var(--clay);cursor:pointer;}
+  .lead-form button{width:100%;padding:15px;border:none;border-radius:999px;background:var(--accent);color:#fff;font-weight:800;font-size:15.5px;cursor:pointer;font-family:inherit;}
+  .lead-form button:disabled{opacity:.6;cursor:default;}
+  .lead-msg{display:none;margin-top:14px;padding:13px 16px;border-radius:10px;font-size:14px;font-weight:700;text-align:center;white-space:pre-line;}
+  .lead-msg.success{background:#eafaf0;border:1px solid #b9ecc7;color:#1e8a4a;display:block;}
+  .lead-msg.error{background:#fdecec;border:1px solid #f3c9c9;color:#b3392f;display:block;}
+
+  @media (max-width:600px){
+    body{font-size:15.5px;}
+    header{padding:26px 22px;}
+    header h1{font-size:22px;}
+    .card{padding:22px 20px;}
+    .stage{grid-template-columns:36px 1fr;}
+  }
+
+  @media print{
+    *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+    body{background:#fff;}
+    .wrap{max-width:100%;padding:0 6mm;}
+    .card,.keytips,.cta,.stage,.calc-box,.price-table,table.cmp,.toc,.ba .row,.tip,.warn,.eli5,.disclaimer,.token-viz{break-inside:avoid;page-break-inside:avoid;}
+    .part-divider{break-before:page;page-break-before:always;margin-top:0;padding-top:10mm;}
+    a{color:inherit;text-decoration:none;}
+  }
+  @page{size:A4;margin:14mm 12mm;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">🎁 VIP 특강 후기 선물 · 심화 학습자료</span>
+    <h1>AI를 진짜 내 도구로 쓰는 법<br>— 프롬프트부터 크레딧·토큰까지</h1>
+    <p class="sub">8월 30일 VIP 특강 "AI 프롬프트 실전 활용 + 바이브 코딩" 정리노트를 바탕으로, 이론을 더 깊게, 그리고 <b>초등학생도 이해할 수 있을 만큼 쉽게</b> 풀어쓴 확장판입니다.</p>
+    <div class="meta">
+      <span>🧑‍🏫 엘란비탈 박성욱 작가</span>
+      <span>📚 VIP 특강 심화 학습자료</span>
+      <span>📅 2026-08-31</span>
+    </div>
+    <div class="watch">
+      <a href="https://www.smacedu.kr/vibecoding-lecture-recap">← 1부 특강 정리노트 보기</a>
+      <a href="/documents/vibecoding-credit-token-guide.pdf" target="_blank" rel="noopener">📄 PDF로 저장·인쇄해서 보기</a>
+    </div>
+  </header>
+
+  <p class="lede">
+    특강에서는 시간 관계상 빠르게 지나간 개념들이 있었습니다. 이 자료는 <b>AI에게 제대로 말을 거는 법(프롬프트)</b>부터 <b>가장 많이 헷갈려하는 "크레딧이 왜 이렇게 빨리 줄어드는가"</b>까지, 어려운 용어는 전부 일상적인 비유로 바꿔 차근차근 풀어드립니다. 편하게 읽어보세요.
+  </p>
+
+  <nav class="toc">
+    <div class="toc-label">목차</div>
+    <ul>
+      <li><a href="#chat-work"><span class="n">01</span> 채팅과 워크는 다르다</a></li>
+      <li><a href="#screenshot"><span class="n">02</span> 스크린샷이 말보다 강하다</a></li>
+      <li><a href="#prompt-def"><span class="n">03</span> 프롬프트란 무엇인가</a></li>
+      <li><a href="#prompt-3"><span class="n">04</span> 좋은 프롬프트의 3가지 재료</a></li>
+      <li><a href="#prompt-types"><span class="n">05</span> 프롬프트 6가지 유형</a></li>
+      <li><a href="#prompt-check"><span class="n">06</span> 더 좋은 프롬프트 체크리스트</a></li>
+      <li><a href="#stages"><span class="n">07</span> AI에게 맡기는 범위가 커지는 4단계</a></li>
+      <li><a href="#vibecoding"><span class="n">08</span> 바이브 코딩과 "로컬 폴더"</a></li>
+      <li><a href="#tools"><span class="n">09</span> 클로드 코드 vs 코덱스 vs 안티그래비티</a></li>
+      <li><a href="#token"><span class="n">10</span> 토큰이란 무엇인가</a></li>
+      <li><a href="#credit"><span class="n">11</span> 크레딧이란 무엇인가</a></li>
+      <li><a href="#pricing"><span class="n">12</span> 1,000토큰(1K)은 실제로 얼마일까</a></li>
+      <li><a href="#save"><span class="n">13</span> 크레딧 아끼는 습관 6가지</a></li>
+      <li><a href="#summary"><span class="n">✅</span> 한 줄 정리</a></li>
+    </ul>
+  </nav>
+
+  <div class="part-divider" id="part1">
+    <div class="part-label">Part 1</div>
+    <h2>AI를 다루는 기본기</h2>
+  </div>
+
+  <div class="card" id="chat-work">
+    <h3>💬 "채팅"과 "워크(Work)"는 다르다</h3>
+    <p>대부분의 AI 서비스에는 그냥 대화하는 <b>Chat(챗)</b> 모드와, AI가 직접 무언가를 대신 처리해주는 <b>Work(워크·에이전트)</b> 모드가 따로 있습니다. 이 둘을 구분하지 못하면 크레딧이 훨씬 빨리 줄어듭니다.</p>
+    <ul>
+      <li><b>Chat</b> — 질문하면 답이 바로 나오는 것. 글쓰기, 이미지 만들기, PPT 초안 같은 <b>"결과물을 받는" 작업</b>은 전부 여기서 끝납니다.</li>
+      <li><b>Work</b> — 내가 직접 할 수 없는 일을 "대신 다녀오게" 시키는 것. 이메일을 자동으로 보내거나, 여러 웹사이트를 돌아다니며 정보를 모아오는 것처럼 <b>"AI가 직접 행동해야 하는" 작업</b>만 여기로 보냅니다.</li>
+    </ul>
+    <div class="eli5">
+      <span class="label">쉬운 말로</span>
+      Chat은 "나한테 설명해줘"이고, Work는 "네가 대신 다녀와"입니다. 대신 다녀오게 시키는 건 훨씬 품이 많이 드는 일이라, 크레딧도 그만큼 더 많이 씁니다. 그러니 굳이 심부름을 보낼 필요가 없는 일까지 Work로 보내지 않는 게 중요합니다.
+    </div>
+  </div>
+
+  <div class="card" id="screenshot">
+    <h3>📸 스크린샷이 말보다 강하다</h3>
+    <p>긴 문장으로 상황을 설명하는 대신, 화면이나 사물을 사진으로 찍어 그대로 보여주면 AI가 훨씬 정확하게 이해합니다. 사람도 말로만 듣는 것보다 사진 한 장을 보는 게 더 빨리 이해되는 것과 같은 원리입니다.</p>
+    <ul>
+      <li><b>PC에서</b> — <code>Window + Shift + S</code>로 원하는 영역을 캡처한 뒤 <code>Ctrl + V</code>로 붙여넣기</li>
+      <li><b>스마트폰에서</b> — 기기 기본 스크린샷 기능 사용</li>
+      <li>화면에 화살표나 동그라미를 그려서 "이 부분만 바꿔줘"라고 하면 훨씬 정확하게 알아듣습니다.</li>
+    </ul>
+    <div class="eli5">
+      <span class="label">쉬운 말로</span>
+      물건이 고장 났을 때 "이상하게 생긴 부품이 있어요"라고 백 마디 설명하는 것보다, 사진 한 장 찍어서 "이거 뭐예요?"라고 묻는 게 훨씬 빠르고 정확합니다. AI에게도 똑같습니다.
+    </div>
+  </div>
+
+  <div class="part-divider" id="part2">
+    <div class="part-label">Part 2</div>
+    <h2>프롬프트 — AI에게 제대로 말 거는 법</h2>
+  </div>
+
+  <div class="card" id="prompt-def">
+    <h3>🗣 프롬프트란 무엇인가</h3>
+    <p><b>프롬프트</b>는 AI에게 주는 "지시문"입니다. 컴퓨터 명령어처럼 딱딱한 게 아니라, <b>사람에게 부탁하듯 설명하는 문장</b>이라고 생각하면 됩니다.</p>
+    <p>이건 "새로 온 신입 직원에게 일을 시키는 것"과 똑같습니다. 대충 말하면 대충 나오고, 상황·목적·조건을 구체적으로 말해줄수록 결과가 좋아집니다.</p>
+    <div class="ba">
+      <div class="row bad"><span class="mark">❌</span><span>"블로그 글 써줘" → 두루뭉술한 결과가 나옵니다.</span></div>
+      <div class="row good"><span class="mark">✅</span><span>"40대 주부 대상으로, 스마트폰 사진 강의를 홍보하는 블로그 글을 써줘. 친근한 말투로, 신청 링크는 마지막에 넣어줘" → 훨씬 쓸 수 있는 결과가 나옵니다.</span></div>
+    </div>
+    <p style="margin-top:12px;">두 문장의 차이는 <b>누구에게 / 무엇을 / 어떤 조건으로</b>가 들어갔는지입니다.</p>
+    <div class="eli5">
+      <span class="label">쉬운 말로</span>
+      엄마한테 "편의점 가서 뭐 좀 사와"라고 하면 뭘 사 올지 모릅니다. "편의점 가서 참치마요 삼각김밥 1개랑 생수 500ml 하나, 저녁 6시까지 사와"라고 하면 정확히 그걸 사 옵니다. AI도 사람과 똑같이, <b>구체적으로 말해줄수록 원하는 걸 정확히 가져다줍니다.</b>
+    </div>
+  </div>
+
+  <div class="card" id="prompt-3">
+    <h3>🧱 좋은 프롬프트의 3가지 재료</h3>
+    <ol>
+      <li><b>맥락(상황)</b> — 지금 어떤 상황인지. 예: "시니어 대상 강의 홍보글인데"</li>
+      <li><b>원하는 결과물</b> — 뭘 만들어달라는 건지. 예: "블로그 포스팅 형태로"</li>
+      <li><b>조건·제약</b> — 톤, 분량, 하지 말아야 할 것. 예: "너무 전문용어 쓰지 말고, 500자 이내로"</li>
+    </ol>
+    <div class="eli5">
+      <span class="label">쉬운 말로</span>
+      요리 레시피와 같습니다. "언제·어떤 상황에서 먹을 요리인지(맥락)", "뭘 만들어야 하는지(결과물)", "맵지 않게·30분 안에(조건)"가 다 들어가야 원하는 요리가 나옵니다. 셋 중 하나만 빠져도 엉뚱한 결과물이 나올 수 있습니다.
+    </div>
+    <div class="tip">
+      <span class="label">한 단계 더 — 프롬프트 짜는 걸 AI에게 맡기기</span>
+      프롬프트를 완벽하게 못 써도 괜찮습니다. <b>메타 프롬프트</b>("OO을 만들고 싶은데, 이걸 위한 좋은 프롬프트를 만들어줘")와 <b>역질문 프롬프트</b>("시작하기 전에 나한테 필요한 걸 먼저 물어봐줘")를 같이 쓰면, AI가 알아서 필요한 걸 되물어보고 스스로 좋은 프롬프트를 짜줍니다. 초보자도 부담 없이 시작할 수 있는 방법입니다.
+    </div>
+  </div>
+
+  <div class="card" id="prompt-types">
+    <h3>🎭 프롬프트 6가지 유형</h3>
+    <p>실전에서 자주 쓰는 방식은 크게 여섯 가지입니다. 뭐가 정답이라기보다 <b>상황에 따라 섞어 쓰는 것</b>이 핵심입니다 — 간단한 건 직접 지시형으로 끝내고, 중요하고 복잡한 건 역할 부여 + 단계별 + 역질문을 함께 씁니다.</p>
+    <table class="cmp">
+      <tr><th>유형</th><th>뭘 하는 건가</th><th>예시</th></tr>
+      <tr><td class="name">직접 지시형</td><td>그냥 바로 시키기</td><td>"이 사진 설명글 써줘"</td></tr>
+      <tr><td class="name">역할 부여형</td><td>AI한테 특정 전문가 역할을 입혀주기</td><td>"너는 20년차 사진 강사야. 초보자한테 구도 잡는 법을 설명해줘"</td></tr>
+      <tr><td class="name">예시 제시형</td><td>원하는 스타일 예시를 먼저 보여주기</td><td>"이런 톤으로 써줘: (예문 붙여넣기)"</td></tr>
+      <tr><td class="name">단계별 지시형</td><td>한 번에 다 시키지 말고 순서대로</td><td>"①먼저 목차를 짜고 ②내가 확인하면 ③본문을 써줘"</td></tr>
+      <tr><td class="name">메타 프롬프트</td><td>프롬프트 자체를 짜달라고 시키기</td><td>"OO을 만들려는데, 이걸 위한 좋은 프롬프트를 만들어줘"</td></tr>
+      <tr><td class="name">역질문 프롬프트</td><td>AI가 먼저 되묻게 시키기</td><td>"시작하기 전에 나한테 필요한 걸 먼저 물어봐줘"</td></tr>
+    </table>
+    <div class="eli5">
+      <span class="label">쉬운 말로</span>
+      친구한테 부탁하는 방법이 여러 가지인 것과 같습니다. 그냥 "이거 해줘"(직접 지시형)도 있고, "네가 만약 요리사라면?"처럼 역할을 씌워 물어볼 수도 있고(역할 부여형), "이런 그림처럼 그려줘"라고 보여줄 수도(예시 제시형) 있습니다. 상황에 맞는 방법을 고르면 됩니다.
+    </div>
+  </div>
+
+  <div class="card" id="prompt-check">
+    <h3>✅ 더 좋은 프롬프트 체크리스트</h3>
+    <ol>
+      <li><b>구체적인가</b> — "예쁘게"보다 "따뜻한 색감으로, 여백을 넉넉하게"</li>
+      <li><b>맥락이 있는가</b> — 이게 왜 필요한지, 누가 볼 건지</li>
+      <li><b>형식을 지정했는가</b> — "표로", "3줄 요약으로", "목차부터"</li>
+      <li><b>기준·제약을 줬는가</b> — 분량, 톤, 하지 말아야 할 것</li>
+      <li><b>한 번에 너무 많이 안 시켰는가</b> — 복잡하면 나눠서 순서대로</li>
+    </ol>
+    <div class="ba">
+      <div class="row bad"><span class="mark">❌</span><span>"회식 공지 문자 좀 다듬어줘"</span></div>
+      <div class="row good"><span class="mark">✅</span><span>"이번 주 금요일 저녁 7시, 강남역 근처 삼겹살집에서 하는 팀 회식 공지 문자를 써줘. 대상은 팀원 15명이야. 편하고 친근한 말투로, 불참자는 답장 달라는 말도 넣어서 5줄 이내로 써줘"</span></div>
+    </div>
+  </div>
+
+  <div class="card" id="stages">
+    <h3>📈 AI에게 맡기는 범위가 커지는 4단계</h3>
+    <p>방금 배운 "프롬프트"는 사실 AI를 시키는 방법 중 가장 기초 단계입니다. 실제로는 아래처럼 점점 더 많은 것을 맡기는 방향으로 발전합니다. 신입 직원이 경력을 쌓아가며 점점 더 큰 일을 맡게 되는 것과 비슷합니다.</p>
+    <div class="stage-flow">
+      <div class="stage">
+        <div class="num">①</div>
+        <div><h4>프롬프트 — 한 번 시키기</h4><p>비유: 신입 직원한테 "이거 해줘"라고 한 번 부탁하기. 예: "이 이메일 5줄로 요약해줘"</p></div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="stage">
+        <div class="num">②</div>
+        <div><h4>컨텍스트 — 자료를 먼저 주고 시키기</h4><p>비유: 일 시키기 전에 참고자료를 책상에 펼쳐주기. 예: "작년 계획서를 보고, 같은 형식으로 올해 것도 써줘"</p></div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="stage">
+        <div class="num">③</div>
+        <div><h4>하네스 — 일하는 순서 자체를 짜주기</h4><p>비유: 매뉴얼을 만들어서 순서대로 일하게 하기. 예: "①자료 모으기 ②분석하기 ③검증하기 ④정리하기" 순서를 통째로 지시</p></div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="stage">
+        <div class="num">④</div>
+        <div><h4>루프 — 스스로 점검하고 고치게 하기</h4><p>비유: 일을 시킨 뒤 스스로 검토까지 하게 하기. 예: "결과가 나오면 네가 먼저 오류가 없는지 확인하고, 이상하면 다시 고쳐서 줘"</p></div>
+      </div>
+    </div>
+    <div class="tip">
+      <span class="label">핵심</span>
+      뭐가 더 좋다는 게 아니라, 간단한 일은 ①로 충분하고 중요하고 복잡한 일일수록 ②③④로 넘어가는 겁니다. ④는 아직 등장한 지 얼마 안 된 개념이라 "이런 방향으로 발전하고 있다" 정도로만 알아두면 됩니다.
+    </div>
+  </div>
+
+  <div class="part-divider" id="part3">
+    <div class="part-label">Part 3</div>
+    <h2>바이브 코딩 — 내 컴퓨터 안에서 일하는 AI</h2>
+  </div>
+
+  <div class="card" id="vibecoding">
+    <h3>🛠 바이브 코딩이란 무엇인가</h3>
+    <p><b>코드를 몰라도, AI에게 말로 시켜서 내가 쓸 프로그램이나 결과물을 직접 만드는 것</b>을 "바이브 코딩"이라고 부릅니다. 예전에는 책장 하나를 만들려면 목수를 불러야 했다면, 이제는 AI에게 "이런 책장을 만들어줘"라고 말로 설명하면 AI가 대신 만들어주는 것과 비슷합니다.</p>
+    <p>여기서 목표는 완벽한 개발자가 되는 게 아니라, <b>내 일 하나를 덜어주는 도구를 만드는 것</b>입니다.</p>
+    <div class="eli5">
+      <span class="label">쉬운 말로</span>
+      웹에서 쓰는 일반 채팅(GPT, 클로드 대화창 등)은 내 컴퓨터 안의 파일을 볼 수 없습니다. 파일을 쓸 때마다 매번 직접 첨부해서 줘야 합니다. 반면 <b>클로드 코드·코덱스 같은 "데스크톱 앱"</b>은 내가 지정한 폴더를 통째로 열어두고 그 안의 파일을 스스로 찾아보며 일합니다. 마치 방 열쇠를 통째로 맡기는 것과, 사진 한 장씩만 보여주는 것의 차이입니다.
+    </div>
+  </div>
+
+  <div class="card" id="tools">
+    <h3>🤖 클로드 코드 vs 코덱스 vs 안티그래비티</h3>
+    <p>바이브 코딩을 할 수 있는 도구는 회사마다 다르게 만들어져 있습니다. 각각 만든 회사가 다른 "AI 로봇 비서"라고 생각하면 쉽습니다. 세 가지 모두 <b>내 컴퓨터의 파일을 직접 읽고, 프로그램을 켜고 끄고, 오류가 나면 스스로 고쳐가며 작업</b>한다는 공통점이 있습니다.</p>
+    <table class="cmp">
+      <tr><th>도구</th><th>만든 회사 · 기반 모델</th><th>필요 조건</th><th>특징</th></tr>
+      <tr>
+        <td class="name">클로드 코드<br>(Claude Code)</td>
+        <td>Anthropic · 클로드(소넷·오퍼스 등)</td>
+        <td>클로드 유료 구독 또는 API 크레딧</td>
+        <td>터미널(명령창) 기반. 파일 읽기·쓰기, 명령 실행, 웹 자동화까지 한 번에 처리. "이 작업은 물어보고, 이건 바로 해도 돼"처럼 <b>권한 단계를 세밀하게 조절</b>할 수 있어 안전장치가 강함. 일을 여러 하위 작업자(서브에이전트)에게 나눠 맡길 수 있고, 구글 드라이브·이메일 같은 외부 도구도 연결(MCP) 가능. <b>이 학습자료 자체도 클로드 코드로 만들어졌습니다.</b></td>
+      </tr>
+      <tr>
+        <td class="name">코덱스<br>(Codex)</td>
+        <td>OpenAI · GPT 계열</td>
+        <td>ChatGPT Plus 이상 구독</td>
+        <td>터미널과 코드 편집기(IDE) 양쪽에 통합되어 사용 가능. 내 컴퓨터를 꺼둔 상태에서도 <b>클라우드 서버에서 대신 작업을 돌려두고</b> 나중에 결과만 받아보는 방식도 지원. ChatGPT 생태계와 자연스럽게 연결됨.</td>
+      </tr>
+      <tr>
+        <td class="name">안티그래비티<br>(Antigravity)</td>
+        <td>Google · 제미나이(Gemini)</td>
+        <td>구글 계정 (무료 티어 있음)</td>
+        <td>세 도구 중 <b>진입 장벽이 가장 낮음</b> — 무료로도 상당 부분 사용 가능해 처음 시작하기 좋음. 코드 편집기 형태의 통합 개발 환경(IDE)에 가까운 구성.</td>
+      </tr>
+    </table>
+    <div class="tip">
+      <span class="label">뭘 골라야 하나</span>
+      이미 쓰고 있는 구독이 있다면 그 회사 도구부터 써보는 게 가장 빠릅니다. 클로드를 쓰고 있다면 좌측 상단 "코드" 메뉴에서 PC 앱을 검색해 설치하면 됩니다. 처음 접해본다면 무료 티어가 있는 안티그래비티로 감을 잡아보는 것도 좋은 방법입니다.
+    </div>
+  </div>
+
+  <div class="part-divider" id="part4">
+    <div class="part-label">Part 4</div>
+    <h2>크레딧·토큰 완전정복</h2>
+  </div>
+
+  <div class="card" id="token">
+    <h3>🧩 토큰(Token)이란 무엇인가</h3>
+    <p>AI는 우리처럼 "글자"를 통째로 읽지 않습니다. 문장을 아주 작은 조각으로 잘게 쪼갠 뒤, 그 조각들을 하나씩 읽고 다시 조립해서 대답합니다. 이 <b>작은 글 조각 하나하나를 "토큰"</b>이라고 부릅니다.</p>
+    <p style="margin-bottom:6px;">예를 들어 "안녕하세요, 반갑습니다"라는 문장은 대략 이렇게 조각날 수 있습니다 (실제 조각나는 방식은 AI마다 조금씩 다릅니다):</p>
+    <div class="token-viz">
+      <span class="tk1">안녕</span><span class="tk2">하세</span><span class="tk3">요</span><span class="tk4">,</span><span class="tk5">반갑</span><span class="tk6">습니다</span>
+    </div>
+    <p>중요한 건, <b>한 글자 = 한 토큰이 아니라는 점</b>입니다. 한국어는 대체로 글자 2~3개가 모여야 토큰 1개가 되고, 영어는 짧은 단어 하나가 토큰 1개, 긴 단어는 여러 토큰으로 쪼개집니다. 그래서 <b>같은 내용이라도 한국어로 쓰면 영어보다 토큰 수가 더 많이 나오는 경우가 흔합니다.</b></p>
+    <div class="eli5">
+      <span class="label">쉬운 말로</span>
+      토큰은 레고 블록이라고 생각하면 됩니다. 우리가 문장이라는 큰 성을 만들 때, AI는 그걸 작은 블록 단위로 쪼개서 이해하고, 대답할 때도 블록을 하나씩 쌓아 올리듯 만들어냅니다. 그리고 요금은 <b>이 블록을 몇 개나 썼는지</b>로 매겨집니다.
+    </div>
+  </div>
+
+  <div class="card" id="credit">
+    <h3>💳 크레딧(Credit)이란 무엇인가</h3>
+    <p>크레딧은 <b>토큰을 쓸 때마다 깎이는 이용권 포인트</b>입니다. 충전식 교통카드를 떠올리면 쉽습니다 — 버스를 탈 때마다(=토큰을 쓸 때마다) 잔액이 조금씩 줄어드는 것처럼, AI에게 글을 보내고 답을 받을 때마다 크레딧이 줄어듭니다.</p>
+    <ul>
+      <li><b>내가 보낸 글(입력, input)</b>과 <b>AI가 답한 글(출력, output)</b>은 따로 계산됩니다. 보통 <b>AI가 답하는 쪽(출력)이 몇 배 더 비쌉니다</b> — 듣는 것보다 직접 만들어서 말하는 게 더 품이 드는 것과 같은 이치입니다.</li>
+      <li><b>모델(하이쿠·소넷·오퍼스·페이블 등)마다 토큰 1개당 가격이 다릅니다.</b> 더 똑똑하고 복잡한 모델일수록 토큰 하나 쓰는 값이 비쌉니다.</li>
+    </ul>
+    <div class="eli5">
+      <span class="label">쉬운 말로</span>
+      아르바이트생(가벼운 모델)에게 심부름을 시키면 시급이 싸고, 경력 많은 전문가(고급 모델)에게 맡기면 시급이 비쌉니다. 둘 다 "일한 시간(=토큰 수)"만큼 요금이 나가는 건 똑같지만, <b>누구에게 시켰는지에 따라 시급 자체가 다른 것</b>입니다. 그래서 간단한 요약·정리는 저렴한 모델로, 복잡하고 중요한 판단이 필요한 일은 비싼 모델로 나눠 쓰는 게 크레딧을 아끼는 핵심입니다.
+    </div>
+  </div>
+
+  <div class="card" id="pricing">
+    <h3>💰 1,000토큰(1K)은 실제로 얼마일까</h3>
+    <p>감을 잡기 위해, 한국어 기준 <b>1,000토큰은 대략 A4 반 페이지 분량의 글</b> 정도라고 생각하면 됩니다. 카카오톡 메시지로 치면 꽤 긴 대화 한 번 분량입니다.</p>
+    <p>아래는 모델 등급별로 "1,000토큰(1K)을 쓰면 대략 얼마가 드는지"를 보여주는 예시 표입니다.</p>
+    <table class="price-table">
+      <tr><th>모델 등급</th><th>내가 보낸 글 1K (입력)</th><th>AI가 답한 글 1K (출력)</th></tr>
+      <tr>
+        <td class="tier">가벼운 모델<br><span style="font-weight:400;color:var(--text-dim);font-size:12.5px;">(하이쿠 급)</span></td>
+        <td><div class="bar-wrap"><div class="bar" style="width:14px;"></div><span class="amt">약 $0.001 (약 1~2원)</span></div></td>
+        <td><div class="bar-wrap"><div class="bar out" style="width:36px;"></div><span class="amt">약 $0.004~0.005 (약 6~7원)</span></div></td>
+      </tr>
+      <tr>
+        <td class="tier">기본 모델<br><span style="font-weight:400;color:var(--text-dim);font-size:12.5px;">(소넷 급)</span></td>
+        <td><div class="bar-wrap"><div class="bar" style="width:34px;"></div><span class="amt">약 $0.003 (약 4원)</span></div></td>
+        <td><div class="bar-wrap"><div class="bar out" style="width:110px;"></div><span class="amt">약 $0.015 (약 21원)</span></div></td>
+      </tr>
+      <tr>
+        <td class="tier">고급 모델<br><span style="font-weight:400;color:var(--text-dim);font-size:12.5px;">(오퍼스·페이블 급)</span></td>
+        <td><div class="bar-wrap"><div class="bar" style="width:80px;"></div><span class="amt">약 $0.005~0.015 (약 7~21원)</span></div></td>
+        <td><div class="bar-wrap"><div class="bar out" style="width:220px;"></div><span class="amt">약 $0.025~0.075 (약 35~105원)</span></div></td>
+      </tr>
+    </table>
+    <div class="disclaimer">⚠️ 위 숫자는 감을 잡기 위한 <b>대략적인 예시</b>이며, 환율(1달러≈1,400원 가정)과 모델 버전, 서비스 정책에 따라 실제 값은 달라집니다. 정확한 최신 요금은 사용 중인 서비스의 공식 요금 페이지에서 꼭 확인하세요.</div>
+
+    <div class="calc-box">
+      <div class="calc-label">실제로 계산해보면 — 기본 모델(소넷 급)로 카톡 한 번 주고받듯 대화한다면</div>
+      <div class="calc-line"><span>짧은 질문 하나 (약 500토큰 입력)</span><span>약 2원</span></div>
+      <div class="calc-line"><span>AI의 답변 (약 500토큰 출력)</span><span>약 11원</span></div>
+      <div class="calc-total"><span>대화 한 번 합계</span><span>약 13원</span></div>
+    </div>
+    <div class="tip">
+      <span class="label">그럼 왜 크레딧이 빨리 줄어드는 것처럼 느껴질까</span>
+      대화가 길어질수록 AI는 <b>이전에 나눈 대화 전체를 매번 처음부터 다시 읽고 나서</b> 대답합니다. 마치 회의할 때마다 지금까지 나온 이야기를 처음부터 다시 브리핑받는 것과 같습니다. 그래서 대화가 50턴, 100턴으로 길어지면 한 번 주고받을 때마다 다시 읽어야 하는 분량 자체가 계속 늘어나, 누적 비용이 눈덩이처럼 불어납니다. <b>목적이 바뀌면 새 채팅을 여는 것</b>이 크레딧을 아끼는 가장 확실한 방법인 이유가 여기에 있습니다.
+    </div>
+  </div>
+
+  <div class="card" id="save">
+    <h3>✅ 크레딧 아끼는 습관 6가지</h3>
+    <ul>
+      <li><b>자동 충전(Auto Reload) 끄기 + 한도 0으로 설정</b> — 실수로 충전돼도 환불이 안 됩니다.</li>
+      <li><b>Chat으로 끝나는 일은 Work로 보내지 않기</b> — 같은 결과에 크레딧만 더 씁니다.</li>
+      <li><b>목적이 바뀌면 새 채팅 열기</b> — 대화가 길어질수록 다시 읽어야 할 분량이 계속 늘어납니다.</li>
+      <li><b>간단한 작업은 가벼운 모델로</b> — 문서 정리·요약처럼 쉬운 일에 굳이 비싼 모델을 쓸 필요는 없습니다.</li>
+      <li><b>말 대신 스크린샷</b> — 상황을 길게 설명하는 것보다 화면을 보여주는 게 정보량 대비 토큰을 아낄 때가 많습니다.</li>
+      <li><b>시간 걸리는 작업은 기다리지 않고 동시에 여러 개 돌리기</b> — 크레딧을 아끼는 팁은 아니지만, 같은 크레딧으로 얻는 시간 효율을 극대화하는 방법입니다.</li>
+    </ul>
+  </div>
+
+  <div class="keytips" id="summary">
+    <h3>✅ 오늘 자료 한 줄 정리</h3>
+    <ol>
+      <li><b>프롬프트</b>는 AI에게 주는 지시문 — 맥락·결과물·조건 3가지가 들어갈수록 결과가 좋아집니다.</li>
+      <li>프롬프트에는 6가지 유형이 있고, <b>정답은 없이 상황에 맞게 섞어 쓰는 것</b>이 핵심입니다.</li>
+      <li><b>토큰</b>은 AI가 글을 읽고 쓰는 최소 단위, <b>크레딧</b>은 그 토큰을 쓸 때마다 깎이는 이용권입니다.</li>
+      <li>같은 토큰이라도 <b>입력보다 출력이 훨씬 비싸고</b>, 모델이 똑똑할수록 토큰 단가도 올라갑니다.</li>
+      <li>1,000토큰(1K)의 실제 비용은 모델에 따라 <b>1원 대에서 100원 대까지</b> 차이가 큽니다 — 정확한 값은 공식 요금 페이지 확인이 원칙입니다.</li>
+      <li>클로드 코드·코덱스·안티그래비티는 각각 다른 회사의 "내 컴퓨터에서 대신 일하는 AI 로봇 비서"이며, 결국 크레딧을 아끼는 큰 원칙은 <b>"쉬운 일은 가볍게, 새 주제는 새 채팅으로"</b>입니다.</li>
+    </ol>
+  </div>
+
+  <div class="lead-card" id="apply">
+    <div class="tag">📥 자료 소장하기</div>
+    <h3>이 자료를 PDF로 소장하고, 새 자료 나올 때 안내받기</h3>
+    <p>이름·이메일만 남겨주시면 지금 이 자료의 PDF본을 이메일로 보내드리고, 앞으로 나올 심화 학습자료·특강 소식도 가장 먼저 안내해드립니다.</p>
+    <form class="lead-form" id="leadForm" onsubmit="submitLead(event)" novalidate>
+      <div class="form-group">
+        <label for="l-name">성명 <span style="color:var(--clay)">*</span></label>
+        <input id="l-name" name="name" type="text" placeholder="홍길동" required autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="l-email">이메일 <span style="color:var(--clay)">*</span></label>
+        <input id="l-email" name="email" type="email" placeholder="example@email.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="l-phone">연락처 <span style="color:var(--clay)">*</span></label>
+        <input id="l-phone" name="phone" type="tel" placeholder="010-1234-5678" required autocomplete="tel">
+      </div>
+      <label class="consent" for="l-consent">
+        <input id="l-consent" name="consent" type="checkbox" required>
+        입력하신 정보는 자료 발송·강의 소식 안내 목적으로만 사용되며, 이에 동의합니다. <span style="color:var(--clay)">*</span>
+      </label>
+      <button type="submit" id="leadSubmitBtn">🎁 자료 받고 소식 받아보기</button>
+      <div class="lead-msg" id="leadMsg"></div>
+    </form>
+  </div>
+
+  <div class="cta">
+    <div class="tag">후기 감사합니다 🙏</div>
+    <h3>더 깊게 배우고 싶다면</h3>
+    <p>이 자료로 감이 잡히셨다면, 실제로 내 컴퓨터에 프로그램을 설치하고 랜딩페이지 하나를 직접 완성해보는 1:1 세션도 준비되어 있습니다. 편하실 때 문의해주세요.</p>
+    <a class="btn" href="https://www.smacedu.kr/vip-1on1-landing" target="_blank" rel="noopener">1:1 세션 안내 보기 →</a>
+  </div>
+
+  <div class="cta">
+    <div class="tag">강사과정 11기 · 사진작가 24기</div>
+    <h3>스마트폰 사진강사 양성과정 11기 &amp; 사진작가 24기</h3>
+    <p>사진 문법부터 영상·AI 미디어 제작, 강의 기획과 강사 브랜딩까지 — 자격증 취득과 보조강사 활동으로 이어지는 평생형 과정입니다.</p>
+    <div style="font-size:14px;margin-bottom:22px;color:var(--text-dim);">강사과정 슈퍼얼리버드 <b style="font-size:18px;color:var(--clay);">64만원</b>(정상가 250만원) · 작가과정 24기 <b style="font-size:18px;color:var(--clay);">12만원</b></div>
+    <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLScmMsdAWo6aJ_fBmSoU5GbiXm0Z_IB9NMhyNDtMhcAFGTb0rw/viewform" target="_blank" rel="noopener">신청서 작성하기 →</a>
+  </div>
+
+  <footer>스마트미디어아트센터 · VIP 특강 후기 선물 심화 학습자료 · 작성일 2026-08-31<br>가격·수치는 이해를 돕기 위한 예시이며 실제 요금은 각 서비스 공식 페이지 기준입니다.</footer>
+</div>
+
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz47FQesvuy7rBzB_VYye85Vj6cjDpstFYTVvdNnDdjsNyb_HgD4DQM-vi6udtSZApa/exec';
+
+  async function submitLead(e) {
+    e.preventDefault();
+    const name    = document.getElementById('l-name').value.trim();
+    const email   = document.getElementById('l-email').value.trim();
+    const phone   = document.getElementById('l-phone').value.trim();
+    const consent = document.getElementById('l-consent').checked;
+    const btn     = document.getElementById('leadSubmitBtn');
+    const msg     = document.getElementById('leadMsg');
+
+    const showMsg = (type, text) => { msg.className = `lead-msg ${type}`; msg.textContent = text; };
+
+    if (!name)  { showMsg('error', '성명을 입력해 주세요.'); return; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('error', '올바른 이메일을 입력해 주세요.'); return; }
+    if (!phone || !/^01[0-9]-\d{3,4}-\d{4}$/.test(phone)) { showMsg('error', '연락처는 010-1234-5678 형식으로 입력해 주세요.'); return; }
+    if (!consent) { showMsg('error', '개인정보 이용 동의에 체크해 주세요.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = '신청 중…';
+
+    try {
+      const params = new URLSearchParams({ name, email, phone, consent: 'Y', form: 'vibecodingcredittoken' });
+      await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
+      showMsg('success', `${name}님, 신청이 완료됐습니다! 🎁\nPDF 자료를 이메일로 보내드렸어요. 메일이 안 보이면 스팸함도 확인해 주세요.`);
+      btn.textContent = '✓ 신청 완료';
+    } catch {
+      showMsg('error', '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+      btn.disabled = false;
+      btn.textContent = '🎁 자료 받고 소식 받아보기';
+    }
+  }
+</script>
+</body>
+</html>
