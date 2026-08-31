@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 프롬프트 & 바이브 코딩 특강 정리 | 스마트미디어아트센터</title>
+<meta name="description" content="엘란비탈 박성욱 작가의 8/30 VIP 특강(AI 프롬프트·바이브 코딩) 녹화본을 실전 가이드로 정리한 페이지">
+<style>
+  :root{
+    --bg:#f0eee6;
+    --bg-card:#ffffff;
+    --text:#2b2823;
+    --text-dim:#6b6558;
+    --border:#e2ddd0;
+    --clay:#d97757;
+    --clay-dim:#f3e3da;
+    --clay-text:#a3502f;
+    --accent:#3b3a36;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    font-size:17px;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+    word-break:keep-all;
+    overflow-wrap:break-word;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 110px;}
+
+  /* ── Header ───────────────────────── */
+  header{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:36px 34px;
+    margin-bottom:36px;
+  }
+  header .eyebrow{
+    display:inline-block;
+    font-size:12.5px;font-weight:800;color:var(--clay);
+    letter-spacing:.04em;text-transform:uppercase;
+    background:var(--clay-dim);padding:5px 13px;border-radius:999px;
+    margin-bottom:16px;
+  }
+  header h1{font-size:29px;margin:0 0 18px;font-weight:800;line-height:1.45;letter-spacing:-.01em;}
+  header .meta{display:flex;flex-wrap:wrap;gap:10px 20px;font-size:14.5px;color:var(--text-dim);}
+  header .meta span{display:inline-flex;align-items:center;gap:6px;}
+  header .watch{
+    margin:22px 0 0;padding-top:20px;border-top:1px solid var(--border);
+  }
+  header .watch a{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--clay);font-weight:800;font-size:15px;text-decoration:none;
+  }
+  header .watch a:hover{text-decoration:underline;}
+
+  .lede{
+    font-size:16px;color:var(--text-dim);
+    margin:0 0 44px;
+    padding:0 2px;
+  }
+  .lede b{color:var(--text);font-weight:700;}
+
+  /* ── Table of contents ───────────────────────── */
+  .toc{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px 26px;
+    margin-bottom:48px;
+  }
+  .toc .toc-label{font-size:12.5px;font-weight:800;color:var(--text-dim);letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px;}
+  .toc ul{list-style:none;margin:0;padding:0;display:grid;gap:9px;}
+  .toc a{
+    display:flex;align-items:baseline;gap:10px;
+    font-size:15px;font-weight:600;color:var(--text);text-decoration:none;
+  }
+  .toc a:hover{color:var(--clay);}
+  .toc a .n{color:var(--clay);font-weight:800;min-width:18px;}
+
+  /* ── Part divider ───────────────────────── */
+  .part-divider{
+    margin:64px 0 30px;
+    padding-top:6px;
+  }
+  .part-divider .part-label{
+    font-size:12.5px;font-weight:800;color:var(--text-dim);
+    letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;
+  }
+  .part-divider h2{
+    font-size:24px;font-weight:800;margin:0;
+    padding-bottom:18px;border-bottom:3px solid var(--accent);
+    letter-spacing:-.01em;
+  }
+
+  /* ── Cards ───────────────────────── */
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:28px 30px;
+    margin-bottom:22px;
+    scroll-margin-top:24px;
+  }
+  .card h3{margin:0 0 14px;font-size:18.5px;font-weight:800;line-height:1.4;}
+  .card > p{margin:0 0 14px;font-size:16px;color:var(--text);}
+  .card > p:last-child{margin-bottom:0;}
+  .card ul{margin:0;padding-left:22px;}
+  .card ul + p{margin-top:14px;}
+  .card li{margin:10px 0;font-size:16px;}
+  .card li:first-child{margin-top:0;}
+  .card li:last-child{margin-bottom:0;}
+  .card li ul{margin-top:10px;}
+  .card li li{font-size:15px;margin:8px 0;}
+  .card code{
+    background:var(--clay-dim);color:var(--clay-text);
+    padding:2px 8px;border-radius:6px;font-size:14.5px;font-family:inherit;font-weight:700;
+  }
+
+  /* Simple comparison table for models */
+  .model-table{width:100%;border-collapse:collapse;margin-top:4px;}
+  .model-table td{padding:12px 4px;border-bottom:1px solid var(--border);font-size:15.5px;vertical-align:top;}
+  .model-table tr:last-child td{border-bottom:none;}
+  .model-table td:first-child{white-space:nowrap;font-weight:800;color:var(--clay-text);padding-right:16px;width:110px;}
+
+  /* ── Callouts ───────────────────────── */
+  .tip, .warn{
+    border-radius:14px;
+    padding:20px 24px;
+    margin:20px 0 0;
+    font-size:16px;
+    line-height:1.8;
+  }
+  .card .tip, .card .warn{margin-top:18px;}
+  .tip{background:var(--clay-dim);border:1px solid #ecc7b3;}
+  .tip .label{display:block;font-size:12px;font-weight:800;color:var(--clay-text);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;}
+  .warn{background:#fdecec;border:1px solid #f3c9c9;}
+  .warn .label{display:block;font-size:12px;font-weight:800;color:#b3392f;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;}
+  .warn ul{margin:0;padding-left:20px;}
+  .warn li{margin:8px 0;font-size:15.5px;}
+
+  /* ── Key takeaways ───────────────────────── */
+  .keytips{
+    background:var(--accent);
+    color:#f0eee6;
+    border-radius:20px;
+    padding:34px 32px;
+    margin:56px 0 0;
+  }
+  .keytips h3{margin:0 0 22px;font-size:21px;font-weight:800;}
+  .keytips ol{margin:0;padding-left:22px;display:grid;gap:16px;}
+  .keytips li{font-size:16.5px;line-height:1.75;color:#d8d4c8;}
+  .keytips li b{color:#f0b599;font-weight:800;}
+
+  /* ── CTAs ───────────────────────── */
+  .cta{
+    border-radius:22px;
+    padding:38px 34px;
+    margin-top:28px;
+    text-align:center;
+  }
+  .cta.primary{background:linear-gradient(135deg,#2b2823,#3b3a36);color:#f0eee6;}
+  .cta.secondary{background:var(--bg-card);border:2px solid var(--clay);}
+  .cta .tag{
+    display:inline-block;font-size:12px;font-weight:800;letter-spacing:.04em;
+    padding:5px 14px;border-radius:999px;margin-bottom:16px;
+  }
+  .cta.primary .tag{background:var(--clay);color:#fff;}
+  .cta.secondary .tag{background:var(--clay-dim);color:var(--clay-text);}
+  .cta h3{font-size:22px;margin:0 0 12px;font-weight:800;line-height:1.4;}
+  .cta.primary h3{color:#fff;}
+  .cta > p{font-size:15.5px;margin:0 0 20px;line-height:1.7;}
+  .cta.primary > p{color:#d8d4c8;}
+  .cta.secondary > p{color:var(--text-dim);}
+  .cta .price{font-size:14px;margin-bottom:22px;}
+  .cta.primary .price{color:#b79c7a;}
+  .cta.secondary .price{color:var(--text-dim);}
+  .cta .price s{opacity:.6;margin-right:6px;}
+  .cta .price b{font-size:18px;color:var(--clay);}
+  .cta a.btn{
+    display:inline-block;padding:15px 34px;border-radius:999px;
+    font-weight:800;font-size:15.5px;text-decoration:none;
+  }
+  .cta.primary a.btn{background:var(--clay);color:#fff;}
+  .cta.secondary a.btn{background:var(--accent);color:#fff;}
+
+  footer{margin-top:50px;font-size:12.5px;color:var(--text-dim);text-align:center;line-height:1.7;}
+
+  @media (max-width:600px){
+    body{font-size:16px;}
+    header{padding:26px 22px;}
+    header h1{font-size:24px;}
+    .card{padding:22px 20px;}
+    .cta{padding:30px 22px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">🟧 VIP 특강 정리노트</span>
+    <h1>AI 프롬프트 실전 활용 + 바이브 코딩으로<br>내 문제 해결하기</h1>
+    <div class="meta">
+      <span>📅 2026년 8월 30일(일) 저녁 9시</span>
+      <span>🧑‍🏫 엘란비탈 박성욱 작가</span>
+      <span>⏱ 약 2시간 55분</span>
+    </div>
+    <div class="watch">
+      <a href="https://youtu.be/y_FQPB5uU6E" target="_blank" rel="noopener">▶ 전체 녹화본 다시보기</a>
+    </div>
+  </header>
+
+  <p class="lede">
+    이 특강은 크게 두 파트로 진행됐습니다 — <b>1부는 AI를 "대화 상대"가 아니라 "일 시키는 대상(에이전트)"으로 쓰는 법</b>,
+    <b>2부는 바이브 코딩(클로드 코드·코덱스)으로 내 PC 안에서 실제 결과물을 만드는 법</b>이었습니다.
+    아래는 녹화본 자막 전체를 바탕으로, 실전에 바로 써먹을 수 있는 부분만 골라 정리한 것입니다.
+  </p>
+
+  <nav class="toc">
+    <div class="toc-label">목차</div>
+    <ul>
+      <li><a href="#chat-work"><span class="n">01</span> "채팅"과 "워크"는 다르다</a></li>
+      <li><a href="#screenshot"><span class="n">02</span> 오늘의 핵심 팁 — 스크린샷</a></li>
+      <li><a href="#commands"><span class="n">03</span> 바로 써먹는 명령어 모음</a></li>
+      <li><a href="#parallel"><span class="n">04</span> 여러 작업을 동시에 돌려라</a></li>
+      <li><a href="#codeapp"><span class="n">05</span> 웹과 데스크톱 앱은 다른 공간</a></li>
+      <li><a href="#credit"><span class="n">06</span> 크레딧 세팅 &amp; 모델 선택</a></li>
+      <li><a href="#localfolder"><span class="n">07</span> "로컬 폴더" 개념 — 오늘의 핵심</a></li>
+      <li><a href="#html"><span class="n">08</span> HTML·아티팩트로 만들고 배포하기</a></li>
+      <li><a href="#md"><span class="n">09</span> MD 파일 → 옵시디언 연계</a></li>
+      <li><a href="#more"><span class="n">10</span> 그 밖에 가능한 것들</a></li>
+      <li><a href="#summary"><span class="n">✅</span> 한 줄 정리</a></li>
+    </ul>
+  </nav>
+
+  <div class="part-divider" id="part1">
+    <div class="part-label">Part 1</div>
+    <h2>AI를 에이전트로 쓰는 법</h2>
+  </div>
+
+  <div class="card" id="chat-work">
+    <h3>💬 "채팅"과 "워크(Work)"는 다르다 — 크레딧이 여기서 갈린다</h3>
+    <p>GPT·클로드 등에는 일반 대화창(Chat) 말고 <b>Work / 에이전트 모드</b>가 따로 있습니다. 둘의 차이를 모르고 쓰면 크레딧이 순식간에 사라집니다.</p>
+    <ul>
+      <li><b>Chat (일반 대화)</b> — 질문하고 답을 받는 것. 인포그래픽 만들기, PPT 만들기, 이미지 여러 장 생성 등 <b>"결과물을 뚝딱 받는" 작업은 전부 여기서 충분</b>합니다.</li>
+      <li><b>Work (에이전트)</b> — 내가 직접 못 하는 걸 "대신 행동"하게 시키는 것. 예를 들어 이메일 자동 발송, 캘린더 확인 후 알림, 여러 사이트를 돌며 정보 수집처럼 <b>"AI가 직접 뭔가를 하고 와야 하는" 작업만</b> 여기로 보내면 됩니다.</li>
+    </ul>
+    <div class="tip">
+      <span class="label">핵심 원칙</span>
+      최대한 그냥 Chat(기본 모드)에 시켜보고, "나 이거 못해"라는 답이 나올 때만 Work로 넘어가세요. 대부분의 작업은 Work가 전혀 필요 없습니다.
+    </div>
+  </div>
+
+  <div class="card" id="screenshot">
+    <h3>📸 오늘의 가장 중요한 팁 — "스크린샷을 잘해야 한다"</h3>
+    <p>텍스트로 길게 설명하는 대신, 화면을 캡처해서 AI에게 그대로 보여주는 습관이 이 강의 전체를 관통하는 핵심입니다.</p>
+    <ul>
+      <li><b>PC에서</b> — <code>Window + Shift + S</code>로 원하는 영역을 캡처한 뒤, 대화창에 <code>Ctrl + V</code>로 붙여넣기</li>
+      <li><b>스마트폰에서</b> — 기기 기본 스크린샷 기능 사용 (전원+음량하 등 기기별 단축키)</li>
+      <li>화살표나 표시를 추가해서 "이 부분만 바꿔줘"라고 하면 AI가 훨씬 정확하게 알아듣습니다.</li>
+      <li>물건 고장이나 설정 오류처럼 말로 설명하기 애매한 상황도, 그냥 사진을 찍어서 보여주면 AI가 알아서 원인과 해결법을 찾아줍니다.</li>
+    </ul>
+    <div class="tip">
+      <span class="label">강의 중 실제 예시</span>
+      전기자전거 타이어가 펑크났을 때, 바꿔 낀 타이어 밸브 사진 한 장만 찍어 보여주자 AI가 "이건 프레스타가 아니라 슈뢰더 방식"이라며 바로 필요한 펌프를 특정해줬습니다. 예전처럼 상황을 하나하나 설명할 필요가 없어진 겁니다.
+    </div>
+  </div>
+
+  <div class="card" id="commands">
+    <h3>🎨 바로 써먹는 명령어 모음</h3>
+    <ul>
+      <li><b>인포그래픽 만들기</b> — "○○ 방법을 인포그래픽 10개로 만들어줘" (단어를 몰라도 "그림과 함께 설명해줘"라고만 해도 충분)</li>
+      <li><b>여러 장 이미지 동시 생성</b> — "하나하나 따로따로 독립적인 이미지로 만들어줘"라고 명확히 요청하세요. 이때 <b>추론 수준을 "높음" 이상</b>으로 올려야 제대로 나옵니다.</li>
+      <li><b>PPT·자료 초안</b> — 대상(초등학생 대상, 시니어 대상 등)을 함께 말해주면 그 눈높이에 맞춰 만들어줍니다.</li>
+      <li><b>내 얼굴·사진 활용</b> — 내 사진을 주면 포스터나 아바타에 그대로 반영됩니다. 옷을 갈아입히거나(쇼핑몰 옷 사진 첨부) 3D 아바타로 바꾸는 것도 가능합니다.</li>
+      <li><b>홍보 포스터</b> — 그냥 "포스터 만들어줘"만 하면 정보가 빈약한 결과물이 나옵니다. 블로그 글이나 신청서 내용을 함께 읽혀야 실제로 쓸 수 있는 결과물이 나옵니다.</li>
+    </ul>
+  </div>
+
+  <div class="card" id="parallel">
+    <h3>⏱ 여러 작업을 동시에 돌려라</h3>
+    <p>이미지·PPT 생성처럼 시간이 걸리는 작업이 있을 때, 화면을 붙잡고 기다리지 마세요. 시켜놓은 채로 <b>새 채팅을 열어 다른 작업을 진행</b>하다가, 나중에 돌아와서 확인하면 됩니다. 박성욱 작가는 보통 한 번에 5~6개 작업을 동시에 돌립니다.</p>
+  </div>
+
+  <div class="warn">
+    <span class="label">크레딧 관리 주의사항 (1부 종합)</span>
+    <ul>
+      <li>대화창(Chat)에서 할 수 있는 걸 Work에서 하면 같은 결과에 크레딧만 낭비됩니다.</li>
+      <li>세션(대화)이 길어질수록 AI가 처음부터 전체를 다시 읽기 때문에 크레딧이 급격히 늘어납니다 — 목적이 바뀌면 새 채팅을 여세요.</li>
+      <li>자동 충전(Auto Reload)은 반드시 꺼두세요. 실수로 충전돼도 환불이 안 됩니다.</li>
+    </ul>
+  </div>
+
+  <div class="part-divider" id="part2">
+    <div class="part-label">Part 2</div>
+    <h2>바이브 코딩 — 클로드 코드 / 코덱스</h2>
+  </div>
+
+  <div class="card" id="codeapp">
+    <h3>🖥 "웹"과 "데스크톱 앱"은 다른 공간이다</h3>
+    <p>GPT·클로드를 브라우저(웹)에서 쓰는 것과, PC에 설치하는 <b>클로드 코드 / 코덱스(데스크톱 앱)</b>는 완전히 다릅니다. 데스크톱 앱은 내 PC의 프로그램을 직접 켜고 끄고, 파일을 만들고, 오류가 나면 스스로 재시작까지 합니다.</p>
+    <ul>
+      <li>GPT → 데스크톱 앱은 <b>코덱스(Codex)</b> (GPT Plus 이상 필요)</li>
+      <li>클로드 → 좌측 상단 "코드" 메뉴에서 PC 앱을 검색해 설치</li>
+      <li>구글 → <b>안티그래비티(Antigravity)</b> — 무료로도 어느 정도 사용 가능</li>
+    </ul>
+  </div>
+
+  <div class="card" id="credit">
+    <h3>💰 크레딧 세팅 — 시작 전에 반드시 확인</h3>
+    <p>설정 → 사용량에서 <b>자동 충전(Auto Reload) 끄기</b>, 한도는 0으로 설정해두세요. 필요할 때만 다시 켜면 됩니다.</p>
+    <p>모델은 작업 난이도에 맞춰 고르면 됩니다.</p>
+    <table class="model-table">
+      <tr><td>하이쿠</td><td>문서 정리·요약 등 단순 작업에 충분</td></tr>
+      <tr><td>소넷</td><td>웹사이트 제작 등 일반적인 작업 대부분 — 기본으로 충분</td></tr>
+      <tr><td>오퍼스</td><td>방대한 자료를 한 번에 이해시켜야 할 때</td></tr>
+      <tr><td>페이블</td><td>가장 똑똑하지만 크레딧 소모가 큼 — 투자 분석처럼 정말 복잡한 작업에만</td></tr>
+    </table>
+  </div>
+
+  <div class="card" id="localfolder">
+    <h3>📁 "로컬 폴더" 개념 — 오늘 강의의 핵심</h3>
+    <p>AI에게 <b>내 PC의 작업 폴더를 통째로 열어주는 것</b>이 웹 채팅과의 결정적인 차이입니다. 클로드 코드·코덱스에게 폴더를 지정해주면, 그 안의 모든 자료(과거 기획서·이미지·엑셀 등)를 스스로 참고해서 작업합니다.</p>
+    <ul>
+      <li>웹의 일반 대화(GPT·재미나이 등)는 내 PC 파일 경로에 접근하지 못합니다 — 파일을 매번 직접 첨부해서 줘야 합니다.</li>
+      <li>코드(클로드 코드·코덱스)는 폴더 자체를 "보고" 있기 때문에 매번 파일을 올릴 필요가 없습니다.</li>
+    </ul>
+    <div class="tip">
+      <span class="label">강의 중 실습 예시</span>
+      로고 이미지를 작업 폴더에 미리 넣어두기만 하면, "로고 넣어줘"라는 말만으로 AI가 QR코드 페이지에 알아서 그 로고를 찾아 삽입했습니다.
+    </div>
+  </div>
+
+  <div class="card" id="html">
+    <h3>🌐 HTML·아티팩트로 결과물 만들기 → 배포까지</h3>
+    <ul>
+      <li>클로드·코덱스에게 "아티팩트로 만들어줘" 또는 "시각화해줘"라고 하면 <b>HTML 문서(사이트 형태)</b>로 결과물을 만들어줍니다.</li>
+      <li>HTML로 만들어두면 클로드·GPT·재미나이 어디서든 다시 열고 수정할 수 있어 특정 서비스에 종속되지 않습니다. 클로드 구독을 끊으면 아티팩트는 사라지지만, 로컬에 HTML로 저장해두면 계속 내 것으로 남습니다.</li>
+      <li><b>공유·배포는 별도 문제</b>입니다 — "내 PC에서만 보이는 것"과 "누구나 볼 수 있게 배포하는 것"을 구분해야 합니다.</li>
+      <li>랜딩페이지를 만들 때는 들어갈 이미지들을 미리 폴더에 넣어두고 통째로 참고시키면 훨씬 완성도 높은 결과물이 나옵니다.</li>
+    </ul>
+    <div class="tip">
+      <span class="label">배포 방법</span>
+      박성욱 작가는 Vercel에 배포해서 실제 웹사이트로 공개합니다. 처음이라면 AI에게 "Vercel 가입하는 법 알려줘"라고 물어보는 것부터 시작하면 됩니다.
+    </div>
+  </div>
+
+  <div class="card" id="md">
+    <h3>📝 MD 파일 → 옵시디언 연계</h3>
+    <p>영상이나 자료를 AI에게 주고 "MD 파일로 요약해줘"라고 하면, 용량이 아주 가벼운 텍스트 요약 파일이 만들어집니다. 이렇게 쌓인 MD 파일들을 <b>옵시디언(Obsidian)</b> 같은 로컬 프로그램에 모아두면, 나중에 필요한 주제만 골라 다시 활용할 수 있습니다.</p>
+    <p>노션도 비슷한 기능을 하지만, 구독이 끊기면 자료도 함께 접근이 어려워집니다 — <b>로컬에 저장하는 것</b>이 핵심입니다.</p>
+  </div>
+
+  <div class="card" id="more">
+    <h3>🎬 그 밖에 가능한 것들 (실습 없이 소개만)</h3>
+    <ul>
+      <li>영수증 사진 여러 장을 한 번에 올려서 엑셀로 자동 정리</li>
+      <li>영상 폴더를 지정해주면 <b>말끊김 제거 + 자막 삽입 편집</b>까지 자동 처리</li>
+      <li>매일 자동으로 공지사항을 수집해 정리해주는 프로그램, 티스토리 자동 포스팅 등 "매일 반복되는 일"의 자동화</li>
+    </ul>
+  </div>
+
+  <div class="keytips" id="summary">
+    <h3>✅ 오늘 강의 한 줄 정리</h3>
+    <ol>
+      <li><b>Chat과 Work(에이전트)를 구분</b>해서 쓰면 크레딧을 대부분 아낄 수 있다.</li>
+      <li><b>스크린샷</b>이 프롬프트보다 강력하다 — 말로 설명하지 말고 보여줘라.</li>
+      <li>프롬프트를 정교하게 짜는 시대는 지났다 — <b>"내가 뭘 만들고 싶은지"</b>만 명확하면 나머지는 AI가 알아서 한다.</li>
+      <li>바이브 코딩의 핵심은 <b>내 PC 폴더를 통째로 맡기는 것</b> — 로컬 개념을 이해하면 완전히 달라진다.</li>
+      <li>결과물은 <b>HTML로 로컬에 저장</b>해야 특정 서비스 구독이 끊겨도 내 것으로 남는다.</li>
+      <li>세션(대화)이 길어질수록 크레딧이 급격히 는다 — 목적이 바뀌면 새로 시작하라.</li>
+    </ol>
+  </div>
+
+  <div class="cta primary">
+    <div class="tag">VIP 회원 한정 · 선착순 5명</div>
+    <h3>오늘 배운 걸 내 결과물로 완성하고 싶다면</h3>
+    <p>홈페이지 + 랜딩페이지 4개 + 업무 자동화 + 앱까지, 될 때까지 1:1로 함께 만들어 드립니다.</p>
+    <div class="price"><s>정상가 240만원</s> <b>얼리버드 50만원</b> · 라이트 2시간 15만원</div>
+    <a class="btn" href="https://www.smacedu.kr/vip-1on1-landing" target="_blank" rel="noopener">1:1 지도 신청하기 →</a>
+  </div>
+
+  <div class="cta secondary">
+    <div class="tag">강사과정 11기 · 사진작가 24기</div>
+    <h3>스마트폰 사진강사 양성과정 11기 &amp; 사진작가 24기</h3>
+    <p>사진 문법부터 영상·AI 미디어 제작, 강의 기획과 강사 브랜딩까지 — 자격증 취득과 보조강사 활동으로 이어지는 평생형 과정입니다.</p>
+    <div class="price">강사과정 슈퍼얼리버드 <b>64만원</b>(정상가 250만원) · 작가과정 24기 <b>12만원</b></div>
+    <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLScmMsdAWo6aJ_fBmSoU5GbiXm0Z_IB9NMhyNDtMhcAFGTb0rw/viewform" target="_blank" rel="noopener">신청서 작성하기 →</a>
+  </div>
+
+  <footer>스마트미디어아트센터 · 2026년 8월 30일 VIP 특강 녹화본 자막 기반 정리 · 작성일 2026-08-31</footer>
+</div>
+</body>
+</html>
