@@ -242,15 +242,17 @@
   .press-sub { margin-top: 6px; color: var(--text-muted); font-size: 14px; }
 
   /* summary cards + tabs */
-  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 32px; }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 22px; margin-bottom: 32px; }
   .summary-card { padding: 30px; border-radius: 20px; border: 2px solid var(--line); background: var(--surface); display: flex; flex-direction: column; gap: 16px; }
   .summary-badge { display: inline-block; font-size: 13px; font-weight: 800; color: var(--gold-ink); background: var(--gold); padding: 5px 13px; border-radius: 999px; width: fit-content; }
   .summary-card h3 { font-size: 22px; }
-  .summary-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+  .summary-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-content: start; }
   .summary-stats > div { display: flex; flex-direction: column; gap: 3px; }
+  .summary-stats > div:nth-child(n+3) { grid-column: 1 / -1; }
   .summary-stats .k { font-size: 12.5px; color: var(--text-muted); font-weight: 700; }
   .summary-stats .v { font-size: 17px; font-weight: 800; }
   .summary-card p.desc { font-size: 15px; color: var(--text-muted); }
+  .summary-card .btn-tab-link { margin-top: auto; }
   .btn-tab-link {
     align-self: flex-start; background: var(--navy); color: #fff; border: none; border-radius: 999px;
     padding: 12px 22px; font-size: 15px; font-weight: 800; cursor: pointer; font-family: inherit;
@@ -258,7 +260,7 @@
   .btn-tab-link:hover, .btn-tab-link:focus-visible { background: var(--orange); }
   @media (max-width: 700px) { .summary-grid { grid-template-columns: 1fr; } }
 
-  .tab-bar { display: flex; gap: 6px; background: var(--surface-tint); padding: 6px; border-radius: 999px; width: fit-content; margin: 0 auto; }
+  .tab-bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; background: var(--surface-tint); padding: 6px; border-radius: 999px; width: fit-content; max-width: 100%; margin: 0 auto; }
   .tab-btn {
     appearance: none; border: none; cursor: pointer; font-family: inherit;
     font-weight: 800; font-size: 15.5px; color: var(--text-muted); background: transparent;
@@ -464,6 +466,7 @@
     <div class="nav-links">
       <a href="#compare">과정 비교</a>
       <a href="#course-tabs" onclick="showCourse('b')">사진강사 11기</a>
+      <a href="#course-tabs" onclick="showCourse('c')">사진영상 전문가반</a>
       <a href="#course-tabs" onclick="showCourse('a')">사진작가 24기</a>
       <a href="#reviews">후기</a>
     </div>
@@ -733,8 +736,8 @@
     <div class="wrap">
       <div class="section-head center" style="margin-left:auto;margin-right:auto;">
         <span class="kicker">Choose Your Path</span>
-        <h2>사진강사 양성과정 vs 사진작가 과정</h2>
-        <p class="lede">자격증을 넘어 강사로 성장하는 길과, 사진 실력부터 다지는 길 — 아래 두 과정을 비교해보고, 탭을 눌러 자세히 확인하세요.</p>
+        <h2>찍는 사람, 만드는 사람, 가르치는 사람</h2>
+        <p class="lede">어디까지 가고 싶으신가요? 사진 실력부터 다지는 길, 영상까지 직접 만드는 길, 그리고 자격증을 발급하는 강사가 되는 길 — 세 과정을 비교해보고 탭을 눌러 자세히 확인하세요.</p>
       </div>
 
       <div class="summary-grid">
@@ -762,9 +765,22 @@
           <p class="desc">인물·풍경·야경·제품·음식까지, 작품 사진을 완성하는 촬영·보정을 순서대로 익힙니다.</p>
           <button class="btn-tab-link" onclick="showCourse('a')" type="button">자세히 보기 ↓</button>
         </div>
+        <div class="summary-card">
+          <span class="summary-badge">Course 03 · 신설</span>
+          <h3>스마트폰 사진영상 전문가반 1기</h3>
+          <div class="summary-stats">
+            <div><span class="k">개강</span><span class="v">9월 11일(금) 저녁 9시</span></div>
+            <div><span class="k">기간</span><span class="v">4주</span></div>
+            <div><span class="k">가격</span><span class="v">38만원</span></div>
+            <div><span class="k">이런 분께</span><span class="v">사진에 영상까지 직접 만들고 싶다면</span></div>
+          </div>
+          <p class="desc">사진 심화에 영상 촬영·편집까지. 강사가 될 생각은 아직 없지만 제대로 만들고 싶은 분을 위한 과정입니다.</p>
+          <button class="btn-tab-link" onclick="showCourse('c')" type="button">자세히 보기 ↓</button>
+        </div>
       </div>
       <div class="tab-bar" id="course-tabs" role="tablist">
         <button class="tab-btn active" id="tab-b" role="tab" aria-selected="true" aria-controls="course-b" onclick="showCourse('b')" type="button">사진강사 양성과정 11기</button>
+        <button class="tab-btn" id="tab-c" role="tab" aria-selected="false" aria-controls="course-c" onclick="showCourse('c')" type="button">사진영상 전문가반 1기</button>
         <button class="tab-btn" id="tab-a" role="tab" aria-selected="false" aria-controls="course-a" onclick="showCourse('a')" type="button">사진작가 과정 24기</button>
       </div>
     </div>
@@ -776,7 +792,7 @@
       <div class="section-head">
         <span class="kicker">Course 02 · 6주 완성</span>
         <h2>스마트폰 사진작가 과정 24기</h2>
-        <p class="lede">스마트폰 사진강사 양성과정 11기의 1~3주차와 동일한 내용으로, 촬영·보정 실력만 먼저 다지고 싶다면 이 과정만 따로 수강하실 수도 있습니다. <strong>2026년 9월 11일(금) 저녁 9시 개강.</strong> 매주 1회, 2부 구성의 저녁 강의(실시간 + 녹화본 제공)로 촬영 기초부터 작품 사진 완성까지 6주 만에 끝냅니다.</p>
+        <p class="lede">사진강사 양성과정 11기의 1~3주차와 <strong>같은 주제</strong>를 다루되, 강사 과정이 3주에 압축해 심화로 들어가는 것과 달리 이 과정은 <strong>6주에 걸쳐 기초부터 차근차근</strong> 밟아갑니다. 촬영·보정 실력만 먼저 다지고 싶다면 이 과정만 따로 수강하셔도 됩니다. <strong>2026년 9월 11일(금) 저녁 9시 개강.</strong> 매주 1회, 2부 구성의 저녁 강의(실시간 + 녹화본 제공)로 촬영 기초부터 작품 사진 완성까지 6주 만에 끝냅니다.</p>
       </div>
 
       <h3 class="sub">커리큘럼</h3>
@@ -830,8 +846,8 @@
       <h3 class="sub">8주 집중 커리큘럼</h3>
       <div class="week-list">
         <div class="week-row"><span class="wk">1–3주차</span><div><h4>스마트폰 사진 마스터</h4><p>촬영·편집 기초 → 심화 → 마스터, 고급 마스터 과정 완전 이해</p></div></div>
-        <div class="week-row"><span class="wk">4주차</span><div><h4>강사 역량 강화</h4><p>챗GPT 프롬프트 작성, 강의 기획·자료 제작·발표·Q&amp;A 응대</p></div></div>
-        <div class="week-row"><span class="wk">5주차</span><div><h4>영상 촬영 &amp; 편집 심화</h4><p>모바일·PC 영상 편집 실전</p></div></div>
+        <div class="week-row"><span class="wk">4주차</span><div><h4>영상 촬영 &amp; 편집 심화</h4><p>모바일·PC 영상 편집 실전</p></div></div>
+        <div class="week-row"><span class="wk">5주차</span><div><h4>강사 역량 강화</h4><p>챗GPT 프롬프트 작성, 강의 기획·자료 제작·발표·Q&amp;A 응대</p></div></div>
         <div class="week-row"><span class="wk">6주차</span><div><h4>SNS &amp; 마케팅</h4><p>SNS 마케팅 전략, 실전 강의 준비와 현장 적용</p></div></div>
         <div class="week-row"><span class="wk">7주차</span><div><h4>AI 크리에이티브</h4><p>미드저니·런웨이 등 AI 이미지·영상 제작</p></div></div>
         <div class="week-row"><span class="wk">8주차</span><div><h4>시강 &amp; 브랜딩</h4><p>실전 시강, 퍼스널 브랜딩, 전문 강사 활동 준비</p></div></div>
@@ -848,7 +864,7 @@
       <h3 class="sub">수강 혜택 총정리 — 환산가 806만원 상당</h3>
       <div class="benefit-list">
         <div class="benefit-row"><span class="tag">Priceless</span><p><strong>평생 무료 수강</strong> — 이번 기수뿐 아니라 다음 기수까지 무제한 청강</p></div>
-        <div class="benefit-row"><span class="tag">약 28만원</span><p><strong>강의·수익 매칭</strong> — 보조강사 활동 기회 제공, 외부 출강 요청 시 우선 매칭</p></div>
+        <div class="benefit-row"><span class="tag">100만원 상당</span><p><strong>강의·수익 매칭</strong> — 보조강사 활동 기회 제공, 외부 출강 요청 시 우선 매칭</p></div>
         <div class="benefit-row"><span class="tag">300만원+</span><p><strong>유료 AI 툴 지원</strong> — 미드저니, 젠스파크, 클로드, 그록 등 8종 고가 생성형 AI 프로그램 활용</p></div>
         <div class="benefit-row"><span class="tag">브랜딩</span><p><strong>신문사 기사 발행</strong> — 네이버에 검색이 되는 기사 송출 지원</p></div>
         <div class="benefit-row"><span class="tag">자료 제공</span><p><strong>강의 자료 풀 패키지</strong> — 바로 쓰는 PPT 원본, 대본 가이드, 저작권 걱정 없는 예제</p></div>
@@ -909,6 +925,48 @@
           <p class="price-foot">분할 납부 상담 가능 · 806만원 상당의 수강 혜택 포함</p>
         </div>
         <a class="btn-primary btn-pulse" href="https://forms.gle/5zdD4QdJaTnauCwx7" target="_blank" rel="noopener">사진강사 과정 신청</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= COURSE C ================= -->
+  <section class="section" id="course-c" role="tabpanel" aria-labelledby="tab-c" hidden>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Course 03 · 신설 · 4주 완성</span>
+        <h2>스마트폰 사진영상 전문가반 1기</h2>
+        <p class="lede">"강사까지는 아니고요. 그냥 제대로 찍고 싶은 건데요." — 그런 분들을 위해 새로 만든 과정입니다. <strong>사진강사 양성과정 11기와 같은 강의실에서 1~4주차를 함께 듣습니다.</strong> 사진 심화에 영상 촬영·편집까지 더해, 찍는 것에서 끝내지 않고 <strong>직접 만드는 사람</strong>이 됩니다. <strong>2026년 9월 11일(금) 저녁 9시 개강.</strong></p>
+      </div>
+
+      <h3 class="sub">4주 커리큘럼</h3>
+      <div class="week-list">
+        <div class="week-row"><span class="wk">1–3주차</span><div><h4>스마트폰 사진 마스터</h4><p>촬영·편집 기초 → 심화 → 마스터, 고급 마스터 과정 완전 이해</p></div></div>
+        <div class="week-row"><span class="wk">4주차</span><div><h4>영상 촬영 &amp; 편집 심화</h4><p>모바일·PC 영상 편집 실전</p></div></div>
+      </div>
+
+      <h3 class="sub">받는 것</h3>
+      <div class="benefit-list">
+        <div class="benefit-row"><span class="tag">실시간 강의</span><p>4주 실시간 강의 + 전 회차 녹화본 제공</p></div>
+        <div class="benefit-row"><span class="tag">작가과정 수강권</span><p><strong>사진작가 과정 25기(15만원 상당) 수강권</strong> + 패들렛 전 과정 열람 — 기본 강의 21강 · 중급 강의 · 보정 강의 · 예제파일</p></div>
+        <div class="benefit-row"><span class="tag">과거 기수 녹화본</span><p>17·19·21기 과정 녹화본 2,160분 분량</p></div>
+        <div class="benefit-row"><span class="tag">수료</span><p>과정 수료증</p></div>
+        <div class="benefit-row"><span class="tag">자격 (선택)</span><p>스마트폰사진전문가 자격증 — 취득비 5만원, 신청은 선택입니다</p></div>
+        <div class="benefit-row"><span class="tag">커뮤니티</span><p>동기 단톡방 교류</p></div>
+      </div>
+
+      <div class="upsell-banner">
+        <p>들으시다가 <strong>"나도 강사를 해볼까"</strong> 하는 마음이 드실 수 있습니다. 그때 올라오시면 <strong>정상가 72만원</strong> 기준이지만, <strong>개강 전에 사진강사 양성과정으로 바로 등록하시면 슈퍼얼리버드 64만원</strong>입니다. 강사까지 생각이 있으시다면 처음부터 강사과정이 훨씬 유리합니다.</p>
+        <button class="btn-tab-link" type="button" onclick="showCourse('b'); setTimeout(function(){document.getElementById('course-b').scrollIntoView({behavior:'smooth'});}, 220);">사진강사 양성과정 11기 확인하기 →</button>
+      </div>
+
+      <span class="mini-urgency">⏰ 9월 11일(금) 저녁 9시 개강 — 정원이 차면 조기 마감될 수 있습니다</span>
+      <div class="price-card">
+        <div>
+          <span class="price-label">수업료</span>
+          <div class="price-amount">38만원</div>
+          <p class="price-foot">수료증 포함 · 사진작가 과정 25기 수강권(15만원 상당) 포함 · 자격증 취득비 5만원은 별도(선택)</p>
+        </div>
+        <a class="btn-primary btn-pulse" href="https://forms.gle/5zdD4QdJaTnauCwx7" target="_blank" rel="noopener">사진영상 전문가반 신청</a>
       </div>
     </div>
   </section>
@@ -1047,20 +1105,29 @@
 </div>
 
 <script>
+  var COURSE_KEYS = ['a', 'b', 'c'];
   function showCourse(which) {
-    var isA = which === 'a';
-    var showEl = document.getElementById(isA ? 'course-a' : 'course-b');
-    var hideEl = document.getElementById(isA ? 'course-b' : 'course-a');
-    document.getElementById('tab-a').classList.toggle('active', isA);
-    document.getElementById('tab-b').classList.toggle('active', !isA);
-    document.getElementById('tab-a').setAttribute('aria-selected', String(isA));
-    document.getElementById('tab-b').setAttribute('aria-selected', String(!isA));
+    if (COURSE_KEYS.indexOf(which) === -1) { which = 'b'; }
+    var showEl = document.getElementById('course-' + which);
+    if (!showEl) { return; }
 
-    if (hideEl.hidden) { return; } // 이미 보이는 쪽을 다시 누른 경우
+    COURSE_KEYS.forEach(function (k) {
+      var btn = document.getElementById('tab-' + k);
+      if (!btn) { return; }
+      btn.classList.toggle('active', k === which);
+      btn.setAttribute('aria-selected', String(k === which));
+    });
 
-    hideEl.style.opacity = '0';
+    if (!showEl.hidden) { return; } // 이미 보이는 쪽을 다시 누른 경우
+
+    var visible = COURSE_KEYS.filter(function (k) {
+      var el = document.getElementById('course-' + k);
+      return el && k !== which && !el.hidden;
+    });
+
+    visible.forEach(function (k) { document.getElementById('course-' + k).style.opacity = '0'; });
     setTimeout(function () {
-      hideEl.hidden = true;
+      visible.forEach(function (k) { document.getElementById('course-' + k).hidden = true; });
       showEl.hidden = false;
       showEl.style.opacity = '0';
       requestAnimationFrame(function () {
