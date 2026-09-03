@@ -1,5 +1,11 @@
 {
   "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/nikon-offer-go/:slug",
+      "destination": "/nikon-offer-go"
+    }
+  ],
   "functions": {
     "api/**/*.js": {
       "maxDuration": 10
