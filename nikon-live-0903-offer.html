@@ -1200,6 +1200,43 @@
 
 <script>
 (function(){
+  var purchaseLinkSlugs = [
+    'recommend-z6iii-body',
+    'recommend-z5ii-body',
+    'recommend-zr-body',
+    'recommend-14-24-f28-s',
+    'recommend-mc-105-f28-vr-s',
+    'recommend-85-f12-s',
+    'recommend-135-f18-plena',
+    'ref01-coolpix-p1100',
+    'ref02-zr-body',
+    'ref03-zr-24-70-kit',
+    'ref04-z6iii-body',
+    'ref05-z6iii-24-70-kit',
+    'ref06-z5ii-body',
+    'ref07-z5ii-24-70-kit',
+    'ref08-14-24-f28-s',
+    'ref09-24-70-f28-s-ii',
+    'ref10-24-120-f4-s',
+    'ref11-28-400-f4-8-vr',
+    'ref12-70-200-f28-vr-s-ii',
+    'ref13-100-400-f45-56-vr-s',
+    'ref14-180-600-f56-63-vr',
+    'ref15-20-f18-s',
+    'ref16-24-f18-s',
+    'ref17-35-f12-s',
+    'ref18-85-f12-s',
+    'ref19-135-f18-plena',
+    'ref20-dx-mc-35-f17',
+    'ref21-mc-105-f28-vr-s'
+  ];
+
+  document.querySelectorAll('a.buy').forEach(function(link, index){
+    var slug = purchaseLinkSlugs[index];
+    if (!slug) return;
+    link.href = '/nikon-offer-go/' + slug + '#' + encodeURIComponent(link.href);
+  });
+
   var deadline = new Date('2026-09-07T00:00:00+09:00').getTime();
   var el = document.getElementById('cd-time');
   var labelEl = document.querySelector('#countdown .cd-label');
