@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/nikon-offer-go/:slug",
-      "destination": "/nikon-offer-go.html"
+      "destination": "/nikon-offer-go"
     }
   ],
   "functions": {
