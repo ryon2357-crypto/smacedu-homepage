@@ -1234,7 +1234,7 @@
   document.querySelectorAll('a.buy').forEach(function(link, index){
     var slug = purchaseLinkSlugs[index];
     if (!slug) return;
-    link.href = '/nikon-offer-go/' + slug + '#' + encodeURIComponent(link.href);
+    link.href = '/nikon-offer-go/live-' + slug + '#' + encodeURIComponent(link.href);
   });
 
   var deadline = new Date('2026-09-07T00:00:00+09:00').getTime();
