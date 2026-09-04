@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>니콘 공식 판매점으로 이동 중</title>
 <link rel="preconnect" href="https://mkt.shopping.naver.com">
-<script defer src="/_vercel/insights/script.js"></script>
+<script id="insights" defer src="/_vercel/insights/script.js"></script>
 <style>
   :root { color-scheme: dark; }
   * { box-sizing: border-box; }
@@ -64,9 +64,31 @@
   fallback.textContent = '바로 이동하기';
   message.append(document.createElement('br'), fallback);
 
-  window.setTimeout(function(){
+  // 클릭 집계가 나가기 전에 페이지를 넘겨버리면 그 클릭은 영영 안 잡힌다.
+  // 그래서 고정 대기(650ms) 대신, 집계 스크립트가 실제로 뜬 걸 확인하고 넘어간다.
+  // 스크립트는 엣지 캐시라 보통 금방 뜨므로 체감은 오히려 더 빨라진다.
+  var moved = false;
+  function go(){
+    if (moved) return;
+    moved = true;
     location.replace(destination);
-  }, 650);
+  }
+
+  var sent = false;
+  function afterBeacon(){
+    if (sent) return;
+    sent = true;
+    window.setTimeout(go, 200);   // 비콘이 실제로 나갈 짬
+  }
+
+  var insights = document.getElementById('insights');
+  if (insights) {
+    insights.addEventListener('load', afterBeacon);
+    insights.addEventListener('error', go);  // 광고차단 등으로 막혔으면 기다릴 이유가 없다
+  }
+  if (window.va) afterBeacon();               // 이미 떠 있던 경우
+
+  window.setTimeout(go, 1600);                // 무슨 일이 있어도 1.6초 안에는 넘긴다
 })();
 </script>
 </body>
