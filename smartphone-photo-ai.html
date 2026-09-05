@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>똥손도 금손 되는 스마트폰 촬영·보정 + AI 특강 정리본</title>
+<meta name="description" content="스마트폰 초점·밝기·인물 구도부터 스냅시드 보정과 AI 사진 활용까지, 박성욱 작가의 2시간 18분 특강을 18개 핵심 장면과 인포그래픽으로 정리했습니다.">
+<link rel="canonical" href="https://www.smacedu.kr/smartphone-photo-ai">
+<meta property="og:type" content="article">
+<meta property="og:title" content="똥손도 금손 되는 스마트폰 촬영·보정 + AI 특강 정리본">
+<meta property="og:description" content="초점·밝기·인물 구도, 스냅시드와 AI 사진 활용을 18개 핵심 장면으로 쉽게 복습하세요.">
+<meta property="og:url" content="https://www.smacedu.kr/smartphone-photo-ai">
+<meta property="og:image" content="https://www.smacedu.kr/images/smartphone-photo-ai-recap-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="똥손도 금손 되는 스마트폰 촬영·보정, 그리고 AI로 내 사진 확장하기">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --paper-deep:#FFFFFF;
+    --card:#FFFFFF;
+    --ink:#111827;
+    --ink-soft:#5F6B7A;
+    --brass:#2563EB;
+    --brass-deep:#1D4ED8;
+    --oxide:#DC2626;
+    --oxide-tint:#FEF2F2;
+    --brass-tint:#EFF6FF;
+    --line:#E5E7EB;
+  }
+  color-scheme: light;
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",Arial,sans-serif;
+    line-height:1.72;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:920px;margin:0 auto;padding:0 26px}
+  h1,h2,h3{font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;text-wrap:balance}
+  .mono{font-family:"Pretendard","Apple SD Gothic Neo",sans-serif}
+
+  /* ── 상단 라벨 스트립 (필름통 스티커) ── */
+  .canister{background:var(--ink);color:var(--paper)}
+  .canister .wrap{display:flex;flex-wrap:wrap;gap:6px 22px;padding:11px 22px;
+    font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.04em;color:#C9BFA6}
+  .canister b{color:var(--paper);font-weight:600}
+
+  /* ── 헤더 ── */
+  header{background:var(--paper-deep);border-bottom:3px double var(--ink);padding:46px 0 38px}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;
+    font-size:12.5px;letter-spacing:.08em;color:var(--brass-deep);background:var(--brass-tint);
+    border:1px solid var(--brass);border-radius:3px;padding:5px 12px;margin-bottom:22px}
+  h1{margin:0 0 12px;font-size:32px;line-height:1.4;font-weight:700;color:var(--ink)}
+  h1 .sub{display:block;font-size:19px;font-weight:400;color:var(--brass-deep);margin-top:6px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px 24px;color:var(--ink-soft);font-size:14px;margin-top:20px;
+    font-family:"IBM Plex Mono",monospace}
+  .meta b{color:var(--ink);font-weight:600;font-family:"IBM Plex Sans KR",sans-serif}
+
+  /* ── 녹화본 없음 안내 ── */
+  .noreel{margin-top:28px;border:1px solid var(--oxide);background:var(--oxide-tint);
+    border-radius:2px;padding:20px 24px;position:relative}
+  .noreel .tag{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+    letter-spacing:.06em;color:var(--oxide);margin-bottom:8px;display:block}
+  .noreel p{margin:0;font-size:15px;color:#5A2C27}
+  .noreel a{display:inline-block;margin-top:14px;color:var(--oxide);font-weight:600;
+    text-decoration:none;border-bottom:1px solid var(--oxide);font-size:14.5px}
+  .noreel a:hover{opacity:.75}
+
+  /* ── 본문 ── */
+  main{padding:44px 0 8px}
+  .quickmap{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:-6px 0 26px}
+  .quickmap a{display:flex;min-height:112px;flex-direction:column;justify-content:space-between;
+    color:var(--ink);text-decoration:none;background:var(--card);border:1px solid var(--line);
+    border-radius:4px;padding:17px 18px;transition:transform .18s ease,border-color .18s ease}
+  .quickmap a:hover,.quickmap a:focus{transform:translateY(-2px);border-color:var(--brass)}
+  .quickmap .qtop{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .quickmap svg{width:30px;height:30px;color:var(--brass-deep)}
+  .quickmap .qnum{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft)}
+  .quickmap strong{font-family:"Gowun Batang",serif;font-size:17px;line-height:1.35}
+  .quickmap small{color:var(--ink-soft);font-size:12px;margin-top:6px}
+  .travel-feature{display:grid;grid-template-columns:1fr auto;gap:26px;align-items:center;
+    margin:0 0 28px;padding:26px 28px;border:1px solid #BFDBFE;border-radius:16px;
+    background:linear-gradient(135deg,#EFF6FF 0%,#FFFFFF 68%);box-shadow:0 10px 30px rgba(37,99,235,.08)}
+  .travel-feature .label{display:inline-block;margin-bottom:8px;color:var(--brass-deep);
+    font-size:12px;font-weight:800;letter-spacing:.08em}
+  .travel-feature h2{margin:0 0 8px;font-size:25px;line-height:1.35;letter-spacing:-.025em}
+  .travel-feature p{margin:0;color:var(--ink-soft);font-size:14px}
+  .travel-points{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+  .travel-points span{padding:6px 10px;border:1px solid #DBEAFE;border-radius:999px;
+    background:#fff;color:#334155;font-size:12.5px;font-weight:600}
+  .travel-action{min-width:184px;text-align:center}
+  .travel-price{display:block;margin-bottom:10px;color:var(--ink);font-size:28px;font-weight:900;
+    letter-spacing:-.03em}.travel-price small{display:block;color:var(--ink-soft);font-size:11px;font-weight:600;letter-spacing:0}
+  .travel-btn{display:block;padding:12px 18px;border-radius:10px;background:var(--brass);color:#fff;
+    text-decoration:none;font-size:14px;font-weight:800}.travel-btn:hover{background:var(--brass-deep)}
+  .howto{border:1px dashed var(--brass);background:var(--brass-tint);border-radius:2px;
+    padding:16px 20px;font-size:14px;color:var(--brass-deep);margin-bottom:44px}
+  .howto b{font-weight:700}
+
+  .roll{margin-bottom:50px}
+  .roll[id]{scroll-margin-top:18px}
+  .roll-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+    padding-bottom:11px;border-bottom:2px solid var(--ink);margin-bottom:6px}
+  .roll-head .name{display:flex;align-items:baseline;gap:12px}
+  .roll-num{font-family:"IBM Plex Mono",monospace;font-size:12.5px;font-weight:600;
+    color:var(--brass-deep);letter-spacing:.06em}
+  .roll-head h2{margin:0;font-size:22px;font-weight:700}
+  .roll-range{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft)}
+
+  .cut{border:1px solid var(--line);border-radius:2px;padding:20px 22px 22px;margin-top:14px;
+    background:var(--card);position:relative;box-shadow:0 3px 12px rgba(64,52,31,.035)}
+  .cut::before{content:"";position:absolute;left:-1px;top:12px;bottom:12px;width:3px;
+    background:var(--brass);opacity:.62}
+  .cut-head{display:flex;align-items:center;gap:14px;margin-bottom:8px;flex-wrap:wrap}
+  .cut-no{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:#fff;
+    background:var(--ink);padding:3px 8px;border-radius:2px;flex:none}
+  .cut-no i{font-style:normal;color:#B9AF98}
+  .ts{font-family:"IBM Plex Mono",monospace;font-size:12.5px;font-weight:600;color:var(--brass-deep);
+    background:var(--brass-tint);border:1px solid var(--brass);padding:2px 8px;border-radius:2px;flex:none}
+  .cut h3{margin:0;font-size:17px;font-weight:700;font-family:"IBM Plex Sans KR",sans-serif}
+  .cut p{margin:8px 0 0;font-size:15.5px}
+  .cut ul{margin:10px 0 0;padding-left:20px;font-size:15.5px}
+  .cut li{margin:5px 0}
+  .key{background:linear-gradient(transparent 62%,var(--brass-tint) 62%);font-weight:600}
+
+  .callout{border-left:3px solid var(--brass);background:var(--brass-tint);padding:12px 16px;
+    margin-top:14px;font-size:14.5px;border-radius:0 2px 2px 0;color:#4A3A14}
+  .callout b{color:var(--brass-deep)}
+  .warn{border-left-color:var(--oxide);background:var(--oxide-tint);color:#5A2C27}
+  .warn b{color:var(--oxide)}
+
+  .prompt{background:#EFE9D8;border:1px dashed #B9AC8C;border-radius:2px;
+    padding:12px 15px;margin-top:12px;font-size:13.5px;color:#40392A}
+  .prompt .plabel{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
+    color:var(--brass-deep);letter-spacing:.06em;margin-bottom:6px}
+  .prompt code{font-family:"IBM Plex Mono",monospace;display:block;margin:4px 0;font-size:13px}
+
+  /* ── 체크리스트 ── */
+  .check{background:var(--ink);color:var(--paper);border-radius:3px;padding:32px 30px;margin:54px 0 46px}
+  .check h2{margin:0 0 6px;font-size:20px;color:#fff;font-weight:700}
+  .check p.lead{margin:0 0 20px;font-size:14px;color:#B9AF98}
+  .check ol{margin:0;padding-left:0;list-style:none;counter-reset:chk}
+  .check li{margin:12px 0;font-size:15px;line-height:1.65;padding-left:34px;position:relative;
+    counter-increment:chk}
+  .check li::before{content:counter(chk,decimal-leading-zero);position:absolute;left:0;top:0;
+    font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:var(--brass);
+    border:1px solid var(--brass);border-radius:2px;padding:1px 5px}
+  .check li b{color:#EFCE86}
+
+  /* ── 신청서 (주문서) ── */
+  .orderslip{position:relative;border:1.5px solid var(--ink);border-radius:3px;background:var(--card);
+    padding:36px 30px 30px;margin-bottom:46px}
+  .orderslip::before{content:"";position:absolute;top:-1px;left:26px;right:26px;height:0;
+    border-top:2px dashed var(--line)}
+  .stamp{position:absolute;top:-16px;right:26px;background:var(--oxide);color:#fff;
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;letter-spacing:.08em;
+    padding:6px 12px;border-radius:2px;transform:rotate(2deg);box-shadow:0 2px 0 rgba(0,0,0,.15)}
+  .orderslip h2{margin:8px 0 6px;font-size:23px;font-weight:700}
+  .orderslip > p.lead{margin:0 0 22px;font-size:14.5px;color:var(--ink-soft)}
+
+  .terms{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;margin:0 0 22px;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0}
+  .terms dt{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;color:var(--brass-deep);
+    letter-spacing:.05em;white-space:nowrap;padding-top:2px}
+  .terms dd{margin:0;font-size:15px}
+  .terms dd b{font-family:"IBM Plex Mono",monospace;font-size:16.5px;color:var(--ink)}
+
+  .steps{margin:0 0 24px;padding-left:0;list-style:none;counter-reset:stp}
+  .steps li{margin:9px 0;font-size:14.5px;padding-left:30px;position:relative;counter-increment:stp;
+    color:var(--ink-soft)}
+  .steps li::before{content:counter(stp);position:absolute;left:0;top:-1px;
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;color:#fff;
+    background:var(--ink-soft);border-radius:50%;width:18px;height:18px;display:flex;
+    align-items:center;justify-content:center}
+
+  .btn-order{display:block;text-align:center;background:var(--oxide);color:#fff;text-decoration:none;
+    padding:16px 22px;border-radius:3px;font-weight:700;font-size:16px;letter-spacing:.01em}
+  .btn-order:hover{background:#8A322A}
+  .fineprint{font-size:12.5px;color:var(--ink-soft);margin:14px 0 0;text-align:center;line-height:1.6}
+  .gift-pack{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 24px}
+  .gift-item{padding:16px 14px;border:1px solid #D7E3F7;border-radius:11px;background:#F8FBFF}
+  .gift-item .gift-icon{display:grid;place-items:center;width:32px;height:32px;margin-bottom:9px;
+    border-radius:9px;background:#DBEAFE;color:#1D4ED8;font-weight:900}
+  .gift-item b{display:block;font-size:14px;margin-bottom:3px}
+  .gift-item span{display:block;color:var(--ink-soft);font-size:12.5px;line-height:1.5}
+  .direct-contact{display:flex;align-items:center;justify-content:space-between;gap:16px;
+    margin-top:18px;padding:15px 18px;background:var(--brass-tint);border:1px solid var(--brass);
+    border-radius:3px;color:var(--ink)}
+  .direct-contact span{font-size:13px;color:var(--ink-soft)}
+  .direct-contact a{font-family:"IBM Plex Mono",monospace;font-size:18px;font-weight:700;
+    color:var(--brass-deep);text-decoration:none;white-space:nowrap}
+  .next-choice{margin:54px 0 46px}
+  .choice-head{text-align:center;margin-bottom:22px}
+  .choice-head .eyeline{display:inline-block;margin-bottom:7px;color:var(--brass-deep);font-size:12px;
+    font-weight:850;letter-spacing:.1em}
+  .choice-head h2{margin:0;font-size:27px;letter-spacing:-.03em}
+  .choice-head p{margin:7px 0 0;color:var(--ink-soft);font-size:14px}
+  .choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:stretch}
+  .offer-card{display:flex;flex-direction:column;position:relative;min-height:530px;padding:28px 26px;
+    border:1px solid var(--line);border-radius:17px;background:#fff;box-shadow:0 12px 32px rgba(15,23,42,.07)}
+  .offer-card.travel{border-color:#BFDBFE;background:linear-gradient(145deg,#F3F8FF 0%,#fff 72%)}
+  .offer-tag{align-self:flex-start;padding:6px 10px;border-radius:999px;background:#EFF6FF;
+    color:#1D4ED8;font-size:11px;font-weight:850;letter-spacing:.06em}
+  .offer-card.travel .offer-tag{background:#DBEAFE}
+  .offer-card h3{margin:15px 0 7px;font-size:24px;line-height:1.35;letter-spacing:-.025em}
+  .offer-lead{min-height:50px;margin:0 0 19px;color:var(--ink-soft);font-size:14px;line-height:1.65}
+  .offer-price{padding:15px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    font-size:14px;color:var(--ink-soft)}
+  .offer-price b{float:right;color:var(--ink);font-size:24px;line-height:1}
+  .offer-list{display:grid;gap:9px;margin:18px 0 22px;padding:0;list-style:none}
+  .offer-list li{position:relative;padding-left:27px;color:#334155;font-size:13.5px;line-height:1.55}
+  .offer-list li::before{content:"✓";position:absolute;left:0;top:0;display:grid;place-items:center;
+    width:19px;height:19px;border-radius:50%;background:#DBEAFE;color:#1D4ED8;font-size:11px;font-weight:900}
+  .offer-facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 22px}
+  .offer-facts div{padding:11px;border-radius:9px;background:#F8FAFC;border:1px solid var(--line)}
+  .offer-facts small{display:block;margin-bottom:2px;color:var(--ink-soft);font-size:11px}
+  .offer-facts b{font-size:13.5px}
+  .offer-cta{display:block;margin-top:auto;padding:14px 16px;border-radius:10px;background:#2563EB;
+    color:#fff;text-decoration:none;text-align:center;font-size:15px;font-weight:800}
+  .offer-cta:hover{background:#1D4ED8}
+  .offer-note{margin:10px 0 0;text-align:center;color:var(--ink-soft);font-size:11.5px;line-height:1.5}
+  .choice-contact{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;
+    color:var(--ink-soft);font-size:13px}.choice-contact a{color:var(--brass-deep);font-size:16px;font-weight:800;text-decoration:none}
+
+  /* ── 다른 과정 ── */
+  .more{border-top:1px solid var(--line);padding-top:8px;margin-bottom:8px}
+  .more > p.lead{font-size:13.5px;color:var(--ink-soft);margin:0 0 18px}
+  .more h2{font-size:16px;font-family:"IBM Plex Mono",monospace;font-weight:600;letter-spacing:.04em;
+    color:var(--ink-soft);text-transform:uppercase;margin:0 0 4px}
+  .course{border-top:1px solid var(--line);padding:15px 0 3px}
+  .course:first-of-type{border-top:none}
+  .course h4{margin:0 0 4px;font-size:15.5px;font-weight:700;font-family:"IBM Plex Sans KR",sans-serif}
+  .course .price{color:var(--brass-deep);font-weight:700;font-family:"IBM Plex Mono",monospace;font-size:14px}
+  .course p{margin:4px 0 0;font-size:14px;color:var(--ink-soft)}
+  .course a{color:var(--brass-deep);font-weight:600;text-decoration:none;border-bottom:1px solid var(--brass)}
+  .course.featured-course{margin:12px 0 18px;padding:20px;border:1px solid #BFDBFE;border-radius:13px;
+    background:#F8FBFF}.course.featured-course::before{content:"추천 과정";display:inline-block;margin-bottom:9px;
+    padding:4px 8px;border-radius:999px;background:#DBEAFE;color:#1D4ED8;font-size:11px;font-weight:800}
+
+  footer{text-align:center;color:var(--ink-soft);font-size:13px;background:var(--paper-deep);
+    padding:34px 0 44px;border-top:3px double var(--ink);margin-top:10px;line-height:1.9}
+  footer b{color:var(--ink)}
+  footer .contact-link{display:inline-block;margin-top:8px;color:var(--brass-deep);
+    font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:700;text-decoration:none}
+
+  /* ── 강의 내용 인포그래픽 ── */
+  .infographic{margin:22px 0 26px;padding:24px;border:1px solid #D7E3F7;border-radius:16px;
+    background:#F8FBFF;box-shadow:0 10px 28px rgba(37,99,235,.06)}
+  .info-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px}
+  .info-kicker{display:block;margin-bottom:4px;color:var(--brass-deep);font-size:12px;font-weight:800;
+    letter-spacing:.08em;text-transform:uppercase}
+  .info-head h3{margin:0;font-size:20px;line-height:1.4;font-weight:800}
+  .info-head p{margin:5px 0 0;color:var(--ink-soft);font-size:13.5px}
+  .info-badge{flex:none;padding:6px 10px;border-radius:999px;background:#DBEAFE;color:#1E40AF;
+    font-size:11px;font-weight:800}
+  .flow-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .flow-step{position:relative;min-height:132px;padding:17px 16px;background:#fff;border:1px solid var(--line);
+    border-radius:12px}
+  .flow-step:not(:last-child)::after{content:"→";position:absolute;right:-10px;top:50%;z-index:2;
+    width:19px;height:19px;display:grid;place-items:center;border-radius:50%;background:var(--brass);
+    color:#fff;font-weight:800;font-size:12px;transform:translateY(-50%)}
+  .flow-step .icon{width:36px;height:36px;display:grid;place-items:center;margin-bottom:11px;
+    border-radius:10px;background:var(--brass-tint);color:var(--brass-deep);font-size:18px;font-weight:800}
+  .flow-step b{display:block;margin-bottom:5px;font-size:15px}
+  .flow-step span{display:block;color:var(--ink-soft);font-size:12.5px;line-height:1.55}
+  .compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .compare-card{padding:17px 16px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+  .compare-card .visual{height:88px;margin-bottom:12px;border-radius:9px;background:#F3F4F6;position:relative;
+    overflow:hidden;border:1px solid #E5E7EB}
+  .compare-card b{display:block;font-size:14px;margin-bottom:4px}
+  .compare-card p{margin:0;color:var(--ink-soft);font-size:12.5px;line-height:1.5}
+  .subject{position:absolute;width:28px;height:42px;border-radius:15px 15px 10px 10px;background:#2563EB;
+    left:50%;top:25px;transform:translateX(-50%)}
+  .subject::before{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:#93C5FD;
+    left:5px;top:-17px}
+  .bad-edge .subject{left:12%}.bg-line::after{content:"";position:absolute;left:0;right:0;top:27px;
+    height:5px;background:#F87171}.clean-bg::after{content:"";position:absolute;width:34px;height:34px;
+    border:2px dashed #60A5FA;border-radius:50%;left:50%;top:18px;transform:translateX(-50%)}
+  .angle-phone{position:absolute;width:27px;height:60px;border:3px solid #2563EB;border-radius:7px;
+    left:50%;top:14px;transform:translateX(-50%) rotate(-8deg)}
+  .angle-phone::after{content:"↑";position:absolute;right:-29px;bottom:-2px;color:#2563EB;font-weight:900;font-size:23px}
+  .edit-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+  .edit-stage{padding:16px 13px;border-radius:12px;background:#fff;border:1px solid var(--line);text-align:center}
+  .edit-stage .num{display:grid;place-items:center;width:30px;height:30px;margin:0 auto 9px;border-radius:50%;
+    background:var(--brass);color:#fff;font-weight:800;font-size:13px}
+  .edit-stage b{display:block;font-size:13.5px}.edit-stage small{display:block;margin-top:4px;color:var(--ink-soft);line-height:1.5}
+  .ai-pipeline{display:grid;grid-template-columns:1.05fr 1fr 1fr 1.15fr;gap:8px;align-items:stretch}
+  .ai-node{position:relative;padding:17px 14px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+  .ai-node:not(:last-child)::after{content:"›";position:absolute;right:-8px;top:45%;z-index:2;color:var(--brass);
+    font-size:28px;font-weight:800;line-height:1}
+  .ai-node b{display:block;color:var(--brass-deep);font-size:13.5px;margin-bottom:5px}
+  .ai-node span{display:block;color:var(--ink-soft);font-size:12.5px;line-height:1.5}
+
+  /* ── 흰색 기반 현대적 디자인 ── */
+  .canister{background:#111827}
+  .canister .wrap,.meta,.eyebrow,.roll-num,.roll-range,.cut-no,.ts,.prompt .plabel,
+  .prompt code,.terms dt,.terms dd b,.steps li::before,.stamp,.more h2,.course .price,
+  footer .contact-link{font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+  header{background:#fff;border-bottom:1px solid var(--line);padding:52px 0 38px}
+  .eyebrow{border:0;border-radius:999px;background:var(--brass-tint);color:var(--brass-deep);padding:7px 13px}
+  h1{font-size:38px;line-height:1.28;letter-spacing:-.035em}
+  h1 .sub{font-size:20px;color:var(--ink-soft);font-weight:500}
+  .noreel{border:1px solid #FECACA;border-radius:12px;padding:18px 20px;background:var(--oxide-tint)}
+  main{padding-top:38px}
+  .quickmap a,.cut{border-radius:14px;box-shadow:0 5px 18px rgba(15,23,42,.045)}
+  .quickmap strong{font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+  .howto{border:0;border-radius:12px;background:#F3F6FA;color:#39475A}
+  .roll-head{border-bottom:1px solid var(--line);padding-bottom:14px}
+  .roll-head h2{font-size:25px;letter-spacing:-.025em}
+  .cut{padding:23px 24px;margin-top:14px}
+  .cut::before{top:18px;bottom:18px;border-radius:3px}
+  .cut h3{font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:18px}
+  .cut p,.cut ul{font-size:16px;color:#293548}
+  .callout,.prompt{border-radius:9px}
+  .check{border-radius:16px;background:#111827}
+  .orderslip{border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 32px rgba(15,23,42,.07)}
+  .orderslip::before{display:none}.stamp{border-radius:999px;background:var(--brass);transform:none}
+  .btn-order{border-radius:10px;background:var(--brass)}.btn-order:hover{background:var(--brass-deep)}
+  .direct-contact{border-radius:10px;background:var(--brass-tint);border-color:#BFDBFE}
+  footer{background:#F8FAFC;border-top:1px solid var(--line)}
+
+  @media (max-width:600px){
+    header{padding:34px 0 28px}
+    h1{font-size:25px} h1 .sub{font-size:16px}
+    .roll-head{flex-direction:column;align-items:flex-start;gap:4px}
+    .roll-head h2{font-size:19px}
+    .cut{padding:16px 16px 18px}
+    .check{padding:26px 20px}
+    .orderslip{padding:32px 20px 24px}
+    .terms{grid-template-columns:1fr}
+    .stamp{right:16px}
+    .quickmap{grid-template-columns:1fr}
+    .quickmap a{min-height:92px}
+    .direct-contact{align-items:flex-start;flex-direction:column;gap:4px}
+    .travel-feature{grid-template-columns:1fr;padding:22px 20px}.travel-action{text-align:left;min-width:0}
+    .travel-price small{display:inline;margin-left:6px}.travel-btn{text-align:center}
+    .gift-pack{grid-template-columns:1fr}
+    .choice-grid{grid-template-columns:1fr}.offer-card{min-height:0}.offer-lead{min-height:0}
+    .choice-head h2{font-size:23px}.offer-facts{grid-template-columns:1fr 1fr}
+    .flow-grid,.compare-grid,.edit-flow,.ai-pipeline{grid-template-columns:1fr}
+    .flow-step:not(:last-child)::after{content:"↓";right:50%;top:auto;bottom:-11px;transform:translateX(50%)}
+    .ai-node:not(:last-child)::after{content:"⌄";right:50%;top:auto;bottom:-13px;transform:translateX(50%)}
+    .infographic{padding:19px 16px}
+    .info-head{flex-direction:column;gap:8px}
+    h1{font-size:29px}
+  }
+  @media print{
+    body{background:#fff} .btn-order,.noreel a{display:none}
+    .cut,.orderslip{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<div class="canister">
+  <div class="wrap">
+    <span>ROLL&nbsp;<b>0904</b></span>
+    <span>18 CUTS</span>
+    <span>RUNTIME <b>02:18:00</b></span>
+    <span>SHOT BY <b>박성욱</b></span>
+  </div>
+</div>
+
+<header>
+  <div class="wrap">
+    <span class="eyebrow">◆ PROOF SHEET — 인화 전 정리본</span>
+    <h1>똥손도 금손 되는 스마트폰 촬영·보정
+      <span class="sub">그리고 AI로 내 사진 확장하기</span></h1>
+    <div class="meta">
+      <span><b>2026년 9월 4일(금)</b> 저녁 9시</span>
+      <span>강사 <b>엘란비탈 박성욱 작가</b></span>
+      <span>강의 시간 <b>2시간 18분</b></span>
+    </div>
+
+    <div class="noreel">
+      <span class="tag">⚠ NO REEL ATTACHED — 이 페이지엔 다시보기 영상이 없습니다</span>
+      <p>강의에서 다룬 18개 장면을 시간 순서대로 그대로 옮겨 적었습니다. 텍스트만으로도 흐름을
+        따라가실 수 있습니다. 녹화본을 신청하시면 실제 강의 영상과 함께 더 쉽게 복습할 수 있는 학습자료와
+        추가 선물자료도 함께 보내드립니다.</p>
+      <a href="#apply">↓ 녹화본 신청 방법 보기</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <nav class="quickmap" aria-label="강의 핵심 바로가기">
+    <a href="#shooting">
+      <span class="qtop">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="11" width="38" height="28" rx="5" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="24" cy="25" r="8" fill="none" stroke="currentColor" stroke-width="3"/><path d="M14 11l3-5h14l3 5" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+        <span class="qnum">CUT 01–07</span>
+      </span>
+      <strong>잘 찍는 습관</strong><small>초점 · 밝기 · 배경 · 구도</small>
+    </a>
+    <a href="#editing">
+      <span class="qtop">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 13h30M9 24h30M9 35h30" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="18" cy="13" r="4" fill="var(--card)" stroke="currentColor" stroke-width="3"/><circle cx="31" cy="24" r="4" fill="var(--card)" stroke="currentColor" stroke-width="3"/><circle cx="22" cy="35" r="4" fill="var(--card)" stroke="currentColor" stroke-width="3"/></svg>
+        <span class="qnum">CUT 08–11</span>
+      </span>
+      <strong>스냅시드 보정</strong><small>HDR · 색온도 · 잡티 · 원근</small>
+    </a>
+    <a href="#ai-photo">
+      <span class="qtop">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 5l3.3 10.7L38 19l-10.7 3.3L24 33l-3.3-10.7L10 19l10.7-3.3L24 5zM38 29l1.8 5.2L45 36l-5.2 1.8L38 43l-1.8-5.2L31 36l5.2-1.8L38 29z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/></svg>
+        <span class="qnum">CUT 12–18</span>
+      </span>
+      <strong>AI로 확장하기</strong><small>음식 · 제품 · 시 · 달력 · 포토북</small>
+    </a>
+  </nav>
+
+  <aside class="travel-feature" aria-labelledby="travel-feature-title">
+    <div>
+      <span class="label">NEXT CLASS · 2회 완성</span>
+      <h2 id="travel-feature-title">여행사진작가 2급 자격증 과정</h2>
+      <p>사진을 찍는 데서 끝내지 않고, 카메라 원리와 조리개 우선 모드까지 배워 여행사진을 작품으로 완성합니다.</p>
+      <div class="travel-points">
+        <span>9월 21일 · 28일</span><span>밤 8시 30분</span><span>자격증 발급 포함</span><span>문체부 등록 민간자격</span>
+      </div>
+    </div>
+    <div class="travel-action">
+      <span class="travel-price">5만원<small>신청 마감 9월 20일</small></span>
+      <a class="travel-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeVHavnGXjxukfP9b2a5SykpJvEh95Qe4CnePbcMbWtrnZxcA/viewform" target="_blank" rel="noopener">과정 신청하기 →</a>
+    </div>
+  </aside>
+
+  <div class="howto">
+    <b>이 정리본 보는 법 —</b> 각 항목 왼쪽 번호는 전체 18컷 중 몇 번째 장면인지, 오른쪽
+    <span class="ts">00:15</span> 표시는 영상 속 위치입니다. 신청하신 녹화본을 받으시면
+    그 시간으로 이동해 바로 확인하실 수 있습니다.
+  </div>
+
+  <!-- ROLL 1 -->
+  <section class="roll" id="shooting">
+    <div class="roll-head">
+      <div class="name">
+        <span class="roll-num">1롤</span>
+        <h2>찍는 순간 달라지는 촬영 습관</h2>
+      </div>
+      <span class="roll-range">CUT 01–07</span>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">01<i>/18</i></span><span class="ts">00:07</span>
+        <h3>터치해서 초점 맞추기</h3></div>
+      <p>화면을 <span class="key">터치한 그 자리에 초점이 맞습니다.</span> 앞에 있는 대상을 터치하면 뒤가 흐려지고,
+        뒤를 터치하면 앞이 흐려집니다. 초점을 어디에 둘지는 내가 정하는 것입니다.</p>
+      <div class="callout"><b>습관으로 만들 것.</b> 멀리 있는 풍경은 상관없지만, 가까운 대상을 찍을 때는
+        반드시 터치해서 초점을 맞추고 찍으세요. 이것만 해도 사진이 달라집니다.</div>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">02<i>/18</i></span><span class="ts">00:10</span>
+        <h3>밝기 조절 — 흰 종이가 회색으로 나오는 이유</h3></div>
+      <p>터치하면 옆에 <b>태양 모양 아이콘</b>이 나옵니다. 이걸 위아래로 움직여 밝기를 조절합니다.
+        (사각형만 뜨면 화면을 <b>길게 꾹</b> 누르면 노란 원으로 바뀝니다. 아이폰은 위아래로 움직입니다.)</p>
+      <ul>
+        <li>흰 A4 용지를 찍으면 <span class="key">회색</span>으로 나옵니다 → 터치해서 <b>밝게</b> 해야 흰색이 됩니다.</li>
+        <li>검은 물체를 찍어도 <span class="key">회색</span>으로 나옵니다 → 터치해서 <b>어둡게</b> 해야 검정이 됩니다.</li>
+      </ul>
+      <div class="callout">카메라는 아무리 비싸도 <b>18% 회색</b>을 기준으로 밝기를 맞추도록 만들어져 있습니다.
+        그래서 흰 것은 어둡게, 검은 것은 밝게 찍히는 것입니다. 원리를 알면 대처가 됩니다.</div>
+      <div class="callout warn"><b>이걸로 해결되는 것들 —</b> 눈 온 날 회색으로 나와서 버린 사진,
+        역광에서 어둡게 나온 인물, 창을 등지고 찍은 사진. 전부 밝게 찍거나 밝게 보정하면 됩니다.
+        <b>어둡게 나온 건 문제가 되지 않습니다.</b></div>
+    </div>
+
+    <aside class="infographic" id="focus-guide" aria-labelledby="focus-info-title">
+      <div class="info-head">
+        <div><span class="info-kicker">INFOGRAPHIC 01</span>
+          <h3 id="focus-info-title">사진 한 장을 찍기 전, 3초 순서</h3>
+          <p>가까운 대상을 찍을수록 이 순서를 습관처럼 반복합니다.</p></div>
+        <span class="info-badge">초점 + 노출</span>
+      </div>
+      <div class="flow-grid">
+        <div class="flow-step"><span class="icon">①</span><b>주인공을 터치</b><span>선명하게 보여야 할 대상을 화면에서 직접 누릅니다.</span></div>
+        <div class="flow-step"><span class="icon">☀</span><b>밝기를 확인</b><span>흰색은 밝게, 검은색은 어둡게 보여야 본래 색에 가깝습니다.</span></div>
+        <div class="flow-step"><span class="icon">●</span><b>프레임을 정리</b><span>머리 위 나무·난간·병뚜껑처럼 시선을 뺏는 요소를 뺍니다.</span></div>
+      </div>
+    </aside>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">03<i>/18</i></span><span class="ts">00:13</span>
+        <h3>인물사진 모드 200% 쓰기</h3></div>
+      <ul>
+        <li><b>블러 값</b>: 숫자가 낮으면 배경이 선명, 높으면 많이 흐려집니다.</li>
+        <li><b>하이키 모노 / 로우키 / 컬러 배경</b> 효과가 숨어 있습니다.
+          특히 <span class="key">배경은 까맣게, 인물은 컬러</span>로 나오는 모드는 돈 받고 찍어줘도 될 만큼 잘 나옵니다.</li>
+        <li>1x보다 <b>2x·3x</b>로 찍으면 배경이 덜 복잡해져 훨씬 임팩트 있습니다.</li>
+      </ul>
+      <div class="callout warn"><b>쓰고 나면 반드시 되돌리세요.</b> 하이키·모노 상태로 두면
+        다음에 찍을 때 흑백으로 나옵니다. 다 쓰고 나면 맨 앞의 <b>블러</b>로 바꿔두는 습관을 들이세요.</div>
+      <div class="callout"><b>단점도 압니다.</b> 파리에서 인물사진 모드로 찍으면 뒤의 에펠탑이 흐려져서
+        송전탑처럼 보입니다. 배경을 살려야 할 땐 쓰지 마세요.</div>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">04<i>/18</i></span><span class="ts">00:25</span>
+        <h3>배경을 정리하는 눈</h3></div>
+      <p>사진은 <span class="key">입체를 평면으로 압축</span>하는 일입니다. 그래서 실제로는 떨어져 있어도
+        사진에서는 겹쳐 보입니다.</p>
+      <ul>
+        <li>인물 머리 위로 나무가 자라난 것처럼 찍히는 경우</li>
+        <li>난간이 목 뒤를 가로지르는 경우</li>
+        <li>사슴뿔 뒤로 다른 사슴이 겹쳐 보이는 경우</li>
+      </ul>
+      <p><b>해결은 간단합니다.</b> 촬영자가 왼쪽이나 오른쪽으로 한 발 움직이면 됩니다.
+        피사체를 옮기는 게 아니라 <span class="key">내가 움직이는 것</span>입니다.</p>
+      <div class="callout">음식 사진도 마찬가지입니다. 병뚜껑·냅킨이 굴러다니지 않게
+        <b>애초에 프레임에서 빼고 찍는 연습</b>을 하세요. 다 찍지 말고 필요한 것만 찍습니다.</div>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">05<i>/18</i></span><span class="ts">00:31</span>
+        <h3>광각렌즈의 왜곡 이해하기</h3></div>
+      <p>스마트폰을 켜면 처음 나오는 <b>1x가 광각렌즈</b>입니다. 가까운 것은 훨씬 크게, 먼 것은 작게 나오고,
+        <span class="key">가장자리로 갈수록 찌그러집니다.</span></p>
+      <ul>
+        <li>인물은 되도록 <b>화면 가운데</b>에 두세요. 가장자리는 늘어납니다.</li>
+        <li>단체사진에서 가장자리에 선 사람은 왜곡됩니다.</li>
+        <li>제품 사진 찍는 분들은 특히 주의하셔야 합니다.</li>
+      </ul>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">06<i>/18</i></span><span class="ts">00:35</span>
+        <h3>화질에 대한 질문 두 가지</h3></div>
+      <ul>
+        <li><b>단체사진에서 얼굴이 뭉개져요</b> → 화소보다 <span class="key">센서 크기</span>가 문제입니다.
+          100명 넘는 단체사진을 자주 찍어야 한다면 풀프레임 카메라를 권합니다. 중고로 사셔도 충분합니다.</li>
+        <li><b>잘라내면(크롭) 화질이 떨어져요</b> → 애초에 꽉 채워 찍는 연습이 우선이고,
+          이미 잘랐다면 <b>업스케일</b>을 쓰세요. 포토스케이프X나 캔바에서 가능합니다.</li>
+      </ul>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">07<i>/18</i></span><span class="ts">00:38</span>
+        <h3>전신 사진 늘씬하게 찍어주기</h3></div>
+      <p>머리부터 발끝까지 찍을 때 — <b>얼굴은 가운데</b>, <b>발 아래 공간</b>을 두고,
+        <span class="key">충전기 꽂는 곳(스마트폰 아래쪽)을 앞으로 미는</span> 각도로 찍습니다.</p>
+      <div class="callout warn"><b>반대로 하면 3~4등신이 됩니다.</b> 위에서 내려다보며 당겨 찍으면
+        다리가 짧아집니다. 남을 찍어줄 땐 양심껏 찍어주세요. 너무 밀면 발이 커지니 과하지 않게.</div>
+    </div>
+
+    <aside class="infographic" id="portrait-guide" aria-labelledby="portrait-info-title">
+      <div class="info-head">
+        <div><span class="info-kicker">INFOGRAPHIC 02</span>
+          <h3 id="portrait-info-title">인물 사진이 달라지는 세 가지 위치</h3>
+          <p>렌즈보다 중요한 것은 촬영자의 위치와 화면 안 배치입니다.</p></div>
+        <span class="info-badge">인물 구도</span>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-card"><div class="visual clean-bg"><span class="subject"></span></div><b>배경과 분리</b><p>머리 뒤 선이 겹치면 촬영자가 옆으로 한 발 이동합니다.</p></div>
+        <div class="compare-card"><div class="visual bad-edge"><span class="subject"></span></div><b>가장자리 피하기</b><p>광각 왜곡을 줄이려면 얼굴을 화면 중앙 가까이에 둡니다.</p></div>
+        <div class="compare-card"><div class="visual"><span class="angle-phone"></span></div><b>아래쪽을 살짝 앞으로</b><p>얼굴은 가운데, 발밑 여백은 남겨 전신 비율을 정돈합니다.</p></div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ROLL 2 -->
+  <section class="roll" id="editing">
+    <div class="roll-head">
+      <div class="name">
+        <span class="roll-num">2롤</span>
+        <h2>스냅시드 — 3가지만 알면 됩니다</h2>
+      </div>
+      <span class="roll-range">CUT 08–11</span>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">08<i>/18</i></span><span class="ts">00:43</span>
+        <h3>설치와 준비</h3></div>
+      <p>플레이스토어·앱스토어에서 <b>나뭇잎 모양</b> 스냅시드(Snapseed)를 설치합니다.
+        유사품이 있으니 아이콘을 확인하세요. 처음 실행하면 사진 접근 권한을
+        <span class="key">"모두 허용"</span>으로 하셔야 사진이 전부 보입니다.</p>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">09<i>/18</i></span><span class="ts">00:52</span>
+        <h3>HDR Scape — 한 번에 작품이 됩니다</h3></div>
+      <p><b>도구 → HDR Scape</b>. 어둑하게 찍힌 사진, 구름이 드라마틱한 하늘 사진을 넣고 누르기만 하면 됩니다.
+        코로나 이전 포토샵 강의에서 부산·제주도에서 올라와 배우던 기법이 버튼 하나로 적용됩니다.</p>
+      <div class="callout"><b>"자연" 대신 "인물"을 쓰세요.</b> 자연은 자칫 화질이 떨어져 보일 수 있습니다.</div>
+      <p style="margin-top:12px">저장은 오른쪽 아래 체크 → <b>내보내기 → 사본으로 저장</b>.
+        원본과 보정본을 비교할 수 있어 사본 저장을 추천드립니다.</p>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">10<i>/18</i></span><span class="ts">00:57</span>
+        <h3>화이트밸런스 — 색온도가 감성을 바꿉니다</h3></div>
+      <p><b>도구 → 화이트 밸런스</b>에서 손가락을 좌우로 움직여 보세요.
+        <span class="key">내리면 차가운 느낌, 올리면 따뜻한 느낌</span>이 됩니다.
+        색만 바뀌었을 뿐인데 사진의 감성 자체가 달라집니다.</p>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">11<i>/18</i></span><span class="ts">01:00</span>
+        <h3>잡티 제거 &amp; 원근 왜곡</h3></div>
+      <ul>
+        <li><b>잡티 제거</b>(반창고 모양): 지우고 싶은 곳을 손가락으로 문지르면 사라집니다.
+          정교하게 지울 땐 <b>두 손가락으로 최대한 확대</b>한 뒤 작업하세요. 얼룩지면 실행 취소.</li>
+        <li><b>원근 왜곡</b>: 위아래로 움직이면 다리가 길어지거나 짧아집니다. 광학의 원리를 그대로 쓴 기능입니다.</li>
+      </ul>
+    </div>
+
+    <aside class="infographic" id="edit-guide" aria-labelledby="edit-info-title">
+      <div class="info-head">
+        <div><span class="info-kicker">INFOGRAPHIC 03</span>
+          <h3 id="edit-info-title">스냅시드 보정은 이 순서로</h3>
+          <p>효과를 많이 쓰기보다 목적이 분명한 도구만 한 번씩 적용합니다.</p></div>
+        <span class="info-badge">4 STEP</span>
+      </div>
+      <div class="edit-flow">
+        <div class="edit-stage"><span class="num">1</span><b>HDR Scape</b><small>어두운 사진과 구름의 디테일 복원</small></div>
+        <div class="edit-stage"><span class="num">2</span><b>화이트밸런스</b><small>차갑게 ↔ 따뜻하게 감성 조절</small></div>
+        <div class="edit-stage"><span class="num">3</span><b>잡티·원근</b><small>확대해서 지우고 기울기 보정</small></div>
+        <div class="edit-stage"><span class="num">4</span><b>사본으로 저장</b><small>원본을 남겨 전후를 비교</small></div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ROLL 3 -->
+  <section class="roll" id="ai-photo">
+    <div class="roll-head">
+      <div class="name">
+        <span class="roll-num">3롤</span>
+        <h2>AI로 내 사진 확장하기</h2>
+      </div>
+      <span class="roll-range">CUT 12–18</span>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">12<i>/18</i></span><span class="ts">01:06</span>
+        <h3>대원칙 — AI가 만드는 게 아니라, 내 사진을 살리는 것</h3></div>
+      <p>강의 내내 반복된 기준입니다. <span class="key">AI 이미지에는 감흥도 추억도 없습니다.</span>
+        목적은 내가 직접 찍은 사진을 더 좋게 만드는 것입니다. 그래서 보정을 시킬 때도
+        <b>"원본을 유지"</b> 쪽을 선택하셔야 합니다.</p>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">13<i>/18</i></span><span class="ts">01:08</span>
+        <h3>음식 사진 살리기</h3></div>
+      <p>요즘은 프롬프트가 정교하지 않아도 됩니다. <b>목적을 말해주는 것</b>이 핵심입니다.</p>
+      <div class="prompt">
+        <span class="plabel">그대로 써보셔도 되는 프롬프트</span>
+        <code>인스타그램에 올리고 싶은데 예쁘게 사진 보정해 줘</code>
+        <code>칼국수를 주인공으로, 선예도를 살려 먹음직스럽게 보정해 줘</code>
+        <code>고명에 포커스를 맞춰줘</code>
+      </div>
+      <div class="callout"><b>"인스타그램에 올릴 것"이라고 목적을 밝히면</b> AI가 알아서 그 용도에 맞게 만들어 줍니다.
+        음식은 손으로 들고 먹는 듯한 장면이 살아있어 보입니다.</div>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">14<i>/18</i></span><span class="ts">01:12</span>
+        <h3>제품·가게 사진 — 배경은 없애지 말고 정리하세요</h3></div>
+      <p>배경을 <b>완전히 지워달라</b>고 하면 박제된 것처럼 어색해집니다(강의 중 사슴 예시).
+        지저분한 것만 정리하고 <span class="key">뭔가 있는 뉘앙스는 남기는 것</span>이 훨씬 좋습니다.
+        나무 받침이나 소품이 들어가면 완성도가 올라갑니다.</p>
+      <div class="callout warn"><b>실전 팁 두 가지</b><br>
+        · 한 대화창에서 계속 수정하면 점·패턴이 생기며 점점 나빠집니다 → <b>새 창을 열어</b> 작업하세요.<br>
+        · 마지막에 <b>"업스케일 해줘"</b>라고 하면 해상도를 올려줍니다.</div>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">15<i>/18</i></span><span class="ts">01:19</span>
+        <h3>채도와 색온도, 용어 정리</h3></div>
+      <ul>
+        <li><b>채도</b> — 색의 진하기. 낮추면 흑백, 올리면 쨍해집니다. 너무 올리면 눈이 아프니 적당히.</li>
+        <li><b>색온도</b> — 차갑게 / 따뜻하게. 스냅시드 화이트밸런스가 이것입니다.</li>
+      </ul>
+      <div class="prompt">
+        <span class="plabel">인물 보정 프롬프트</span>
+        <code>이 사진을 밝고 예쁘게 보정해 줘</code>
+        <code>HDR 적용시켜 줘</code>
+        <code>피부 색상을 낮추고 톤을 올려줘</code>
+        <code>인물의 얼굴 밝기를 조금 밝히되 채도는 빼줘</code>
+      </div>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">16<i>/18</i></span><span class="ts">01:26</span>
+        <h3>한 컷 시(사진 + 시) 만들기</h3></div>
+      <p>내가 찍은 사진에 짧은 글을 얹는 방식입니다. AI가 만든 이미지가 아니라
+        <span class="key">내가 실제로 다녀온 곳의 사진</span>이기 때문에 감동이 다릅니다.</p>
+      <div class="prompt">
+        <span class="plabel">말로 하셔도 됩니다 (마이크 버튼)</span>
+        <code>이 사진을 이용해서 인스타그램에 올릴 이미지로 만들어 줘</code>
+      </div>
+      <div class="callout"><b>배치 규칙</b> — 제목은 사진 위로 올리거나 문장 아래로 내립니다.
+        사진과 글 사이에는 제목을 넣지 않습니다. 작가 이름은 제목 밑이나 문장 옆에 둡니다.</div>
+      <div class="callout warn"><b>공모전 출품은 주의하세요.</b> AI로 편집하면 사진의
+        <b>메타 정보가 전부 사라집니다.</b> 그러면 공모전에 낼 수 없습니다.
+        출품할 사진은 처음부터 조심해서 찍고, AI 편집을 하지 마세요.</div>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">17<i>/18</i></span><span class="ts">01:33</span>
+        <h3>내 사진으로 달력 만들기</h3></div>
+      <p>1년치 사진을 월별로 골라 달력을 만들어 줍니다. 강의에서는 폴더 접근 권한을 준 뒤
+        AI가 직접 사진을 골라 12개월 달력을 PDF로 만들어 냈습니다.</p>
+      <div class="callout">폴더 접근이 어려우면 <b>사진을 직접 하나씩 올려서</b> ChatGPT로도 만들 수 있습니다.
+        음력이나 기념일을 넣고 싶으면 그것도 시키면 됩니다.</div>
+    </div>
+
+    <div class="cut">
+      <div class="cut-head"><span class="cut-no">18<i>/18</i></span><span class="ts">01:41</span>
+        <h3>포토북 만들고 웹으로 보기</h3></div>
+      <p>사진 여러 장을 주고 <b>"배치까지 고려해서 짧은 글도 넣어 포토북 만들어 줘"</b>라고 하면 만들어 줍니다.
+        그리고 이렇게 이어가시면 됩니다.</p>
+      <div class="prompt">
+        <span class="plabel">2단계로 시키기</span>
+        <code>1. HTML로 만들어 줘</code>
+        <code>2. 웹에서 시각화 시켜줘</code>
+      </div>
+      <div class="callout"><b>포맷을 일정하게 유지하고 싶다면</b> ChatGPT의 <b>프로젝트</b> 기능을 쓰세요.
+        프로젝트를 만들고 소스에 원하는 느낌·참고 자료를 넣어두면, 그 안에서 작업할 때 일관성이 유지됩니다.</div>
+    </div>
+
+    <aside class="infographic" id="ai-guide" aria-labelledby="ai-info-title">
+      <div class="info-head">
+        <div><span class="info-kicker">INFOGRAPHIC 04</span>
+          <h3 id="ai-info-title">내 사진을 살리는 AI 작업 흐름</h3>
+          <p>AI가 새 사진을 대신 만드는 것이 아니라, 내가 찍은 사진의 목적을 확장합니다.</p></div>
+        <span class="info-badge">원본 중심</span>
+      </div>
+      <div class="ai-pipeline">
+        <div class="ai-node"><b>① 내 원본</b><span>추억과 촬영 의도가 담긴 사진을 선택</span></div>
+        <div class="ai-node"><b>② 목적 말하기</b><span>인스타그램·음식·제품처럼 쓰임을 먼저 설명</span></div>
+        <div class="ai-node"><b>③ 필요한 만큼</b><span>배경은 없애지 말고 지저분한 부분만 정리</span></div>
+        <div class="ai-node"><b>④ 결과 확장</b><span>한 컷 시 · 달력 · 포토북 · 웹페이지로 활용</span></div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- 체크리스트 -->
+  <section class="check">
+    <h2>오늘 배운 것 — 이것만은 꼭</h2>
+    <p class="lead">내일 사진 찍을 때 이 다섯 가지만 해보셔도 달라집니다.</p>
+    <ol>
+      <li><b>터치해서 초점</b>을 맞추고 찍는다. 가까운 대상일수록 반드시.</li>
+      <li><b>밝기를 조절</b>한다. 흰 것은 밝게, 검은 것은 어둡게. 어둡게 나온 사진은 버리지 않는다.</li>
+      <li><b>배경을 본다.</b> 머리 위 나무·목 뒤 난간이 보이면 내가 한 발 옆으로 움직인다.</li>
+      <li>전신 사진은 <b>얼굴 가운데, 발 아래 여백, 아래쪽을 밀어서.</b></li>
+      <li>보정은 스냅시드 <b>HDR Scape</b> 한 번, 색감은 <b>화이트밸런스</b>로.</li>
+    </ol>
+  </section>
+
+  <!-- 다음 학습 선택 -->
+  <section class="next-choice" id="apply">
+    <div class="choice-head">
+      <span class="eyeline">CHOOSE YOUR NEXT STEP</span>
+      <h2>복습할까요, 한 단계 더 배울까요?</h2>
+      <p>지금 필요한 방식에 맞춰 두 가지 중 선택하세요.</p>
+    </div>
+
+    <div class="choice-grid">
+      <article class="offer-card replay">
+        <span class="offer-tag">OPTION 01 · 편하게 복습</span>
+        <h3>특강 녹화본 신청</h3>
+        <p class="offer-lead">놓친 장면을 다시 보고, 제공되는 학습자료와 함께 2시간 18분 특강을 내 속도로 익힙니다.</p>
+        <div class="offer-price">신청 금액 <b>3만원</b></div>
+        <ul class="offer-list">
+          <li><b>2시간 18분 강의 전체 영상</b></li>
+          <li>핵심을 빠르게 복습하는 쉬운 학습자료</li>
+          <li>실습과 활용을 돕는 추가 선물자료</li>
+          <li>신청자 개인 전용 다시보기 링크</li>
+        </ul>
+        <div class="offer-facts">
+          <div><small>입금 계좌</small><b>신한 110-050-892636</b></div>
+          <div><small>예금주</small><b>박성욱</b></div>
+        </div>
+        <a class="offer-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSe9azULnmda06k0grfT-n6dm7BPerbS70eegGFN3eAcvx8DHw/viewform" target="_blank" rel="noopener">녹화본 신청하기 →</a>
+        <p class="offer-note">입금 확인 후 영상 링크와 자료를 개별 발송합니다.</p>
+      </article>
+
+      <article class="offer-card travel" id="travel-course">
+        <span class="offer-tag">OPTION 02 · 한 단계 더 배우기</span>
+        <h3>여행사진작가 2급 자격증 과정</h3>
+        <p class="offer-lead">스마트폰 촬영 습관에서 더 나아가 카메라 원리와 조리개 우선 모드까지 배우고 자격증으로 완성합니다.</p>
+        <div class="offer-price">수강료 <b>5만원</b></div>
+        <ul class="offer-list">
+          <li><b>9월 21일 · 9월 28일, 2회 완성</b></li>
+          <li>밤 8시 30분 온라인 수업</li>
+          <li>카메라 원리와 조리개 우선 모드 실습</li>
+          <li>수강료에 자격증 발급비 포함</li>
+        </ul>
+        <div class="offer-facts">
+          <div><small>신청 마감</small><b>9월 20일</b></div>
+          <div><small>자격 구분</small><b>문체부 등록 민간자격</b></div>
+        </div>
+        <a class="offer-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSeVHavnGXjxukfP9b2a5SykpJvEh95Qe4CnePbcMbWtrnZxcA/viewform" target="_blank" rel="noopener">자격증 과정 신청하기 →</a>
+        <p class="offer-note">두 번의 수업으로 촬영 원리부터 작품 완성까지 배웁니다.</p>
+      </article>
+    </div>
+
+    <div class="choice-contact">신청·수강 문의 <a href="tel:01047170624">010-4717-0624</a></div>
+  </section>
+
+  <!-- 다른 과정 -->
+  <section class="more">
+    <h2>함께 보는 과정</h2>
+    <p class="lead">강의에서 안내드린 과정입니다. 궁금한 점은 편하게 문의 주세요.</p>
+
+    <div class="course">
+      <h4>스마트폰 사진강사 양성과정 11기 <span class="price">64만원</span> <small style="color:#8A8065;font-weight:400;font-family:'IBM Plex Sans KR',sans-serif">(정상가 99만원)</small></h4>
+      <p>사진 촬영·편집, 영상 제작, AI 활용, 퍼스널 브랜딩, 시강까지 8주 과정. <b>평생 수강</b>입니다.<br>
+        수료 후 보조강사로 활동하실 수 있고(시간당 4만원), 자격증 과정 운영도 가능합니다.<br>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScmMsdAWo6aJ_fBmSoU5GbiXm0Z_IB9NMhyNDtMhcAFGTb0rw/viewform">신청하기 →</a></p>
+    </div>
+
+    <div class="course">
+      <h4>스마트폰 사진작가 24기 <span class="price">12만원</span></h4>
+      <p>17기부터 23기까지의 녹화본(약 2,800분)으로 자율 학습하며, 모르는 것은 개인톡으로 질문하는 과정입니다.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <b>엘란비탈 박성욱 작가</b> · 스마트미디어아트센터 대표<br>
+  이 정리본은 2026년 9월 4일 온라인 특강 내용을 글로 옮긴 자료이며, 영상은 포함돼 있지 않습니다.<br>
+  실제 녹화본과 학습자료·추가 선물자료는 위 신청서를 통해 개별 발송해 드립니다.<br>
+  <a class="contact-link" href="tel:01047170624">문의 010-4717-0624</a>
+</footer>
+
+</body>
+</html>
