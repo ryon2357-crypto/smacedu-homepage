@@ -10,6 +10,10 @@
 <meta property="og:title" content="똥손도 금손 되는 스마트폰 촬영·보정 + AI 특강 정리본">
 <meta property="og:description" content="초점·밝기·인물 구도, 스냅시드와 AI 사진 활용을 18개 핵심 장면으로 쉽게 복습하세요.">
 <meta property="og:url" content="https://www.smacedu.kr/smartphone-photo-ai-recap">
+<meta property="og:image" content="https://www.smacedu.kr/images/smartphone-photo-ai-recap-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="똥손도 금손 되는 스마트폰 촬영·보정, 그리고 AI로 내 사진 확장하기">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
@@ -187,6 +191,38 @@
   .direct-contact span{font-size:13px;color:var(--ink-soft)}
   .direct-contact a{font-family:"IBM Plex Mono",monospace;font-size:18px;font-weight:700;
     color:var(--brass-deep);text-decoration:none;white-space:nowrap}
+  .next-choice{margin:54px 0 46px}
+  .choice-head{text-align:center;margin-bottom:22px}
+  .choice-head .eyeline{display:inline-block;margin-bottom:7px;color:var(--brass-deep);font-size:12px;
+    font-weight:850;letter-spacing:.1em}
+  .choice-head h2{margin:0;font-size:27px;letter-spacing:-.03em}
+  .choice-head p{margin:7px 0 0;color:var(--ink-soft);font-size:14px}
+  .choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:stretch}
+  .offer-card{display:flex;flex-direction:column;position:relative;min-height:530px;padding:28px 26px;
+    border:1px solid var(--line);border-radius:17px;background:#fff;box-shadow:0 12px 32px rgba(15,23,42,.07)}
+  .offer-card.travel{border-color:#BFDBFE;background:linear-gradient(145deg,#F3F8FF 0%,#fff 72%)}
+  .offer-tag{align-self:flex-start;padding:6px 10px;border-radius:999px;background:#EFF6FF;
+    color:#1D4ED8;font-size:11px;font-weight:850;letter-spacing:.06em}
+  .offer-card.travel .offer-tag{background:#DBEAFE}
+  .offer-card h3{margin:15px 0 7px;font-size:24px;line-height:1.35;letter-spacing:-.025em}
+  .offer-lead{min-height:50px;margin:0 0 19px;color:var(--ink-soft);font-size:14px;line-height:1.65}
+  .offer-price{padding:15px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    font-size:14px;color:var(--ink-soft)}
+  .offer-price b{float:right;color:var(--ink);font-size:24px;line-height:1}
+  .offer-list{display:grid;gap:9px;margin:18px 0 22px;padding:0;list-style:none}
+  .offer-list li{position:relative;padding-left:27px;color:#334155;font-size:13.5px;line-height:1.55}
+  .offer-list li::before{content:"✓";position:absolute;left:0;top:0;display:grid;place-items:center;
+    width:19px;height:19px;border-radius:50%;background:#DBEAFE;color:#1D4ED8;font-size:11px;font-weight:900}
+  .offer-facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 22px}
+  .offer-facts div{padding:11px;border-radius:9px;background:#F8FAFC;border:1px solid var(--line)}
+  .offer-facts small{display:block;margin-bottom:2px;color:var(--ink-soft);font-size:11px}
+  .offer-facts b{font-size:13.5px}
+  .offer-cta{display:block;margin-top:auto;padding:14px 16px;border-radius:10px;background:#2563EB;
+    color:#fff;text-decoration:none;text-align:center;font-size:15px;font-weight:800}
+  .offer-cta:hover{background:#1D4ED8}
+  .offer-note{margin:10px 0 0;text-align:center;color:var(--ink-soft);font-size:11.5px;line-height:1.5}
+  .choice-contact{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;
+    color:var(--ink-soft);font-size:13px}.choice-contact a{color:var(--brass-deep);font-size:16px;font-weight:800;text-decoration:none}
 
   /* ── 다른 과정 ── */
   .more{border-top:1px solid var(--line);padding-top:8px;margin-bottom:8px}
@@ -301,6 +337,8 @@
     .travel-feature{grid-template-columns:1fr;padding:22px 20px}.travel-action{text-align:left;min-width:0}
     .travel-price small{display:inline;margin-left:6px}.travel-btn{text-align:center}
     .gift-pack{grid-template-columns:1fr}
+    .choice-grid{grid-template-columns:1fr}.offer-card{min-height:0}.offer-lead{min-height:0}
+    .choice-head h2{font-size:23px}.offer-facts{grid-template-columns:1fr 1fr}
     .flow-grid,.compare-grid,.edit-flow,.ai-pipeline{grid-template-columns:1fr}
     .flow-step:not(:last-child)::after{content:"↓";right:50%;top:auto;bottom:-11px;transform:translateX(50%)}
     .ai-node:not(:last-child)::after{content:"⌄";right:50%;top:auto;bottom:-13px;transform:translateX(50%)}
@@ -709,49 +747,61 @@
     </ol>
   </section>
 
-  <!-- 녹화본 신청 -->
-  <section class="orderslip" id="apply">
-    <span class="stamp">주문서</span>
-    <h2>녹화본 신청 — 다시, 처음부터</h2>
-    <p class="lead">2시간 18분 강의 전체 영상에 이해와 복습을 돕는 학습자료, 추가 선물자료까지 함께 보내드립니다.</p>
-
-    <div class="gift-pack" aria-label="녹화본 신청 제공 자료">
-      <div class="gift-item"><span class="gift-icon">▶</span><b>강의 전체 영상</b><span>목소리와 화면이 담긴 2시간 18분 녹화본</span></div>
-      <div class="gift-item"><span class="gift-icon">✓</span><b>쉬운 학습자료</b><span>영상과 함께 보며 핵심을 빠르게 복습하는 자료</span></div>
-      <div class="gift-item"><span class="gift-icon">＋</span><b>추가 선물자료</b><span>수강생의 실습과 활용을 돕는 보너스 자료</span></div>
+  <!-- 다음 학습 선택 -->
+  <section class="next-choice" id="apply">
+    <div class="choice-head">
+      <span class="eyeline">CHOOSE YOUR NEXT STEP</span>
+      <h2>복습할까요, 한 단계 더 배울까요?</h2>
+      <p>지금 필요한 방식에 맞춰 두 가지 중 선택하세요.</p>
     </div>
 
-    <dl class="terms">
-      <div><dt>포함 내용</dt><dd>개인 전용 영상 링크 + 쉬운 학습자료 + 추가 선물자료</dd></div>
-      <div><dt>신청 금액</dt><dd><b>30,000원</b></dd></div>
-      <div><dt>입금 계좌</dt><dd>신한 110-050-892636 (예금주 박성욱)</dd></div>
-    </dl>
+    <div class="choice-grid">
+      <article class="offer-card replay">
+        <span class="offer-tag">OPTION 01 · 편하게 복습</span>
+        <h3>특강 녹화본 신청</h3>
+        <p class="offer-lead">놓친 장면을 다시 보고, 제공되는 학습자료와 함께 2시간 18분 특강을 내 속도로 익힙니다.</p>
+        <div class="offer-price">신청 금액 <b>3만원</b></div>
+        <ul class="offer-list">
+          <li><b>2시간 18분 강의 전체 영상</b></li>
+          <li>핵심을 빠르게 복습하는 쉬운 학습자료</li>
+          <li>실습과 활용을 돕는 추가 선물자료</li>
+          <li>신청자 개인 전용 다시보기 링크</li>
+        </ul>
+        <div class="offer-facts">
+          <div><small>입금 계좌</small><b>신한 110-050-892636</b></div>
+          <div><small>예금주</small><b>박성욱</b></div>
+        </div>
+        <a class="offer-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSe9azULnmda06k0grfT-n6dm7BPerbS70eegGFN3eAcvx8DHw/viewform" target="_blank" rel="noopener">녹화본 신청하기 →</a>
+        <p class="offer-note">입금 확인 후 영상 링크와 자료를 개별 발송합니다.</p>
+      </article>
 
-    <ol class="steps">
-      <li>아래 버튼으로 신청서 작성 — 이름 · 연락처 · 이메일</li>
-      <li>안내된 계좌로 입금</li>
-      <li>확인 후 신청하신 연락처로 영상 링크와 학습자료·추가 자료 발송</li>
-    </ol>
-
-    <a class="btn-order" href="https://docs.google.com/forms/d/e/1FAIpQLSe9azULnmda06k0grfT-n6dm7BPerbS70eegGFN3eAcvx8DHw/viewform" target="_blank" rel="noopener">녹화본 신청서 작성하기 →</a>
-    <div class="direct-contact">
-      <span>신청·수강 문의</span>
-      <a href="tel:01047170624" aria-label="전화 문의 010-4717-0624">010-4717-0624</a>
+      <article class="offer-card travel" id="travel-course">
+        <span class="offer-tag">OPTION 02 · 한 단계 더 배우기</span>
+        <h3>여행사진작가 2급 자격증 과정</h3>
+        <p class="offer-lead">스마트폰 촬영 습관에서 더 나아가 카메라 원리와 조리개 우선 모드까지 배우고 자격증으로 완성합니다.</p>
+        <div class="offer-price">수강료 <b>5만원</b></div>
+        <ul class="offer-list">
+          <li><b>9월 21일 · 9월 28일, 2회 완성</b></li>
+          <li>밤 8시 30분 온라인 수업</li>
+          <li>카메라 원리와 조리개 우선 모드 실습</li>
+          <li>수강료에 자격증 발급비 포함</li>
+        </ul>
+        <div class="offer-facts">
+          <div><small>신청 마감</small><b>9월 20일</b></div>
+          <div><small>자격 구분</small><b>문체부 등록 민간자격</b></div>
+        </div>
+        <a class="offer-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSeVHavnGXjxukfP9b2a5SykpJvEh95Qe4CnePbcMbWtrnZxcA/viewform" target="_blank" rel="noopener">자격증 과정 신청하기 →</a>
+        <p class="offer-note">두 번의 수업으로 촬영 원리부터 작품 완성까지 배웁니다.</p>
+      </article>
     </div>
-    <p class="fineprint">링크는 신청자 본인만 볼 수 있는 일부공개 영상입니다. 다른 분과 공유하지 말아주세요.</p>
+
+    <div class="choice-contact">신청·수강 문의 <a href="tel:01047170624">010-4717-0624</a></div>
   </section>
 
   <!-- 다른 과정 -->
   <section class="more">
     <h2>함께 보는 과정</h2>
     <p class="lead">강의에서 안내드린 과정입니다. 궁금한 점은 편하게 문의 주세요.</p>
-
-    <div class="course featured-course" id="travel-course">
-      <h4>여행사진작가 2급 자격증 과정 <span class="price">5만원</span></h4>
-      <p>9월 21일 · 9월 28일 밤 8시 30분 (신청 마감 9월 20일) · 문화체육관광부 등록 민간자격<br>
-        카메라 원리와 조리개 우선 모드까지 다룹니다. 수강료에 자격증 발급이 포함되어 있습니다.<br>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeVHavnGXjxukfP9b2a5SykpJvEh95Qe4CnePbcMbWtrnZxcA/viewform">신청하기 →</a></p>
-    </div>
 
     <div class="course">
       <h4>스마트폰 사진강사 양성과정 11기 <span class="price">64만원</span> <small style="color:#8A8065;font-weight:400;font-family:'IBM Plex Sans KR',sans-serif">(정상가 99만원)</small></h4>
