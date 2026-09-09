@@ -430,6 +430,7 @@
             grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
             gap: 20px;
         }
+        .courses-scroll-hint { display:none; }
         .course-card {
             background: var(--white);
             border: 1px solid var(--gray-line);
@@ -1054,6 +1055,18 @@
             .cert-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
             .cert-preview { height:220px; }
             .cert-preview img { width:132px; height:187px; }
+            /* 교육과정 9장을 세로로 쌓으면 모바일에서 이 섹션 하나만 스크롤 3800px+ 나옴.
+               가로 스와이프 카드로 바꿔 한 줄(카드 1장 높이)로 눌러 담는다. */
+            .courses-grid {
+                display:flex; overflow-x:auto; gap:16px;
+                padding:4px 4px 14px; margin:0 -4px;
+                scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+            }
+            .courses-grid .course-card { flex:0 0 80%; scroll-snap-align:start; }
+            .courses-scroll-hint {
+                display:flex; align-items:center; gap:6px; justify-content:center;
+                font-size:.8rem; color:var(--text-sub); margin-top:4px;
+            }
         }
         @media (max-width:480px) {
             .hero-btns { flex-direction:column; align-items:center; }
@@ -1331,6 +1344,7 @@
             </div>
 
         </div>
+        <p class="courses-scroll-hint">← 옆으로 넘겨서 9개 과정 모두 보기 →</p>
     </div>
 </section>
 
