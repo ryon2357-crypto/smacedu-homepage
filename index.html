@@ -72,6 +72,7 @@
             font-family: 'Noto Sans KR', sans-serif;
             line-height: 1.65;
             overflow-x: hidden;
+            word-break: keep-all;
         }
 
         /* ── UTILS ── */
@@ -90,13 +91,14 @@
         .sec-title {
             font-size: clamp(1.8rem, 3.5vw, 2.6rem);
             font-weight: 800; letter-spacing: -.8px; line-height: 1.25;
-            color: var(--text-head);
+            color: var(--text-head); word-break: keep-all;
         }
 
         .sec-desc {
             margin-top: 14px;
             font-size: 1rem; color: var(--text-sub);
             line-height: 1.85; max-width: 520px; margin-left: auto; margin-right: auto;
+            word-break: keep-all;
         }
 
         .sec-head { text-align: center; margin-bottom: 56px; }
@@ -618,7 +620,7 @@
         .exp-chip span { font-size:11px; opacity:.9; margin-top:3px; display:block; }
 
         .dir-name { font-size:2rem; font-weight:900; letter-spacing:-.8px; color:var(--navy); margin-bottom:5px; }
-        .dir-role { font-size:.9rem; color:var(--orange); font-weight:700; margin-bottom:20px; line-height:1.6; }
+        .dir-role { font-size:.9rem; color:var(--orange); font-weight:700; margin-bottom:20px; line-height:1.6; word-break:keep-all; }
         .dir-bio { font-size:.9rem; color:var(--text-sub); line-height:1.88; margin-bottom:26px; }
 
         .career-items {
