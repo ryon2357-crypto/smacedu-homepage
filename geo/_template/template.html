@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$TITLE_TAG</title>
+<meta name="description" content="$META_DESC">
+<meta property="og:title" content="$OG_TITLE">
+<meta property="og:description" content="$OG_DESC">
+<meta property="og:type" content="profile">
+<meta property="og:url" content="$CANONICAL_URL">
+<meta property="og:image" content="$OG_IMAGE">
+<link rel="canonical" href="$CANONICAL_URL">
+<link rel="icon" href="/images/logo1.png" type="image/png">
+<style>
+  :root{
+    --bg:#faf6f0; --card:#ffffff; --ink:#2b2420; --ink-soft:#6b5f55;
+    --clay:#c96f4a; --clay-soft:#f1e2d8; --line:#e7dccd; --accent:#8a6d4f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    line-height:1.65;
+  }
+  .wrap{max-width:720px; margin:0 auto; padding:32px 20px 80px;}
+  header.hero{
+    background:var(--card); border:1px solid var(--line); border-radius:20px;
+    padding:32px 28px; text-align:center; margin-bottom:24px;
+  }
+  .eyebrow{
+    display:inline-block; font-size:13px; color:var(--clay); background:var(--clay-soft);
+    padding:5px 14px; border-radius:999px; margin-bottom:14px; font-weight:600;
+  }
+  .name{font-size:26px; font-weight:800; margin:14px 0 4px;}
+  .role{color:var(--ink-soft); font-size:15px; margin:0 0 2px;}
+  .org{color:var(--accent); font-size:14px; font-weight:600; margin:0 0 18px;}
+  .intro{font-size:15px; color:var(--ink); max-width:520px; margin:0 auto;}
+  .stats{display:flex; justify-content:center; gap:22px; margin-top:20px; flex-wrap:wrap;}
+  .stat{text-align:center;}
+  .stat b{display:block; font-size:17px;}
+  .stat span{font-size:12px; color:var(--ink-soft);}
+  section.faq{margin-top:8px;}
+  h2.section-title{font-size:14px; color:var(--ink-soft); font-weight:700; margin:28px 4px 10px; letter-spacing:.02em;}
+  details{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    margin-bottom:10px; overflow:hidden;
+  }
+  summary{
+    list-style:none; cursor:pointer; padding:16px 18px; font-weight:700; font-size:15px;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  summary::-webkit-details-marker{display:none;}
+  summary::after{content:"+"; color:var(--clay); font-size:20px; font-weight:400; flex-shrink:0;}
+  details[open] summary::after{content:"\2212";}
+  .a-body{padding:0 18px 18px; font-size:14px; color:var(--ink-soft);}
+  .a-body ul{margin:6px 0 0; padding-left:18px;}
+  .a-body li{margin-bottom:4px;}
+  .contact{
+    background:var(--clay-soft); border-radius:16px; padding:22px; text-align:center; margin-top:26px;
+  }
+  .contact p{margin:0 0 14px; font-size:14px; color:var(--ink);}
+  .email-plain{
+    font-size:15px; font-weight:700; cursor:pointer; user-select:all;
+    background:#fff; border:1px dashed var(--line); border-radius:10px; padding:8px 14px; display:inline-block;
+  }
+  .copy-hint{font-weight:400; font-size:12px; color:var(--ink-soft);}
+  .links{display:flex; justify-content:center; gap:10px; flex-wrap:wrap;}
+  .links a{
+    background:var(--clay); color:#fff; text-decoration:none; padding:10px 18px;
+    border-radius:999px; font-size:13px; font-weight:600;
+  }
+  .links a.secondary{background:#fff; color:var(--accent); border:1px solid var(--line);}
+  footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:32px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="eyebrow">$EYEBROW</span>
+    <div class="name">$DISPLAY_NAME</div>
+    <p class="role">$ROLE</p>
+    <p class="org">$ORG</p>
+    <p class="intro">$INTRO</p>
+    <div class="stats">
+$STATS_HTML
+    </div>
+  </header>
+
+  <h2 class="section-title">자주 묻는 질문</h2>
+  <section class="faq" id="faq">
+$FAQ_HTML
+  </section>
+
+  <div class="contact">
+    <p>$CONTACT_LABEL</p>
+    <p class="email-plain">$EMAIL <span class="copy-hint">(누르면 복사)</span></p>
+    <div class="links">
+$LINKS_HTML
+    </div>
+  </div>
+
+  <footer>$FOOTER</footer>
+</div>
+
+<script type="application/ld+json">
+$PERSON_JSONLD
+</script>
+<script type="application/ld+json">
+$FAQPAGE_JSONLD
+</script>
+
+<script>
+  var emailEl = document.querySelector('.email-plain');
+  if (emailEl) {
+    emailEl.addEventListener('click', function () {
+      var addr = '$EMAIL';
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(addr).then(function () {
+          var hint = emailEl.querySelector('.copy-hint');
+          if (hint) { var old = hint.textContent; hint.textContent = '(복사됨)'; setTimeout(function(){ hint.textContent = old; }, 1500); }
+        });
+      }
+    });
+  }
+</script>
+</body>
+</html>
