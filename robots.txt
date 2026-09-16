@@ -1,6 +1,32 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /signup
+Disallow: /mypage
+Disallow: /payment
+Disallow: /auth-callback
+Disallow: /tmp/
 
+# 네이버
+User-agent: Yeti
+Allow: /
+
+User-agent: NaverBot
+Allow: /
+
+# 다음
+User-agent: Daumoa
+Allow: /
+
+# 검색엔진
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# AI 검색·학습 크롤러
 User-agent: GPTBot
 Allow: /
 
@@ -23,12 +49,6 @@ User-agent: PerplexityBot
 Allow: /
 
 User-agent: Google-Extended
-Allow: /
-
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
 Allow: /
 
 Sitemap: https://www.smacedu.kr/sitemap.xml
