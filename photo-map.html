@@ -126,14 +126,18 @@
   .gift-links{display:none;margin-top:14px;padding:14px;border-radius:12px;background:#f4f8ed;border:1px solid #d7e6c7}.gift-links.on{display:block}.gift-links a{display:inline-block;margin:8px 8px 0 0;color:#285d35;font-weight:800}
   .board-list{display:flex;flex-direction:column;gap:10px;margin-top:20px;max-height:360px;overflow:auto}.board-item{border:1px solid var(--line);border-radius:13px;padding:14px;background:#fcfaf7}.board-item b{font-size:14px}.board-meta{font-size:12px;color:var(--sub);margin-bottom:5px}.board-text{font-size:13.5px;line-height:1.65}.board-empty{font-size:13px;color:var(--sub);padding:10px 0}
 
-  footer{margin-top:56px;border-top:1px solid var(--line);padding:40px 24px 60px;text-align:center;color:var(--sub);font-size:13.5px}
-  footer .fnote{max-width:680px;margin:0 auto 16px;line-height:1.7;text-wrap:balance}
+  footer{margin-top:56px;border-top:1px solid var(--line);padding:36px 24px 54px;color:var(--sub)}
+  .footer-notes{max-width:960px;margin:0 auto 22px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .footer-note{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;text-align:left;font-size:14px;line-height:1.75;box-shadow:0 3px 14px rgba(40,34,28,.035)}
+  .footer-note-icon{font-size:18px;line-height:1.55;text-align:center}
+  .footer-note-copy span{display:block;text-wrap:pretty}
+  .footer-credit{text-align:center;padding-top:2px}
   footer .brand{font-weight:800;color:var(--ink);font-size:15px}
   footer .brand span{color:var(--spring)}
-  footer .sig{margin-top:6px;font-size:12.5px}
+  footer .sig{margin-top:5px;font-size:12.5px}
 
   @media(max-width:900px){.map-layout{grid-template-columns:1fr;min-height:0}.naver-map{height:520px}.map-place-list{max-height:420px}}
-  @media(max-width:760px){.academy-cta{align-items:flex-start;flex-direction:column}.academy-btn{width:100%}.participate{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:1}.hero{padding:60px 20px 44px}.controls-inner{padding:11px 14px}.grid{grid-template-columns:1fr}.month-num{font-size:50px}.view-toggle{width:100%}.map-view{padding:0 12px}.map-guide{align-items:flex-start;flex-direction:column;gap:5px}.map-shell{padding:9px}.naver-map{height:56vh;min-height:390px}.map-place-list{max-height:none}}
+  @media(max-width:760px){.academy-cta{align-items:flex-start;flex-direction:column}.academy-btn{width:100%}.participate{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:1}.hero{padding:60px 20px 44px}.controls-inner{padding:11px 14px}.grid{grid-template-columns:1fr}.month-num{font-size:50px}.view-toggle{width:100%}.map-view{padding:0 12px}.map-guide{align-items:flex-start;flex-direction:column;gap:5px}.map-shell{padding:9px}.naver-map{height:56vh;min-height:390px}.map-place-list{max-height:none}.footer-notes{grid-template-columns:1fr}.footer-note{padding:15px 14px}}
 
 </style>
 </head>
@@ -221,9 +225,14 @@
 </section>
 
 <footer>
-  <p class="fnote">평년 개화 · 단풍 · 기상 시기와 대표 출사지를 정리한 참고 자료입니다. 방문 전 지자체 축제 공지, 기상청 예보, 물때 · 일출 시각, 현지 SNS로 최신 상황을 확인하세요.<br>📷 촬영 팁은 DSLR · 미러리스 공통이며, 조리개 · 셔터 속도 · ISO 값은 카메라와 날씨에 따라 조정하세요. 📱 스마트폰 사용자를 위한 팁은 카드마다 따로 표기했습니다.</p>
-  <p class="brand">엘란비탈 <span>박성욱</span></p>
-  <p class="sig">스마트미디어아트센터 · 이엘포토그래피 · blog.naver.com/elanvital7</p>
+  <div class="footer-notes">
+    <p class="footer-note"><span class="footer-note-icon" aria-hidden="true">ℹ️</span><span class="footer-note-copy"><span>평년 개화·단풍·기상 시기와 대표 출사지를 정리한 참고 자료입니다.</span><span>방문 전 지자체 축제 공지, 기상청 예보, 물때·일출 시각, 현지 SNS에서 최신 상황을 확인하세요.</span></span></p>
+    <p class="footer-note"><span class="footer-note-icon" aria-hidden="true">📷</span><span class="footer-note-copy"><span>촬영 팁은 DSLR·미러리스 공통입니다.</span><span>조리개·셔터 속도·ISO 값은 카메라와 날씨에 맞게 조정하세요. 스마트폰 팁은 카드마다 따로 표시했습니다.</span></span></p>
+  </div>
+  <div class="footer-credit">
+    <p class="brand">엘란비탈 <span>박성욱</span></p>
+    <p class="sig">스마트미디어아트센터 · 이엘포토그래피 · blog.naver.com/elanvital7</p>
+  </div>
 </footer>
 
 <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=yyt8w4apwf"></script>
@@ -502,7 +511,7 @@ app.addEventListener('touchstart',e=>{if(curMonth===0)return;touchX=e.changedTou
 app.addEventListener('touchend',e=>{if(curMonth===0)return;const dx=e.changedTouches[0].clientX-touchX,dy=e.changedTouches[0].clientY-touchY;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.4)selectMonth(dx<0?(curMonth===12?1:curMonth+1):(curMonth===1?12:curMonth-1),false);},{passive:true});
 
 render();
-document.querySelectorAll('.hero .lead, .hero .note, footer .fnote').forEach(el=>{el.innerHTML=nd(el.innerHTML);});
+document.querySelectorAll('.hero .lead, .hero .note').forEach(el=>{el.innerHTML=nd(el.innerHTML);});
 
 function setStatus(id,message,ok){const el=document.getElementById(id);el.textContent=message;el.className='form-status '+(ok?'ok':'err');}
 async function submitCommunity(payload){const body=new FormData();Object.entries(payload).forEach(([key,value])=>body.append(key,value));await fetch(COMMUNITY_API,{method:'POST',body,mode:'no-cors'});}
