@@ -46,8 +46,9 @@
   .cats button{border:1px solid var(--line);background:#fff;font-family:inherit;font-size:13px;font-weight:600;color:var(--sub);padding:7px 13px;border-radius:999px;cursor:pointer;transition:.18s}
   .cats button:hover{border-color:#cfc7ba}
   .cats button.on{color:#fff;border-color:transparent}
-  .region-toggle{display:inline-flex;background:#efe9e0;border-radius:999px;padding:4px;gap:2px;flex-shrink:0}
-  .region-toggle button{border:0;background:transparent;font-family:inherit;font-size:13px;font-weight:600;color:var(--sub);padding:7px 15px;border-radius:999px;cursor:pointer;transition:.2s}
+  .region-row{justify-content:flex-start}.region-label{font-size:12px;font-weight:800;color:#686057;flex-shrink:0}
+  .region-toggle{display:flex;gap:5px;max-width:100%;overflow-x:auto;padding:3px 2px 7px;scrollbar-width:thin;flex:1}
+  .region-toggle button{border:1px solid var(--line);background:#fff;font-family:inherit;font-size:12.5px;font-weight:650;color:var(--sub);padding:7px 12px;border-radius:999px;cursor:pointer;transition:.2s;white-space:nowrap;flex-shrink:0}
   .region-toggle button.on{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
   .month-pills{display:flex;flex-wrap:wrap;gap:6px}
   .month-pills button{border:1px solid var(--line);background:#fff;font-family:inherit;font-size:13px;font-weight:600;color:var(--sub);width:36px;height:36px;border-radius:10px;cursor:pointer;transition:.18s}
@@ -170,10 +171,21 @@
         <button data-cat="festival">🎆 축제</button>
         <button data-cat="indoor">☔ 실내·우천</button>
       </div>
-      <div class="region-toggle" id="regionToggle">
-        <button data-region="all" class="on">전체</button>
-        <button data-region="seoul">서울·경기</button>
-        <button data-region="nation">전국</button>
+    </div>
+    <div class="ctrl-row region-row">
+      <span class="region-label">지역</span>
+      <div class="region-toggle" id="regionToggle" aria-label="시도별 출사지 선택">
+        <button data-region="all" class="on">전국 전체</button>
+        <button data-region="seoul">서울</button>
+        <button data-region="capital">경기·인천</button>
+        <button data-region="gangwon">강원</button>
+        <button data-region="chungbuk">충북</button>
+        <button data-region="chungnam">충남·대전</button>
+        <button data-region="jeonbuk">전북</button>
+        <button data-region="jeonnam">전남·광주</button>
+        <button data-region="gyeongbuk">경북·대구</button>
+        <button data-region="gyeongnam">경남·부산·울산</button>
+        <button data-region="jeju">제주</button>
       </div>
     </div>
     <div class="ctrl-row">
@@ -245,6 +257,7 @@ const COMMUNITY_API='https://script.google.com/macros/s/AKfycbzy1Qb1k1k_HMwYrQTH
 
 // 지도 핀은 장소의 대표 좌표이며, 정확한 입구·촬영 지점은 네이버 지도 상세 검색에서 확인합니다.
 const PLACE_CENTERS=[
+  ['보은 말티재',36.4930,127.8000],['서천 신성리',36.1090,126.9930],['신안 선도',35.0570,126.2300],['해남 고천암호',34.5520,126.4380],['고창 청농원',35.4430,126.6020],['동작노을카페',37.5182,126.9695],['낙산 성곽',37.5805,127.0075],['종묘',37.5742,126.9941],
   ['아침고요',37.7440,127.3526],['형제섬',33.2107,126.3146],['동백포레스트',33.2890,126.6050],['카멜리아힐',33.2895,126.3701],['오동도',34.7448,127.7667],['지심도',34.8164,128.5242],
   ['소래포구',37.3980,126.7386],['오이도',37.3452,126.6877],['공릉천',37.7482,126.7464],['정동진',37.6919,129.0326],['등명해변',37.7135,129.0287],['호미곶',36.0760,129.5685],['문무대왕릉',35.7381,129.4833],['간절곶',35.3590,129.3604],['추암',37.4790,129.1590],['오랑대',35.2050,129.2280],
   ['경복궁',37.5796,126.9770],['창덕궁',37.5794,126.9910],['남한산성',37.4783,127.1811],['광교산',37.3307,127.0308],['덕유산',35.8606,127.7465],['태백산',37.0951,128.9167],['소백산',36.9573,128.4845],['대관령',37.6869,128.7587],['자작나무숲',38.0097,128.1987],['한라산',33.3617,126.5292],
@@ -269,9 +282,9 @@ const PLACE_CENTERS=[
   ['서울',37.5665,126.9780],['인천',37.4563,126.7052],['가평',37.8315,127.5095],['양평',37.4917,127.4876],['포천',37.8949,127.2002],['파주',37.7599,126.7800],['시흥',37.3800,126.8030],['안산',37.3219,126.8309],['수원',37.2636,127.0286],['안양',37.3943,126.9568],['부천',37.5034,126.7660],['구리',37.5943,127.1296],['군포',37.3617,126.9352],['강화',37.7479,126.4880],
   ['부산',35.1796,129.0756],['대구',35.8714,128.6014],['울산',35.5384,129.3114],['광주',35.1595,126.8526],['대전',36.3504,127.3845],['제주',33.4996,126.5312],['강릉',37.7519,128.8761],['동해',37.5247,129.1143],['삼척',37.4499,129.1652],['태백',37.1641,128.9856],['평창',37.3705,128.3900],['정선',37.3806,128.6608],['인제',38.0695,128.1707],['철원',38.1466,127.3132],['홍천',37.6972,127.8886],['원주',37.3422,127.9202],['충주',36.9910,127.9259],['제천',37.1326,128.1910],
   ['여수',34.7604,127.6622],['순천',34.9506,127.4872],['광양',34.9407,127.6959],['구례',35.2025,127.4628],['보성',34.7715,127.0801],['장흥',34.6816,126.9069],['고흥',34.6113,127.2850],['강진',34.6420,126.7672],['해남',34.5733,126.5989],['신안',34.8273,126.1010],['무안',34.9905,126.4817],['함평',35.0659,126.5166],['영광',35.2772,126.5120],['나주',35.0159,126.7108],['담양',35.3213,126.9882],['곡성',35.2818,127.2920],
-  ['전주',35.8242,127.1480],['정읍',35.5699,126.8560],['부안',35.7316,126.7330],['고창',35.4358,126.7020],['무주',36.0068,127.6608],['진안',35.7917,127.4248],['남원',35.4164,127.3904],['군산',35.9677,126.7366],['김제',35.8036,126.8809],
+  ['전주',35.8242,127.1480],['정읍',35.5699,126.8560],['부안',35.7316,126.7330],['고창 청농원',35.4430,126.6020],['고창',35.4358,126.7020],['무주',36.0068,127.6608],['진안',35.7917,127.4248],['남원',35.4164,127.3904],['군산',35.9677,126.7366],['김제',35.8036,126.8809],
   ['경주',35.8562,129.2247],['포항',36.0190,129.3435],['안동',36.5684,128.7294],['영양',36.6667,129.1124],['청송',36.4363,129.0570],['의성',36.3527,128.6972],['영천',35.9733,128.9386],['문경',36.5865,128.1868],['밀양',35.5038,128.7466],['양산',35.3350,129.0370],['김해',35.2285,128.8894],['창녕',35.5446,128.4923],['함안',35.2725,128.4065],['거창',35.6867,127.9095],['합천',35.5667,128.1658],['산청',35.4156,127.8734],['진주',35.1800,128.1076],['고성',34.9730,128.3220],['통영',34.8544,128.4332],['거제',34.8806,128.6210],['남해',34.8377,127.8924],
-  ['천안',36.8151,127.1139],['아산',36.7898,127.0018],['서산',36.7845,126.4503],['태안',36.7456,126.2980],['보령',36.3334,126.6129],['공주',36.4466,127.1190],['서천',36.0803,126.6913],['괴산',36.8154,127.7867],['음성',36.9403,127.6905],['단양',36.9845,128.3656],['장성',35.3019,126.7849]
+  ['천안',36.8151,127.1139],['아산',36.7898,127.0018],['서산',36.7845,126.4503],['태안',36.7456,126.2980],['보령',36.3334,126.6129],['공주',36.4466,127.1190],['서천 신성리',36.1090,126.9930],['서천',36.0803,126.6913],['괴산',36.8154,127.7867],['보은 말티재',36.4930,127.8000],['음성',36.9403,127.6905],['단양',36.9845,128.3656],['신안 선도',35.0570,126.2300],['해남 고천암호',34.5520,126.4380],['장성',35.3019,126.7849]
 ];
 let naverMap=null,mapMarkers=[],mapInfo=null,mapPlotted=[];
 
@@ -294,7 +307,8 @@ const DATA={
   {c:'flower',f:'매화',sub:'梅花',e:'🌸',t:'3월 중순',seoul:['서울 봉은사 홍매화'],nation:['광양 홍쌍리 청매실농원','양산 원동 순매원','구례 화엄사 화엄매','천은사 수홍루','순천 선암사 선암매','장성 백양사 고불매','금시당·밀양향교','고성 시루섬','대구 남평문씨본리세거지'],img:'images/chulsa/maehwa_gwangyang.jpg',n:1,tip:'광양매화마을은 새벽 블루아워→일출→낮까지 시간대마다 완전히 다른 사진이 나옵니다. 장노출로 조명과 매화 군락을 정리하고, 70-200mm로 홍매·백매를 압축하세요. 양산 원동 순매원은 낙동강 배경으로 매화 사이를 지나는 기차가 이곳만의 그림 — 역광으로 꽃잎 투과를 노려보세요. 사찰 매화(화엄사·백양사)는 고목의 곡선을 단청과 함께.',sp:'매화 한 송이에 화면을 터치해 초점을 맞추고 밝기를 살짝 올리면 화사하게 나옵니다. 인물사진 모드는 꽃가지가 뭉개질 수 있으니 일반 모드로. 역광이면 노출보정으로 꽃잎이 투과되는 빛을 살리세요.'},
   {c:'flower',f:'산수유',sub:'山茱萸',e:'💛',t:'3월 중~하순',seoul:['이천 백사 산수유마을','양평 개군면'],nation:['구례 산동 현천마을·반곡마을','순천 송광사','의성 화전리'],img:'images/chulsa/sansuyu_gurye.jpg',n:1,tip:'구례 현천마을은 저수지 물빛이 노란 산수유를 더 선명하게 받쳐줍니다. 반곡마을 계곡에선 장노출로 비단처럼 흐르는 물과 산수유를 함께 담으세요. 돌담·기와와 어우러진 골목이 남도의 봄입니다.'},
   {c:'scape',f:'물안개 반영',sub:'反影',e:'🌫️',t:'3월 말~4월 초',seoul:['양평 세미원'],nation:['화순 세량지','청송 주산지'],tip:'세량지는 새벽 물안개와 연둣빛 왕벚꽃 반영으로 유명합니다. 일출 전에 도착해야 합니다.'},
-  {c:'festival',f:'광양 매화축제',sub:'',e:'🎪',t:'3월 중순',seoul:[],nation:['광양 매화마을'],tip:'축제 기간 인파가 많으니 이른 아침이나 평일. 섬진강 물빛과 매화를 함께 잡으세요.'}
+  {c:'festival',f:'광양 매화축제',sub:'',e:'🎪',t:'3월 중순',seoul:[],nation:['광양 매화마을'],tip:'축제 기간 인파가 많으니 이른 아침이나 평일. 섬진강 물빛과 매화를 함께 잡으세요.'},
+  {c:'flower',f:'수선화 섬',sub:'水仙花',e:'💛',t:'3월 말~4월 초',seoul:[],nation:['신안 선도 수선화'],tip:'섬 전체가 노란 수선화로 물드는 시기입니다. 낮은 담장과 노란 지붕, 바다를 함께 넣어 섬의 색을 보여주세요. 배편과 개화 상황은 출발 전에 확인하세요.'}
 ],
 4:[
   {c:'flower',f:'벚꽃',sub:'櫻花',e:'🌸',t:'4월 초~중순',seoul:['여의도 윤중로','석촌호수','현충원 벚꽃','정독도서관','반포 서래섬','서울대공원','안양천','일산 호수공원'],nation:['진해 군항제','경주 보문·대릉원','하동 십리벚꽃·남해','화순 세량제 산벚꽃','거창 수양벚꽃','순천·전주·천안 겹벚꽃','서산 개심사 겹벚꽃·황금산'],tip:'꽃비는 1/1000초 이상 고속셔터. 야간 조명 벚꽃은 삼각대+저감도로 색을 살리세요. 서래섬은 유채와 겹쳐 노랑+분홍을 함께. 현충원·정독도서관 벚꽃은 이른 아침 인파 전이 좋고, 겹벚꽃(서산 개심사, 4월말)은 벚꽃이 진 뒤 풍성하게 이어집니다.',sp:'벚꽃 아래에서 극단적인 로우앵글로 하늘을 배경 삼아 올려찍으면 스마트폰으로도 시원한 사진이 나옵니다. 나무·아치를 이용한 프레임 속 프레임 구도가 흐린 날 특히 효과적이에요. 흰 꽃이 날아가면 밝기를 조금 낮추세요.'},
@@ -312,7 +326,7 @@ const DATA={
 ],
 6:[
   {c:'flower',f:'수국',sub:'水菊',e:'💙',t:'6월 중~7월',seoul:['아침고요수목원','양평'],nation:['보성 주월산 전망대·윤제림','부산 태종대','울산 장생포','제주 카멜리아힐·혼인지','강진·해남·신안 여름꽃','통영'],tip:'비 오는 날 물방울 맺힌 수국이 백미. 흐린 날 파스텔 톤이 오히려 곱게 나옵니다. 보성 윤제림·주월산 전망대는 수국 명소로 손꼽힙니다.'},
-  {c:'flower',f:'라벤더·여름꽃',sub:'',e:'💜',t:'6월',seoul:['안성팜랜드','하늘공원 양귀비'],nation:['고성 하늬라벤더팜','신안 퍼플섬 라벤더','정읍허브원 라벤더축제','진도 운림산림욕장·공주 미르섬 코끼리마늘꽃'],tip:'보라 밭 사이 길을 소실점 구도로. 인물을 넣으면 유럽풍 감성이 살아납니다. 신안 퍼플섬은 보라색 마을·다리 전체가 피사체.'},
+  {c:'flower',f:'라벤더·여름꽃',sub:'',e:'💜',t:'6월',seoul:['안성팜랜드','하늘공원 양귀비'],nation:['고성 하늬라벤더팜','신안 퍼플섬 라벤더','정읍허브원 라벤더축제','고창 청농원 라벤더','진도 운림산림욕장·공주 미르섬 코끼리마늘꽃'],tip:'보라 밭 사이 길을 소실점 구도로. 인물을 넣으면 유럽풍 감성이 살아납니다. 신안 퍼플섬은 보라색 마을·다리 전체가 피사체.'},
   {c:'scape',f:'은하수',sub:'銀河',e:'🌌',t:'6~9월(신월)',seoul:[],nation:['영양 반딧불이천문대(밤하늘보호공원)','정선 안반데기·새비재','평창 청옥산','부안 솔섬','제천 옥순대교','군산 신시도','합천 오도산'],tip:'광해 없는 곳+달 없는 밤(신월/그믐)이 필수. 6월부터 은하수 중심부가 보입니다. 20초/f2.8/ISO3200 기준. 서해 부안 솔섬·군산 신시도는 바다 위 은하수, 정선 새비재·평창 청옥산은 산 위 은하수 성지.',sp:'은하수는 스마트폰에 가장 어려운 주제입니다. 나이트 모드나 프로 모드로 셔터를 최대(10~30초)로 열고 반드시 삼각대·거치대에 고정하세요. 그래도 한계가 있으니, 은하수 중심은 카메라로 담고 스마트폰은 전경·인증용으로 쓰는 걸 권합니다.'},
   {c:'flower',f:'능소화',sub:'凌霄花',e:'🧡',t:'6월 말~8월',seoul:['서울 북촌','덕수궁 돌담'],nation:['김해 수로왕릉','전주 한옥마을','경주'],tip:'한옥 담장을 타고 늘어진 주황색 꽃이 한국적입니다. 담장 선을 따라 세로 구도로 담아보세요.'}
 ],
@@ -335,8 +349,8 @@ const DATA={
   {c:'festival',f:'진주 남강유등',sub:'',e:'🏮',t:'9월 말~10월',seoul:[],nation:['진주 남강유등축제','김제 지평선축제'],tip:'유등이 강물에 비치는 야경이 절정입니다. 다리 위에서 물빛 반영을 세로로 담으세요.'}
 ],
 10:[
-  {c:'scape',f:'단풍(산·북부)',sub:'丹楓',e:'🍁',t:'10월(북→남)',seoul:['남한산성','광교산','북한산'],nation:['설악산(초·중)','오대산','내장산(말)','주왕산','청송 주산지','인제 자작나무숲','철원 주상절리길·고석정 꽃밭'],tip:'단풍은 설악에서 시작해 하루 20~25km 남하합니다. 계곡 물 반영을 함께 담으세요. 청송 주산지는 왕버들 반영과 단풍이 겹치는 새벽이 백미. 인제 자작나무숲은 하얀 수피+노란 잎이 이색적.'},
-  {c:'scape',f:'억새',sub:'',e:'🌾',t:'10월 중~11월초',seoul:['하늘공원 억새축제','포천 명성산'],nation:['정선 민둥산','창녕 화왕산','울산 신불산 영남알프스','제주 산굼부리'],tip:'해질녘 역광에 은빛으로 빛나는 골든아워 20분이 최고입니다.',sp:'역광 억새는 스마트폰 하늘이 하얗게 날아가기 쉬우니 억새를 터치해 초점을 맞추고 밝기(노출)를 한두 칸 낮추세요. 억새 사이로 낮게 들어가 하늘을 배경 삼아 올려찍으면 은빛 결이 훨씬 도드라지고, 바람에 흔들릴 땐 연사로 여러 장 찍어 고르면 됩니다.'},
+  {c:'scape',f:'단풍(산·북부)',sub:'丹楓',e:'🍁',t:'10월(북→남)',seoul:['남한산성','광교산','북한산'],nation:['설악산(초·중)','오대산','내장산(말)','주왕산','청송 주산지','인제 자작나무숲','철원 주상절리길·고석정 꽃밭','보은 말티재 단풍'],tip:'단풍은 설악에서 시작해 하루 20~25km 남하합니다. 계곡 물 반영을 함께 담으세요. 청송 주산지는 왕버들 반영과 단풍이 겹치는 새벽이 백미. 인제 자작나무숲은 하얀 수피+노란 잎이 이색적.'},
+  {c:'scape',f:'억새·갈대',sub:'',e:'🌾',t:'9월 말~11월 초',seoul:['하늘공원 억새축제','포천 명성산'],nation:['정선 민둥산','창녕 화왕산','울산 신불산 영남알프스','제주 산굼부리','서천 신성리 갈대밭','해남 고천암호 갈대밭'],tip:'해질녘 역광에 은빛으로 빛나는 골든아워 20분이 최고입니다. 신성리와 고천암호는 이른 아침 안개 또는 해 질 녘 황금빛 갈대를 노리세요.',sp:'역광 억새는 스마트폰 하늘이 하얗게 날아가기 쉬우니 억새를 터치해 초점을 맞추고 밝기(노출)를 한두 칸 낮추세요. 억새 사이로 낮게 들어가 하늘을 배경 삼아 올려찍으면 은빛 결이 훨씬 도드라지고, 바람에 흔들릴 땐 연사로 여러 장 찍어 고르면 됩니다.'},
   {c:'flower',f:'핑크뮬리·가을꽃',sub:'',e:'🩷',t:'10월',seoul:['양주 나리공원','안성팜랜드','서울숲'],nation:['경주 첨성대','부산 대저생태공원','정읍 구절초축제','거창 감악산 아스타국화','문경 봉천사 개미취','남원 신생마을 댑싸리'],tip:'핑크뮬리는 자칫 진부하니 소실점·인물·일몰 역광으로 차별화하세요. 거창 감악산 아스타국화·문경 봉천사 개미취는 보랏빛 가을 군락 명소.'},
   {c:'festival',f:'불꽃축제',sub:'',e:'🎆',t:'10월',seoul:['서울세계불꽃축제(여의도)'],nation:['포항 불빛축제','진주 유등'],tip:'삼각대+ISO100+f11, 셔터 벌브로 터지는 순간 열고 닫기. 연기 방향(바람) 고려해 자리 선택.'}
 ],
@@ -378,18 +392,51 @@ const app=document.getElementById('app'), emptyEl=document.getElementById('empty
 const pills=document.getElementById('monthPills');
 for(let m=1;m<=12;m++){const b=document.createElement('button');b.dataset.month=m;b.textContent=m;pills.appendChild(b);}
 
-function hasRegion(ev){if(curRegion==='all')return ev.seoul.length||ev.nation.length;if(curRegion==='seoul')return ev.seoul.length;return ev.nation.length;}
+const REGION_META={
+  seoul:{label:'서울'},capital:{label:'경기·인천'},gangwon:{label:'강원'},chungbuk:{label:'충북'},chungnam:{label:'충남·대전'},
+  jeonbuk:{label:'전북'},jeonnam:{label:'전남·광주'},gyeongbuk:{label:'경북·대구'},gyeongnam:{label:'경남·부산·울산'},jeju:{label:'제주'}
+};
+const PLACE_EXPANSIONS={
+  '순천·전주·천안 겹벚꽃':['순천 겹벚꽃','전주 겹벚꽃','천안 겹벚꽃'],
+  '강진·해남·신안 여름꽃':['강진 여름꽃','해남 여름꽃','신안 여름꽃'],
+  '진도 운림산림욕장·공주 미르섬 코끼리마늘꽃':['진도 운림산림욕장','공주 미르섬 코끼리마늘꽃'],
+  '삼척·평창 3대 이끼계곡':['삼척 이끼계곡','평창 이끼계곡'],
+  '순천·담양·곡성':['순천 배롱나무','담양 배롱나무','곡성 배롱나무'],
+  '밀양·경주 은행':['밀양 은행나무','경주 은행나무'],
+  '울산 강양항·경주 읍천 주상절리':['울산 강양항','경주 읍천항 주상절리'],
+  '아쿠아플라넷 여수·제주':['아쿠아플라넷 여수','아쿠아플라넷 제주'],
+  '인천 소래·왜목':['인천 소래포구','당진 왜목']
+};
+function rawPlaces(ev){
+  return [...ev.seoul.map(place=>({place,source:'seoul'})),...ev.nation.map(place=>({place,source:'nation'}))]
+    .flatMap(item=>(PLACE_EXPANSIONS[item.place]||[item.place]).map(place=>({...item,place})));
+}
+function regionForPlace(place,source){
+  const p=String(place);
+  if(/제주|한라산|산굼부리|가파도|수월봉|혼인지|카멜리아힐|형제섬/.test(p))return 'jeju';
+  if(/강릉|동해|삼척|태백|평창|정선|인제|철원|홍천|원주|봉평|화천|대관령|설악|오대산|민둥산|곰배령|구와우|하늬라벤더/.test(p))return 'gangwon';
+  if(/충주|제천|괴산|단양|보은|소백산|문광저수지/.test(p))return 'chungbuk';
+  if(/대전|천안|아산|서산|태안|보령|공주|부여|서천|홍성|안면도|개심사|곡교천|왜목|장태산|국립생태원/.test(p))return 'chungnam';
+  if(/전주|정읍|부안|고창|무주|진안|남원|군산|김제|변산|내장산|내장사|마이산|덕유산|곰소|솔섬|신시도|지평선/.test(p))return 'jeonbuk';
+  if(/광주|여수|순천|광양|구례|보성|장흥|고흥|강진|해남|신안|무안|함평|영광|나주|담양|곡성|화순|장성|벌교|진도|천은사|선암사|송광사|백양사|무등산|노고단|지리산/.test(p))return 'jeonnam';
+  if(/대구|경주|포항|안동|영양|청송|의성|영천|문경|주왕산|호미곶|월영교/.test(p))return 'gyeongbuk';
+  if(/부산|울산|양산|김해|밀양|창녕|함안|거창|합천|산청|진주|통영|거제|남해|하동|진해|우포늪|황매산|비슬산|화왕산|신불산|오랑대|태종대|지심도|수로왕릉|위양지|고성 시루섬/.test(p))return 'gyeongnam';
+  if(/인천|경기|가평|양평|포천|파주|시흥|안산|수원|안양|부천|구리|군포|강화|이천|양주|일산|남한산성|광교산|천마산|화야산|축령산|아침고요|에버랜드|관곡지|두물머리|세미원|자라섬|산정호수|풍도/.test(p))return 'capital';
+  if(/서울|경복궁|창덕궁|덕수궁|창경궁|광화문|청계천|봉은사|여의도|석촌호수|현충원|정독도서관|서래섬|서울대공원|서울숲|하늘공원|올림픽공원|중랑천|조계사|남산|북한산|동작|반포|성수|응봉산|낙산|종묘|DDP|리움|문래|익선동|을지로|서촌|북촌|삼청동|해방촌|경리단길|남대문|한강|방화대교|선유도|잠실|청담대교|영동대교|코엑스|롯데월드|아모레퍼시픽|국립중앙박물관|서소문|별마당|서울식물원/.test(p))return 'seoul';
+  return source==='seoul'?'capital':'jeonnam';
+}
+function placesForEvent(ev){const places=rawPlaces(ev).map(item=>({...item,region:regionForPlace(item.place,item.source)}));return curRegion==='all'?places:places.filter(item=>item.region===curRegion);}
+function hasRegion(ev){return placesForEvent(ev).length>0;}
 function passes(ev){return (curCat==='all'||ev.c===curCat)&&hasRegion(ev);}
 
 function nd(s){return String(s).replace(/[가-힣A-Za-z0-9]{1,20}(?:·[가-힣A-Za-z0-9]{1,20})+/g,m=>`<span style="white-space:nowrap">${m}</span>`);}
-function mapLink(s){return String(s).split('·').map(place=>{const p=place.trim();return `<a class="place-link" href="https://map.naver.com/p/search/${encodeURIComponent(p)}" target="_blank" rel="noopener" aria-label="${p} 네이버 지도에서 찾기">📍 ${nd(p)}</a>`;}).join('');}
+function mapLink(s){const p=String(s).trim();return `<a class="place-link" href="https://map.naver.com/p/search/${encodeURIComponent(p)}" target="_blank" rel="noopener" aria-label="${p} 네이버 지도에서 찾기">📍 ${nd(p)}</a>`;}
 
 function mapItems(){
   const items=[], seen=new Set();
   const add=(ev,month)=>{
     if(!passes(ev))return;
-    const groups=curRegion==='seoul'?[ev.seoul]:curRegion==='nation'?[ev.nation]:[ev.seoul,ev.nation];
-    groups.flat().forEach(group=>String(group).split('·').forEach(raw=>{const place=raw.trim();if(!place||seen.has(place))return;seen.add(place);items.push({place,label:ev.f,time:month?month+'월 · '+ev.t:'연중 · '+ev.t});}));
+    placesForEvent(ev).forEach(({place,region})=>{if(!place||seen.has(place))return;seen.add(place);items.push({place,region,label:ev.f,time:month?month+'월 · '+ev.t:'연중 · '+ev.t});});
   };
   if(curMonth){DATA[curMonth].forEach(ev=>add(ev,curMonth));}else{for(let m=1;m<=12;m++)DATA[m].forEach(ev=>add(ev,m));}
   EVERGREEN.forEach(ev=>add(ev,0));
@@ -448,8 +495,8 @@ function setView(view){
 
 function cardHTML(ev){
   const cat=CAT[ev.c];
-  const ss=(curRegion==='all'||curRegion==='seoul')&&ev.seoul.length;
-  const sn=(curRegion==='all'||curRegion==='nation')&&ev.nation.length;
+  const grouped=placesForEvent(ev).reduce((acc,item)=>{(acc[item.region]??=[]).push(item.place);return acc;},{});
+  const spotRows=Object.entries(REGION_META).filter(([key])=>grouped[key]?.length).map(([key,meta])=>`<div class="spot-row"><span class="spot-tag${key==='seoul'?'':' nation'}">${meta.label}</span><span class="spot-list">${grouped[key].map(mapLink).join('')}</span></div>`).join('');
   return `<article class="card${ev.n?' author':''}" style="--acc:${cat.c}">
     ${ev.img?`<div class="card-photo"><img src="${ev.img}?v=2" alt="${ev.f}" loading="lazy"></div>`:''}
     <div class="chips"><span class="cat-chip">${cat.e} ${cat.ko}</span>${ev.n?'<span class="cat-chip" style="background:#caa24a">✍️ 작가 노트</span>':''}</div>
@@ -459,8 +506,7 @@ function cardHTML(ev){
       <span class="timing">${ev.t}</span>
     </div>
     <div class="spots">
-      ${ss?`<div class="spot-row"><span class="spot-tag">서울·경기</span><span class="spot-list">${ev.seoul.map(mapLink).join('')}</span></div>`:''}
-      ${sn?`<div class="spot-row"><span class="spot-tag nation">전국</span><span class="spot-list">${ev.nation.map(mapLink).join('')}</span></div>`:''}
+      ${spotRows}
     </div>
     <div class="tip${ev.n?' note':''}"><b>${ev.n?'✍️ 작가 노트':'💡 촬영 팁'}</b><span>${nd(ev.tip)}</span></div>
     ${ev.sp?`<div class="tip sp"><b>📱 스마트폰</b><span>${nd(ev.sp)}</span></div>`:''}
