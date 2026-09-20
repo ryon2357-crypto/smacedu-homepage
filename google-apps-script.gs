@@ -120,6 +120,11 @@ function doPost(e) {
   try {
     const params = e.parameter || {};
 
+    // ── 대한민국 출사지도 신청 처리 ──
+    if (params.type === '출사지도자료신청' || params.sheetType === 'photo-map') {
+      return _handlePhotoMapSignup(params);
+    }
+
     // ── 특강 신청 처리 ──
     if (params.sheetType === 'lecture') {
       return _handleLectureSignup(params);
@@ -381,6 +386,78 @@ const LECTURE_SHEET_NAME = '특강신청';
 const ADMIN_EMAIL        = 'elanvital7@naver.com';
 const SHEET_ID           = '18_lHsuigFPMoxPioQV9FTK1PUQmEAuIEpD8nG--Pq0I';
 const SHEET_URL          = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
+
+// ════════════════════════════════════════════
+// 대한민국 출사지도 신청 처리
+// ════════════════════════════════════════════
+
+const PHOTO_MAP_SHEET_NAME = '출사지도 신청';
+const PHOTO_MAP_URL        = 'https://www.smacedu.kr/photo-map';
+
+function _handlePhotoMapSignup(params) {
+  try {
+    const ss = SpreadsheetApp.openById(SHEET_ID);
+    let sheet = ss.getSheetByName(PHOTO_MAP_SHEET_NAME);
+
+    if (!sheet) {
+      sheet = ss.insertSheet(PHOTO_MAP_SHEET_NAME);
+      sheet.appendRow(['신청일시', '이름', '휴대전화', '이메일', '유입 경로', '광고 캠페인', '자료 전달 여부']);
+      sheet.setFrozenRows(1);
+      sheet.getRange('A1:G1').setBackground('#1e3a5f').setFontColor('#ffffff').setFontWeight('bold');
+    }
+
+    const now = new Date();
+    const timestamp = Utilities.formatDate(now, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss');
+    const name = String(params.name || '').trim();
+    const email = String(params.email || '').trim();
+    const phone = _normalizePhone(String(params.phone || params.course || '').replace(/^연락처\s*/, '').trim());
+    const source = String(params.source || params.age || '').replace(/^유입\s*/, '').trim() || '직접 방문';
+    const content = String(params.content || '');
+    const campaign = String(params.campaign || '').trim() || ((content.match(/\/\s*캠페인\s+(.+)$/) || [])[1] || '').trim();
+
+    sheet.appendRow([timestamp, name, phone, email, source, campaign, '화면 제공']);
+    const deliveryCell = sheet.getRange(sheet.getLastRow(), 7);
+
+    if (email) {
+      try {
+        _sendPhotoMapGuideEmail(name, email);
+        deliveryCell.setValue('화면·이메일 제공');
+      } catch (mailError) {
+        deliveryCell.setValue('화면 제공 / 이메일 확인 필요');
+      }
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function _sendPhotoMapGuideEmail(name, email) {
+  const safeName = escapeHtml(name || '신청자');
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <div style="background:linear-gradient(135deg,#df4f74,#d97732);padding:30px 26px;border-radius:12px 12px 0 0;text-align:center;">
+    <h1 style="color:#fff;margin:0;font-size:24px;">대한민국 출사지도를 보내드립니다</h1>
+  </div>
+  <div style="background:#fffaf5;padding:28px;border:1px solid #eadfd5;border-top:none;border-radius:0 0 12px 12px;">
+    <p style="margin:0 0 18px;font-size:16px;"><strong>${safeName}</strong>님, 신청해 주셔서 감사합니다.</p>
+    <p style="margin:0 0 22px;color:#5b514b;line-height:1.7;">월별 촬영 시기와 전국 출사 장소, 현장 촬영 팁을 아래 링크에서 확인하실 수 있습니다.</p>
+    <p style="text-align:center;margin:0 0 22px;">
+      <a href="${PHOTO_MAP_URL}" style="display:inline-block;background:#df4f74;color:#fff;text-decoration:none;font-weight:700;padding:14px 28px;border-radius:999px;">대한민국 출사지도 열기 →</a>
+    </p>
+    <p style="margin:0;font-size:12px;color:#8b7d74;">스마트미디어아트센터 · 엘란비탈 박성욱</p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to: email,
+    subject: '[엘란비탈] 대한민국 출사지도 링크를 보내드립니다',
+    htmlBody: html
+  });
+}
 
 // 시트의 자동 포맷으로 "08210-4717-0624"처럼 깨진 연락처를 "010-4717-0624" 형식으로 일괄 정리.
 // 편집기에서 이 함수를 선택해 한 번만 실행하면 됩니다 (배포 불필요).
