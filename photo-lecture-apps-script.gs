@@ -10,7 +10,8 @@
 // 4. 배포 → 배포 관리 → 기존 배포 옆 ✏️ → 새 버전으로 배포 (이미 인증된 배포를 재사용하므로 "차단된 앱" 문제가 없습니다).
 // 5. 배포 후 나온 웹 앱 URL을 photo-lecture-landing.html과 review-gift-landing.html의 SCRIPT_URL에 붙여넣습니다.
 //    (여러 랜딩페이지가 같은 웹 앱 URL을 공유하고, 요청에 form 파라미터로 분기합니다:
-//     review-gift-landing.html → form=reviewgift, youtube-planner-수강생용.html → form=ytplanner,
+//     review-gift-landing.html → form=reviewgift, hangawi-gift-landing.html → form=hangawigift,
+//     youtube-planner-수강생용.html → form=ytplanner,
 //     youtube-planner.html(리드마그넷 워크북) → form=ytworkbook, cert-correction.html → form=certcorrection.)
 // 6. 구글폼(forms.gle)으로 직접 제출해도 확인 메일이 가도록 트리거를 한 번 등록해야 합니다:
 //    Apps Script 편집기 좌측 "트리거"(시계 아이콘) → 트리거 추가
@@ -41,6 +42,12 @@ const REVIEWGIFT_TAB_NAME  = '후기선물신청'; // 기존 시트(다른 캠�
 const GIFT_DRIVE_URL       = 'https://www.smacedu.kr/review-gift-download'; // drive.google.com 직링크는 스팸 신호가 되어, smacedu.kr 리다이렉트 페이지를 거칩니다
 const RECAP_URL            = 'https://www.smacedu.kr/photo-lecture-recap'; // gamma.site 직링크는 스팸 신호가 되어, smacedu.kr 리다이렉트 페이지를 거칩니다
 const RECRUIT_URL          = 'https://www.smacedu.kr/photo-artist-instructor';
+
+// ── 한가위 선물 랜딩페이지(hangawi-gift-landing.html) 겸용 ──
+// 후기 선물과 같은 스프레드시트(REVIEWGIFT_SHEET_ID = 혜택 선물 신청서(응답))의 별도 탭에 기록합니다.
+// 페이지에서 form=hangawigift 로 요청을 보냅니다. 탭이 없으면 자동으로 만듭니다.
+const HANGAWI_TAB_NAME     = '한가위선물신청';
+const ONEDAY_0930_URL      = 'https://forms.gle/eJn6wqALT8VTagL77'; // 9/30 스마트폰 사진보정 끝판왕 원데이 신청서
 
 // 사진특강 신청 확인 메일 전용 감사 자료 링크 (review-gift 12종 번들과는 별개 — 이 메일에서만 사용).
 // 사용자가 직접 지정한 구글드라이브 직링크를 그대로 씁니다 (스팸 신호 우회용 리다이렉트 없음).
@@ -77,6 +84,9 @@ function doGet(e) {
   const params0 = e.parameter || {};
   if (params0.form === 'reviewgift') {
     return _handleReviewGiftSubmit(params0);
+  }
+  if (params0.form === 'hangawigift') {
+    return _handleHangawiSubmit(params0);
   }
   if (params0.form === 'ytplanner') {
     return _handleYtPlannerSubmit(params0);
@@ -449,6 +459,149 @@ function _sendReviewGiftAdminDigest(sheet, total) {
   MailApp.sendEmail({
     to:       ADMIN_EMAIL,
     subject:  `[SMAC EDU 후기선물] 신청 누적 ${total}명 — 최근 ${batchSize}명 알림`,
+    htmlBody: html
+  });
+}
+
+// ════════════════════════════════════════════
+// 한가위 선물 랜딩페이지 처리 (hangawi-gift-landing.html)
+// 후기 선물(review-gift)과 같은 스프레드시트의 '한가위선물신청' 탭에 기록하고,
+// 신청 즉시 12종 자료 안내 메일을 보냅니다.
+// ════════════════════════════════════════════
+function _getHangawiSheet(ss) {
+  let sheet = ss.getSheets().find(s => s.getName() === HANGAWI_TAB_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(HANGAWI_TAB_NAME);
+    sheet.appendRow(['타임스탬프', '이름', '전화번호', '이메일', '개인정보 동의']);
+    sheet.getRange(1, 1, 1, 5).setFontWeight('bold');
+  }
+  return sheet;
+}
+
+function _handleHangawiSubmit(params) {
+  try {
+    const name    = params.name  || '';
+    const email   = params.email || '';
+    const phone   = params.phone || '';
+    const consent = params.consent === 'Y' ? '동의함' : '';
+
+    const ss    = SpreadsheetApp.openById(REVIEWGIFT_SHEET_ID);
+    const sheet = _getHangawiSheet(ss);
+
+    const now       = new Date();
+    const timestamp = _formatKoreanTimestamp(now, Session.getScriptTimeZone());
+
+    sheet.appendRow([timestamp, name, phone, email, consent]);
+    const total = sheet.getLastRow() - 1;
+
+    if (email) _sendHangawiGiftEmail(name, email);
+    if (total % 10 === 0) _sendHangawiAdminDigest(sheet, total);
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// 제목에 이모지를 넣지 않고, 서드파티 직링크 대신 smacedu.kr 리다이렉트(GIFT_DRIVE_URL)를 씁니다
+// (후기 선물 메일이 스팸함으로 갔던 경험 — review-gift-작업정리.md 문제 4).
+function _sendHangawiGiftEmail(name, email) {
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#172554;">
+  <div style="background:linear-gradient(135deg,#f97316,#fbbf24);padding:32px 28px;border-radius:12px 12px 0 0;text-align:center;">
+    <h1 style="color:#fff;margin:0;font-size:24px;font-weight:900;">한가위 선물 받으세요</h1>
+    <p style="color:rgba(255,255,255,0.9);margin:10px 0 0;font-size:15px;">약속드린 실전 자료 12종을 모두 보내드립니다</p>
+  </div>
+  <div style="background:#fff9ec;padding:28px;border:1px solid #fcd9a8;border-top:none;border-radius:0 0 12px 12px;">
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name)}</strong>님, 반갑습니다!</p>
+    <p style="margin:0 0 20px;color:#4b5563;line-height:1.7;">
+      신청해 주셔서 감사합니다. 풍성한 한가위 보내세요.<br>
+      사진·SNS·마케팅·AI 실전 자료 12가지를 아래 링크에서 바로 다운로드하실 수 있도록 준비했습니다.
+    </p>
+
+    <div style="text-align:center;margin-bottom:24px;">
+      <a href="${GIFT_DRIVE_URL}" style="display:inline-block;background:linear-gradient(135deg,#f97316,#fbbf24);color:#fff;text-decoration:none;font-size:15px;font-weight:800;padding:14px 34px;border-radius:999px;">선물 자료 12종 다운로드</a>
+    </div>
+
+    <div style="background:#fff;border:1px solid #fcd9a8;border-radius:10px;padding:20px 22px;margin-bottom:22px;">
+      <p style="margin:0 0 10px;font-size:13px;font-weight:800;color:#ea6b0c;">받으시는 자료 12가지</p>
+      <ol style="margin:0;padding-left:18px;font-size:13px;color:#374151;line-height:1.9;">
+        <li>엘란비탈 스마트폰 사진 용어집</li>
+        <li>미드저니 V6→V7 활용 꿀팁 가이드</li>
+        <li>네이버 블로그 상위노출 프리미엄 체크리스트</li>
+        <li>프로처럼 사진 잘 찍는 법</li>
+        <li>영상 하나로 알고리즘 타는 유튜브 전략</li>
+        <li>적은 예산으로 큰 효과를 내는 마케팅 전략</li>
+        <li>챗GPT로 돈 버는 현실적인 10가지 방법</li>
+        <li>초보자용 사진촬영 체크리스트</li>
+        <li>캔바 AI 활용법 — 기본기편</li>
+        <li>캔바 단축키 모음</li>
+        <li>퇴사 전에 반드시 준비해야 할 7가지</li>
+        <li>윈도우 필수 단축키 2026</li>
+      </ol>
+    </div>
+
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:18px 20px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0 0 6px;font-size:14px;font-weight:700;color:#92400e;">9월 30일(수) 저녁 9시 — 스마트폰 사진보정 끝판왕 원데이</p>
+      <p style="margin:0 0 12px;font-size:13px;color:#7c2d12;">스냅시드와 라이트룸 모바일로 사진 보정의 처음부터 끝까지, ZOOM 온라인 · 참가비 30,000원<br>프리셋 10종(5만원 상당)·10월 1일 AI 특강 녹화본(3만원 상당)까지 전부 포함 · 이번 기회에만 적용 · 이 혜택은 예고 없이 종료될 수 있습니다</p>
+      <a href="${ONEDAY_0930_URL}" style="display:inline-block;background:#fff;color:#92400e;border:1px solid #fde68a;text-decoration:none;font-size:14px;font-weight:700;padding:11px 28px;border-radius:999px;">원데이 신청서 작성하기</a>
+    </div>
+
+    <p style="margin:0;font-size:13px;color:#9ca3af;">
+      문의는 <a href="mailto:${ADMIN_EMAIL}" style="color:#f97316;">${ADMIN_EMAIL}</a>로 보내주세요.
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       email,
+    subject:  '[SMAC EDU] 한가위 선물 — 실전 자료 12종을 보내드립니다',
+    htmlBody: html
+  });
+}
+
+function _sendHangawiAdminDigest(sheet, total) {
+  const sheetUrl   = `https://docs.google.com/spreadsheets/d/${REVIEWGIFT_SHEET_ID}/edit#gid=${sheet.getSheetId()}`;
+  const lastRow    = sheet.getLastRow();
+  const batchSize  = Math.min(10, lastRow - 1);
+  const startRow   = lastRow - batchSize + 1;
+  // 열 순서: 타임스탬프(1), 이름(2), 전화번호(3), 이메일(4), ...
+  const rows = sheet.getRange(startRow, 1, batchSize, 4).getValues();
+
+  const rowsHtml = rows.map(r => `
+    <tr>
+      <td style="padding:6px 10px;font-size:13px;color:#64748b;">${r[0]}</td>
+      <td style="padding:6px 10px;font-size:13px;"><strong>${escapeHtml(r[1])}</strong></td>
+      <td style="padding:6px 10px;font-size:13px;">${escapeHtml(r[3])}</td>
+      <td style="padding:6px 10px;font-size:13px;">${escapeHtml(r[2] || '미입력')}</td>
+    </tr>`).join('');
+
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#172554;color:#fff;padding:18px 22px;margin:0;border-radius:8px 8px 0 0;">
+    한가위 선물 신청 알림 (누적 ${total}명 — 최근 ${batchSize}명)
+  </h2>
+  <div style="background:#f8fafc;padding:22px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid #e2e8f0;border-radius:6px;">
+      <tr style="background:#f1f5f9;font-size:12px;color:#64748b;">
+        <th style="padding:8px 10px;text-align:left;">신청일시</th>
+        <th style="padding:8px 10px;text-align:left;">이름</th>
+        <th style="padding:8px 10px;text-align:left;">이메일</th>
+        <th style="padding:8px 10px;text-align:left;">연락처</th>
+      </tr>
+      ${rowsHtml}
+    </table>
+    <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
+      <a href="${sheetUrl}">스프레드시트에서 전체 목록 확인 →</a>
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to:       ADMIN_EMAIL,
+    subject:  `[SMAC EDU 한가위선물] 신청 누적 ${total}명 — 최근 ${batchSize}명 알림`,
     htmlBody: html
   });
 }
