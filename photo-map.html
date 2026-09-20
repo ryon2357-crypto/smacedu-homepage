@@ -54,7 +54,8 @@
   .month-pills button{border:1px solid var(--line);background:#fff;font-family:inherit;font-size:13px;font-weight:600;color:var(--sub);width:36px;height:36px;border-radius:10px;cursor:pointer;transition:.18s}
   .month-pills button:hover{border-color:#cfc7ba}
   .month-pills button.on{color:#fff;border-color:transparent}
-  .month-pills button.all{width:auto;padding:0 14px}
+.month-pills button.all{width:auto;padding:0 14px}
+.month-pills button.year{width:auto;padding:0 14px}
 
   /* SECTION */
   .month-block{padding:52px 0 8px;scroll-margin-top:120px}
@@ -391,6 +392,7 @@ let curRegion='all', curMonth=0, curCat='all', curView='calendar';
 const app=document.getElementById('app'), emptyEl=document.getElementById('empty');
 const pills=document.getElementById('monthPills');
 for(let m=1;m<=12;m++){const b=document.createElement('button');b.dataset.month=m;b.textContent=m;pills.appendChild(b);}
+{const b=document.createElement('button');b.dataset.month='-1';b.className='year';b.textContent='연중 가능';pills.appendChild(b);}
 
 const REGION_META={
   seoul:{label:'서울'},capital:{label:'경기·인천'},gangwon:{label:'강원'},chungbuk:{label:'충북'},chungnam:{label:'충남·대전'},
@@ -438,7 +440,8 @@ function mapItems(){
     if(!passes(ev))return;
     placesForEvent(ev).forEach(({place,region})=>{if(!place||seen.has(place))return;seen.add(place);items.push({place,region,label:ev.f,time:month?month+'월 · '+ev.t:'연중 · '+ev.t});});
   };
-  if(curMonth){DATA[curMonth].forEach(ev=>add(ev,curMonth));}else{for(let m=1;m<=12;m++)DATA[m].forEach(ev=>add(ev,m));}
+  if(curMonth>=1&&curMonth<=12){DATA[curMonth].forEach(ev=>add(ev,curMonth));}
+  else if(curMonth===0){for(let m=1;m<=12;m++)DATA[m].forEach(ev=>add(ev,m));}
   EVERGREEN.forEach(ev=>add(ev,0));
   return items;
 }
@@ -515,8 +518,9 @@ function cardHTML(ev){
 
 function render(){
   app.innerHTML=''; let any=false;
-  document.getElementById('readerNav').classList.toggle('on',curMonth!==0);
-  if(curMonth!==0)document.getElementById('readerMonth').textContent=curMonth+'월';
+  const isCalendarMonth=curMonth>=1&&curMonth<=12;
+  document.getElementById('readerNav').classList.toggle('on',isCalendarMonth);
+  if(isCalendarMonth)document.getElementById('readerMonth').textContent=curMonth+'월';
   for(let m=1;m<=12;m++){
     if(curMonth!==0&&curMonth!==m)continue;
     const ev=DATA[m].filter(passes); if(!ev.length)continue; any=true;
@@ -547,7 +551,7 @@ document.getElementById('regionToggle').addEventListener('click',e=>{const b=e.t
 document.getElementById('catFilter').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;curCat=b.dataset.cat;document.querySelectorAll('#catFilter button').forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.style.background=on&&curCat!=='all'?CAT[curCat].c:(on?'#26221e':'');});render();});
 document.getElementById('viewToggle').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setView(b.dataset.view);});
 function selectMonth(month,scroll=true){
-  curMonth=month;document.querySelectorAll('#monthPills button').forEach(x=>{const on=+x.dataset.month===curMonth;x.classList.toggle('on',on);if(on&&curMonth!==0)x.style.background=`var(--${monthSeason(curMonth)})`;else if(on)x.style.background='#26221e';else x.style.background='';});render();if(scroll)document.getElementById('readerNav').scrollIntoView({behavior:'smooth',block:'start'});
+  curMonth=month;document.querySelectorAll('#monthPills button').forEach(x=>{const on=+x.dataset.month===curMonth;x.classList.toggle('on',on);if(on&&curMonth>=1&&curMonth<=12)x.style.background=`var(--${monthSeason(curMonth)})`;else if(on)x.style.background='#26221e';else x.style.background='';});render();if(scroll){const target=curMonth>=1&&curMonth<=12?document.getElementById('readerNav'):document.getElementById('app');target.scrollIntoView({behavior:'smooth',block:'start'});}
 }
 pills.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;selectMonth(+b.dataset.month);});
 document.getElementById('prevMonth').addEventListener('click',()=>selectMonth(curMonth===1?12:curMonth-1,false));
