@@ -37,6 +37,10 @@
 
   /* CONTROLS */
   .controls{position:sticky;top:0;z-index:50;background:rgba(250,248,245,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .inapp-guide{display:none;max-width:1200px;margin:0 auto;padding:11px 24px 0;color:#5f574e;font-size:12.5px;line-height:1.55}
+  .inapp-guide.on{display:block}
+  .inapp-guide-inner{padding:10px 12px;border:1px solid #ead8a8;border-radius:11px;background:#fff8df}
+  .inapp-guide b{color:#26221e}
   .controls-inner{display:flex;flex-direction:column;gap:10px;width:100%;max-width:1200px;margin:0 auto;padding:12px 24px}
   .ctrl-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
   .view-toggle{display:grid;grid-template-columns:1fr 1fr;gap:5px;width:min(100%,420px);padding:4px;background:#e9e3da;border-radius:13px}
@@ -139,7 +143,7 @@
   footer .sig{margin-top:5px;font-size:12.5px}
 
   @media(max-width:900px){.map-layout{grid-template-columns:1fr;min-height:0}.naver-map{height:520px}.map-place-list{max-height:420px}}
-  @media(max-width:760px){.academy-cta{align-items:flex-start;flex-direction:column}.academy-btn{width:100%}.participate{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:1}.hero{padding:60px 20px 44px}.controls-inner{padding:11px 14px}.grid{grid-template-columns:1fr}.month-num{font-size:50px}.view-toggle{width:100%}.map-view{padding:0 12px}.map-guide{align-items:flex-start;flex-direction:column;gap:5px}.map-shell{padding:9px}.naver-map{height:56vh;min-height:390px}.map-place-list{max-height:none}.footer-notes{grid-template-columns:1fr}.footer-note{padding:15px 14px}}
+  @media(max-width:760px){.academy-cta{align-items:flex-start;flex-direction:column}.academy-btn{width:100%}.participate{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:1}.hero{padding:60px 20px 44px}.controls{position:relative;top:auto;backdrop-filter:none}.controls-inner{padding:11px 14px}.inapp-guide{padding:10px 14px 0}.grid{grid-template-columns:1fr}.month-num{font-size:50px}.view-toggle{width:100%}.map-view{padding:0 12px}.map-guide{align-items:flex-start;flex-direction:column;gap:5px}.map-shell{padding:9px}.naver-map{height:56vh;min-height:390px}.map-place-list{max-height:none}.footer-notes{grid-template-columns:1fr}.footer-note{padding:15px 14px}}
 
 </style>
 </head>
@@ -158,6 +162,9 @@
 </header>
 
 <nav class="controls">
+  <div class="inapp-guide" id="inappGuide" role="note">
+    <div class="inapp-guide-inner">📱 <b>본문이 좁거나 가려져 보이나요?</b><br>카카오톡 화면 하단 오른쪽 <b>⋮</b>을 누른 뒤 <b>다른 브라우저로 열기</b>를 선택하면 편하게 볼 수 있습니다.</div>
+  </div>
   <div class="controls-inner">
     <div class="view-toggle" id="viewToggle" aria-label="출사지도 보기 방식">
       <button type="button" data-view="calendar" class="on">📅 월별 달력</button>
@@ -250,6 +257,7 @@
 
 <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=yyt8w4apwf"></script>
 <script>
+if(/KAKAOTALK|KakaoTalk/i.test(navigator.userAgent)) document.getElementById('inappGuide').classList.add('on');
 const SEASON={spring:{ko:'봄'},summer:{ko:'여름'},autumn:{ko:'가을'},winter:{ko:'겨울'}};
 const monthSeason=m=>(m>=3&&m<=5)?'spring':(m>=6&&m<=8)?'summer':(m>=9&&m<=11)?'autumn':'winter';
 const EN=['','JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
