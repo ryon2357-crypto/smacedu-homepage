@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
   <title>한가위 선물 받으세요 — 엘란비탈 실전 자료 12종 전부 드립니다</title>
-  <meta name="description" content="풍성한 한가위, 사진·마케팅·AI 실전 자료 12종을 전부 선물로 드립니다. 이름·이메일·연락처만 남겨주시면 바로 보내드려요." />
+  <meta name="description" content="풍성한 한가위, 사진·마케팅·AI 실전 자료 12종을 전부 선물로 드립니다. 신청 완료 후 바로 받으실 수 있어요." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.smacedu.kr/hangawi-gift-landing" />
   <meta property="og:title" content="한가위 선물 받으세요 — 엘란비탈 실전 자료 12종 전부 드립니다" />
@@ -252,6 +252,12 @@
     }
     .form-msg.success { background: #eefbf1; border: 1px solid #b9ecc7; color: #1e8a4a; }
     .form-msg.error   { background: #fef1f1; border: 1px solid #f4bcbc; color: #c23434; }
+    .form-msg .gift-link {
+      display: inline-flex; margin-top: 12px; padding: 11px 18px;
+      border-radius: 999px; background: #1e8a4a; color: #fff;
+      text-decoration: none; font-size: 14px; font-weight: 800;
+    }
+    .form-msg .gift-link:hover { background: #176d3b; }
 
     /* ── 함께 보시면 좋은 과정 (여행사진작가 · 원데이) ── */
     #travel { background: var(--white); }
@@ -401,7 +407,7 @@
     </h1>
     <p class="hero-sub reveal reveal-delay-1">
       풍성한 한가위, 사진·마케팅·AI 실전 자료 <strong>12종을 전부</strong> 선물로 드립니다.<br>
-      이름·이메일·연락처만 남겨주세요. 신청 즉시 이메일로 보내드려요.
+      이름·이메일·연락처만 남겨주세요. 신청을 마치면 바로 선물을 받으실 수 있어요.
     </p>
     <div class="hero-actions reveal reveal-delay-2">
       <a class="btn btn-primary btn-pulse" href="#apply">지금 선물 받기</a>
@@ -497,7 +503,7 @@
     </div>
 
     <div class="gift-note reveal">
-      <p>위 카드는 <strong>미리보기</strong>라 눌러도 바로 다운로드되지 않아요.<br>아래 <strong>이름 · 이메일 · 연락처</strong>만 남겨주시면 신청 직후 12가지 자료를 전부 보내드려요.</p>
+      <p>위 카드는 <strong>미리보기</strong>라 눌러도 바로 다운로드되지 않아요.<br>아래 <strong>이름·이메일·연락처</strong>를 남기면 완료 화면에서 12가지 자료를 바로 받으실 수 있어요.</p>
       <a class="btn btn-primary" href="#apply">지금 신청하고 바로 받기 →</a>
     </div>
   </div>
@@ -508,7 +514,7 @@
   <div class="container">
     <p class="section-label reveal">HOW TO RECEIVE</p>
     <h2 class="reveal">이름·이메일·연락처만 남겨주세요</h2>
-    <p class="section-desc reveal">신청 즉시 12가지 자료 다운로드 안내를 이메일로 보내드립니다.</p>
+    <p class="section-desc reveal">신청을 마치면 완료 화면에서 12가지 자료를 바로 받으실 수 있습니다.</p>
 
     <div class="apply-card reveal">
       <form id="applyForm" onsubmit="submitApply(event)" novalidate>
@@ -628,6 +634,7 @@
   /* ryon2357 소유의 기존 '후기/혜택 선물 신청서'로 직접 제출합니다.
      응답은 연결된 '혜택 선물 신청서(응답)' 시트에 자동 취합됩니다. */
   const FORM_RESPONSE_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfy-QlPgnlkn669nkgoflspAA1bxVSAbVFChYUwx-N4qPe0iw/formResponse';
+  const GIFT_FOLDER_URL = 'https://drive.google.com/drive/folders/1hm3zlJevuCMpOEGfOnZDH-w0I9wYqy8n?usp=drive_link';
 
   /* 여행사진작가 신청 마감 — 연장하면 이 한 줄만 바꾸세요 (한국시간) */
   const TRAVEL_DEADLINE = new Date('2026-09-20T23:59:59+09:00').getTime();
@@ -665,7 +672,7 @@
         headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
         body: formData.toString()
       });
-      showMsg('success', `${name}님, 신청이 완료됐습니다!\n확인 메일로 자료를 바로 보내드렸어요.\n메일이 안 보이면 스팸함도 확인해 주세요.\n풍성한 한가위 보내세요.`);
+      showGiftSuccess(name);
       btn.textContent = '✓ 신청 완료';
     } catch {
       showMsg('error', '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
@@ -678,6 +685,21 @@
     const el = document.getElementById('formMsg');
     el.className = `form-msg ${type}`;
     el.textContent = text;
+    el.style.display = 'block';
+  }
+
+  function showGiftSuccess(name) {
+    const el = document.getElementById('formMsg');
+    el.className = 'form-msg success';
+    el.textContent = `${name}님, 신청이 완료됐습니다!\n아래 버튼을 눌러 한가위 선물 12종을 바로 받으세요.\n풍성한 한가위 보내세요.`;
+    const link = document.createElement('a');
+    link.className = 'gift-link';
+    link.href = GIFT_FOLDER_URL;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = '한가위 선물 12종 받기';
+    el.appendChild(document.createElement('br'));
+    el.appendChild(link);
     el.style.display = 'block';
   }
 
