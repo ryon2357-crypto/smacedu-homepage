@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="사진과 기억을 철학·문학·사회학·시각문화·디지털 미디어로 읽는 2시간 사진인문학 강의 내용 정리">
+  <link rel="canonical" href="https://www.smacedu.kr/photo-humanities-memory">
+  <title>사진과 기억 — 2시간 사진인문학 강의 | 스마트미디어아트센터</title>
+  <style>
+    :root {
+      --navy:#101d2e; --navy-2:#172c3f; --teal:#2d9387; --mint:#a9d8cb;
+      --paper:#f7f5ef; --white:#fbfcfb; --ink:#18212b; --muted:#66747d;
+      --line:#d6dad7; --gold:#d6a541; --shadow:0 18px 50px rgba(16,29,46,.12);
+      color-scheme:light;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:16px;line-height:1.75;word-break:keep-all}
+    a{color:inherit}
+    img{display:block;max-width:100%}
+    .skip{position:absolute;left:-9999px;top:0}.skip:focus{left:1rem;top:1rem;z-index:99;background:#fff;padding:.75rem 1rem;border:2px solid var(--teal)}
+    .topbar{position:sticky;top:0;z-index:20;background:rgba(16,29,46,.96);backdrop-filter:blur(12px);color:#fff;border-bottom:1px solid rgba(255,255,255,.12)}
+    .topbar-inner{max-width:1180px;margin:auto;min-height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{font-weight:800;letter-spacing:-.02em}.brand small{font-size:.78rem;color:var(--mint);margin-left:.55rem;font-weight:700}
+    nav{display:flex;gap:18px;overflow:auto;white-space:nowrap;font-size:.88rem;color:#d9e2e4;scrollbar-width:none}nav a{text-decoration:none;padding:.35rem 0}nav a:hover,nav a:focus{color:var(--mint)}
+    .hero{background:var(--navy);color:var(--white)}
+    .hero-grid{max-width:1180px;margin:auto;display:grid;grid-template-columns:minmax(280px,.83fr) minmax(0,1.17fr);min-height:610px}
+    .portrait{position:relative;overflow:hidden;background:#dbcbb5}.portrait img{width:100%;height:100%;object-fit:cover;filter:sepia(.18) contrast(.94)}
+    .portrait::after{content:"Julia Margaret Cameron, Sadness, 1864 · Public Domain";position:absolute;left:24px;bottom:18px;font-size:.72rem;color:#253341;background:rgba(247,245,239,.84);padding:.3rem .55rem}
+    .hero-copy{padding:82px 64px 68px;display:flex;flex-direction:column;justify-content:center;position:relative}
+    .hero-copy::before{content:"";position:absolute;left:38px;top:86px;bottom:86px;width:4px;background:var(--teal)}
+    .eyebrow{margin:0 0 18px;color:var(--mint);font-weight:800;font-size:.88rem;letter-spacing:.06em}
+    h1{margin:0;font-size:clamp(2.8rem,6vw,5.6rem);line-height:1.02;letter-spacing:-.06em}
+    .hero-sub{margin:22px 0 0;color:#d2dce0;font-size:clamp(1.05rem,2vw,1.35rem);max-width:700px}
+    .hero-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}.pill{border:1px solid rgba(169,216,203,.42);color:var(--mint);padding:.38rem .72rem;border-radius:99px;font-size:.82rem;font-weight:700}
+    main{max-width:1180px;margin:auto;padding:72px 24px 100px}
+    section{scroll-margin-top:88px;margin-top:92px}section:first-child{margin-top:0}
+    .section-head{display:grid;grid-template-columns:180px minmax(0,1fr);gap:28px;align-items:start;margin-bottom:34px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+    .section-no{color:var(--teal);font-size:.83rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+    h2{font-size:clamp(2rem,4vw,3.5rem);line-height:1.15;letter-spacing:-.045em;margin:0}
+    .lead{font-size:1.12rem;color:var(--muted);max-width:790px;margin:12px 0 0}
+    .schedule{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .time-card{background:var(--white);border-top:4px solid var(--teal);padding:22px;min-height:160px;box-shadow:0 5px 20px rgba(16,29,46,.05)}
+    .time-card.break{border-color:var(--gold)}.time{font-size:1.55rem;font-weight:900;color:var(--teal)}.break .time{color:#a77b20}.time-card h3{margin:.35rem 0 .45rem;font-size:1.05rem}.time-card p{margin:0;color:var(--muted);font-size:.9rem}
+    .question{margin-top:24px;padding:25px 28px;background:var(--navy);color:#fff;display:grid;grid-template-columns:160px 1fr;gap:24px;align-items:center}.question strong{color:var(--mint)}.question p{margin:0;font-size:1.14rem}
+    .thinkers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .thinker{background:var(--white);border:1px solid var(--line);padding:26px 28px;position:relative;overflow:hidden}.thinker::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--teal)}
+    .thinker .name{font-weight:900;color:var(--teal);font-size:.92rem}.thinker h3{font-size:1.5rem;line-height:1.35;margin:.3rem 0 .65rem;letter-spacing:-.03em}.thinker p{margin:0;color:var(--muted)}
+    .thinker .ask{display:block;margin-top:16px;padding-top:14px;border-top:1px solid var(--line);color:var(--ink);font-weight:700}
+    .memory-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:26px;align-items:stretch}
+    .memory-list{background:var(--white);padding:8px 30px}.row{display:grid;grid-template-columns:130px 1fr;gap:22px;padding:22px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.row strong{font-size:1.08rem}.row span{color:var(--muted)}
+    .image-card{background:var(--navy);color:#fff;display:flex;flex-direction:column}.image-card img{width:100%;aspect-ratio:1/1;object-fit:cover}.image-card div{padding:24px}.image-card h3{margin:0 0 .45rem;font-size:1.45rem}.image-card p{margin:0;color:#ccd8dc}.credit{display:block;margin-top:12px;font-size:.72rem;color:#92a3aa}
+    .ethics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.panel{padding:30px;background:var(--navy);color:#fff}.panel.alt{background:var(--navy-2)}.panel h3{margin:0 0 12px;color:var(--mint);font-size:1.55rem}.panel p{margin:0;color:#d5dee1}.panel ul{margin:18px 0 0;padding-left:1.3rem}.panel li{margin:.45rem 0;color:#eef2f2}
+    .framework{counter-reset:item;display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.framework article{background:var(--white);padding:22px 18px;border-bottom:4px solid var(--teal);min-height:205px}.framework article::before{counter-increment:item;content:"0" counter(item);display:block;color:var(--teal);font-weight:900;font-size:.82rem}.framework h3{margin:.45rem 0;font-size:1.25rem}.framework p{margin:0;color:var(--muted);font-size:.92rem}
+    .practice{display:grid;grid-template-columns:1fr 1fr;gap:22px}.task{background:#fff;border:1px solid var(--line);padding:30px}.task .minutes{color:var(--teal);font-weight:900;font-size:.85rem}.task h3{font-size:1.65rem;margin:.35rem 0 16px}.task ol{margin:0;padding-left:1.35rem}.task li{margin:.6rem 0;color:var(--muted)}
+    .closing{background:var(--navy);color:#fff;padding:48px;box-shadow:var(--shadow)}.closing h2{max-width:900px}.closing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:34px}.closing-grid div{border-top:2px solid var(--teal);padding-top:14px}.closing-grid strong{color:var(--mint)}.closing-grid p{margin:.45rem 0 0;color:#d3dde0;font-size:.92rem}
+    .final-line{margin:36px 0 0;font-size:1.25rem;font-weight:800;color:var(--mint)}
+    footer{border-top:1px solid var(--line);padding:30px 24px;color:var(--muted);font-size:.85rem}.footer-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:30px}.footer-inner p{margin:0}
+    @media(max-width:900px){.topbar-inner{align-items:flex-start;flex-direction:column;padding-top:12px;padding-bottom:10px;gap:6px}.hero-grid{grid-template-columns:1fr}.portrait{height:340px}.hero-copy{padding:58px 38px 58px 56px}.hero-copy::before{left:28px;top:62px;bottom:62px}.schedule{grid-template-columns:repeat(2,1fr)}.memory-grid,.section-head{grid-template-columns:1fr}.section-head{gap:10px}.framework{grid-template-columns:repeat(2,1fr)}.closing-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:620px){body{font-size:16px}.topbar{position:relative}nav{width:100%;padding-bottom:4px}.hero-grid{min-height:0}.portrait{height:280px}.hero-copy{padding:46px 24px 46px 42px}.hero-copy::before{left:22px;top:49px;bottom:49px}.hero-sub{font-size:1rem}.hero-meta{margin-top:24px}main{padding:48px 18px 72px}section{margin-top:68px}.schedule,.thinkers,.ethics,.practice,.framework,.closing-grid{grid-template-columns:1fr}.time-card{min-height:auto}.question{grid-template-columns:1fr;gap:6px;padding:22px}.row{grid-template-columns:1fr;gap:5px}.closing{padding:32px 24px}.footer-inner{flex-direction:column;gap:8px}}
+    @media print{.topbar{display:none}.hero-grid{min-height:auto}.hero{break-after:page}.hero-copy{padding:50px}.portrait{height:520px}main{padding:30px 0}.schedule{grid-template-columns:repeat(4,1fr)}section{break-inside:avoid;margin-top:50px}.thinker,.task,.time-card,.panel{break-inside:avoid;box-shadow:none}.closing{box-shadow:none}a{text-decoration:none}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#content">본문으로 바로가기</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">SMAC · 사진과 기억 <small>2시간 강의 정리</small></div>
+      <nav aria-label="내용 바로가기">
+        <a href="#schedule">운영표</a><a href="#philosophy">철학·문학</a><a href="#society">사회적 기억</a><a href="#ethics">윤리·권력</a><a href="#digital">디지털 기억</a><a href="#practice">실습</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-grid">
+      <figure class="portrait"><img src="assets/photo-humanities/cameron.jpg" alt="줄리아 마거릿 캐머런이 촬영한 인물 초상사진"></figure>
+      <div class="hero-copy">
+        <p class="eyebrow">PHOTO HUMANITIES</p>
+        <h1>사진과<br>기억</h1>
+        <p class="hero-sub">우리는 왜 어떤 장면을 남기는가. 사진을 과거의 단순한 복사본이 아니라 현재의 해석, 관계, 권력이 만나는 기억의 장치로 읽는다.</p>
+        <div class="hero-meta"><span class="pill">총 120분</span><span class="pill">27개 강의 화면</span><span class="pill">참여 활동 25분</span><span class="pill">휴식 10분</span></div>
+      </div>
+    </div>
+  </div>
+
+  <main id="content">
+    <section id="schedule">
+      <div class="section-head"><div class="section-no">Course map</div><div><h2>두 시간의 흐름</h2><p class="lead">설명 85분, 참여 활동 25분, 휴식 10분으로 구성한다. 이론은 정답이 아니라 사진에 던질 질문을 늘리기 위해 사용한다.</p></div></div>
+      <div class="schedule">
+        <article class="time-card"><div class="time">10분</div><h3>도입</h3><p>오래 남은 사진 한 장을 떠올리고 장면·감정·빈자리·변화를 말한다.</p></article>
+        <article class="time-card"><div class="time">25분</div><h3>1부 철학·문학</h3><p>현실, 시간, 비자발적 기억, 푼크툼, 복제를 중심으로 사진을 읽는다.</p></article>
+        <article class="time-card"><div class="time">25분</div><h3>2부 사회적 기억</h3><p>가족 앨범, 포스트메모리, 기록의 부재, 캡션, 집단 기억, 아카이브를 다룬다.</p></article>
+        <article class="time-card break"><div class="time">10분</div><h3>휴식</h3><p>설명이 바뀌면 의미도 크게 달라질 사진 한 장을 메모한다.</p></article>
+        <article class="time-card"><div class="time">20분</div><h3>3부 윤리·권력</h3><p>보는 방식, 촬영 관계, 고통의 이미지, 감시와 초상의 권력을 살핀다.</p></article>
+        <article class="time-card"><div class="time">10분</div><h3>4부 디지털 기억</h3><p>스마트폰 갤러리, 알고리즘의 추천, 생성 이미지의 진실성을 논의한다.</p></article>
+        <article class="time-card"><div class="time">15분</div><h3>실습</h3><p>사진을 다섯 번 읽고, 같은 사진에 서로 다른 캡션을 붙여 비교한다.</p></article>
+        <article class="time-card"><div class="time">5분</div><h3>마무리</h3><p>개인·관계·사회·책임의 질문으로 오늘의 사진 습관을 다시 본다.</p></article>
+      </div>
+      <div class="question"><strong>출발 질문</strong><p>사진은 과거를 보존하는가, 아니면 현재의 우리가 과거를 다시 만드는가?</p></div>
+    </section>
+
+    <section id="philosophy">
+      <div class="section-head"><div class="section-no">Part 1 · 25 min</div><div><h2>철학과 문학이 설명하는 기억</h2><p class="lead">사진은 현실의 일부를 고정하지만, 관객은 그 장면에 시간과 감정, 개인적 경험을 다시 보탠다.</p></div></div>
+      <div class="thinkers">
+        <article class="thinker"><div class="name">플라톤</div><h3>보이는 것은 현실의 전부인가</h3><p>동굴의 그림자처럼 사진도 세계 전체가 아니라 프레임과 장치가 선택한 평면이다.</p><span class="ask">질문: 사진 밖에는 무엇이 있는가?</span></article>
+        <article class="thinker"><div class="name">앙리 베르그송</div><h3>시간은 지속으로 경험된다</h3><p>우리는 시간을 잘린 점이 아니라 앞선 순간이 현재에 스며드는 흐름으로 경험한다.</p><span class="ask">질문: 멈춘 장면의 전과 후는 무엇인가?</span></article>
+        <article class="thinker"><div class="name">마르셀 프루스트</div><h3>감각은 과거를 갑자기 부른다</h3><p>빛, 색, 표정은 의도적으로 찾지 않았던 기억과 감정을 몸에서 먼저 깨운다.</p><span class="ask">질문: 이 사진은 어떤 감각을 되살리는가?</span></article>
+        <article class="thinker"><div class="name">롤랑 바르트</div><h3>스투디움과 푼크툼</h3><p>사회적으로 배우며 이해하는 관심과 개인의 기억을 찌르는 예상 밖의 세부를 구분한다.</p><span class="ask">질문: 내 시선은 어디에서 멈추는가?</span></article>
+        <article class="thinker"><div class="name">발터 벤야민</div><h3>복제는 이미지와의 만남을 바꾼다</h3><p>복제는 접근을 넓히는 동시에 이미지가 놓였던 장소, 권위, 맥락을 바꾼다.</p><span class="ask">질문: 어디서 보느냐가 의미를 어떻게 바꾸는가?</span></article>
+      </div>
+    </section>
+
+    <section id="society">
+      <div class="section-head"><div class="section-no">Part 2 · 25 min</div><div><h2>개인의 앨범에서 사회의 기억으로</h2><p class="lead">가족사진과 공적 아카이브는 과거를 남기면서 동시에 누가 ‘우리’에 포함되는지 정한다.</p></div></div>
+      <div class="memory-grid">
+        <div class="memory-list">
+          <div class="row"><strong>가족 앨범</strong><span>기념할 순간과 행복한 표정을 선택해 가족이 되고 싶은 모습을 만든다. 앨범에 없는 갈등과 돌봄의 시간도 함께 읽어야 한다.</span></div>
+          <div class="row"><strong>포스트메모리</strong><span>마리안 허시는 후대가 사진, 이야기, 침묵을 통해 직접 겪지 않은 과거와 깊은 관계를 맺는 방식을 설명한다.</span></div>
+          <div class="row"><strong>사진의 부재</strong><span>사진이 없다는 것은 중요하지 않았다는 뜻이 아닐 수 있다. 카메라의 소유, 시간, 안전, 보존 조건을 묻는다.</span></div>
+          <div class="row"><strong>캡션</strong><span>날짜와 이름도 중립적인 장식이 아니다. 같은 사진도 어떤 문장과 함께 오느냐에 따라 다른 증거를 찾게 한다.</span></div>
+          <div class="row"><strong>집단 기억</strong><span>모리스 할브왁스는 개인의 기억이 사회적 틀 안에서 구성된다고 본다. 반복되는 공통 이미지는 공동체를 잇고 다른 경험을 가릴 수도 있다.</span></div>
+          <div class="row"><strong>아카이브</strong><span>촬영은 기록할 가치를, 분류는 이름을, 보존은 후대가 만날 과거를 결정한다. 기록자의 질서도 함께 남는다.</span></div>
+        </div>
+        <aside class="image-card"><img src="assets/photo-humanities/blue_marble.jpg" alt="1972년 아폴로 17호에서 촬영한 지구 사진 블루 마블"><div><h3>한 장의 사진이 ‘우리’를 만든다</h3><p>공통 이미지는 세대와 공동체가 자신을 설명하는 장면이 된다. 무엇을 대표하고 무엇을 가리는지 함께 묻는다.</p><span class="credit">NASA, The Blue Marble, 1972 · Public Domain</span></div></aside>
+      </div>
+    </section>
+
+    <section id="ethics">
+      <div class="section-head"><div class="section-no">Part 3 · 20 min</div><div><h2>사진을 보는 윤리와 권력</h2><p class="lead">카메라는 기억을 남기는 도구이면서 사람을 분류하고 감시하며 특정한 모습으로 고정하는 장치이기도 하다.</p></div></div>
+      <div class="ethics">
+        <article class="panel"><h3>존 버거 · 보는 방식</h3><p>우리는 순수한 눈으로만 보지 않는다. 성별·계급·인종·광고·미술의 관습이 무엇을 정상적이고 아름답게 볼지 가르친다.</p><ul><li>대상뿐 아니라 관객의 위치를 묻는다.</li><li>이미지를 둘러싼 문화적 관습을 확인한다.</li></ul></article>
+        <article class="panel alt"><h3>수전 손택 · 촬영의 관계</h3><p>촬영자는 장면을 선택하고 보여 줄 권한을 가진다. 좋은 목적도 촬영되는 사람의 권리를 자동으로 대신하지 못한다.</p><ul><li>동의와 재노출 가능성을 살핀다.</li><li>당사자에게 남을 결과를 생각한다.</li></ul></article>
+        <article class="panel alt"><h3>고통의 이미지 · 관람의 책임</h3><p>강한 이미지는 공감을 일으키지만 반복 노출과 맥락 부족은 사람을 하나의 고통으로 고정할 수 있다.</p><ul><li>거리·맥락·존엄·행동을 차례로 묻는다.</li><li>공감 뒤에 이해와 책임을 연결한다.</li></ul></article>
+        <article class="panel"><h3>미셸 푸코 · 감시와 규율</h3><p>보일 가능성만으로도 사람은 행동을 조정한다. 사진과 영상의 힘은 장치보다 그것을 운영하는 제도와 규칙에서 커진다.</p><ul><li>누가 관찰하고 분류하는지 확인한다.</li><li>기록이 정상화와 통제에 쓰이는 방식을 본다.</li></ul></article>
+      </div>
+    </section>
+
+    <section id="digital">
+      <div class="section-head"><div class="section-no">Part 4 · 10 min</div><div><h2>스마트폰과 생성 이미지의 기억</h2><p class="lead">사진이 많아진 시대에는 무엇을 남겼는지보다 무엇이 다시 검색되고 추천되는지가 기억을 좌우한다.</p></div></div>
+      <div class="thinkers">
+        <article class="thinker"><div class="name">스마트폰 갤러리</div><h3>선택에서 검색으로</h3><p>수천 장의 사진은 날짜·장소·얼굴 검색을 통해서만 다시 만나는 데이터가 된다. 서비스가 고른 과거가 현재의 감정을 바꾼다.</p><span class="ask">핵심: 기억의 입구가 앨범의 선택에서 검색과 추천으로 이동했다.</span></article>
+        <article class="thinker"><div class="name">알고리즘</div><h3>‘그날의 추억’은 누가 골랐는가</h3><p>편리한 회상 기능은 피하고 싶은 장면도 되돌린다. 기억을 추천하는 기술에는 인물과 기간을 제외하고 숨길 권리도 필요하다.</p><span class="ask">핵심: 기억할 권리와 함께 기억을 거절할 권리가 필요하다.</span></article>
+        <article class="thinker"><div class="name">생성 이미지</div><h3>카메라가 보지 않은 장면</h3><p>사진 같은 외형만으로 사건의 흔적을 판단하기 어려워졌다. 출처, 유통 경로, 생략된 맥락, 편집·합성·생성의 흔적을 확인한다.</p><span class="ask">핵심: 한눈에 판별하기보다 검증 절차를 습관화한다.</span></article>
+      </div>
+    </section>
+
+    <section aria-labelledby="framework-title">
+      <div class="section-head"><div class="section-no">Reading tool</div><div><h2 id="framework-title">한 장의 사진을 다섯 번 읽기</h2><p class="lead">감상에서 멈추지 않고 장면, 선택, 감정, 맥락, 책임의 순서로 사진을 읽는다.</p></div></div>
+      <div class="framework">
+        <article><h3>장면</h3><p>사진 안에서 실제로 확인할 수 있는 것은 무엇인가?</p></article>
+        <article><h3>선택</h3><p>촬영자는 무엇을 넣고 프레임 밖에 두었는가?</p></article>
+        <article><h3>감정</h3><p>내 시선이 오래 머문 곳과 그 이유는 무엇인가?</p></article>
+        <article><h3>맥락</h3><p>날짜·장소·인물·캡션 중 어떤 정보가 필요한가?</p></article>
+        <article><h3>책임</h3><p>이 사진을 공유하면 누구에게 어떤 영향이 생기는가?</p></article>
+      </div>
+    </section>
+
+    <section id="practice">
+      <div class="section-head"><div class="section-no">Workshop · 15 min</div><div><h2>두 가지 참여 실습</h2><p class="lead">기술적 완성도를 평가하기보다 사진을 읽는 질문의 깊이와 문장이 이미지를 바꾸는 힘을 확인한다.</p></div></div>
+      <div class="practice">
+        <article class="task"><div class="minutes">개인 5분 + 짝 대화 3분</div><h3>실습 1. 다섯 번 읽기</h3><ol><li>사진 한 장을 고른다.</li><li>장면·선택·감정·맥락·책임 질문에 짧게 답한다.</li><li>짝과 답을 비교하고 서로 다르게 본 지점을 찾는다.</li></ol></article>
+        <article class="task"><div class="minutes">소그룹 7분</div><h3>실습 2. 캡션 바꾸기</h3><ol><li>같은 사진에 사실형 캡션을 쓴다.</li><li>기억하는 사람의 감정을 담은 캡션을 쓴다.</li><li>사진 밖의 사정과 빈자리를 묻는 캡션을 쓴다.</li><li>어떤 문장이 사진의 의미를 가장 크게 바꿨는지 말한다.</li></ol></article>
+      </div>
+    </section>
+
+    <section class="closing" aria-labelledby="closing-title">
+      <p class="eyebrow">마무리</p><h2 id="closing-title">사진은 과거를 남기고 현재의 나를 다시 쓴다</h2>
+      <div class="closing-grid">
+        <div><strong>개인</strong><p>자주 보는 사진이 삶의 어떤 장면을 대표하는가?</p></div>
+        <div><strong>관계</strong><p>앨범과 갤러리에서 사라진 사람과 시간은 무엇인가?</p></div>
+        <div><strong>사회</strong><p>공통 이미지가 누구의 경험을 대표하고 무엇을 가리는가?</p></div>
+        <div><strong>책임</strong><p>앞으로 남길 사진에서 누구의 권리와 이야기를 생각할 것인가?</p></div>
+      </div>
+      <p class="final-line">기억을 보존하는 기술보다 기억을 책임 있게 해석하는 태도가 중요하다.</p>
+    </section>
+  </main>
+
+  <footer><div class="footer-inner"><p>스마트미디어아트센터 · 사진인문학 강의 「사진과 기억」</p><p>총 120분 · 강의 85분 · 참여 활동 25분 · 휴식 10분</p></div></footer>
+</body>
+</html>

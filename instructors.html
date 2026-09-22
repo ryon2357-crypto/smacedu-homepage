@@ -202,11 +202,11 @@
         .page-hero h1 {
             font-size: clamp(2rem, 5vw, 3.4rem);
             font-weight: 900; letter-spacing: -1.2px; line-height: 1.2;
-            color: #fff; margin-bottom: 14px;
+            color: #fff; margin-bottom: 14px; word-break: keep-all;
         }
         .page-hero h1 .accent { color: var(--orange); }
         .page-hero p {
-            font-size: 1.05rem; color: rgba(255,255,255,.65); line-height: 1.85;
+            font-size: 1.05rem; color: rgba(255,255,255,.65); line-height: 1.85; word-break: keep-all;
         }
 
         /* ── INSTRUCTORS ── */
@@ -243,6 +243,9 @@
             object-fit: cover; object-position: center center;
             display: block;
         }
+        .inst-photo-portrait { background: #dce9f8; }
+        .inst-photo-portrait img { object-fit: contain; }
+        .inst-photo-portrait-warm { background: #ddc4b2; }
         .inst-badge {
             position: absolute; top: 14px; right: 14px;
             background: var(--navy); color: #fff;
@@ -408,6 +411,42 @@
                         <span class="inst-tag">콘텐츠 자동화</span>
                     </div>
                     <p class="inst-desc">챗GPT·미드저니 등 생성형 AI 도구를 활용해 이미지·영상·콘텐츠를 만드는 방법을 실습 중심으로 안내합니다. 처음 접하는 분도 바로 따라할 수 있도록 쉽게 가르칩니다.</p>
+                </div>
+            </div>
+
+            <div class="instructor-card reveal">
+                <div class="inst-photo inst-photo-portrait">
+                    <img src="images/instructors/kim-sora-v2.png" alt="김소라 강사">
+                    <span class="inst-badge">영상 · SNS 콘텐츠</span>
+                </div>
+                <div class="inst-body">
+                    <p class="inst-name">김소라 강사</p>
+                    <p class="inst-role">영상·사진·SNS 콘텐츠 기획 및 제작 강사</p>
+                    <div class="inst-tags">
+                        <span class="inst-tag">스마트폰 사진</span>
+                        <span class="inst-tag">영상 편집</span>
+                        <span class="inst-tag">SNS 콘텐츠</span>
+                        <span class="inst-tag">AI 숏폼</span>
+                    </div>
+                    <p class="inst-desc">청주시 SNS 콘텐츠 에디터와 충북영상자서전 촬영·편집 경험을 바탕으로, 지역과 사람의 이야기를 사진과 영상으로 담는 방법을 가르칩니다. 콘텐츠 기획부터 촬영·편집까지 실습 중심으로 안내합니다.</p>
+                </div>
+            </div>
+
+            <div class="instructor-card reveal">
+                <div class="inst-photo inst-photo-portrait inst-photo-portrait-warm">
+                    <img src="images/instructors/lee-jihyeon.png" alt="이지현 강사">
+                    <span class="inst-badge">스마트폰 · AI 활용</span>
+                </div>
+                <div class="inst-body">
+                    <p class="inst-name">이지현 강사</p>
+                    <p class="inst-role">스마트폰 활용 강사 · 스마트폰 사진강사</p>
+                    <div class="inst-tags">
+                        <span class="inst-tag">스마트폰 활용</span>
+                        <span class="inst-tag">AI 활용</span>
+                        <span class="inst-tag">스마트폰 영상</span>
+                        <span class="inst-tag">스마트폰 사진 강의</span>
+                    </div>
+                    <p class="inst-desc">스마트폰 활용과 AI 활용, 스마트폰 영상·사진 강의를 진행합니다. 일상에서 바로 써 볼 수 있는 기능과 콘텐츠 제작 방법을 쉽게 안내합니다.</p>
                 </div>
             </div>
 
