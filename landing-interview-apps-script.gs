@@ -52,11 +52,16 @@ const MATERIAL_HEADERS = ['타임스탬프', '이름', '이메일', '연락처',
 const MATERIAL_DRIVE_LINK = 'https://drive.google.com/file/d/1eyQJL9qXZDdlukf1zISDTWC1pEYqo5jn/view?usp=sharing';
 const MATERIAL_DOC_LINK = 'https://docs.google.com/document/d/15XxOk0NGt0cilQh1yNGvZFEYVUQ-kDN8CmC5X1beTsE/edit?usp=sharing';
 
+const INSTRUCTOR_SHEET_NAME = '강사등록';
+const INSTRUCTOR_HEADERS = ['타임스탬프', '이름', '이메일', '연락처', '전문분야', '지역', '자격증', '경력', '자기소개', '등록방식', '첨부파일명'];
+const ADMIN_PAGE_URL = 'https://www.smacedu.kr/admin.html';
+
 function doGet(e) {
   try {
     const p = e.parameter || {};
     if (p.type === 'vip') return _handleVipSubmission(p);
     if (p.type === 'material') return _handleMaterialSubmission(p);
+    if (p.type === 'instructor') return _handleInstructorSubmission(p);
 
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
     if (sheet.getLastRow() === 0) {
@@ -153,6 +158,103 @@ function _handleMaterialSubmission(p) {
     return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+// 강사 등록(instructor-apply.html)은 출강 요청이 왔을 때 빠르게 매칭하는 게 목적이라서,
+// VIP 신청과 마찬가지로 20건 배치를 기다리지 않고 접수 즉시 관리자에게 알립니다.
+function _handleInstructorSubmission(p) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let sheet = ss.getSheetByName(INSTRUCTOR_SHEET_NAME);
+    if (!sheet) {
+      sheet = ss.insertSheet(INSTRUCTOR_SHEET_NAME);
+      sheet.appendRow(INSTRUCTOR_HEADERS);
+      sheet.getRange(1, 1, 1, INSTRUCTOR_HEADERS.length).setFontWeight('bold');
+    }
+
+    const modeLabel = p.mode === 'file' ? '이력서 파일 제출' : '경력 입력(자동 이력서)';
+    const timestamp = _formatKoreanTimestamp(new Date(), Session.getScriptTimeZone());
+    sheet.appendRow([
+      timestamp,
+      p.name || '',
+      p.email || '',
+      p.phone || '',
+      p.specialties || '',
+      p.region || '',
+      p.certifications || '',
+      p.career || '',
+      p.intro || '',
+      modeLabel,
+      p.resumeFileName || ''
+    ]);
+
+    if (p.email) _sendInstructorConfirmEmail(p.name, p.email);
+    const sheetUrl = `${ss.getUrl()}#gid=${sheet.getSheetId()}`;
+    _notifyAdminInstructorImmediate(p, modeLabel, sheetUrl);
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function _sendInstructorConfirmEmail(name, email) {
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <div style="background:#172554;padding:32px 28px;border-radius:12px 12px 0 0;text-align:center;">
+    <h1 style="color:#fff;margin:0;font-size:22px;font-weight:900;">강사 등록이 접수됐어요</h1>
+    <p style="color:rgba(255,255,255,.6);margin:8px 0 0;font-size:14px;">스마트미디어아트센터</p>
+  </div>
+  <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
+    <p style="margin:0 0 16px;font-size:16px;"><strong>${escapeHtml(name || '강사')}</strong>님, 등록 잘 받았습니다.</p>
+    <p style="margin:0;color:#475569;line-height:1.8;">
+      전문 분야·지역이 맞는 출강 요청이 들어오면 먼저 연락드릴게요.<br>
+      등록 내용을 수정하거나 삭제하고 싶으시면 이 메일에 회신해 주세요.
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to: email,
+    subject: '[SMAC EDU] 강사 등록이 접수됐습니다',
+    htmlBody: html
+  });
+}
+
+function _notifyAdminInstructorImmediate(p, modeLabel, sheetUrl) {
+  const rows = [
+    ['이름', p.name], ['이메일', p.email], ['연락처', p.phone],
+    ['전문분야', p.specialties], ['지역', p.region], ['자격증', p.certifications],
+    ['경력', p.career], ['자기소개', p.intro], ['등록방식', modeLabel],
+    ['첨부파일명', p.resumeFileName]
+  ];
+  const rowsHtml = rows.map(([label, value]) => `
+    <tr>
+      <td style="padding:6px 0;color:#64748b;width:80px;vertical-align:top;">${label}</td>
+      <td style="padding:6px 0;font-weight:600;white-space:pre-line;">${escapeHtml(value || '-')}</td>
+    </tr>`).join('');
+
+  const html = `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1e293b;">
+  <h2 style="background:#f97316;color:#fff;padding:16px 20px;margin:0;border-radius:8px 8px 0 0;">
+    🧑‍🏫 강사 등록 — 즉시 알림
+  </h2>
+  <div style="background:#f8fafc;padding:20px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;">
+    <table style="width:100%;border-collapse:collapse;font-size:14px;">${rowsHtml}</table>
+    <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">
+      <a href="${sheetUrl}">스프레드시트에서 확인 →</a> ·
+      <a href="${ADMIN_PAGE_URL}">관리자 페이지 강사풀 탭에서 상세보기 →</a>
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to: ADMIN_EMAIL,
+    subject: `[SMAC EDU] 강사 등록 — ${p.name || '신규 강사'} (${(p.specialties || '').split(', ')[0] || '분야 미기재'})`,
+    htmlBody: html
+  });
 }
 
 function _sendMaterialConfirmEmail(name, email, tier) {

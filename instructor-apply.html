@@ -626,6 +626,34 @@
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     let mode = 'file';
 
+    // 대표님이 등록 즉시 스프레드시트·이메일로도 받아보고 싶어해서, Supabase 저장과 별개로
+    // 기존 신청서들이 쓰는 Apps Script(landing-interview-apps-script.gs)에도 한 번 더 보낸다.
+    // 실패해도 Supabase 저장은 이미 끝난 뒤이므로 등록 자체를 막지 않는다.
+    const SHEET_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxqYBmeYzXx0P-iODP2kFmIRr95I7ri54zk6EB316ySh9qatmK9QGhKDE5f0Q9dmDfgvQ/exec';
+
+    function careerToText(career) {
+        return (career || []).map(c => `${c.org || ''} (${c.period || ''}): ${c.content || ''}`).join(' | ');
+    }
+
+    async function notifySheet(payload) {
+        try {
+            const params = new URLSearchParams({
+                type: 'instructor',
+                name: payload.name || '',
+                phone: payload.phone || '',
+                email: payload.email || '',
+                specialties: (payload.specialties || []).join(', '),
+                region: payload.region || '',
+                certifications: payload.certifications || '',
+                career: careerToText(payload.career),
+                intro: payload.intro || '',
+                mode,
+                resumeFileName: payload.resume_file_name || '',
+            });
+            await fetch(`${SHEET_SCRIPT_URL}?${params}`, { mode: 'no-cors' });
+        } catch (e) { /* 알림 실패는 무시 — Supabase 저장이 원본 데이터 */ }
+    }
+
     function selectMode(m) {
         mode = m;
         document.getElementById('modeFile').classList.toggle('selected', m === 'file');
@@ -739,6 +767,8 @@
 
             const { error } = await sb.from('instructor_applications').insert(payload);
             if (error) throw new Error(error.message);
+
+            notifySheet(payload);
 
             showMsg('success', `${name}님, 등록이 완료됐습니다! 분야·지역이 맞는 출강 요청이 들어오면 먼저 연락드릴게요.`);
             btn.textContent = '✓ 등록 완료';
