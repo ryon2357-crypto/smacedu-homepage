@@ -63,12 +63,14 @@
             <button type="button" class="nav-dropdown-toggle">자료실 <span class="caret">▾</span></button>
             <ul class="nav-dropdown-menu">
                 <li><a href="lecturer-jobs.html">강사모집 공고</a></li>
+                <li><a href="instructor-apply.html">강사 등록</a></li>
                 <li><a href="smartphone-video-editing.html">스마트폰 영상 촬영·편집</a></li>
             </ul>
         </li>`
 
     const resourcesMobile = `
         <li><a href="lecturer-jobs.html">강사모집 공고</a></li>
+        <li><a href="instructor-apply.html">강사 등록</a></li>
         <li><a href="smartphone-video-editing.html">스마트폰 영상 촬영·편집</a></li>`
 
     // ── 좁은 데스크톱 대응 (2026-08-17) ─────────────────────────────

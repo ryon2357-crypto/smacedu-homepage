@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <script src="js/no-copy.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강사 등록 — 스마트미디어아트센터</title>
+    <meta name="description" content="스마트미디어아트센터 강사풀에 등록하세요. 이력서가 없어도 경력만 입력하면 이력서가 자동으로 만들어집니다. 스마트폰 사진·영상·AI 활용 등 출강 요청이 들어오면 먼저 연락드립니다.">
+    <meta property="og:title" content="강사 등록 — 스마트미디어아트센터 강사풀">
+    <meta property="og:description" content="이력서가 없어도 괜찮습니다. 경력만 입력하면 이력서를 자동으로 만들어 드립니다. 지금 등록하고 출강 요청을 받아보세요.">
+    <meta property="og:image" content="https://www.smacedu.kr/images/instructors-og.png?v=1">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.smacedu.kr/instructor-apply">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="images/logo1.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy:        #172554;
+            --navy-mid:    #1e3a8a;
+            --orange:      #f97316;
+            --orange-dk:   #ea6b0c;
+            --orange-lt:   #fff7ed;
+            --orange-soft: #ffedd5;
+            --white:       #ffffff;
+            --gray-bg:     #f8f9fa;
+            --gray-line:   #e5e7eb;
+            --text-head:   #172554;
+            --text-body:   #374151;
+            --text-sub:    #6b7280;
+            --green:       #16a34a;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--white);
+            color: var(--text-body);
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 1140px; margin: 0 auto; }
+        .container-narrow { max-width: 760px; margin: 0 auto; }
+
+        .tag-chip {
+            display: inline-block;
+            background: var(--orange-lt); color: var(--orange);
+            font-size: 12px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            padding: 5px 14px; border-radius: 100px;
+            margin-bottom: 14px;
+        }
+        .sec-title {
+            font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+            font-weight: 800; letter-spacing: -.8px; line-height: 1.3;
+            color: var(--text-head);
+        }
+        .sec-desc {
+            margin-top: 14px;
+            font-size: .98rem; color: var(--text-sub);
+            line-height: 1.85;
+        }
+        .sec-head { text-align: center; margin-bottom: 44px; }
+        .orange-bar {
+            width: 44px; height: 4px;
+            background: var(--orange); border-radius: 2px;
+            margin: 16px auto 0;
+        }
+        .sec { padding: 72px 40px; }
+        .sec-white { background: var(--white); }
+        .sec-gray  { background: var(--gray-bg); }
+
+        /* ── NAV (js/site-nav.js가 렌더링) ── */
+        nav {
+            position: fixed; top:0; left:0; right:0; z-index:999;
+            height: 96px;
+            display: flex; align-items:center; justify-content:space-between;
+            padding: 0 48px;
+            background: rgba(255,255,255,.96);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid transparent;
+            transition: border-color .3s, box-shadow .3s;
+        }
+        nav.scrolled {
+            border-color: var(--gray-line);
+            box-shadow: 0 2px 16px rgba(0,0,0,.07);
+        }
+        .nav-logo {
+            display: flex; align-items: center; gap: 12px;
+            text-decoration: none; flex-shrink: 0;
+        }
+        .logo-img { height: 72px; width: auto; display: block; object-fit: contain; }
+        .nav-brand-block { display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+        .nav-brand-name { font-size: 24px; font-weight: 700; color: #172554; letter-spacing: -.4px; white-space: nowrap; line-height: 1; }
+        .nav-brand-sub  { font-size: 13px; font-weight: 500; color: #64748B; letter-spacing: .1px; white-space: nowrap; line-height: 1; }
+
+        .nav-links { display:flex; gap:26px; list-style:none; align-items:center; }
+        .nav-links a {
+            text-decoration:none; color: var(--text-body);
+            font-size: 13.5px; font-weight: 500;
+            transition: color .2s; white-space: nowrap;
+        }
+        .nav-links a:hover { color: var(--orange); }
+        .nav-links .active a { color: var(--orange); font-weight: 700; }
+        .nav-links .cta a {
+            padding: 9px 22px;
+            background: var(--orange); color:#fff;
+            border-radius: 8px; font-weight: 700;
+            transition: background .2s, transform .2s;
+        }
+        .nav-links .cta a:hover { background: var(--orange-dk); transform: translateY(-1px); }
+
+        .btn-nav-login { background: var(--orange); color:#fff; border:none; padding:7px 14px; border-radius:8px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; text-decoration:none; white-space:nowrap; transition:background .2s; }
+        .btn-nav-login:hover { background: var(--orange-dk); }
+        .btn-nav-mypage { background:transparent; color:var(--text-body); border:1.5px solid var(--gray-line); padding:7px 14px; border-radius:8px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; text-decoration:none; white-space:nowrap; transition:all .2s; }
+        .btn-nav-mypage:hover { border-color:var(--navy); color:var(--navy); }
+        .btn-nav-logout { background:transparent; color:var(--text-sub); border:none; font-size:12px; font-family:inherit; cursor:pointer; padding:4px; }
+        .nav-user-area { display:flex; align-items:center; gap:8px; }
+
+        .nav-dropdown { position:relative; }
+        .nav-dropdown::after { content:""; position:absolute; top:100%; left:0; right:0; height:16px; }
+        .nav-dropdown-toggle {
+            background:none; border:none; cursor:pointer; font-family:inherit; padding:0;
+            display:flex; align-items:center; gap:4px;
+            text-decoration:none; color: var(--text-body);
+            font-size: 13.5px; font-weight: 500;
+            transition: color .2s; white-space: nowrap;
+        }
+        .nav-dropdown-toggle:hover { color: var(--orange); }
+        .nav-dropdown-toggle .caret { font-size:10px; transition: transform .2s; }
+        .nav-dropdown:hover .nav-dropdown-toggle .caret,
+        .nav-dropdown:focus-within .nav-dropdown-toggle .caret { transform: rotate(180deg); }
+        .nav-dropdown-menu {
+            display:none; position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%);
+            background:#fff; border-radius:12px; box-shadow:0 12px 32px rgba(0,0,0,.14);
+            padding:8px; min-width:150px; list-style:none; z-index:200;
+        }
+        .nav-dropdown:hover .nav-dropdown-menu,
+        .nav-dropdown:focus-within .nav-dropdown-menu { display:block; }
+        .nav-dropdown-menu li a {
+            display:block; padding:9px 14px; border-radius:8px;
+            font-size:13.5px; font-weight:500; color: var(--text-body);
+            text-decoration:none; white-space:nowrap; transition: background .15s, color .15s;
+        }
+        .nav-dropdown-menu li a:hover { background: var(--orange-lt); color: var(--orange); }
+
+        .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:6px; }
+        .hamburger span { display:block; width:22px; height:2.5px; background: var(--navy); border-radius:2px; transition: all .28s ease; }
+
+        .mob-menu {
+            display:none; position:fixed;
+            top:82px; left:0; right:0; z-index:998;
+            background: #fff; border-bottom: 1px solid var(--gray-line);
+            box-shadow: 0 8px 24px rgba(0,0,0,.09);
+        }
+        .mob-menu.open { display:block; }
+        .mob-menu ul { list-style:none; }
+        .mob-menu ul li a {
+            display:block; padding:15px 36px;
+            color: var(--text-body); text-decoration:none; font-size:15px;
+            border-bottom: 1px solid var(--gray-line); transition: all .2s;
+        }
+        .mob-menu ul li a:hover { color: var(--orange); padding-left:48px; background: var(--orange-lt); }
+
+        /* ── PAGE HERO ── */
+        .page-hero {
+            background: var(--navy);
+            padding: 148px 40px 72px;
+            text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .page-hero::before {
+            content:''; position:absolute; top:-120px; left:-100px;
+            width:420px; height:420px;
+            background: radial-gradient(circle, rgba(249,115,22,.14) 0%, transparent 65%);
+            border-radius:50%;
+        }
+        .page-hero::after {
+            content:''; position:absolute; bottom:-80px; right:-60px;
+            width:340px; height:340px;
+            background: radial-gradient(circle, rgba(99,102,241,.1) 0%, transparent 65%);
+            border-radius:50%;
+        }
+        .page-hero-inner { position:relative; z-index:1; max-width:760px; margin:0 auto; }
+        .page-hero-badge {
+            display:inline-block;
+            background: rgba(249,115,22,.15);
+            border: 1px solid rgba(249,115,22,.38);
+            color: #fdba74;
+            padding: 6px 20px; border-radius:100px;
+            font-size:12px; font-weight:700; letter-spacing:1.5px;
+            text-transform:uppercase; margin-bottom:20px;
+        }
+        .page-hero h1 {
+            font-size: clamp(1.8rem, 4.4vw, 2.9rem);
+            font-weight: 900; letter-spacing: -1.1px; line-height: 1.35;
+            color: #fff; margin-bottom: 16px; word-break: keep-all;
+        }
+        .page-hero h1 .accent { color: var(--orange); }
+        .page-hero p {
+            font-size: 1rem; color: rgba(255,255,255,.68); line-height: 1.9; word-break: keep-all;
+        }
+
+        /* ── 등록 이유 카드 ── */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+        .value-card {
+            background: var(--white);
+            border: 2px solid var(--gray-line);
+            border-radius: 18px;
+            padding: 30px 26px;
+            transition: all .25s ease;
+        }
+        .value-card:hover { border-color: var(--orange); box-shadow: 0 12px 32px rgba(249,115,22,.1); transform: translateY(-3px); }
+        .value-icon { font-size: 1.8rem; margin-bottom: 14px; }
+        .value-card h3 { font-size: 1.02rem; font-weight: 800; color: var(--navy); margin-bottom: 10px; line-height: 1.4; }
+        .value-card p { font-size: .88rem; color: var(--text-sub); line-height: 1.8; }
+
+        /* ── 등록 방법 선택 카드 ── */
+        .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
+        .mode-card {
+            background: var(--white); border: 2px solid var(--gray-line); border-radius: 16px;
+            padding: 24px; cursor: pointer; transition: all .2s; text-align: left;
+        }
+        .mode-card:hover { border-color: rgba(249,115,22,.5); }
+        .mode-card.selected { border-color: var(--orange); background: var(--orange-lt); box-shadow: 0 6px 20px rgba(249,115,22,.12); }
+        .mode-tag {
+            display:inline-block; font-size:11.5px; font-weight:700; color: var(--orange);
+            background: var(--orange-soft); padding: 3px 12px; border-radius: 999px; margin-bottom: 12px;
+        }
+        .mode-card h3 { font-size: 1.02rem; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+        .mode-card p { font-size: .85rem; color: var(--text-sub); line-height: 1.7; }
+
+        /* ── 폼 ── */
+        .form-card {
+            background: var(--white); border: 1px solid var(--gray-line); border-radius: 18px;
+            padding: 36px; margin-top: 28px; box-shadow: 0 4px 20px rgba(0,0,0,.03);
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text-head); margin-bottom: 8px; }
+        .req { color: var(--orange); }
+        .form-group input[type="text"],
+        .form-group input[type="tel"],
+        .form-group input[type="email"],
+        .form-group input[type="file"],
+        .form-group textarea {
+            width: 100%; background: var(--gray-bg); border: 1px solid var(--gray-line); border-radius: 10px;
+            padding: 12px 15px; font-size: 14.5px; color: var(--text-body); outline: none;
+            transition: border-color .2s, background .2s; font-family: inherit;
+        }
+        .form-group textarea { resize: vertical; min-height: 90px; }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: #9ca3af; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--orange); background: #fff; }
+        .field-hint { margin-top: 7px; font-size: 12px; color: var(--text-sub); }
+
+        .chip-check-group { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chip-check {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--gray-bg); border: 1.5px solid var(--gray-line); border-radius: 999px;
+            padding: 8px 16px; font-size: 13px; font-weight: 500; color: var(--text-body);
+            cursor: pointer; transition: all .15s; user-select: none;
+        }
+        .chip-check input { accent-color: var(--orange); cursor: pointer; }
+        .chip-check:has(input:checked) { border-color: var(--orange); background: var(--orange-lt); color: var(--orange-dk); font-weight: 700; }
+
+        .mode-panel { margin-bottom: 20px; }
+        .career-row {
+            display: grid; grid-template-columns: 1fr 160px 1.4fr 32px; gap: 8px;
+            margin-bottom: 10px; align-items: center;
+        }
+        .career-row input {
+            background: var(--gray-bg); border: 1px solid var(--gray-line); border-radius: 9px;
+            padding: 10px 12px; font-size: 13.5px; color: var(--text-body); outline:none; font-family: inherit;
+        }
+        .career-row input:focus { border-color: var(--orange); background: #fff; }
+        .career-remove {
+            width: 32px; height: 32px; border-radius: 8px; border: none;
+            background: #fef2f2; color: #dc2626; font-size: 14px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .career-remove:hover { background: #fee2e2; }
+        .btn-add-row {
+            margin-top: 4px; background: var(--white); border: 1.5px dashed var(--gray-line);
+            border-radius: 9px; padding: 10px 16px; font-size: 13px; font-weight: 600;
+            color: var(--text-sub); cursor: pointer; font-family: inherit; transition: all .15s;
+        }
+        .btn-add-row:hover { border-color: var(--orange); color: var(--orange); }
+
+        .form-checkbox label {
+            display: flex; align-items: flex-start; gap: 9px; font-size: 13px; font-weight: 400; color: var(--text-body);
+            cursor: pointer; line-height: 1.6;
+        }
+        .form-checkbox input[type="checkbox"] {
+            flex-shrink: 0; width: 17px; height: 17px; margin-top: 1px; accent-color: var(--orange); cursor: pointer;
+        }
+
+        .btn-submit {
+            width: 100%; margin-top: 6px; padding: 15px 32px;
+            background: var(--orange); color: #fff; border: none; border-radius: 10px;
+            font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer;
+            transition: background .2s, transform .2s;
+        }
+        .btn-submit:hover { background: var(--orange-dk); transform: translateY(-1px); }
+        .btn-submit:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+        .form-msg {
+            display: none; margin-top: 16px; padding: 13px 18px; border-radius: 10px; font-size: 13.5px;
+            font-weight: 600; text-align: center;
+        }
+        .form-msg.success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #15803d; display: block; }
+        .form-msg.error   { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; display: block; }
+
+        .btn-white-outline {
+            display: inline-block; padding: 11px 26px; background: #fff; color: var(--orange);
+            border: 1.5px solid var(--orange); border-radius: 9px; font-size: 14px; font-weight: 700;
+            cursor: pointer; font-family: inherit; transition: all .2s;
+        }
+        .btn-white-outline:hover { background: var(--orange-lt); }
+
+        /* ── 자동 생성 이력서 ── */
+        .resume-doc {
+            background: #fff; border: 1px solid var(--gray-line); border-radius: 16px;
+            padding: 44px; margin-top: 28px; box-shadow: 0 4px 20px rgba(0,0,0,.04);
+        }
+        .resume-doc .r-head { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px; border-bottom: 3px solid var(--navy); padding-bottom: 20px; margin-bottom: 24px; }
+        .resume-doc .r-name { font-size: 1.7rem; font-weight: 900; color: var(--navy); margin-bottom: 8px; }
+        .resume-doc .r-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .resume-doc .r-tag { font-size: 12px; font-weight: 700; color: var(--orange-dk); background: var(--orange-lt); padding: 4px 12px; border-radius: 999px; }
+        .resume-doc .r-contact { font-size: .86rem; color: var(--text-sub); line-height: 2; text-align: right; }
+        .resume-doc h4 { font-size: .95rem; font-weight: 800; color: var(--navy); margin: 26px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--gray-line); }
+        .resume-doc h4:first-of-type { margin-top: 0; }
+        .r-career-item { display: flex; gap: 16px; padding: 10px 0; border-bottom: 1px dashed var(--gray-line); font-size: .88rem; }
+        .r-career-item:last-child { border-bottom: none; }
+        .r-career-period { flex-shrink: 0; width: 150px; color: var(--text-sub); font-weight: 600; }
+        .r-career-body .r-career-org { font-weight: 700; color: var(--text-head); }
+        .r-career-body .r-career-content { color: var(--text-sub); margin-top: 2px; }
+        .r-cert-list { font-size: .88rem; color: var(--text-body); line-height: 2; white-space: pre-line; }
+        .r-intro { font-size: .88rem; color: var(--text-body); line-height: 1.9; white-space: pre-line; }
+        .r-footer-note { margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--gray-line); font-size: .76rem; color: #9ca3af; text-align: center; }
+
+        /* ── FOOTER ── */
+        footer { background: var(--navy); padding: 52px 48px 36px; }
+        .foot-grid {
+            max-width: 1140px; margin: 0 auto;
+            display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+            gap: 40px; margin-bottom: 40px;
+        }
+        .logo-img-footer { height: 80px; width: auto; object-fit: contain; display: block; margin-bottom: 16px; }
+        .foot-brand p { font-size: .9rem; color: rgba(255,255,255,.55); line-height: 1.9; max-width: 400px; word-break: keep-all; }
+        .foot-col h4 { font-size: .76rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,.08); }
+        .foot-col ul { list-style:none; display:flex; flex-direction:column; gap:12px; }
+        .foot-col ul li a { text-decoration:none; color:rgba(255,255,255,.62); font-size:.92rem; transition:color .2s; }
+        .foot-col ul li a:hover { color:var(--orange); }
+        .foot-bottom {
+            max-width: 1140px; margin: 0 auto;
+            padding-top: 24px; border-top: 1px solid rgba(255,255,255,.1);
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 10px;
+        }
+        .foot-bottom p { font-size: .84rem; color: rgba(255,255,255,.36); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width:1040px) {
+            .nav-links { display:none; }
+            .hamburger { display:flex; }
+            .foot-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+        }
+        @media (max-width:760px) {
+            .value-grid { grid-template-columns: 1fr; }
+            .mode-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; gap: 0; }
+            .career-row { grid-template-columns: 1fr; gap: 6px; }
+            .career-remove { justify-self: end; width: 32px; }
+        }
+        @media (max-width:720px) {
+            nav { padding: 0 20px; height: 70px; }
+            .logo-img { height: 48px; }
+            .nav-brand-name { font-size: 16px; }
+            .nav-brand-sub { display: none; }
+            .page-hero { padding: 128px 20px 52px; }
+            .sec { padding: 52px 20px; }
+            .form-card { padding: 24px; }
+            .resume-doc { padding: 26px; }
+            .resume-doc .r-contact { text-align: left; }
+            footer { padding: 44px 20px 30px; }
+            .foot-grid { grid-template-columns: 1fr; gap: 24px; }
+            .foot-bottom { flex-direction: column; text-align: center; }
+        }
+
+        /* ── 인쇄 ── */
+        @media print {
+            #site-nav-root, .page-hero, #why, #apply, footer, .no-print { display: none !important; }
+            body { background: #fff; }
+            #resumePreviewSection { padding: 0 !important; }
+            .resume-doc { box-shadow: none; border: none; padding: 0; margin-top: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══════ NAV (js/site-nav.js가 렌더링) ══════ -->
+<div id="site-nav-root" data-page="instructor-apply"></div>
+
+
+<!-- ══════ PAGE HERO ══════ -->
+<div class="page-hero">
+    <div class="page-hero-inner">
+        <span class="page-hero-badge">INSTRUCTOR RECRUITING</span>
+        <h1>스마트미디어아트센터와 함께할<br><span class="accent">강사님</span>을 찾습니다</h1>
+        <p>스마트폰 사진·영상·AI 활용 강의 요청이 들어와도, 딱 맞는 강사를 바로 찾기 어려워 놓치는 경우가 있습니다.<br>지금 등록해 주시면 분야와 지역이 맞는 출강 요청이 들어올 때 가장 먼저 연락드립니다.</p>
+    </div>
+</div>
+
+
+<!-- ══════ 등록 이유 ══════ -->
+<section class="sec sec-white" id="why">
+    <div class="container">
+        <div class="sec-head">
+            <span class="tag-chip">WHY REGISTER</span>
+            <h2 class="sec-title">등록하면 이렇게 연결됩니다</h2>
+            <div class="orange-bar"></div>
+        </div>
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="value-icon">⚡</div>
+                <h3>출강 요청이 오면 먼저 연락</h3>
+                <p>스마트폰 사진·영상·AI 활용 등 강의 요청이 들어오면, 분야와 지역이 맞는 강사님께 가장 먼저 연락드립니다.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">📄</div>
+                <h3>이력서가 없어도 괜찮습니다</h3>
+                <p>경력을 항목별로 입력하기만 하면 그 자리에서 깔끔한 이력서 페이지가 만들어집니다. 인쇄하거나 PDF로 저장해서 바로 쓰실 수 있어요.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">🤝</div>
+                <h3>기관 출강 실적 보유</h3>
+                <p>공공기관·평생학습관 등 다양한 기관에 출강해온 센터가 함께 연결해 드립니다.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════ 등록 폼 ══════ -->
+<section class="sec sec-gray" id="apply">
+    <div class="container container-narrow">
+        <div class="sec-head">
+            <span class="tag-chip">STEP 1</span>
+            <h2 class="sec-title">등록 방법을 선택해 주세요</h2>
+        </div>
+
+        <div class="mode-grid">
+            <div class="mode-card selected" id="modeFile" onclick="selectMode('file')">
+                <span class="mode-tag">이력서가 있어요</span>
+                <h3>파일로 제출</h3>
+                <p>가지고 계신 이력서 파일(PDF·워드·한글)을 그대로 올려주세요.</p>
+            </div>
+            <div class="mode-card" id="modeBuild" onclick="selectMode('build')">
+                <span class="mode-tag">이력서가 없어요</span>
+                <h3>경력 입력하고 자동 생성</h3>
+                <p>경력사항을 항목별로 입력하면 이력서 페이지를 바로 만들어 드립니다.</p>
+            </div>
+        </div>
+
+        <div class="sec-head" style="margin-top:48px;">
+            <span class="tag-chip">STEP 2</span>
+            <h2 class="sec-title">기본 정보를 입력해 주세요</h2>
+        </div>
+
+        <div class="form-card">
+            <form id="applyForm" onsubmit="submitApply(event)" novalidate>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-name">이름 <span class="req">*</span></label>
+                        <input id="f-name" type="text" placeholder="홍길동" required autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="f-phone">연락처 <span class="req">*</span></label>
+                        <input id="f-phone" type="tel" placeholder="010-1234-5678" required autocomplete="tel">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="f-email">이메일</label>
+                    <input id="f-email" type="email" placeholder="example@email.com" autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label>전문 분야 <span class="req">*</span> <span style="font-weight:400;color:var(--text-sub);">(중복 선택 가능)</span></label>
+                    <div class="chip-check-group" id="specialtyGroup">
+                        <label class="chip-check"><input type="checkbox" value="스마트폰 사진"> 스마트폰 사진</label>
+                        <label class="chip-check"><input type="checkbox" value="스마트폰 영상"> 스마트폰 영상</label>
+                        <label class="chip-check"><input type="checkbox" value="AI 활용"> AI 활용</label>
+                        <label class="chip-check"><input type="checkbox" value="자격증 교육"> 자격증 교육</label>
+                        <label class="chip-check"><input type="checkbox" value="사진/영상"> 사진/영상 (일반)</label>
+                        <label class="chip-check"><input type="checkbox" value="컴퓨터/디지털 활용"> 컴퓨터/디지털 활용</label>
+                        <label class="chip-check"><input type="checkbox" value="외국어"> 외국어</label>
+                        <label class="chip-check"><input type="checkbox" value="공예/미술"> 공예/미술</label>
+                        <label class="chip-check"><input type="checkbox" value="음악/무용"> 음악/무용</label>
+                        <label class="chip-check"><input type="checkbox" value="체육/건강"> 체육/건강</label>
+                        <label class="chip-check"><input type="checkbox" value="요리"> 요리</label>
+                        <label class="chip-check"><input type="checkbox" value="육아/가족"> 육아/가족</label>
+                        <label class="chip-check"><input type="checkbox" value="인문교양"> 인문교양</label>
+                        <label class="chip-check"><input type="checkbox" value="CS/스피치"> CS/스피치/이미지메이킹</label>
+                        <label class="chip-check"><input type="checkbox" value="기타" id="specialtyOtherCk"> 기타</label>
+                    </div>
+                    <input id="f-specialty-other" type="text" placeholder="기타 분야를 입력해 주세요" style="display:none;margin-top:10px;">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-region">출강 가능 지역</label>
+                        <input id="f-region" type="text" placeholder="예: 인천·서울 전역, 전국 출강 가능">
+                    </div>
+                    <div class="form-group">
+                        <label for="f-cert">보유 자격증</label>
+                        <input id="f-cert" type="text" placeholder="예: 스마트폰사진작가 2급, 컴퓨터활용능력 1급">
+                    </div>
+                </div>
+
+                <!-- 파일 업로드 모드 -->
+                <div class="form-group mode-panel" id="panelFile">
+                    <label for="f-resume-file">이력서 파일 <span class="req">*</span></label>
+                    <input id="f-resume-file" type="file" accept=".pdf,.doc,.docx,.hwp,.hwpx">
+                    <p class="field-hint">PDF·워드·한글 파일, 20MB 이하</p>
+                </div>
+
+                <!-- 직접 입력 모드 -->
+                <div class="mode-panel" id="panelBuild" style="display:none;">
+                    <label style="display:block;font-size:13px;font-weight:700;color:var(--text-head);margin-bottom:10px;">경력사항 <span class="req">*</span></label>
+                    <div id="careerRows"></div>
+                    <button type="button" class="btn-add-row" id="addCareerRow">+ 경력 추가</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="f-intro">자기소개 (선택)</label>
+                    <textarea id="f-intro" placeholder="강의 스타일, 강점 등을 자유롭게 적어주세요."></textarea>
+                </div>
+
+                <div class="form-group form-checkbox">
+                    <label>
+                        <input id="f-consent" type="checkbox" required>
+                        <span>입력하신 정보는 출강 매칭 및 연락 목적으로만 사용되며, 등록 해지를 요청하시면 즉시 삭제합니다. 동의합니다. <span class="req">*</span></span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">강사 등록하기</button>
+                <div class="form-msg" id="formMsg"></div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════ 자동 생성 이력서 ══════ -->
+<section class="sec sec-white" id="resumePreviewSection" style="display:none;">
+    <div class="container container-narrow">
+        <div class="sec-head no-print">
+            <span class="tag-chip">완료</span>
+            <h2 class="sec-title">이력서가 만들어졌습니다</h2>
+            <p class="sec-desc">아래 버튼으로 인쇄하거나 PDF로 저장해서 사용하세요. 이 페이지를 벗어나면 다시 볼 수 없으니 지금 저장해 주세요.</p>
+            <button class="btn-white-outline no-print" onclick="window.print()" style="margin-top:16px;">🖨 인쇄 / PDF로 저장</button>
+        </div>
+        <div class="resume-doc" id="resumeDoc"></div>
+    </div>
+</section>
+
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+    <div class="foot-grid">
+        <div class="foot-brand">
+            <a href="index.html#home">
+                <img src="images/logo1.png" alt="스마트미디어아트센터" class="logo-img-footer">
+            </a>
+            <p>배움의 문턱을 낮추고, 쉽게 가르치고, 아낌없이 나누고,<br>함께 성장하는 교육 공간입니다.</p>
+        </div>
+        <div class="foot-col">
+            <h4>바로가기</h4>
+            <ul>
+                <li><a href="index.html#about">센터장 소개</a></li>
+                <li><a href="instructors.html">강사진</a></li>
+                <li><a href="index.html#courses">교육과정</a></li>
+                <li><a href="lecturer-jobs.html">강사모집 공고</a></li>
+            </ul>
+        </div>
+        <div class="foot-col">
+            <h4>더보기</h4>
+            <ul>
+                <li><a href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 36 36" style="flex-shrink:0"><rect width="36" height="36" rx="9" fill="#FEE500"/><path fill="#191919" d="M18 8c-7.18 0-13 4.58-13 10.24 0 3.62 2.42 6.8 6.06 8.62-.27.98-.97 3.58-1.11 4.13-.17.68.25.67.53.49.22-.14 3.5-2.38 4.92-3.35.85.12 1.72.19 2.6.19 7.18 0 13-4.58 13-10.24S25.18 8 18 8z"/></svg>팀채팅</a></li>
+                <li><a href="https://cafe.naver.com/elsnap7"  target="_blank" rel="noopener">사진카페 포토피플</a></li>
+                <li><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener">스마트미디어아트센터 카페</a></li>
+            </ul>
+        </div>
+        <div class="foot-col">
+            <h4>연락처</h4>
+            <ul>
+                <li><a href="https://invite.kakao.com/tc/sEmjtp7axZ" target="_blank" rel="noopener">카카오 오픈채팅</a></li>
+                <li><a href="https://blog.naver.com/elanvital7" target="_blank" rel="noopener">네이버 블로그</a></li>
+                <li><a href="https://www.instagram.com/elanvital7/" target="_blank" rel="noopener">인스타그램</a></li>
+                <li><a href="https://www.youtube.com/channel/UC59f-okz-UWLR-Hz4LQBtLA" target="_blank" rel="noopener">유튜브</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="foot-bottom">
+        <p>© 2026 스마트미디어아트센터. All rights reserved.</p>
+        <p><a href="terms.html" style="color:rgba(255,255,255,.36);text-decoration:none;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(255,255,255,.36)'">이용약관</a> · <a href="privacy.html" style="color:rgba(255,255,255,.36);text-decoration:none;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(255,255,255,.36)'">개인정보처리방침</a></p>
+    </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script src="js/site-nav.js"></script>
+<script>
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    let mode = 'file';
+
+    function selectMode(m) {
+        mode = m;
+        document.getElementById('modeFile').classList.toggle('selected', m === 'file');
+        document.getElementById('modeBuild').classList.toggle('selected', m === 'build');
+        document.getElementById('panelFile').style.display  = m === 'file'  ? 'block' : 'none';
+        document.getElementById('panelBuild').style.display = m === 'build' ? 'block' : 'none';
+    }
+
+    // 연락처 자동 하이픈
+    document.getElementById('f-phone').addEventListener('input', e => {
+        let digits = e.target.value.replace(/\D/g, '').slice(0, 11);
+        if (digits.length > 7) digits = `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+        else if (digits.length > 3) digits = `${digits.slice(0, 3)}-${digits.slice(3)}`;
+        e.target.value = digits;
+    });
+
+    // "기타" 분야 체크 시 입력창 노출
+    document.getElementById('specialtyOtherCk').addEventListener('change', e => {
+        document.getElementById('f-specialty-other').style.display = e.target.checked ? 'block' : 'none';
+    });
+
+    // 경력사항 반복 입력
+    function addCareerRow(data) {
+        const div = document.createElement('div');
+        div.className = 'career-row';
+        div.innerHTML = `
+            <input type="text" class="career-org" placeholder="기관/장소 (예: OO평생학습관)" value="${data && data.org ? escAttr(data.org) : ''}">
+            <input type="text" class="career-period" placeholder="기간 (예: 2025.03~2025.06)" value="${data && data.period ? escAttr(data.period) : ''}">
+            <input type="text" class="career-content" placeholder="강의 내용 (예: 스마트폰 사진 기초반)" value="${data && data.content ? escAttr(data.content) : ''}">
+            <button type="button" class="career-remove" aria-label="삭제">✕</button>`;
+        div.querySelector('.career-remove').addEventListener('click', () => div.remove());
+        document.getElementById('careerRows').appendChild(div);
+    }
+    document.getElementById('addCareerRow').addEventListener('click', () => addCareerRow());
+    addCareerRow();
+    addCareerRow();
+
+    function collectCareer() {
+        return [...document.querySelectorAll('.career-row')].map(row => ({
+            org:     row.querySelector('.career-org').value.trim(),
+            period:  row.querySelector('.career-period').value.trim(),
+            content: row.querySelector('.career-content').value.trim(),
+        })).filter(c => c.org || c.period || c.content);
+    }
+
+    function collectSpecialties() {
+        return [...document.querySelectorAll('#specialtyGroup input:checked')].map(cb => cb.value);
+    }
+
+    function sanitizeStorageName(filename) {
+        const dot = filename.lastIndexOf('.');
+        const ext = dot >= 0 ? filename.slice(dot) : '';
+        return `${Date.now()}_${Math.random().toString(36).slice(2, 8)}${ext}`;
+    }
+
+    async function submitApply(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+
+        const name    = document.getElementById('f-name').value.trim();
+        const phone   = document.getElementById('f-phone').value.trim();
+        const email   = document.getElementById('f-email').value.trim();
+        const region  = document.getElementById('f-region').value.trim();
+        const cert    = document.getElementById('f-cert').value.trim();
+        const intro   = document.getElementById('f-intro').value.trim();
+        const consent = document.getElementById('f-consent').checked;
+
+        let specialties = collectSpecialties();
+        const specialtyOther = document.getElementById('f-specialty-other').value.trim();
+        if (specialtyOther) specialties = specialties.filter(s => s !== '기타').concat(`기타: ${specialtyOther}`);
+
+        if (!name)  { showMsg('error', '이름을 입력해 주세요.'); return; }
+        if (!/^\d{3}-\d{4}-\d{4}$/.test(phone)) { showMsg('error', '연락처는 010-1234-5678 형식으로 입력해 주세요.'); return; }
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('error', '올바른 이메일을 입력해 주세요.'); return; }
+        if (!specialties.length) { showMsg('error', '전문 분야를 1개 이상 선택해 주세요.'); return; }
+        if (!consent) { showMsg('error', '개인정보 수집·이용 동의에 체크해 주세요.'); return; }
+
+        let career = [];
+        let resumeFile = null;
+        if (mode === 'file') {
+            resumeFile = document.getElementById('f-resume-file').files[0];
+            if (!resumeFile) { showMsg('error', '이력서 파일을 첨부해 주세요.'); return; }
+            if (resumeFile.size > 20 * 1024 * 1024) { showMsg('error', '파일 용량은 20MB 이하로 올려주세요.'); return; }
+        } else {
+            career = collectCareer();
+            if (!career.length) { showMsg('error', '경력사항을 1개 이상 입력해 주세요.'); return; }
+        }
+
+        btn.disabled = true;
+        btn.textContent = '등록 중…';
+
+        const payload = {
+            name, phone,
+            email: email || null,
+            specialties,
+            specialty_other: specialtyOther || null,
+            region: region || null,
+            certifications: cert || null,
+            career,
+            intro: intro || null,
+        };
+
+        try {
+            if (mode === 'file') {
+                const storagePath = sanitizeStorageName(resumeFile.name);
+                const { error: upErr } = await sb.storage.from('instructor-resumes').upload(storagePath, resumeFile);
+                if (upErr) throw new Error('파일 업로드 실패: ' + upErr.message);
+                payload.resume_file_path = storagePath;
+                payload.resume_file_name = resumeFile.name;
+            }
+
+            const { error } = await sb.from('instructor_applications').insert(payload);
+            if (error) throw new Error(error.message);
+
+            showMsg('success', `${name}님, 등록이 완료됐습니다! 분야·지역이 맞는 출강 요청이 들어오면 먼저 연락드릴게요.`);
+            btn.textContent = '✓ 등록 완료';
+
+            if (mode === 'build') {
+                renderResumePreview(payload);
+                document.getElementById('resumePreviewSection').style.display = 'block';
+                document.getElementById('resumePreviewSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                document.getElementById('applyForm').reset();
+                btn.disabled = false;
+                btn.textContent = '강사 등록하기';
+            }
+        } catch (err) {
+            showMsg('error', (err && err.message) ? err.message : '등록 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+            btn.disabled = false;
+            btn.textContent = '강사 등록하기';
+        }
+    }
+
+    function renderResumePreview(p) {
+        const today = new Date();
+        const dateStr = `${today.getFullYear()}.${String(today.getMonth()+1).padStart(2,'0')}.${String(today.getDate()).padStart(2,'0')}`;
+
+        const tags = (p.specialties || []).map(s => `<span class="r-tag">${esc(s)}</span>`).join('');
+
+        const careerHtml = (p.career || []).length
+            ? p.career.map(c => `
+                <div class="r-career-item">
+                    <div class="r-career-period">${esc(c.period || '')}</div>
+                    <div class="r-career-body">
+                        <div class="r-career-org">${esc(c.org || '')}</div>
+                        <div class="r-career-content">${esc(c.content || '')}</div>
+                    </div>
+                </div>`).join('')
+            : '<p style="font-size:.88rem;color:var(--text-sub);">등록된 경력이 없습니다.</p>';
+
+        const certHtml = p.certifications
+            ? `<h4>보유 자격증</h4><div class="r-cert-list">${esc(p.certifications)}</div>`
+            : '';
+
+        const introHtml = p.intro
+            ? `<h4>자기소개</h4><div class="r-intro">${esc(p.intro)}</div>`
+            : '';
+
+        document.getElementById('resumeDoc').innerHTML = `
+            <div class="r-head">
+                <div>
+                    <div class="r-name">${esc(p.name)}</div>
+                    <div class="r-tags">${tags}</div>
+                </div>
+                <div class="r-contact">
+                    ${esc(p.phone)}<br>
+                    ${p.email ? esc(p.email) + '<br>' : ''}
+                    ${p.region ? '출강 가능 지역: ' + esc(p.region) : ''}
+                </div>
+            </div>
+            <h4>경력사항</h4>
+            ${careerHtml}
+            ${certHtml}
+            ${introHtml}
+            <div class="r-footer-note">스마트미디어아트센터 강사 등록 시스템으로 생성됨 · 등록일 ${dateStr}</div>
+        `;
+    }
+
+    function showMsg(type, text) {
+        const el = document.getElementById('formMsg');
+        el.className = `form-msg ${type}`;
+        el.textContent = text;
+        el.style.display = 'block';
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function esc(s) {
+        return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function escAttr(s) { return esc(s).replace(/'/g, '&#39;'); }
+</script>
+</body>
+</html>

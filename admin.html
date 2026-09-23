@@ -177,6 +177,48 @@
         .badge.pending  { background: #fff7eb; color: #c2410c; }
         .badge.approved { background: #ecfdf5; color: #166534; }
         .badge.hidden   { background: #fef2f2; color: #991b1b; }
+        .badge.new        { background: #eff6ff; color: #1d4ed8; }
+        .badge.contacted  { background: #fff7eb; color: #c2410c; }
+        .badge.active      { background: #ecfdf5; color: #15803d; }
+        .badge.inactive    { background: #f3f4f6; color: #9ca3af; }
+
+        /* ── 강사풀 상세 모달 ── */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; z-index: 500;
+            background: rgba(15,23,42,.5);
+            align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: #fff; border-radius: 16px; width: 100%; max-width: 640px;
+            max-height: 88vh; overflow-y: auto; padding: 28px 30px;
+        }
+        .modal-close {
+            float: right; background: none; border: none; font-size: 1.2rem;
+            color: var(--sub); cursor: pointer; line-height: 1;
+        }
+        .modal-box h3 { font-size: 1.15rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+        .modal-sub { font-size: .82rem; color: var(--sub); margin-bottom: 20px; }
+        .modal-section { margin-bottom: 18px; }
+        .modal-section h4 { font-size: .82rem; font-weight: 700; color: var(--sub); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+        .modal-career-item { padding: 8px 0; border-bottom: 1px dashed var(--gray-line); font-size: .88rem; }
+        .modal-career-item:last-child { border-bottom: none; }
+        .modal-career-item .career-period { color: var(--sub); font-weight: 600; margin-right: 8px; }
+        .modal-career-item .career-org { font-weight: 700; color: var(--navy); }
+        .modal-career-item .career-content { color: var(--sub); margin-top: 2px; }
+        .modal-field-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+        .modal-field-row label { font-size: .85rem; font-weight: 600; color: var(--text); width: 70px; flex-shrink: 0; }
+        .modal-field-row select, .modal-field-row textarea {
+            flex: 1; padding: 8px 12px; border: 1px solid var(--gray-line); border-radius: 8px;
+            font-family: inherit; font-size: .88rem; outline: none;
+        }
+        .modal-field-row textarea { resize: vertical; min-height: 60px; }
+        .resume-link {
+            display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px;
+            background: #eff6ff; color: #1d4ed8; border-radius: 8px; font-size: .85rem;
+            font-weight: 600; text-decoration: none;
+        }
+        .resume-link:hover { background: #dbeafe; }
 
         .empty-cell { text-align: center; padding: 40px; color: var(--sub); }
         .mini-spin {
@@ -243,6 +285,7 @@
         <div class="nav-item active" data-tab="dashboard"><span class="nav-icon">📊</span>대시보드</div>
         <div class="nav-divider"></div>
         <div class="nav-item" data-tab="members"><span class="nav-icon">👥</span>회원 관리</div>
+        <div class="nav-item" data-tab="instructors"><span class="nav-icon">🧑‍🏫</span>강사풀</div>
         <div class="nav-item" data-tab="reviews"><span class="nav-icon">💬</span>수강 후기</div>
     </aside>
 
@@ -250,6 +293,7 @@
     <div class="mob-tabs">
         <div class="mob-tab active" data-tab="dashboard">📊 대시보드</div>
         <div class="mob-tab" data-tab="members">👥 회원</div>
+        <div class="mob-tab" data-tab="instructors">🧑‍🏫 강사풀</div>
         <div class="mob-tab" data-tab="reviews">💬 후기</div>
     </div>
 
@@ -267,6 +311,8 @@
                 <div class="stat-card"><div class="lbl">총 결제 금액</div><div class="val orange" id="ds-revenue">—</div></div>
                 <div class="stat-card"><div class="lbl">전체 후기</div><div class="val" id="ds-reviews">—</div></div>
                 <div class="stat-card"><div class="lbl">승인 대기</div><div class="val red" id="ds-pending">—</div></div>
+                <div class="stat-card"><div class="lbl">강사풀 등록</div><div class="val" id="ds-instructors">—</div></div>
+                <div class="stat-card"><div class="lbl">신규 강사</div><div class="val orange" id="ds-instructors-new">—</div></div>
             </div>
 
             <div class="dash-grid">
@@ -283,6 +329,13 @@
                         <span style="font-size:.8rem;color:var(--sub);cursor:pointer;" onclick="switchTab('reviews')">전체 보기 →</span>
                     </div>
                     <div id="recentReviews"><div class="empty-cell"><div class="mini-spin"></div></div></div>
+                </div>
+                <div class="box">
+                    <div class="box-header">
+                        <span class="box-title">최근 등록된 강사</span>
+                        <span style="font-size:.8rem;color:var(--sub);cursor:pointer;" onclick="switchTab('instructors')">전체 보기 →</span>
+                    </div>
+                    <div id="recentInstructors"><div class="empty-cell"><div class="mini-spin"></div></div></div>
                 </div>
             </div>
         </div>
@@ -316,6 +369,57 @@
                     </table>
                 </div>
                 <div class="tbl-footer" id="memberFooter"></div>
+            </div>
+        </div>
+
+        <!-- ── 강사풀 탭 ── -->
+        <div class="tab-panel" id="tab-instructors">
+            <div class="page-title">강사풀</div>
+            <div class="page-desc">등록된 강사 목록입니다. 출강 요청이 들어오면 분야·지역으로 찾아 연락하세요.</div>
+
+            <div class="box">
+                <div class="toolbar">
+                    <div class="search-wrap">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="instSearch" placeholder="이름·연락처·지역 검색...">
+                    </div>
+                    <select class="sel" id="instSpecialtyFilter">
+                        <option value="">전체 분야</option>
+                        <option value="스마트폰 사진">스마트폰 사진</option>
+                        <option value="스마트폰 영상">스마트폰 영상</option>
+                        <option value="AI 활용">AI 활용</option>
+                        <option value="자격증 교육">자격증 교육</option>
+                        <option value="사진/영상">사진/영상 (일반)</option>
+                        <option value="컴퓨터/디지털 활용">컴퓨터/디지털 활용</option>
+                        <option value="외국어">외국어</option>
+                        <option value="공예/미술">공예/미술</option>
+                        <option value="음악/무용">음악/무용</option>
+                        <option value="체육/건강">체육/건강</option>
+                        <option value="요리">요리</option>
+                        <option value="육아/가족">육아/가족</option>
+                        <option value="인문교양">인문교양</option>
+                        <option value="CS/스피치">CS/스피치/이미지메이킹</option>
+                    </select>
+                    <select class="sel" id="instStatusFilter">
+                        <option value="">전체 상태</option>
+                        <option value="new">신규</option>
+                        <option value="contacted">연락함</option>
+                        <option value="active">활동중</option>
+                        <option value="inactive">비활동</option>
+                    </select>
+                    <button class="btn btn-primary" id="instRefresh">새로고침</button>
+                </div>
+                <div style="overflow-x:auto">
+                    <table>
+                        <thead>
+                            <tr><th>이름</th><th>분야</th><th>지역</th><th>상태</th><th>등록일</th><th>관리</th></tr>
+                        </thead>
+                        <tbody id="instTbody">
+                            <tr><td colspan="6" class="empty-cell"><div class="mini-spin"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tbl-footer" id="instFooter"></div>
             </div>
         </div>
 
@@ -355,6 +459,53 @@
         </div>
 
     </main>
+
+    <!-- ── 강사 상세 모달 ── -->
+    <div class="modal-overlay" id="instModal">
+        <div class="modal-box">
+            <button class="modal-close" id="instModalClose">✕</button>
+            <h3 id="instModalName"></h3>
+            <div class="modal-sub" id="instModalSub"></div>
+
+            <div class="modal-section">
+                <h4>경력사항</h4>
+                <div id="instModalCareer"></div>
+            </div>
+            <div class="modal-section" id="instModalCertWrap" style="display:none;">
+                <h4>보유 자격증</h4>
+                <div id="instModalCert" style="font-size:.88rem;color:var(--text);white-space:pre-line;"></div>
+            </div>
+            <div class="modal-section" id="instModalIntroWrap" style="display:none;">
+                <h4>자기소개</h4>
+                <div id="instModalIntro" style="font-size:.88rem;color:var(--text);white-space:pre-line;"></div>
+            </div>
+            <div class="modal-section" id="instModalResumeWrap" style="display:none;">
+                <h4>제출한 이력서 파일</h4>
+                <a href="#" id="instModalResumeLink" class="resume-link" target="_blank" rel="noopener">📄 파일 열기 (1시간 유효)</a>
+            </div>
+
+            <div class="modal-section">
+                <h4>관리</h4>
+                <div class="modal-field-row">
+                    <label>상태</label>
+                    <select id="instModalStatus">
+                        <option value="new">신규</option>
+                        <option value="contacted">연락함</option>
+                        <option value="active">활동중</option>
+                        <option value="inactive">비활동</option>
+                    </select>
+                </div>
+                <div class="modal-field-row">
+                    <label>메모</label>
+                    <textarea id="instModalMemo" placeholder="통화 내용, 연락 이력 등을 적어두세요."></textarea>
+                </div>
+                <div style="display:flex;justify-content:flex-end;gap:8px;">
+                    <span id="instModalMsg" style="font-size:.82rem;color:var(--sub);align-self:center;"></span>
+                    <button class="btn btn-primary" id="instModalSave">저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -416,6 +567,7 @@ const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
         document.getElementById('tab-' + name).classList.add('active')
         document.querySelectorAll('[data-tab="' + name + '"]').forEach(n => n.classList.add('active'))
         if (name === 'reviews' && !reviewsLoaded) loadReviews()
+        if (name === 'instructors' && !applicationsLoaded) loadApplications()
     }
 
     document.querySelectorAll('.nav-item, .mob-tab').forEach(el => {
@@ -673,6 +825,171 @@ const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
     }
 
     // ════════════════════════════════════════════════════
+    // 강사풀
+    // ════════════════════════════════════════════════════
+    let applicationsLoaded = false
+    let allApplications = []
+    let currentInstId = null
+    const STATUS_LABEL = { new: '신규', contacted: '연락함', active: '활동중', inactive: '비활동' }
+
+    document.getElementById('instRefresh').addEventListener('click', loadApplications)
+    document.getElementById('instSearch').addEventListener('input', filterApplications)
+    document.getElementById('instSpecialtyFilter').addEventListener('change', filterApplications)
+    document.getElementById('instStatusFilter').addEventListener('change', filterApplications)
+
+    async function loadApplications() {
+        applicationsLoaded = true
+        const btn = document.getElementById('instRefresh')
+        btn.disabled = true; btn.textContent = '로딩 중...'
+        document.getElementById('instTbody').innerHTML = '<tr><td colspan="6" class="empty-cell"><div class="mini-spin"></div></td></tr>'
+        try {
+            const r = await fetch('/api/instructor-applications', { headers: { Authorization: `Bearer ${token}` } })
+            const d = await r.json()
+            if (!r.ok) throw new Error(d.error || '불러오기 실패')
+            allApplications = d.applications || []
+
+            document.getElementById('ds-instructors').textContent = allApplications.length
+            document.getElementById('ds-instructors-new').textContent = allApplications.filter(a => a.status === 'new').length
+
+            const recent = allApplications.slice(0, 5)
+            document.getElementById('recentInstructors').innerHTML = recent.length
+                ? recent.map(a => `
+                    <div class="recent-item">
+                        <div>
+                            <div style="font-weight:500;font-size:.88rem">${esc(a.name)}</div>
+                            <div style="font-size:.78rem;color:var(--sub)">${esc((a.specialties||[]).join(', ') || '분야 미기재')}</div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span class="badge ${a.status||'new'}">${STATUS_LABEL[a.status]||'신규'}</span>
+                            <span style="font-size:.78rem;color:var(--sub)">${fmtDate(a.created_at)}</span>
+                        </div>
+                    </div>`).join('')
+                : '<div class="empty-cell" style="padding:24px;font-size:.85rem;">등록된 강사가 없습니다.</div>'
+
+            filterApplications()
+        } catch(e) {
+            document.getElementById('instTbody').innerHTML = '<tr><td colspan="6" class="empty-cell">데이터를 불러오지 못했습니다: ' + esc(e.message) + '</td></tr>'
+        } finally {
+            btn.disabled = false; btn.textContent = '새로고침'
+        }
+    }
+
+    function filterApplications() {
+        const q    = document.getElementById('instSearch').value.trim().toLowerCase()
+        const spec = document.getElementById('instSpecialtyFilter').value
+        const stat = document.getElementById('instStatusFilter').value
+        const filtered = allApplications.filter(a => {
+            const matchQ    = !q || (a.name||'').toLowerCase().includes(q) || (a.phone||'').includes(q) || (a.region||'').toLowerCase().includes(q)
+            const matchSpec = !spec || (a.specialties||[]).includes(spec)
+            const matchStat = !stat || (a.status||'new') === stat
+            return matchQ && matchSpec && matchStat
+        })
+        renderApplications(filtered)
+    }
+
+    function renderApplications(list) {
+        const tbody  = document.getElementById('instTbody')
+        const footer = document.getElementById('instFooter')
+        if (!list.length) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-cell">조건에 맞는 강사가 없습니다.</td></tr>'
+            footer.textContent = ''; return
+        }
+        tbody.innerHTML = list.map(a => {
+            const st = a.status || 'new'
+            return `<tr style="cursor:pointer" data-id="${a.id}">
+                <td><div class="tbl-name">${esc(a.name)}</div><div class="tbl-sub">${esc(a.phone)}</div></td>
+                <td>${esc((a.specialties||[]).join(', ') || '—')}</td>
+                <td>${esc(a.region || '—')}</td>
+                <td><span class="badge ${st}">${STATUS_LABEL[st]||st}</span></td>
+                <td><span class="tbl-date">${fmtDate(a.created_at)}</span></td>
+                <td><button class="btn btn-primary" style="padding:5px 12px;font-size:.8rem" data-id="${a.id}">상세보기</button></td>
+            </tr>`
+        }).join('')
+        footer.textContent = `총 ${list.length}명`
+
+        tbody.querySelectorAll('button[data-id]').forEach(btn => {
+            btn.addEventListener('click', (e) => { e.stopPropagation(); openInstModal(btn.dataset.id) })
+        })
+        tbody.querySelectorAll('tr[data-id]').forEach(row => {
+            row.addEventListener('click', () => openInstModal(row.dataset.id))
+        })
+    }
+
+    function openInstModal(id) {
+        const a = allApplications.find(x => String(x.id) === String(id))
+        if (!a) return
+        currentInstId = id
+
+        document.getElementById('instModalName').textContent = a.name
+        const subBits = [a.phone, a.email, a.region ? '출강 가능 지역: ' + a.region : ''].filter(Boolean)
+        document.getElementById('instModalSub').textContent = subBits.join(' · ')
+
+        const career = a.career || []
+        document.getElementById('instModalCareer').innerHTML = career.length
+            ? career.map(c => `<div class="modal-career-item"><span class="career-period">${esc(c.period||'')}</span><span class="career-org">${esc(c.org||'')}</span><div class="career-content">${esc(c.content||'')}</div></div>`).join('')
+            : '<div style="font-size:.85rem;color:var(--sub)">등록된 경력이 없습니다.</div>'
+
+        const certWrap = document.getElementById('instModalCertWrap')
+        if (a.certifications) { certWrap.style.display = 'block'; document.getElementById('instModalCert').textContent = a.certifications }
+        else { certWrap.style.display = 'none' }
+
+        const introWrap = document.getElementById('instModalIntroWrap')
+        if (a.intro) { introWrap.style.display = 'block'; document.getElementById('instModalIntro').textContent = a.intro }
+        else { introWrap.style.display = 'none' }
+
+        const resumeWrap = document.getElementById('instModalResumeWrap')
+        if (a.resume_url) {
+            resumeWrap.style.display = 'block'
+            const link = document.getElementById('instModalResumeLink')
+            link.href = a.resume_url
+            link.textContent = `📄 ${a.resume_file_name || '이력서 파일'} 열기 (1시간 유효)`
+        } else {
+            resumeWrap.style.display = 'none'
+        }
+
+        document.getElementById('instModalStatus').value = a.status || 'new'
+        document.getElementById('instModalMemo').value = a.memo || ''
+        document.getElementById('instModalMsg').textContent = ''
+
+        document.getElementById('instModal').classList.add('open')
+    }
+
+    function closeInstModal() { document.getElementById('instModal').classList.remove('open') }
+    document.getElementById('instModalClose').addEventListener('click', closeInstModal)
+    document.getElementById('instModal').addEventListener('click', (e) => { if (e.target.id === 'instModal') closeInstModal() })
+
+    document.getElementById('instModalSave').addEventListener('click', async () => {
+        if (!currentInstId) return
+        const saveBtn = document.getElementById('instModalSave')
+        const msg = document.getElementById('instModalMsg')
+        const status = document.getElementById('instModalStatus').value
+        const memo = document.getElementById('instModalMemo').value
+
+        saveBtn.disabled = true; saveBtn.textContent = '저장 중...'
+        try {
+            const r = await fetch('/api/instructor-applications', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                body: JSON.stringify({ id: currentInstId, status, memo })
+            })
+            const d = await r.json()
+            if (!r.ok) throw new Error(d.error || '저장 실패')
+
+            const a = allApplications.find(x => String(x.id) === String(currentInstId))
+            if (a) { a.status = status; a.memo = memo }
+            filterApplications()
+            document.getElementById('ds-instructors-new').textContent = allApplications.filter(x => x.status === 'new').length
+
+            msg.textContent = '✓ 저장되었습니다.'
+            setTimeout(() => { msg.textContent = '' }, 2500)
+        } catch(e) {
+            msg.textContent = '오류: ' + e.message
+        } finally {
+            saveBtn.disabled = false; saveBtn.textContent = '저장'
+        }
+    })
+
+    // ════════════════════════════════════════════════════
     // 유틸
     // ════════════════════════════════════════════════════
     function fmtDate(iso) {
@@ -684,8 +1001,9 @@ const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
         return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
     }
 
-    // 첫 로드 시 후기도 자동으로 가져와서 대시보드 통계 채우기
+    // 첫 로드 시 후기·강사풀도 자동으로 가져와서 대시보드 통계 채우기
     loadReviews()
+    loadApplications()
 
 })()
 </script>

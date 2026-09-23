@@ -295,6 +295,25 @@
             .dispatch-banner-text h3 { font-size: 1.15rem; }
         }
 
+        /* 강사 등록 유도 배너 */
+        .instructor-cta {
+            margin-top: 20px; padding: 26px 32px;
+            background: var(--orange-lt); border: 1.5px dashed var(--orange);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 18px;
+        }
+        .instructor-cta h4 { font-size: 1rem; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+        .instructor-cta p { font-size: .86rem; color: var(--text-sub); line-height: 1.7; max-width: 520px; }
+        .btn-orange-outline {
+            flex-shrink: 0; white-space: nowrap;
+            padding: 12px 26px; background: #fff; color: var(--orange);
+            border: 1.5px solid var(--orange); border-radius: 8px;
+            font-size: .92rem; font-weight: 800; text-decoration: none;
+            transition: all .2s;
+        }
+        .btn-orange-outline:hover { background: var(--orange); color: #fff; }
+
         /* ── FOOTER ── */
         footer { background: var(--navy); padding: 52px 48px 36px; }
         .foot-grid {
@@ -739,6 +758,15 @@
                 </div>
             </div>
             <a href="index.html#lecture-request" class="btn-white" style="flex-shrink:0; white-space:nowrap;">출강 문의하기</a>
+        </div>
+
+        <!-- 강사 등록 유도 -->
+        <div class="instructor-cta reveal">
+            <div>
+                <h4>혹시 강사님이신가요?</h4>
+                <p>스마트폰 사진·영상·AI 활용 등 전문 분야가 있으시다면 강사풀에 등록해 주세요. 출강 요청이 들어오면 먼저 연락드립니다.</p>
+            </div>
+            <a href="instructor-apply.html" class="btn-orange-outline">강사 등록하기 →</a>
         </div>
 
     </div>
