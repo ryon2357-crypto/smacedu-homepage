@@ -259,8 +259,7 @@
     }
     .form-msg .gift-link:hover { background: #176d3b; }
 
-    /* ── 함께 보시면 좋은 과정 (여행사진작가 · 원데이) ── */
-    #travel { background: var(--white); }
+    /* ── 함께 보시면 좋은 과정 (원데이) ── */
     #oneday { background: var(--cream); }
     .offer-card {
       display: flex; gap: 36px; align-items: center; flex-wrap: wrap;
@@ -316,32 +315,6 @@
     .hl { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .deal-notice { margin-top: 16px; font-size: 13.5px; font-weight: 800; color: #c2410c; }
 
-    .countdown-box {
-      flex-shrink: 0;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(251,191,36,.35);
-      border-radius: 14px;
-      padding: 22px 28px;
-      text-align: center;
-      min-width: 230px;
-    }
-    .countdown-label { font-size: 12px; font-weight: 800; color: #fde68a; letter-spacing: .02em; margin-bottom: 12px; }
-    .countdown-timer { display: flex; gap: 12px; justify-content: center; }
-    .countdown-unit { display: flex; flex-direction: column; align-items: center; }
-    .countdown-num { font-size: 28px; font-weight: 900; color: #fff; font-variant-numeric: tabular-nums; line-height: 1; }
-    .countdown-unit-label { font-size: 10px; color: rgba(255,255,255,.55); margin-top: 4px; }
-    .countdown-closed { display: none; font-size: 15px; font-weight: 800; color: #fde68a; line-height: 1.5; }
-    .countdown-box.closed .countdown-timer { display: none; }
-    .countdown-box.closed .countdown-closed { display: block; }
-
-    /* ── 자격 안내 (법정 고지) ── */
-    .legal-note {
-      max-width: 1040px; margin: 0 auto; padding: 22px 24px;
-      font-size: 12.5px; line-height: 1.7; color: var(--text-sub);
-      border-top: 1px solid var(--gray-line);
-    }
-    .legal-note b { color: var(--text-body); }
-
     footer { text-align: center; padding: 30px 24px 36px; border-top: 1px solid var(--gray-line); color: var(--text-sub); font-size: 13px; }
 
     @media (max-width: 640px) {
@@ -352,7 +325,7 @@
       .gift-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
       .gift-note { padding: 22px 20px; text-align: center; justify-content: center; }
       .offer-card { padding: 32px 24px; gap: 26px; }
-      .countdown-box, .price-box { width: 100%; min-width: 0; }
+      .price-box { width: 100%; min-width: 0; }
       .offer-actions .btn { width: 100%; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -551,41 +524,7 @@
   </div>
 </section>
 
-<!-- ⑤ 여행사진작가 과정 마지막 신청 -->
-<section id="travel">
-  <div class="container">
-    <p class="section-label reveal">LAST CALL</p>
-    <h2 class="reveal">여행사진작가 과정, 마지막 신청입니다</h2>
-    <p class="section-desc reveal">올해 추석 연휴(9월 24~26일)가 그대로 실습이 됩니다. 연휴 전에 배우고, 연휴에 찍고, 9월 28일에 마무리하세요.</p>
-
-    <div class="offer-card dark reveal">
-      <div class="offer-main">
-        <div class="offer-tag">여행사진작가 2급 · 온라인 줌</div>
-        <h3>스마트폰으로 찍는 여행사진,<br>두 번의 수업으로 끝냅니다</h3>
-        <ul class="facts">
-          <li><span class="k">일정</span><span>9월 21일(월) · 28일(월)<br>밤 8시 30분~11시</span></li>
-          <li><span class="k">수강료</span><span>5만원<small>검정에 합격하신 분께 여행사진작가 2급 자격증이 발급됩니다.</small></span></li>
-          <li><span class="k">마감</span><span>9월 20일(일)</span></li>
-        </ul>
-        <div class="offer-actions">
-          <a class="btn btn-primary btn-pulse" href="https://docs.google.com/forms/d/e/1FAIpQLSeVHavnGXjxukfP9b2a5SykpJvEh95Qe4CnePbcMbWtrnZxcA/viewform" target="_blank" rel="noopener">여행사진작가 신청서 작성하기</a>
-          <a class="btn btn-line-light" href="https://www.smacedu.kr/travel-photo-artist" target="_blank" rel="noopener">과정 자세히 보기</a>
-        </div>
-      </div>
-      <div class="countdown-box" id="travelCountdown">
-        <div class="countdown-label">신청 마감까지</div>
-        <div class="countdown-timer">
-          <div class="countdown-unit"><span class="countdown-num" id="cd-h">00</span><span class="countdown-unit-label">시간</span></div>
-          <div class="countdown-unit"><span class="countdown-num" id="cd-m">00</span><span class="countdown-unit-label">분</span></div>
-          <div class="countdown-unit"><span class="countdown-num" id="cd-s">00</span><span class="countdown-unit-label">초</span></div>
-        </div>
-        <div class="countdown-closed">신청 기간이 끝났습니다.<br>자세한 내용은 과정 안내에서 확인해 주세요.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ⑥ 9월 30일 원데이 클래스 -->
+<!-- ⑤ 9월 30일 원데이 클래스 -->
 <section id="oneday">
   <div class="container">
     <p class="section-label reveal">ONE-DAY CLASS</p>
@@ -622,10 +561,6 @@
   </div>
 </section>
 
-<div class="legal-note">
-  <b>자격 안내</b> · 여행사진작가 2급은 등록번호 2025-004792로 직접 조회할 수 있는 등록 민간자격이며, 관리·운영은 스마트미디어아트센터입니다. 국가공인자격은 아닙니다. 수강료 5만원, 자격증은 검정에 합격하신 분께 발급되며 환불 규정은 과정 안내와 신청서에서 확인하실 수 있습니다.
-</div>
-
 <footer>
   <p>© 2026 SMAC EDU · <a href="/privacy.html" style="color: var(--text-sub); text-decoration: underline;">개인정보처리방침</a></p>
 </footer>
@@ -635,9 +570,6 @@
      응답은 연결된 '혜택 선물 신청서(응답)' 시트에 자동 취합됩니다. */
   const FORM_RESPONSE_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfy-QlPgnlkn669nkgoflspAA1bxVSAbVFChYUwx-N4qPe0iw/formResponse';
   const GIFT_FOLDER_URL = 'https://drive.google.com/drive/folders/1hm3zlJevuCMpOEGfOnZDH-w0I9wYqy8n?usp=drive_link';
-
-  /* 여행사진작가 신청 마감 — 연장하면 이 한 줄만 바꾸세요 (한국시간) */
-  const TRAVEL_DEADLINE = new Date('2026-09-20T23:59:59+09:00').getTime();
 
   async function submitApply(e) {
     e.preventDefault();
@@ -711,21 +643,6 @@
   );
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  /* ── 여행사진작가 신청 마감까지 실제 남은 시간 (마감 후에는 안내 문구로 바뀜) ── */
-  function tickCountdown() {
-    const box = document.getElementById('travelCountdown');
-    const h = document.getElementById('cd-h'), m = document.getElementById('cd-m'), s = document.getElementById('cd-s');
-    if (!box || !h) return;
-    const diff = TRAVEL_DEADLINE - Date.now();
-    if (diff <= 0) { box.classList.add('closed'); return; }
-    const pad = n => String(n).padStart(2, '0');
-    const total = Math.floor(diff / 1000);
-    h.textContent = pad(Math.floor(total / 3600));
-    m.textContent = pad(Math.floor((total % 3600) / 60));
-    s.textContent = pad(total % 60);
-  }
-  tickCountdown();
-  setInterval(tickCountdown, 1000);
 </script>
 </body>
 </html>
