@@ -17,7 +17,7 @@ function escapeHtml(str) {
 function _ensureHeaders(sheet) {
   const lastCol = sheet.getLastColumn();
   const currentHeaders = lastCol > 0 ? sheet.getRange(1, 1, 1, lastCol).getValues()[0] : [];
-  const expected = ['timestamp', 'type', 'rating', 'name', 'email', 'course', 'age', 'content', 'status'];
+  const expected = ['timestamp', 'type', 'rating', 'name', 'email', 'phone', 'course', 'age', 'content', 'status'];
   let headers = currentHeaders.slice();
 
   if (!headers.length || !headers[0]) {
@@ -26,17 +26,12 @@ function _ensureHeaders(sheet) {
     return expected;
   }
 
-  if (headers.length < expected.length) {
-    expected.slice(headers.length).forEach((value, index) => {
-      sheet.getRange(1, headers.length + index + 1).setValue(value);
+  expected.forEach(value => {
+    if (headers.indexOf(value) === -1) {
+      sheet.getRange(1, headers.length + 1).setValue(value);
       headers.push(value);
-    });
-  }
-
-  if (headers.indexOf('status') === -1) {
-    sheet.getRange(1, headers.length + 1).setValue('status');
-    headers.push('status');
-  }
+    }
+  });
 
   return headers;
 }
@@ -169,17 +164,19 @@ function doPost(e) {
 
     const now = new Date();
     const data = params;
-    const row = [
-      Utilities.formatDate(now, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss'),
-      data.type || '',
-      data.rating || '',
-      data.name || '',
-      data.email || '',
-      data.course || '',
-      data.age || '',
-      data.content || '',
-      data.status || 'approved'
-    ];
+    const rowData = {
+      timestamp: Utilities.formatDate(now, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss'),
+      type: data.type || '',
+      rating: data.rating || '',
+      name: data.name || '',
+      email: data.email || '',
+      phone: _normalizePhone(data.phone || ''),
+      course: data.course || '',
+      age: data.age || '',
+      content: data.content || '',
+      status: data.status || 'approved'
+    };
+    const row = headers.map(key => rowData[key] !== undefined ? rowData[key] : '');
 
     sheet.appendRow(row);
 
@@ -208,6 +205,7 @@ function _sendNewReviewNotify(data, total) {
     <table style="width:100%;border-collapse:collapse;font-size:14px;">
       <tr><td style="padding:6px 0;color:#64748b;width:70px;">별점</td><td style="color:#f59e0b;font-size:16px;">${stars}</td></tr>
       <tr><td style="padding:6px 0;color:#64748b;">이름</td><td><strong>${escapeHtml(data.name || '-')}</strong></td></tr>
+      <tr><td style="padding:6px 0;color:#64748b;">전화번호</td><td>${escapeHtml(_normalizePhone(data.phone || '') || '-')}</td></tr>
       <tr><td style="padding:6px 0;color:#64748b;">과정</td><td>${escapeHtml(data.course || '-')}</td></tr>
       <tr><td style="padding:6px 0;color:#64748b;">내용</td><td style="line-height:1.6;">${escapeHtml(String(data.content || '-').slice(0, 120))}</td></tr>
     </table>

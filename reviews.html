@@ -447,8 +447,12 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="reviewEmail">이메일 <span class="req">*</span></label>
-                        <input type="text" id="reviewEmail" name="email" class="form-input" placeholder="예: example@gmail.com">
-                        <p class="form-notice" style="margin-top:6px;">이메일은 사이트에 공개되지 않으며, 행정용으로만 저장됩니다.</p>
+                        <input type="email" id="reviewEmail" name="email" class="form-input" placeholder="예: example@gmail.com" autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="reviewPhone">전화번호 <span class="req">*</span></label>
+                        <input type="tel" id="reviewPhone" name="phone" class="form-input" placeholder="예: 010-1234-5678" autocomplete="tel" inputmode="numeric" maxlength="13">
+                        <p class="form-notice" style="margin-top:6px;">이메일과 전화번호는 사이트에 공개되지 않으며, 행정용으로만 저장됩니다.</p>
                     </div>
 
                     <div class="form-group full">
@@ -687,9 +691,16 @@
             return false;
         }
         const email = document.getElementById('reviewEmail').value.trim();
-        if (!email) {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             document.getElementById('reviewEmail').focus();
-            showStatus('error', '이메일을 입력해주세요.');
+            showStatus('error', '정확한 이메일을 입력해주세요.');
+            return false;
+        }
+        const phoneInput = document.getElementById('reviewPhone');
+        const phoneDigits = phoneInput.value.replace(/\D/g, '');
+        if (!/^010\d{8}$/.test(phoneDigits)) {
+            phoneInput.focus();
+            showStatus('error', '전화번호를 010-1234-5678 형식으로 입력해주세요.');
             return false;
         }
         const course = document.getElementById('reviewCourse').value;
@@ -717,6 +728,14 @@
     /* 폼 제출 */
     const reviewForm = document.getElementById('reviewForm');
     const submitBtn  = document.getElementById('reviewSubmitBtn');
+    const phoneInput = document.getElementById('reviewPhone');
+
+    phoneInput.addEventListener('input', function() {
+        const digits = this.value.replace(/\D/g, '').slice(0, 11);
+        if (digits.length <= 3) this.value = digits;
+        else if (digits.length <= 7) this.value = digits.slice(0, 3) + '-' + digits.slice(3);
+        else this.value = digits.slice(0, 3) + '-' + digits.slice(3, 7) + '-' + digits.slice(7);
+    });
 
     reviewForm.addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -727,6 +746,7 @@
         document.getElementById('reviewStatus').style.display = 'none';
 
         const fd = new FormData(reviewForm);
+        fd.set('phone', phoneInput.value.replace(/\D/g, '').replace(/^(010)(\d{4})(\d{4})$/, '$1-$2-$3'));
         fd.append('type', '수강후기');
         fd.append('timestamp', new Date().toLocaleString('ko-KR'));
 
