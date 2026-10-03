@@ -1,4 +1,5 @@
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzy1Qb1k1k_HMwYrQTHoGPbhWFs0r9J6bC6iGkvL0o7SEaJwQr4d72tZKATbIdTvojWnQ/exec'
+const fallback = require('../data/reviews.json')
 
 function publicReview(review) {
   return {
@@ -15,7 +16,7 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' })
 
   const controller = new AbortController()
-  const timer = setTimeout(() => controller.abort(), 8000)
+  const timer = setTimeout(() => controller.abort(), 20000)
 
   try {
     const params = new URLSearchParams({ action: 'fetch', status: 'approved' })
@@ -32,14 +33,19 @@ module.exports = async function handler(req, res) {
       throw new Error('후기 응답 형식이 올바르지 않습니다.')
     }
 
-    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300')
+    res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=86400')
     return res.status(200).json({
       status: 'success',
       reviews: data.reviews.map(publicReview),
     })
   } catch (error) {
     console.error('공개 후기 로드 오류:', error)
-    return res.status(502).json({ status: 'error', reviews: [] })
+    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=86400')
+    return res.status(200).json({
+      status: 'success',
+      reviews: fallback.reviews,
+      stale: true,
+    })
   } finally {
     clearTimeout(timer)
   }

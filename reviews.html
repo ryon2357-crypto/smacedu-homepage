@@ -631,31 +631,9 @@
         return reviews;
     }
 
-    /* 후기 로드 — 같은 도메인 API 우선, 실패 시 Google 직접 요청 */
-    async function loadReviews() {
+    function renderReviews(reviews) {
         const grid = document.getElementById('reviewsGrid');
-        let reviews = null;
-
-        try {
-            const res = await fetch('/api/reviews', { headers: { Accept: 'application/json' } });
-            if (!res.ok) throw new Error('reviews api ' + res.status);
-            const json = await res.json();
-            if (json.status === 'success') reviews = json.reviews;
-        } catch {
-            try {
-                const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=fetch&status=approved`);
-                if (!res.ok) throw new Error('apps script ' + res.status);
-                const json = await res.json();
-                if (json.status === 'success') reviews = json.reviews;
-            } catch {
-                try {
-                    reviews = await loadFromSheet();
-                } catch { /* ignore */ }
-            }
-        }
-
-        const loading = document.getElementById('reviewsLoading');
-        if (loading) loading.remove();
+        grid.replaceChildren();
 
         if (reviews && reviews.length > 0) {
             reviews.slice().reverse().forEach(r => {
@@ -665,8 +643,46 @@
             });
             reviewCount = reviews.length;
             updateCount();
-        } else {
-            grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-sub);padding:40px 0;">아직 등록된 후기가 없습니다.</p>';
+            return true;
+        }
+
+        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-sub);padding:40px 0;">아직 등록된 후기가 없습니다.</p>';
+        reviewCount = 0;
+        updateCount();
+        return false;
+    }
+
+    /* 마지막 정상 후기를 먼저 보이고, 서버의 최신 데이터로 갱신 */
+    async function loadReviews() {
+        let rendered = false;
+
+        try {
+            const snapshotRes = await fetch('/data/reviews.json', { cache: 'no-store' });
+            if (!snapshotRes.ok) throw new Error('reviews snapshot ' + snapshotRes.status);
+            const snapshot = await snapshotRes.json();
+            if (snapshot.status === 'success') rendered = renderReviews(snapshot.reviews);
+        } catch { /* API 요청으로 계속 */ }
+
+        try {
+            const res = await fetch('/api/reviews', { headers: { Accept: 'application/json' } });
+            if (!res.ok) throw new Error('reviews api ' + res.status);
+            const json = await res.json();
+            if (json.status === 'success') rendered = renderReviews(json.reviews);
+        } catch {
+            if (!rendered) {
+                try {
+                    const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=fetch&status=approved`);
+                    if (!res.ok) throw new Error('apps script ' + res.status);
+                    const json = await res.json();
+                    if (json.status === 'success') rendered = renderReviews(json.reviews);
+                } catch { /* ignore */ }
+            }
+        }
+
+        const loading = document.getElementById('reviewsLoading');
+        if (loading) loading.remove();
+        if (!rendered) {
+            document.getElementById('reviewsGrid').innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-sub);padding:40px 0;">후기를 잠시 후 다시 불러와 주세요.</p>';
         }
     }
 
