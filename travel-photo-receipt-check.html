@@ -88,7 +88,7 @@
     </header>
 
     <section class="card" aria-labelledby="search-title">
-      <div class="updated">2026년 10월 3일 오후 8시 23분 기준</div>
+      <div class="updated">2026년 10월 3일 오후 8시 49분 기준</div>
       <form id="lookup-form">
         <label id="search-title" for="lookup">이름 또는 사진을 보낸 이메일</label>
         <div class="search-row">
@@ -267,7 +267,7 @@
       if(application?.grade==='여행사진작가 1급'){
         gradeState=confirmedFirstGrade.has(item.keys[0])
           ? '<p class="application-state confirmed">1급 확정</p>'
-          : '<p class="application-state payment">1급 신청 확인 / 입금 미확인<span class="payment-account">입금 신한 110-050-892636 박성욱 5만원</span><span class="payment-account">입금을 했는데 반영이 되지 않았다면 개인톡 주세요^^</span></p>';
+          : '<p class="application-state payment">1급 신청 확인 / 입금 미확인<span class="payment-account">입금 신한 110-050-892636 박성욱 5만원</span><span class="payment-account">강사반 수료자는 1급 자동 승급으로 5만원 입금이 필요 없습니다.</span><span class="payment-account">입금을 했는데 반영이 되지 않았다면 개인톡 주세요^^</span></p>';
       }
       const applicationPanel=application?`<div class="application"><p class="application-label">신청서에 기록된 신청 급수</p><p class="application-grade">${application.grade}</p>${gradeState}<p class="application-extra"><strong>추가 자격증:</strong> ${application.extras.length?application.extras.join(' · '):'선택 없음'}</p></div>`:'';
       result.innerHTML=`<h2>접수 현황을 찾았습니다</h2><p class="who">조회 결과: ${item.mask}</p><div class="checks">${status(item.photo,'과제 사진 이메일',photoDetail)}${status(item.form,'자격증 신청서',formDetail)}</div>${applicationPanel}<p class="next">${next}</p>`;
