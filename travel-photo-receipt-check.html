@@ -88,7 +88,7 @@
     </header>
 
     <section class="card" aria-labelledby="search-title">
-      <div class="updated">2026년 10월 3일 오후 2시 20분 기준</div>
+      <div class="updated">2026년 10월 3일 오후 3시 44분 기준</div>
       <form id="lookup-form">
         <label id="search-title" for="lookup">이름 또는 사진을 보낸 이메일</label>
         <div class="search-row">
@@ -123,7 +123,7 @@
     const FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLSdVOAsdlO5uaxm_zSL0RJhCOawjvDuhT6zlKKwd6zLoXoqJpQ/viewform';
     const MAIL_URL='mailto:ryon2357@gmail.com?subject=%EC%97%AC%ED%96%89%EC%82%AC%EC%A7%84%EC%9E%91%EA%B0%80%202%EA%B8%89%20%EA%B3%BC%EC%A0%9C%20%EC%82%AC%EC%A7%84%20%EC%A0%9C%EC%B6%9C';
     const records=[
-      {mask:'김*선',photo:1,form:0,date:'2026-09-28',keys:['ad150ffb577d48910f54028ae86dd10876b2fac4bce078c67df2f3d6494c4e47','28df624bbd078c6d973ace7ecae49b6731fcd1af9d22b6d599235c7aaa58b059']},
+      {mask:'김*선',photo:1,form:1,date:'2026-09-28',keys:['ad150ffb577d48910f54028ae86dd10876b2fac4bce078c67df2f3d6494c4e47','28df624bbd078c6d973ace7ecae49b6731fcd1af9d22b6d599235c7aaa58b059']},
       {mask:'심*자',photo:1,form:1,date:'2026-09-27',keys:['f165e53cbf07079a9a3859903850a3d146224842dda0cf640234a5572abab2b4','56ca4bd61064967ce4f43d156a9d03e0faaa50a73b0e7ebc579a562250839838','318a1429b265ba6e2aa4bad363229b89c05e2b41f76dae050f19f3820d33690e']},
       {mask:'이*선',photo:1,form:1,date:'2026-09-27',keys:['6b05e23093910c1e0986677642887d8177ff1e918cee7a7e42c1327bbad026e5','ea2ba7db90b5ea2fc744bf9f739ce23dddfff6811a40356e72381422c68d89db']},
       {mask:'박*규',photo:1,form:1,date:'2026-09-27',keys:['ab3b0d375362c34ed20be62b9a43ca3de03c9038bc8425e7076eadfcc472f1ec','d21f286ed15972c231788c03e18f3f63f2606a7dd9885b1bd4c247fe4a6afaab']},
@@ -148,21 +148,25 @@
       {mask:'이*영',photo:1,form:0,date:'2026-09-30',keys:['a35f6ae55b13f45b65302ab4d83d570444164c0d64339af9ba44368ca2671d4e','9b9974063c8c05c1c8295c10689ed0ff1eb6165e059e1702ec52999be96cff9d']},
       {mask:'홍*순',photo:1,form:1,date:'2026-09-30',keys:['d3d8e949f35ee58bfa0302b7a8517668b928675e2fb735f0897b4556bca19d1e','4066518213ff00c572fdace317e79996eee8235303dc9cf0b6402a494b0e7649','1899fcf6b7257a1c01348feb17a49eb80e3015aab68fc2aa0d1dba9b79549aa4']},
       {mask:'이*선',photo:1,form:1,date:'2026-09-30',keys:['a552da9cc44315018e1bb813558711bb7806fd3d8f7c5eea61cb28574155f805','9d37792fa4a99151007b6d7667ffbacc0e056829ab8e9db6acc0b5d22e56aad2']},
-      {mask:'안*실',photo:1,form:0,date:'2026-09-30',keys:['f1b03e9f78cf7df777eac2deaee5ff996055712e9663b2d48a7e1b1d71d19dbf','09311ac9c2215e5b9993401d55486ad744f62f5dab1e346de910a5b1bd4e36aa']},
+      {mask:'안*실',photo:1,form:1,date:'2026-09-30',keys:['f1b03e9f78cf7df777eac2deaee5ff996055712e9663b2d48a7e1b1d71d19dbf','09311ac9c2215e5b9993401d55486ad744f62f5dab1e346de910a5b1bd4e36aa']},
       {mask:'이*욱',photo:1,form:1,date:'2026-09-30',keys:['8ed531ebdf8325312927f7cbbc905c4c6ecb7915d8f6838890cfb4b0df333c92','f59f7531c5b25dc7a67ebf4c2366c329896610285dfab407b6e46d7eca0885af']},
-      {mask:'한*희',photo:1,form:0,date:'2026-09-30',keys:['dca5d4ed56227498a3541e53f106e70aae206d64b88db3ad8b75e70097c16d0b','764028ccddcc008e8f7bfdffad978dee886416d05d2580f5fcaea92d936795a7']},
+      {mask:'한*희',photo:1,form:1,date:'2026-09-30',keys:['dca5d4ed56227498a3541e53f106e70aae206d64b88db3ad8b75e70097c16d0b','764028ccddcc008e8f7bfdffad978dee886416d05d2580f5fcaea92d936795a7']},
       {mask:'김*연',photo:1,form:1,date:'2026-10-01',keys:['3533ac893c006041723bb6386e0181c3a3e80448e7a50f08faa53e7db1b18177','790d0f3ecd1a2edf520634b41ca77b35c060d8d79671584bc55aeb6d33378f83']},
       {mask:'이*순',photo:1,form:1,date:'2026-10-01',keys:['c3510ae20d4bd311978eea1aff2c28dfb07775574e46f6a4e5214bfaa4568aaf','b5fe9f1ddcfd4c45bd11919bbd4443dee47999f052edd52c9a50762df45b6a07']},
       {mask:'차*옥',photo:1,form:1,date:'2026-10-01',keys:['bf7c85dd366cca618ad2ea842680c56c56f18b98c61e36e0a8f58db48977d81e','3adeb50267a3ec9b3e37d503642790e022ff0a6f31b976d9bfc76feeb69ae801']},
       {mask:'배*옥',photo:1,form:1,date:'2026-10-01',keys:['bc26a6d82c7f32fe1c85f1b61ccc8203cc4008cc1168505a6d6dd491b6f2133d','d59d314094fa424626696c76e88dce97d74261a4430dd283bb145887f1117865']},
-      {mask:'김*근',photo:1,form:0,date:'2026-10-02',keys:['e8e0fb0c502f9f35a2f661227af2695ab27e0d56fb08216ae59ac26e6a8f5f5e','fb2a943a593464fdffc03d9969757503a7f29a54dbf66e58e3c205c2b7fe1e8e']},
+      {mask:'김*근',photo:1,form:1,date:'2026-10-02',keys:['e8e0fb0c502f9f35a2f661227af2695ab27e0d56fb08216ae59ac26e6a8f5f5e','fb2a943a593464fdffc03d9969757503a7f29a54dbf66e58e3c205c2b7fe1e8e']},
       {mask:'곽*심',photo:1,form:1,date:'2026-10-02',keys:['a85074fcade917077f7e7b1a2e85f798edaa893889dd5aadb3248cf300868b6f','7f25a8f766faaa5b32970106f0fa7a71005e658b0b51eeb163cc7c770aaad097']},
       {mask:'박*숙',photo:1,form:1,date:'2026-10-02',keys:['7ed5396c13a1869a73c32230f512309ab078e4b16ebe662a7e5a05978f405ff3','fb31d31a44461ebfb7f95aa886b96d06c11a2799a79fbea3589e2d7079fa13b9']},
-      {mask:'나*경',photo:1,form:0,date:'2026-10-03',keys:['4c160dbfe869a376377367379ff69166d76089ad70f3dbeb77ad487421d1d0b2','6d085d1a7865ba7933561691495b0f85358d03c437e20daa19c7ba6805609fe3']},
+      {mask:'나*경',photo:1,form:1,date:'2026-10-03',keys:['4c160dbfe869a376377367379ff69166d76089ad70f3dbeb77ad487421d1d0b2','6d085d1a7865ba7933561691495b0f85358d03c437e20daa19c7ba6805609fe3']},
       {mask:'김*현',photo:1,form:1,date:'2026-10-03',keys:['5fa998f185baa342ac77944464bc15930f56e1989642d34f4479868a520ed8d1','a43898aca3e487ede2f3f333129f62c40b7cdecf15d3dc356bd8c0c37332b40d']},
       {mask:'원*아',photo:0,form:1,date:'2026-09-28',keys:['170fc0cc3960f800bbfacfd358929c2f19919577d826f525f004aca478be1fcf','2c7b77d056e73f5dd0b25fb4f901d8f8ba93a5f3337df62d7eeec3140f67c4c1']},
       {mask:'노*승',photo:0,form:1,date:'2026-10-02',keys:['b448ceed332b07edcfc3b1acef2058643d863854bc457c9b0091d297961793e4','1dd0fb0b0c119dfcbac2f5eb9a6cd25991f090d6550475727e1081c1451aaae1']},
-      {mask:'김*희',photo:0,form:1,date:'2026-10-02',keys:['1d8def7d3ead091c4305cf0007a922a6d586177675eab5f1b593670c72d35833','2d63dcbac55939f81a38da94052496974bdee68b9d454d504d7b70f6859b1a0b']}
+      {mask:'김*희',photo:0,form:1,date:'2026-10-02',keys:['1d8def7d3ead091c4305cf0007a922a6d586177675eab5f1b593670c72d35833','2d63dcbac55939f81a38da94052496974bdee68b9d454d504d7b70f6859b1a0b']},
+      {mask:'차*옥',photo:0,form:1,date:'2026-10-01',keys:['bf7c85dd366cca618ad2ea842680c56c56f18b98c61e36e0a8f58db48977d81e','3acb944f01d7ed22f5ede7a54e045d2b84d0c5b4b56b7fa2f34914df404039f0']},
+      {mask:'남*민',photo:0,form:1,date:'2026-10-03',keys:['9b70c76b1d9abd94b8fb3e5599b65c8f701e5d73163dd45dbb124f61025b2f01','c53d4f09681355c0be472d8015f5d343d784f9b68c7ccd1f7529e85764cb0138']},
+      {mask:'송*만',photo:0,form:1,date:'2026-10-03',keys:['7f9ccad194bbd7185da36fadc8d8c2d9eef0c6dea6bf7508942613e931ae4e5e','c32aa4b0491a082d9d500806450afb4d9ca71e5027c8a46a6f6fca5987b6bdfe']},
+      {mask:'윤*애',photo:0,form:1,date:'2026-10-03',keys:['a72fa8685d972498b0443551ada940655d7c7bbafd1a1546cc446e787a578906','01f68cbe66db9904ffaa6221b17ab6868ef6f17f9722ccdf5d3ae96c050868f7']}
     ];
 
     const applications={
@@ -171,12 +175,12 @@
       'b111db188f4cccb12d22dd054c7e7c560d9b69eab8e28d4b39ee5012f9989654':{grade:'여행사진작가 1급',extras:[]},
       '56463071597ff8e87bd0807e21f865cc8fb6f1f136f29db6724d54b98416a266':{grade:'여행사진작가 2급',extras:[]},
       'f2b4e5a82d3b8a389f56bb7529ba949de30b2bf43d704a2f5fb4cbf1b7e5fc61':{grade:'여행사진작가 2급',extras:[]},
-      '6b05e23093910c1e0986677642887d8177ff1e918cee7a7e42c1327bbad026e5':{grade:'여행사진작가 1급',extras:['스마트폰사진작가 2급','스마트폰활용지도사 2급','AI활용지도사 2급','AI프롬프트전문가 2급']},
+      '6b05e23093910c1e0986677642887d8177ff1e918cee7a7e42c1327bbad026e5':{grade:'여행사진작가 1급',extras:["스마트폰사진작가 2급","스마트폰활용지도사 2급","AI활용지도사 2급","AI프롬프트전문가 2급"]},
       'ab3b0d375362c34ed20be62b9a43ca3de03c9038bc8425e7076eadfcc472f1ec':{grade:'여행사진작가 1급',extras:[]},
       '170fc0cc3960f800bbfacfd358929c2f19919577d826f525f004aca478be1fcf':{grade:'여행사진작가 1급',extras:[]},
-      '2d453faf746a07f19ead8f37fac55987a039f90eec80b08f41e65f8fcda2177f':{grade:'여행사진작가 2급',extras:[]},
+      '2d453faf746a07f19ead8f37fac55987a039f90eec80b08f41e65f8fcda2177f':{grade:'여행사진작가 1급',extras:[]},
       '711f6e0b63911899236b07d5ef41f572e2a285c3068aac979e68575f14c891e6':{grade:'여행사진작가 2급',extras:[]},
-      '29e9190a30e7375201d03cef633281e310f04ffbe96a28e80cf3a60a04cf7c62':{grade:'여행사진작가 2급',extras:['스마트폰활용지도사 2급']},
+      '29e9190a30e7375201d03cef633281e310f04ffbe96a28e80cf3a60a04cf7c62':{grade:'여행사진작가 2급',extras:["스마트폰활용지도사 2급"]},
       'ad7b203d3922220bb00ec8719a111dee5d00108f96b5e51b59e6981746e6d2a8':{grade:'여행사진작가 1급',extras:[]},
       'd3d8e949f35ee58bfa0302b7a8517668b928675e2fb735f0897b4556bca19d1e':{grade:'여행사진작가 1급',extras:[]},
       'a552da9cc44315018e1bb813558711bb7806fd3d8f7c5eea61cb28574155f805':{grade:'여행사진작가 2급',extras:[]},
@@ -184,28 +188,40 @@
       'b448ceed332b07edcfc3b1acef2058643d863854bc457c9b0091d297961793e4':{grade:'여행사진작가 1급',extras:[]},
       'f3c450a85dd9d2c5e27e5dcadd490a7039acbdc887795da57601e7bb376df8d3':{grade:'여행사진작가 1급',extras:[]},
       'f165e53cbf07079a9a3859903850a3d146224842dda0cf640234a5572abab2b4':{grade:'여행사진작가 2급',extras:[]},
-      '3533ac893c006041723bb6386e0181c3a3e80448e7a50f08faa53e7db1b18177':{grade:'여행사진작가 2급',extras:['스마트폰사진작가 2급']},
+      '3533ac893c006041723bb6386e0181c3a3e80448e7a50f08faa53e7db1b18177':{grade:'여행사진작가 2급',extras:["스마트폰사진작가 2급"]},
       'c3510ae20d4bd311978eea1aff2c28dfb07775574e46f6a4e5214bfaa4568aaf':{grade:'여행사진작가 1급',extras:[]},
-      'bf7c85dd366cca618ad2ea842680c56c56f18b98c61e36e0a8f58db48977d81e':{grade:'여행사진작가 2급',extras:['스마트폰사진작가 2급']},
+      'bf7c85dd366cca618ad2ea842680c56c56f18b98c61e36e0a8f58db48977d81e':{grade:'여행사진작가 2급',extras:["스마트폰사진작가 2급"]},
       'a85074fcade917077f7e7b1a2e85f798edaa893889dd5aadb3248cf300868b6f':{grade:'여행사진작가 2급',extras:[]},
       '1d8def7d3ead091c4305cf0007a922a6d586177675eab5f1b593670c72d35833':{grade:'여행사진작가 2급',extras:[]},
-      '7ed5396c13a1869a73c32230f512309ab078e4b16ebe662a7e5a05978f405ff3':{grade:'여행사진작가 2급',extras:[]}
-      ,'cb0e6645c718c8e97f99f892d2f18a62286ddcb3d2183f42510a133e004b3ebc':{grade:'여행사진작가 2급',extras:[]}
-      ,'9b70c76b1d9abd94b8fb3e5599b65c8f701e5d73163dd45dbb124f61025b2f01':{grade:'여행사진작가 1급',extras:[]}
-      ,'bc26a6d82c7f32fe1c85f1b61ccc8203cc4008cc1168505a6d6dd491b6f2133d':{grade:'여행사진작가 2급',extras:[]}
-      ,'3438d48da6f5016e49b4494c2d8c9681e15bc3b1c3a602813a8980dc80582902':{grade:'여행사진작가 2급',extras:[]}
-      ,'5fa998f185baa342ac77944464bc15930f56e1989642d34f4479868a520ed8d1':{grade:'여행사진작가 1급',extras:[]}
+      '7ed5396c13a1869a73c32230f512309ab078e4b16ebe662a7e5a05978f405ff3':{grade:'여행사진작가 2급',extras:[]},
+      'cb0e6645c718c8e97f99f892d2f18a62286ddcb3d2183f42510a133e004b3ebc':{grade:'여행사진작가 2급',extras:[]},
+      '9b70c76b1d9abd94b8fb3e5599b65c8f701e5d73163dd45dbb124f61025b2f01':{grade:'여행사진작가 1급',extras:[]},
+      'bc26a6d82c7f32fe1c85f1b61ccc8203cc4008cc1168505a6d6dd491b6f2133d':{grade:'여행사진작가 2급',extras:[]},
+      '5fa998f185baa342ac77944464bc15930f56e1989642d34f4479868a520ed8d1':{grade:'여행사진작가 1급',extras:[]},
+      '3438d48da6f5016e49b4494c2d8c9681e15bc3b1c3a602813a8980dc80582902':{grade:'여행사진작가 2급',extras:[]},
+      '7f9ccad194bbd7185da36fadc8d8c2d9eef0c6dea6bf7508942613e931ae4e5e':{grade:'여행사진작가 2급',extras:["스마트폰사진작가 2급"]},
+      'ad150ffb577d48910f54028ae86dd10876b2fac4bce078c67df2f3d6494c4e47':{grade:'여행사진작가 2급',extras:[]},
+      'dca5d4ed56227498a3541e53f106e70aae206d64b88db3ad8b75e70097c16d0b':{grade:'여행사진작가 2급',extras:[]},
+      '4c160dbfe869a376377367379ff69166d76089ad70f3dbeb77ad487421d1d0b2':{grade:'여행사진작가 1급',extras:["스마트폰활용지도사 2급"]},
+      'f1b03e9f78cf7df777eac2deaee5ff996055712e9663b2d48a7e1b1d71d19dbf':{grade:'여행사진작가 2급',extras:[]},
+      'a72fa8685d972498b0443551ada940655d7c7bbafd1a1546cc446e787a578906':{grade:'여행사진작가 1급',extras:["스마트폰활용지도사 2급","AI활용지도사 2급","AI프롬프트전문가 2급"]},
+      'e8e0fb0c502f9f35a2f661227af2695ab27e0d56fb08216ae59ac26e6a8f5f5e':{grade:'여행사진작가 2급',extras:[]}
     };
 
     const confirmedFirstGrade=new Set([
-      'b56c6e280ac4362fe083017e9784840b7c0f8595ee440c7552155000cd39fc25',
-      'b111db188f4cccb12d22dd054c7e7c560d9b69eab8e28d4b39ee5012f9989654',
       '170fc0cc3960f800bbfacfd358929c2f19919577d826f525f004aca478be1fcf',
-      '8ed531ebdf8325312927f7cbbc905c4c6ecb7915d8f6838890cfb4b0df333c92',
-      'c3510ae20d4bd311978eea1aff2c28dfb07775574e46f6a4e5214bfaa4568aaf',
-      '9b70c76b1d9abd94b8fb3e5599b65c8f701e5d73163dd45dbb124f61025b2f01',
+      '2d453faf746a07f19ead8f37fac55987a039f90eec80b08f41e65f8fcda2177f',
       '5fa998f185baa342ac77944464bc15930f56e1989642d34f4479868a520ed8d1',
-      'aceee2bdbc3a7c439554159fc666c2863d26688a331c385726b1403951ce088a'
+      '8ed531ebdf8325312927f7cbbc905c4c6ecb7915d8f6838890cfb4b0df333c92',
+      '9b70c76b1d9abd94b8fb3e5599b65c8f701e5d73163dd45dbb124f61025b2f01',
+      'a72fa8685d972498b0443551ada940655d7c7bbafd1a1546cc446e787a578906',
+      'aceee2bdbc3a7c439554159fc666c2863d26688a331c385726b1403951ce088a',
+      'ad7b203d3922220bb00ec8719a111dee5d00108f96b5e51b59e6981746e6d2a8',
+      'b111db188f4cccb12d22dd054c7e7c560d9b69eab8e28d4b39ee5012f9989654',
+      'b448ceed332b07edcfc3b1acef2058643d863854bc457c9b0091d297961793e4',
+      'b56c6e280ac4362fe083017e9784840b7c0f8595ee440c7552155000cd39fc25',
+      'c3510ae20d4bd311978eea1aff2c28dfb07775574e46f6a4e5214bfaa4568aaf',
+      'd3d8e949f35ee58bfa0302b7a8517668b928675e2fb735f0897b4556bca19d1e'
     ]);
 
     const normalize=(value)=>value.trim().toLowerCase().replace(/\s+/g,'');
