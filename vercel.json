@@ -2,6 +2,10 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/travel-photo-receipt",
+      "destination": "/travel-photo-receipt-check"
+    },
+    {
       "source": "/nikon-offer-go/:slug",
       "destination": "/nikon-offer-go"
     }
