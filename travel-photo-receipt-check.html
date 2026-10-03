@@ -50,6 +50,10 @@
     .application-label { margin:0 0 7px; color:#627487; font-size:.82rem; font-weight:800; }
     .application-grade { margin:0; font-size:1.15rem; font-weight:900; color:var(--ink); }
     .application-extra { margin:10px 0 0; color:#40566a; font-size:.9rem; line-height:1.6; }
+    .application-state { margin:10px 0 0; border-radius:10px; padding:11px 12px; font-size:.92rem; font-weight:900; line-height:1.55; }
+    .application-state.confirmed { color:var(--ok); background:var(--ok-bg); }
+    .application-state.payment { color:var(--wait); background:var(--wait-bg); }
+    .payment-account { display:block; margin-top:4px; color:#5f3b00; font-weight:800; }
     .next { margin:16px 0 0; line-height:1.65; color:#31495f; }
     .next a { color:#075f87; font-weight:800; text-underline-offset:3px; }
     .not-found { background:var(--bad-bg); border-color:#f0c9c7; }
@@ -84,7 +88,7 @@
     </header>
 
     <section class="card" aria-labelledby="search-title">
-      <div class="updated">2026년 10월 3일 오후 2시 기준</div>
+      <div class="updated">2026년 10월 3일 오후 2시 20분 기준</div>
       <form id="lookup-form">
         <label id="search-title" for="lookup">이름 또는 사진을 보낸 이메일</label>
         <div class="search-row">
@@ -193,6 +197,17 @@
       ,'5fa998f185baa342ac77944464bc15930f56e1989642d34f4479868a520ed8d1':{grade:'여행사진작가 1급',extras:[]}
     };
 
+    const confirmedFirstGrade=new Set([
+      'b56c6e280ac4362fe083017e9784840b7c0f8595ee440c7552155000cd39fc25',
+      'b111db188f4cccb12d22dd054c7e7c560d9b69eab8e28d4b39ee5012f9989654',
+      '170fc0cc3960f800bbfacfd358929c2f19919577d826f525f004aca478be1fcf',
+      '8ed531ebdf8325312927f7cbbc905c4c6ecb7915d8f6838890cfb4b0df333c92',
+      'c3510ae20d4bd311978eea1aff2c28dfb07775574e46f6a4e5214bfaa4568aaf',
+      '9b70c76b1d9abd94b8fb3e5599b65c8f701e5d73163dd45dbb124f61025b2f01',
+      '5fa998f185baa342ac77944464bc15930f56e1989642d34f4479868a520ed8d1',
+      'aceee2bdbc3a7c439554159fc666c2863d26688a331c385726b1403951ce088a'
+    ]);
+
     const normalize=(value)=>value.trim().toLowerCase().replace(/\s+/g,'');
     async function digest(value){
       const bytes=new TextEncoder().encode(SALT+normalize(value));
@@ -223,7 +238,13 @@
       if(both) next='<strong>두 단계 모두 확인되었습니다.</strong> 추가 확인 문의 없이 기다려 주시면 됩니다.';
       else if(item.photo) next=`사진은 잘 받았습니다. 이제 <a href="${FORM_URL}" target="_blank" rel="noopener">자격증 신청서 작성</a>만 확인해 주세요.`;
       else next=`신청서는 확인되었습니다. 과제 사진은 <a href="${MAIL_URL}">ryon2357@gmail.com으로 보내기</a>를 확인해 주세요.`;
-      const applicationPanel=application?`<div class="application"><p class="application-label">신청서에 기록된 신청 급수</p><p class="application-grade">${application.grade}</p><p class="application-extra"><strong>추가 자격증:</strong> ${application.extras.length?application.extras.join(' · '):'선택 없음'}</p></div>`:'';
+      let gradeState='';
+      if(application?.grade==='여행사진작가 1급'){
+        gradeState=confirmedFirstGrade.has(item.keys[0])
+          ? '<p class="application-state confirmed">1급 확정</p>'
+          : '<p class="application-state payment">1급 신청 확인 / 입금 미확인<span class="payment-account">입금 신한 110-050-892636 박성욱 5만원</span></p>';
+      }
+      const applicationPanel=application?`<div class="application"><p class="application-label">신청서에 기록된 신청 급수</p><p class="application-grade">${application.grade}</p>${gradeState}<p class="application-extra"><strong>추가 자격증:</strong> ${application.extras.length?application.extras.join(' · '):'선택 없음'}</p></div>`:'';
       result.innerHTML=`<h2>접수 현황을 찾았습니다</h2><p class="who">조회 결과: ${item.mask}</p><div class="checks">${status(item.photo,'과제 사진 이메일',photoDetail)}${status(item.form,'자격증 신청서',formDetail)}</div>${applicationPanel}<p class="next">${next}</p>`;
     });
   </script>
