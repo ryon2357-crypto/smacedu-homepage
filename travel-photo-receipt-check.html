@@ -255,22 +255,24 @@
         result.innerHTML=`<h2>현재 목록에서 확인되지 않습니다</h2><p class="who">입력한 이름이나 이메일을 다시 확인해 주세요.</p><p class="next">방금 보냈다면 아직 반영 전일 수 있습니다. 1시간 뒤 다시 확인해 주세요. 사진을 보낸 주소가 다르면 그 이메일로 다시 조회해 주세요. 같은 사진을 중복 발송할 필요는 없습니다.</p>`;
         return;
       }
-      const both=item.photo&&item.form;
+      const firstGradeConfirmed=confirmedFirstGrade.has(item.keys[0]);
+      const photoConfirmed=item.photo||firstGradeConfirmed;
+      const both=photoConfirmed&&item.form;
       const application=applications[item.keys[0]];
-      const photoDetail=item.photo?`${item.date.replaceAll('-','.')}까지 받은 메일에서 확인했습니다.`:'현재 받은 메일 기준으로 사진 첨부를 확인하지 못했습니다.';
+      const photoDetail=item.photo?`${item.date.replaceAll('-','.')}까지 받은 메일에서 확인했습니다.`:firstGradeConfirmed?'1급 확정 상태에 따라 과제 사진 이메일도 확인 처리되었습니다.':'현재 받은 메일 기준으로 사진 첨부를 확인하지 못했습니다.';
       const formDetail=item.form?'자격증 신청서 응답이 정상 저장되어 있습니다.':'자격증 신청서 응답은 아직 확인되지 않습니다.';
       let next='';
       if(both) next='<strong>두 단계 모두 확인되었습니다.</strong> 추가 확인 문의 없이 기다려 주시면 됩니다.';
-      else if(item.photo) next=`사진은 잘 받았습니다. 이제 <a href="${FORM_URL}" target="_blank" rel="noopener">자격증 신청서 작성</a>만 확인해 주세요.`;
+      else if(photoConfirmed) next=`사진은 잘 받았습니다. 이제 <a href="${FORM_URL}" target="_blank" rel="noopener">자격증 신청서 작성</a>만 확인해 주세요.`;
       else next=`신청서는 확인되었습니다. 과제 사진은 <a href="${MAIL_URL}">ryon2357@gmail.com으로 보내기</a>를 확인해 주세요.`;
       let gradeState='';
       if(application?.grade==='여행사진작가 1급'){
-        gradeState=confirmedFirstGrade.has(item.keys[0])
+        gradeState=firstGradeConfirmed
           ? '<p class="application-state confirmed">1급 확정</p>'
           : '<p class="application-state payment">1급 신청 확인 / 입금 미확인<span class="payment-account">입금 신한 110-050-892636 박성욱 5만원</span><span class="payment-account">입금을 했는데 반영이 되지 않았다면 개인톡 주세요^^</span></p>';
       }
       const applicationPanel=application?`<div class="application"><p class="application-label">신청서에 기록된 신청 급수</p><p class="application-grade">${application.grade}</p>${gradeState}<p class="application-extra"><strong>추가 자격증:</strong> ${application.extras.length?application.extras.join(' · '):'선택 없음'}</p></div>`:'';
-      result.innerHTML=`<h2>접수 현황을 찾았습니다</h2><p class="who">조회 결과: ${item.mask}</p><div class="checks">${status(item.photo,'과제 사진 이메일',photoDetail)}${status(item.form,'자격증 신청서',formDetail)}</div>${applicationPanel}<p class="next">${next}</p>`;
+      result.innerHTML=`<h2>접수 현황을 찾았습니다</h2><p class="who">조회 결과: ${item.mask}</p><div class="checks">${status(photoConfirmed,'과제 사진 이메일',photoDetail)}${status(item.form,'자격증 신청서',formDetail)}</div>${applicationPanel}<p class="next">${next}</p>`;
     });
   </script>
 </body>
