@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="여행사진작가 2급 과정 과제 사진 이메일 및 자격증 신청서 접수 확인">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="canonical" href="https://www.smacedu.kr/travel-photo-receipt-check">
+  <meta name="theme-color" content="#10243c">
+  <title>여행사진작가 2급 · 접수 확인</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%2310243c'/%3E%3Cpath d='M14 22h9l4-6h10l4 6h9v27H14z' fill='none' stroke='%23f4c15d' stroke-width='4'/%3E%3Ccircle cx='32' cy='35' r='9' fill='none' stroke='%23fff' stroke-width='4'/%3E%3C/svg%3E">
+  <style>
+    :root { color-scheme: light; --ink:#10243c; --muted:#5e6b78; --paper:#f6f8fb; --white:#fff; --line:#d9e1ea; --gold:#f4c15d; --cyan:#15a7b8; --ok:#137a63; --ok-bg:#e8f6f1; --wait:#9b5a00; --wait-bg:#fff5de; --bad:#a33636; --bad-bg:#fff0ef; }
+    * { box-sizing:border-box; }
+    html { font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif; background:var(--paper); color:var(--ink); }
+    body { margin:0; min-height:100vh; background:linear-gradient(180deg,#eaf2f7 0,#f6f8fb 42rem); }
+    button,input { font:inherit; }
+    .topline { height:7px; background:linear-gradient(90deg,var(--gold),#f09a55,var(--cyan)); }
+    main { width:min(100% - 32px,760px); margin:0 auto; padding:42px 0 54px; }
+    header { display:grid; gap:13px; margin-bottom:24px; }
+    .brand { display:flex; align-items:center; gap:10px; color:#426076; font-size:.9rem; font-weight:700; letter-spacing:.02em; }
+    .lens { width:28px; height:28px; border:2px solid var(--ink); border-radius:9px; display:grid; place-items:center; background:var(--white); }
+    .lens::after { content:""; width:10px; height:10px; border:2px solid var(--cyan); border-radius:50%; }
+    h1 { margin:0; font-size:clamp(2rem,7vw,3.25rem); line-height:1.08; letter-spacing:-.045em; }
+    .lead { margin:0; max-width:39rem; color:var(--muted); font-size:1.05rem; line-height:1.72; }
+    .card { background:rgba(255,255,255,.96); border:1px solid var(--line); border-radius:24px; box-shadow:0 20px 60px rgba(26,55,82,.11); padding:clamp(22px,5vw,36px); }
+    .updated { display:inline-flex; align-items:center; gap:8px; color:#416075; font-size:.86rem; font-weight:700; margin-bottom:22px; }
+    .updated::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--cyan); box-shadow:0 0 0 4px #dff5f7; }
+    label { display:block; font-size:1rem; font-weight:800; margin-bottom:10px; }
+    .search-row { display:grid; grid-template-columns:1fr auto; gap:10px; }
+    input { width:100%; min-width:0; border:2px solid #c7d2dd; border-radius:13px; padding:15px 16px; background:#fff; color:var(--ink); font-size:1rem; outline:none; }
+    input:focus { border-color:var(--cyan); box-shadow:0 0 0 4px rgba(21,167,184,.14); }
+    button { border:0; border-radius:13px; padding:0 22px; min-height:56px; background:var(--ink); color:#fff; font-weight:800; cursor:pointer; }
+    button:hover { background:#183756; }
+    button:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+    .hint { margin:9px 0 0; color:var(--muted); font-size:.86rem; line-height:1.55; }
+    .result { display:none; margin-top:24px; border-radius:18px; padding:21px; border:1px solid var(--line); background:#f9fbfd; }
+    .result.show { display:block; animation:rise .24s ease-out; }
+    @keyframes rise { from { opacity:0; transform:translateY(5px); } }
+    .result h2 { margin:0 0 6px; font-size:1.22rem; }
+    .result .who { color:var(--muted); margin:0 0 17px; }
+    .checks { display:grid; gap:10px; }
+    .check { display:flex; gap:12px; align-items:flex-start; padding:13px 14px; border-radius:13px; }
+    .check.ok { background:var(--ok-bg); color:#075b49; }
+    .check.wait { background:var(--wait-bg); color:#754400; }
+    .icon { flex:0 0 24px; width:24px; height:24px; border-radius:50%; display:grid; place-items:center; background:currentColor; color:#fff; font-size:.86rem; font-weight:900; }
+    .check strong { display:block; margin-bottom:3px; }
+    .check p { margin:0; color:inherit; line-height:1.5; font-size:.92rem; }
+    .application { margin-top:14px; border:1px solid #cdd9e4; border-radius:14px; padding:16px; background:#fff; }
+    .application-label { margin:0 0 7px; color:#627487; font-size:.82rem; font-weight:800; }
+    .application-grade { margin:0; font-size:1.15rem; font-weight:900; color:var(--ink); }
+    .application-extra { margin:10px 0 0; color:#40566a; font-size:.9rem; line-height:1.6; }
+    .next { margin:16px 0 0; line-height:1.65; color:#31495f; }
+    .next a { color:#075f87; font-weight:800; text-underline-offset:3px; }
+    .not-found { background:var(--bad-bg); border-color:#f0c9c7; }
+    .not-found h2 { color:var(--bad); }
+    .summary { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:18px; }
+    .stat { background:#eef3f7; border-radius:14px; padding:14px; }
+    .stat b { display:block; font-size:1.45rem; margin-bottom:2px; }
+    .stat span { color:var(--muted); font-size:.8rem; line-height:1.35; }
+    .notice { margin-top:20px; display:grid; gap:10px; }
+    .notice-block { border-left:4px solid var(--gold); background:#fff; border-radius:0 13px 13px 0; padding:14px 16px; color:#44586b; font-size:.9rem; line-height:1.65; }
+    footer { margin-top:26px; padding-top:20px; border-top:1px solid var(--line); display:grid; gap:7px; color:#637280; font-size:.82rem; line-height:1.55; }
+    footer strong { color:#405568; }
+    @media (max-width:560px) {
+      main { width:min(100% - 22px,760px); padding-top:28px; }
+      .card { border-radius:19px; }
+      .search-row { grid-template-columns:1fr; }
+      button { min-height:52px; }
+      .summary { grid-template-columns:1fr; }
+      .stat { display:flex; align-items:center; gap:10px; }
+      .stat b { margin:0; }
+    }
+    @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; scroll-behavior:auto!important; } }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <main>
+    <header>
+      <div class="brand"><span class="lens" aria-hidden="true"></span>스마트미디어아트센터</div>
+      <h1>여행사진작가 2급<br>접수 확인</h1>
+      <p class="lead">보내신 과제 사진 이메일과 자격증 신청서가 확인되었는지 바로 조회할 수 있습니다.</p>
+    </header>
+
+    <section class="card" aria-labelledby="search-title">
+      <div class="updated">2026년 10월 3일 오후 2시 기준</div>
+      <form id="lookup-form">
+        <label id="search-title" for="lookup">이름 또는 사진을 보낸 이메일</label>
+        <div class="search-row">
+          <input id="lookup" name="lookup" type="text" autocomplete="email" inputmode="email" placeholder="예: 홍길동 또는 abc@gmail.com" aria-describedby="lookup-hint" required>
+          <button type="submit">접수 확인</button>
+        </div>
+        <p class="hint" id="lookup-hint">띄어쓰기는 자동으로 정리됩니다. 메일을 다른 주소로 보냈다면 보낸 주소로 조회해 주세요.</p>
+      </form>
+      <div id="result" class="result" aria-live="polite"></div>
+
+      <div class="summary" aria-label="현재 확인 현황">
+        <div class="stat"><b>37명</b><span>과제 사진 메일 확인</span></div>
+        <div class="stat"><b>29명</b><span>자격증 신청서 확인</span></div>
+        <div class="stat"><b>26명</b><span>두 단계 모두 확인</span></div>
+      </div>
+    </section>
+
+    <section class="notice" aria-label="확인 안내">
+      <div class="notice-block"><strong>사진 접수 확인</strong><br>메일함에 과제 사진 또는 사진 다운로드 링크가 도착한 것을 확인했다는 뜻입니다. 사진 심사나 자격증 발급 완료를 뜻하지는 않습니다.</div>
+      <div class="notice-block"><strong>방금 보내신 경우</strong><br>목록 반영 전일 수 있습니다. 다음 갱신 뒤 다시 확인해 주세요. 같은 사진을 여러 번 보내실 필요는 없습니다.</div>
+    </section>
+
+    <footer>
+      <div><strong>개인정보 보호</strong> · 이름과 이메일 원문은 페이지에 저장하지 않고, 조회용 암호화 값만 사용합니다.</div>
+      <div><strong>과정</strong> · 여행사진작가 2급 자격증 과정</div>
+      <div><strong>운영</strong> · 스마트미디어아트센터</div>
+    </footer>
+  </main>
+
+  <script>
+    const SALT='smac-travel-2026-v1|';
+    const FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLSdVOAsdlO5uaxm_zSL0RJhCOawjvDuhT6zlKKwd6zLoXoqJpQ/viewform';
+    const MAIL_URL='mailto:ryon2357@gmail.com?subject=%EC%97%AC%ED%96%89%EC%82%AC%EC%A7%84%EC%9E%91%EA%B0%80%202%EA%B8%89%20%EA%B3%BC%EC%A0%9C%20%EC%82%AC%EC%A7%84%20%EC%A0%9C%EC%B6%9C';
+    const records=[
+      {mask:'김*선',photo:1,form:0,date:'2026-09-28',keys:['ad150ffb577d48910f54028ae86dd10876b2fac4bce078c67df2f3d6494c4e47','28df624bbd078c6d973ace7ecae49b6731fcd1af9d22b6d599235c7aaa58b059']},
+      {mask:'심*자',photo:1,form:1,date:'2026-09-27',keys:['f165e53cbf07079a9a3859903850a3d146224842dda0cf640234a5572abab2b4','56ca4bd61064967ce4f43d156a9d03e0faaa50a73b0e7ebc579a562250839838','318a1429b265ba6e2aa4bad363229b89c05e2b41f76dae050f19f3820d33690e']},
+      {mask:'이*선',photo:1,form:1,date:'2026-09-27',keys:['6b05e23093910c1e0986677642887d8177ff1e918cee7a7e42c1327bbad026e5','ea2ba7db90b5ea2fc744bf9f739ce23dddfff6811a40356e72381422c68d89db']},
+      {mask:'박*규',photo:1,form:1,date:'2026-09-27',keys:['ab3b0d375362c34ed20be62b9a43ca3de03c9038bc8425e7076eadfcc472f1ec','d21f286ed15972c231788c03e18f3f63f2606a7dd9885b1bd4c247fe4a6afaab']},
+      {mask:'김*화',photo:1,form:1,date:'2026-09-27',keys:['2d453faf746a07f19ead8f37fac55987a039f90eec80b08f41e65f8fcda2177f','40e2d46962e19eed1f294f294c243e1e26a61c2bd827f33d2f8f6ce9792b8105','41444bb9fb3ed9b78b5b9cc29f9d3c5a6d0e56b3f104308c499f220560e243a9']},
+      {mask:'남*민',photo:1,form:1,date:'2026-09-26',keys:['9b70c76b1d9abd94b8fb3e5599b65c8f701e5d73163dd45dbb124f61025b2f01','b37ef4a71076c4b4c42b79f6bb535940f094384b70c99cad2be701f35d83fcc9']},
+      {mask:'이*호',photo:1,form:1,date:'2026-09-26',keys:['56463071597ff8e87bd0807e21f865cc8fb6f1f136f29db6724d54b98416a266','4b33344a4412f85af7ebf002c8833c54c18f2f6a590a77c2e7494f966ba64e67','c04e2c042e5c1d4ee4c308bcfd9b9066ba702d0f3452eb96902ae79c791923c8']},
+      {mask:'윤*주',photo:1,form:0,date:'2026-09-26',keys:['03e90dd32a1bae952fd7a8784690a98a8c3de58d0c488c94b3dfc333b41fc4a1','7d487b05087392b11899d2a166063f28a457312ac660730d62a523baa5d5013d']},
+      {mask:'이*일',photo:1,form:1,date:'2026-09-26',keys:['aceee2bdbc3a7c439554159fc666c2863d26688a331c385726b1403951ce088a','64a575ea45d2776a5113d720be3ad4fbfa0799b94ced39345e8fede123642487']},
+      {mask:'김*정',photo:1,form:1,date:'2026-09-27',keys:['f3c450a85dd9d2c5e27e5dcadd490a7039acbdc887795da57601e7bb376df8d3','25cd191c3411a89c83dc3eb2a3457b1f5b1b6cc2dc0d799851b12b8625b8c40e']},
+      {mask:'최*숙',photo:1,form:1,date:'2026-09-28',keys:['cb0e6645c718c8e97f99f892d2f18a62286ddcb3d2183f42510a133e004b3ebc','e83cc52eea21ff22673d146669c2389ca13d2ada53e7e3c782ff98971ad2a247']},
+      {mask:'하*희',photo:1,form:0,date:'2026-09-28',keys:['acca1a47f7d98d6f14a64ab130c34d34a5ff4b5d037054ac71d456433041ac24','0cedaf624b8e3828344f1998ccdfdbd6d62b16e9f130982a07a2d26540d9c464']},
+      {mask:'심*자',photo:1,form:0,date:'2026-09-28',keys:['1bf25d99cfd717011eaeb400921cc40f1c517867bd9fee3e4150b152965d46e5','30e02741969c84a8e53272816fd15d7098e8a83200d857e571a0fea491bd1664']},
+      {mask:'권*아',photo:1,form:1,date:'2026-09-28',keys:['b56c6e280ac4362fe083017e9784840b7c0f8595ee440c7552155000cd39fc25','56ea14ada7e8c3f2d952a62fcb90f7ff6f50a03b832622d973f1c413e4c7b975']},
+      {mask:'김*랑',photo:1,form:0,date:'2026-09-28',keys:['eaf8ac275a261f55e7e2677ec2aca6e4ac69e055726206c484c41f3c5f7c64bd','61015c8586bcf161f788441beae0d4723d8e6b7c9ce54eb48278cc5dbcc6b6f5']},
+      {mask:'배*생',photo:1,form:1,date:'2026-09-28',keys:['3438d48da6f5016e49b4494c2d8c9681e15bc3b1c3a602813a8980dc80582902','e22682e8006e140431cd4a06f9c969803afbe4c4d968362ecab12a8494aef571']},
+      {mask:'이*미',photo:1,form:1,date:'2026-09-28',keys:['b111db188f4cccb12d22dd054c7e7c560d9b69eab8e28d4b39ee5012f9989654','a234214c9982487bb63860e4c7bd82f6d64d93bdc547202678d3a6e4f3ef8b3a']},
+      {mask:'이*희',photo:1,form:1,date:'2026-09-28',keys:['29e9190a30e7375201d03cef633281e310f04ffbe96a28e80cf3a60a04cf7c62','8be439bb5dcdfad0074b6ade0786adc059093997bf35845513c33b65c7569178']},
+      {mask:'박*민',photo:1,form:1,date:'2026-09-28',keys:['f2b4e5a82d3b8a389f56bb7529ba949de30b2bf43d704a2f5fb4cbf1b7e5fc61','9771aeb092a2466730f7d5b4cac642636f0962593d12e1e1e8dfb2f47515e487']},
+      {mask:'윤*기',photo:1,form:1,date:'2026-09-29',keys:['711f6e0b63911899236b07d5ef41f572e2a285c3068aac979e68575f14c891e6','707f13b63c8c0bac1ab704a208bb823791f2ce81b4e9925a1cbea8e89fb3de0a']},
+      {mask:'이*향',photo:1,form:1,date:'2026-09-29',keys:['ad7b203d3922220bb00ec8719a111dee5d00108f96b5e51b59e6981746e6d2a8','b31f728e38718b4a23a460b007672113000626f98bca4d627c3ff4821a3ed90b','0aab4358fbf8338b9911c44ccb9d692a40f4c7f688d20ec4a187706b86ededfd']},
+      {mask:'신*정',photo:1,form:0,date:'2026-09-29',keys:['60a93cbdd8ad0b398966700be2bbb52007d69049329d3ab1919902a95659bd88','9cdfdf487723c14f7b3352a1933aabdb718c10ec3db7ca2d6b6c4b8f7468864e']},
+      {mask:'이*영',photo:1,form:0,date:'2026-09-30',keys:['a35f6ae55b13f45b65302ab4d83d570444164c0d64339af9ba44368ca2671d4e','9b9974063c8c05c1c8295c10689ed0ff1eb6165e059e1702ec52999be96cff9d']},
+      {mask:'홍*순',photo:1,form:1,date:'2026-09-30',keys:['d3d8e949f35ee58bfa0302b7a8517668b928675e2fb735f0897b4556bca19d1e','4066518213ff00c572fdace317e79996eee8235303dc9cf0b6402a494b0e7649','1899fcf6b7257a1c01348feb17a49eb80e3015aab68fc2aa0d1dba9b79549aa4']},
+      {mask:'이*선',photo:1,form:1,date:'2026-09-30',keys:['a552da9cc44315018e1bb813558711bb7806fd3d8f7c5eea61cb28574155f805','9d37792fa4a99151007b6d7667ffbacc0e056829ab8e9db6acc0b5d22e56aad2']},
+      {mask:'안*실',photo:1,form:0,date:'2026-09-30',keys:['f1b03e9f78cf7df777eac2deaee5ff996055712e9663b2d48a7e1b1d71d19dbf','09311ac9c2215e5b9993401d55486ad744f62f5dab1e346de910a5b1bd4e36aa']},
+      {mask:'이*욱',photo:1,form:1,date:'2026-09-30',keys:['8ed531ebdf8325312927f7cbbc905c4c6ecb7915d8f6838890cfb4b0df333c92','f59f7531c5b25dc7a67ebf4c2366c329896610285dfab407b6e46d7eca0885af']},
+      {mask:'한*희',photo:1,form:0,date:'2026-09-30',keys:['dca5d4ed56227498a3541e53f106e70aae206d64b88db3ad8b75e70097c16d0b','764028ccddcc008e8f7bfdffad978dee886416d05d2580f5fcaea92d936795a7']},
+      {mask:'김*연',photo:1,form:1,date:'2026-10-01',keys:['3533ac893c006041723bb6386e0181c3a3e80448e7a50f08faa53e7db1b18177','790d0f3ecd1a2edf520634b41ca77b35c060d8d79671584bc55aeb6d33378f83']},
+      {mask:'이*순',photo:1,form:1,date:'2026-10-01',keys:['c3510ae20d4bd311978eea1aff2c28dfb07775574e46f6a4e5214bfaa4568aaf','b5fe9f1ddcfd4c45bd11919bbd4443dee47999f052edd52c9a50762df45b6a07']},
+      {mask:'차*옥',photo:1,form:1,date:'2026-10-01',keys:['bf7c85dd366cca618ad2ea842680c56c56f18b98c61e36e0a8f58db48977d81e','3adeb50267a3ec9b3e37d503642790e022ff0a6f31b976d9bfc76feeb69ae801']},
+      {mask:'배*옥',photo:1,form:1,date:'2026-10-01',keys:['bc26a6d82c7f32fe1c85f1b61ccc8203cc4008cc1168505a6d6dd491b6f2133d','d59d314094fa424626696c76e88dce97d74261a4430dd283bb145887f1117865']},
+      {mask:'김*근',photo:1,form:0,date:'2026-10-02',keys:['e8e0fb0c502f9f35a2f661227af2695ab27e0d56fb08216ae59ac26e6a8f5f5e','fb2a943a593464fdffc03d9969757503a7f29a54dbf66e58e3c205c2b7fe1e8e']},
+      {mask:'곽*심',photo:1,form:1,date:'2026-10-02',keys:['a85074fcade917077f7e7b1a2e85f798edaa893889dd5aadb3248cf300868b6f','7f25a8f766faaa5b32970106f0fa7a71005e658b0b51eeb163cc7c770aaad097']},
+      {mask:'박*숙',photo:1,form:1,date:'2026-10-02',keys:['7ed5396c13a1869a73c32230f512309ab078e4b16ebe662a7e5a05978f405ff3','fb31d31a44461ebfb7f95aa886b96d06c11a2799a79fbea3589e2d7079fa13b9']},
+      {mask:'나*경',photo:1,form:0,date:'2026-10-03',keys:['4c160dbfe869a376377367379ff69166d76089ad70f3dbeb77ad487421d1d0b2','6d085d1a7865ba7933561691495b0f85358d03c437e20daa19c7ba6805609fe3']},
+      {mask:'김*현',photo:1,form:1,date:'2026-10-03',keys:['5fa998f185baa342ac77944464bc15930f56e1989642d34f4479868a520ed8d1','a43898aca3e487ede2f3f333129f62c40b7cdecf15d3dc356bd8c0c37332b40d']},
+      {mask:'원*아',photo:0,form:1,date:'2026-09-28',keys:['170fc0cc3960f800bbfacfd358929c2f19919577d826f525f004aca478be1fcf','2c7b77d056e73f5dd0b25fb4f901d8f8ba93a5f3337df62d7eeec3140f67c4c1']},
+      {mask:'노*승',photo:0,form:1,date:'2026-10-02',keys:['b448ceed332b07edcfc3b1acef2058643d863854bc457c9b0091d297961793e4','1dd0fb0b0c119dfcbac2f5eb9a6cd25991f090d6550475727e1081c1451aaae1']},
+      {mask:'김*희',photo:0,form:1,date:'2026-10-02',keys:['1d8def7d3ead091c4305cf0007a922a6d586177675eab5f1b593670c72d35833','2d63dcbac55939f81a38da94052496974bdee68b9d454d504d7b70f6859b1a0b']}
+    ];
+
+    const applications={
+      'b56c6e280ac4362fe083017e9784840b7c0f8595ee440c7552155000cd39fc25':{grade:'여행사진작가 1급',extras:[]},
+      'aceee2bdbc3a7c439554159fc666c2863d26688a331c385726b1403951ce088a':{grade:'여행사진작가 1급',extras:[]},
+      'b111db188f4cccb12d22dd054c7e7c560d9b69eab8e28d4b39ee5012f9989654':{grade:'여행사진작가 1급',extras:[]},
+      '56463071597ff8e87bd0807e21f865cc8fb6f1f136f29db6724d54b98416a266':{grade:'여행사진작가 2급',extras:[]},
+      'f2b4e5a82d3b8a389f56bb7529ba949de30b2bf43d704a2f5fb4cbf1b7e5fc61':{grade:'여행사진작가 2급',extras:[]},
+      '6b05e23093910c1e0986677642887d8177ff1e918cee7a7e42c1327bbad026e5':{grade:'여행사진작가 1급',extras:['스마트폰사진작가 2급','스마트폰활용지도사 2급','AI활용지도사 2급','AI프롬프트전문가 2급']},
+      'ab3b0d375362c34ed20be62b9a43ca3de03c9038bc8425e7076eadfcc472f1ec':{grade:'여행사진작가 1급',extras:[]},
+      '170fc0cc3960f800bbfacfd358929c2f19919577d826f525f004aca478be1fcf':{grade:'여행사진작가 1급',extras:[]},
+      '2d453faf746a07f19ead8f37fac55987a039f90eec80b08f41e65f8fcda2177f':{grade:'여행사진작가 2급',extras:[]},
+      '711f6e0b63911899236b07d5ef41f572e2a285c3068aac979e68575f14c891e6':{grade:'여행사진작가 2급',extras:[]},
+      '29e9190a30e7375201d03cef633281e310f04ffbe96a28e80cf3a60a04cf7c62':{grade:'여행사진작가 2급',extras:['스마트폰활용지도사 2급']},
+      'ad7b203d3922220bb00ec8719a111dee5d00108f96b5e51b59e6981746e6d2a8':{grade:'여행사진작가 1급',extras:[]},
+      'd3d8e949f35ee58bfa0302b7a8517668b928675e2fb735f0897b4556bca19d1e':{grade:'여행사진작가 1급',extras:[]},
+      'a552da9cc44315018e1bb813558711bb7806fd3d8f7c5eea61cb28574155f805':{grade:'여행사진작가 2급',extras:[]},
+      '8ed531ebdf8325312927f7cbbc905c4c6ecb7915d8f6838890cfb4b0df333c92':{grade:'여행사진작가 1급',extras:[]},
+      'b448ceed332b07edcfc3b1acef2058643d863854bc457c9b0091d297961793e4':{grade:'여행사진작가 1급',extras:[]},
+      'f3c450a85dd9d2c5e27e5dcadd490a7039acbdc887795da57601e7bb376df8d3':{grade:'여행사진작가 1급',extras:[]},
+      'f165e53cbf07079a9a3859903850a3d146224842dda0cf640234a5572abab2b4':{grade:'여행사진작가 2급',extras:[]},
+      '3533ac893c006041723bb6386e0181c3a3e80448e7a50f08faa53e7db1b18177':{grade:'여행사진작가 2급',extras:['스마트폰사진작가 2급']},
+      'c3510ae20d4bd311978eea1aff2c28dfb07775574e46f6a4e5214bfaa4568aaf':{grade:'여행사진작가 1급',extras:[]},
+      'bf7c85dd366cca618ad2ea842680c56c56f18b98c61e36e0a8f58db48977d81e':{grade:'여행사진작가 2급',extras:['스마트폰사진작가 2급']},
+      'a85074fcade917077f7e7b1a2e85f798edaa893889dd5aadb3248cf300868b6f':{grade:'여행사진작가 2급',extras:[]},
+      '1d8def7d3ead091c4305cf0007a922a6d586177675eab5f1b593670c72d35833':{grade:'여행사진작가 2급',extras:[]},
+      '7ed5396c13a1869a73c32230f512309ab078e4b16ebe662a7e5a05978f405ff3':{grade:'여행사진작가 2급',extras:[]}
+      ,'cb0e6645c718c8e97f99f892d2f18a62286ddcb3d2183f42510a133e004b3ebc':{grade:'여행사진작가 2급',extras:[]}
+      ,'9b70c76b1d9abd94b8fb3e5599b65c8f701e5d73163dd45dbb124f61025b2f01':{grade:'여행사진작가 1급',extras:[]}
+      ,'bc26a6d82c7f32fe1c85f1b61ccc8203cc4008cc1168505a6d6dd491b6f2133d':{grade:'여행사진작가 2급',extras:[]}
+      ,'3438d48da6f5016e49b4494c2d8c9681e15bc3b1c3a602813a8980dc80582902':{grade:'여행사진작가 2급',extras:[]}
+      ,'5fa998f185baa342ac77944464bc15930f56e1989642d34f4479868a520ed8d1':{grade:'여행사진작가 1급',extras:[]}
+    };
+
+    const normalize=(value)=>value.trim().toLowerCase().replace(/\s+/g,'');
+    async function digest(value){
+      const bytes=new TextEncoder().encode(SALT+normalize(value));
+      const hash=await crypto.subtle.digest('SHA-256',bytes);
+      return [...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('');
+    }
+    const status=(ok,title,detail)=>`<div class="check ${ok?'ok':'wait'}"><span class="icon">${ok?'✓':'!'}</span><div><strong>${title}</strong><p>${detail}</p></div></div>`;
+
+    document.getElementById('lookup-form').addEventListener('submit',async(event)=>{
+      event.preventDefault();
+      const input=document.getElementById('lookup');
+      const result=document.getElementById('result');
+      const value=normalize(input.value);
+      if(!value){ input.focus(); return; }
+      const key=await digest(value);
+      const item=records.find(record=>record.keys.includes(key));
+      result.className='result show';
+      if(!item){
+        result.classList.add('not-found');
+        result.innerHTML=`<h2>현재 목록에서 확인되지 않습니다</h2><p class="who">입력한 이름이나 이메일을 다시 확인해 주세요.</p><p class="next">방금 보냈다면 아직 반영 전일 수 있습니다. 사진을 보낸 주소가 다르면 그 이메일로 다시 조회해 주세요. 같은 사진을 중복 발송할 필요는 없습니다.</p>`;
+        return;
+      }
+      const both=item.photo&&item.form;
+      const application=applications[item.keys[0]];
+      const photoDetail=item.photo?`${item.date.replaceAll('-','.')}까지 받은 메일에서 확인했습니다.`:'현재 받은 메일 기준으로 사진 첨부를 확인하지 못했습니다.';
+      const formDetail=item.form?'자격증 신청서 응답이 정상 저장되어 있습니다.':'자격증 신청서 응답은 아직 확인되지 않습니다.';
+      let next='';
+      if(both) next='<strong>두 단계 모두 확인되었습니다.</strong> 추가 확인 문의 없이 기다려 주시면 됩니다.';
+      else if(item.photo) next=`사진은 잘 받았습니다. 이제 <a href="${FORM_URL}" target="_blank" rel="noopener">자격증 신청서 작성</a>만 확인해 주세요.`;
+      else next=`신청서는 확인되었습니다. 과제 사진은 <a href="${MAIL_URL}">ryon2357@gmail.com으로 보내기</a>를 확인해 주세요.`;
+      const applicationPanel=application?`<div class="application"><p class="application-label">신청서에 기록된 신청 급수</p><p class="application-grade">${application.grade}</p><p class="application-extra"><strong>추가 자격증:</strong> ${application.extras.length?application.extras.join(' · '):'선택 없음'}</p></div>`:'';
+      result.innerHTML=`<h2>접수 현황을 찾았습니다</h2><p class="who">조회 결과: ${item.mask}</p><div class="checks">${status(item.photo,'과제 사진 이메일',photoDetail)}${status(item.form,'자격증 신청서',formDetail)}</div>${applicationPanel}<p class="next">${next}</p>`;
+    });
+  </script>
+</body>
+</html>
