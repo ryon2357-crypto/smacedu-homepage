@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="여행사진작가 2급 과정 과제 사진 이메일 및 자격증 신청서 접수 확인">
+  <meta name="description" content="여행사진작가 자격증 과정의 과제 사진 메일 및 자격증 신청서 접수 확인">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <link rel="canonical" href="https://www.smacedu.kr/travel-photo-receipt-check">
+  <link rel="canonical" href="https://www.smacedu.kr/travel-photo-receipt">
   <meta name="theme-color" content="#10243c">
-  <title>여행사진작가 2급 · 접수 확인</title>
+  <title>여행사진작가 자격증 접수 확인</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%2310243c'/%3E%3Cpath d='M14 22h9l4-6h10l4 6h9v27H14z' fill='none' stroke='%23f4c15d' stroke-width='4'/%3E%3Ccircle cx='32' cy='35' r='9' fill='none' stroke='%23fff' stroke-width='4'/%3E%3C/svg%3E">
   <style>
     :root { color-scheme: light; --ink:#10243c; --muted:#5e6b78; --paper:#f6f8fb; --white:#fff; --line:#d9e1ea; --gold:#f4c15d; --cyan:#15a7b8; --ok:#137a63; --ok-bg:#e8f6f1; --wait:#9b5a00; --wait-bg:#fff5de; --bad:#a33636; --bad-bg:#fff0ef; }
@@ -83,12 +83,12 @@
   <main>
     <header>
       <div class="brand"><span class="lens" aria-hidden="true"></span>스마트미디어아트센터</div>
-      <h1>여행사진작가 2급<br>접수 확인</h1>
+      <h1>여행사진작가 자격증<br>접수 확인</h1>
       <p class="lead">보내신 과제 사진 이메일과 자격증 신청서가 확인되었는지 바로 조회할 수 있습니다.</p>
     </header>
 
     <section class="card" aria-labelledby="search-title">
-      <div class="updated">2026년 10월 3일 오후 9시 51분 기준</div>
+      <div class="updated">2026년 10월 4일 오전 8시 51분 기준</div>
       <form id="lookup-form">
         <label id="search-title" for="lookup">이름 또는 사진을 보낸 이메일</label>
         <div class="search-row">
@@ -113,7 +113,7 @@
 
     <footer>
       <div><strong>개인정보 보호</strong> · 이름과 이메일 원문은 페이지에 저장하지 않고, 조회용 암호화 값만 사용합니다.</div>
-      <div><strong>과정</strong> · 여행사진작가 2급 자격증 과정</div>
+      <div><strong>과정</strong> · 여행사진작가 자격증 과정</div>
       <div><strong>운영</strong> · 스마트미디어아트센터</div>
     </footer>
   </main>
@@ -273,7 +273,7 @@
       const photoConfirmed=item.photo||firstGradeConfirmed;
       const both=photoConfirmed&&item.form;
       const application=applications[item.keys[0]];
-      const photoDetail=item.photo?`${item.date.replaceAll('-','.')}까지 받은 메일에서 확인했습니다.`:firstGradeConfirmed?'1급 확정 상태에 따라 과제 사진 이메일도 확인 처리되었습니다.':'현재 받은 메일 기준으로 사진 첨부를 확인하지 못했습니다.';
+      const photoDetail=item.photo?`${item.date.replaceAll('-','.')}까지 받은 메일에서 확인했습니다.`:firstGradeConfirmed?'1급 확정 상태에 따라 과제 사진 메일도 확인 처리되었습니다.':'현재 받은 메일 기준으로 사진 첨부를 확인하지 못했습니다.';
       const formDetail=item.form?'자격증 신청서 응답이 정상 저장되어 있습니다.':'자격증 신청서 응답은 아직 확인되지 않습니다.';
       let next='';
       if(both) next='<strong>두 단계 모두 확인되었습니다.</strong> 추가 확인 문의 없이 기다려 주시면 됩니다.';
@@ -286,7 +286,7 @@
           : '<p class="application-state payment">1급 신청 확인 / 입금 미확인<span class="payment-account">입금 신한 110-050-892636 박성욱 5만원</span><span class="payment-account">입금을 했는데 반영이 되지 않았다면 개인톡 주세요^^</span></p>';
       }
       const applicationPanel=application?`<div class="application"><p class="application-label">신청서에 기록된 신청 급수</p><p class="application-grade">${application.grade}</p>${gradeState}<p class="application-extra"><strong>추가 자격증:</strong> ${application.extras.length?application.extras.join(' · '):'선택 없음'}</p></div>`:'';
-      result.innerHTML=`<h2>접수 현황을 찾았습니다</h2><p class="who">조회 결과: ${item.mask}</p><div class="checks">${status(photoConfirmed,'과제 사진 이메일',photoDetail)}${status(item.form,'자격증 신청서',formDetail)}</div>${applicationPanel}<p class="next">${next}</p>`;
+      result.innerHTML=`<h2>접수 현황을 찾았습니다</h2><p class="who">조회 결과: ${item.mask}</p><div class="checks">${status(photoConfirmed,'과제 사진 메일',photoDetail)}${status(item.form,'자격증 신청서',formDetail)}</div>${applicationPanel}<p class="next">${next}</p>`;
     });
   </script>
 </body>
