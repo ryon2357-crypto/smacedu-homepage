@@ -91,7 +91,7 @@
     </header>
 
     <section class="card" aria-labelledby="search-title">
-      <div class="updated">2026년 10월 5일 오전 11시 34분 기준</div>
+      <div class="updated">2026년 10월 5일 오후 6시 53분 기준</div>
       <form id="lookup-form">
         <label id="search-title" for="lookup">이름 또는 사진을 보낸 이메일</label>
         <div class="search-row">
@@ -103,9 +103,9 @@
       <div id="result" class="result" aria-live="polite"></div>
 
       <div class="summary" aria-label="현재 확인 현황">
-        <div class="stat"><b>61명</b><span>과제 사진 메일 확인</span></div>
-        <div class="stat"><b>57명</b><span>자격증 신청서 확인</span></div>
-        <div class="stat"><b>57명</b><span>두 단계 모두 확인</span></div>
+        <div class="stat"><b>64명</b><span>과제 사진 메일 확인</span></div>
+        <div class="stat"><b>60명</b><span>자격증 신청서 확인</span></div>
+        <div class="stat"><b>60명</b><span>두 단계 모두 확인</span></div>
       </div>
     </section>
 
@@ -127,6 +127,9 @@
     const FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLSdVOAsdlO5uaxm_zSL0RJhCOawjvDuhT6zlKKwd6zLoXoqJpQ/viewform';
     const MAIL_URL='mailto:ryon2357@gmail.com?subject=%EC%97%AC%ED%96%89%EC%82%AC%EC%A7%84%EC%9E%91%EA%B0%80%20%EC%9E%90%EA%B2%A9%EC%A6%9D%20%EA%B3%BC%EC%A0%9C%20%EC%82%AC%EC%A7%84%20%EC%A0%9C%EC%B6%9C';
     const records=[
+      {mask:'김*곤',photo:1,form:1,date:'2026-10-05',keys:['4e42b383fac4758f9734fc7ba8504544e1609493c85207ebcbd210b11b174517','bb6b96886b4c2a2f5cbf4dfa04375b7652bb77c7511d57a554ed405620db4387','a287e0e84679c8e3478e10f465bd9c2acd655d5fd3386fa77a910fb1f80855bc']},
+      {mask:'이*진',photo:1,form:1,date:'2026-10-05',keys:['18263a4be804dac9c5de00cdbd5c5e74306332843b2f7f9f17435aebf6dd016c','5b741f3b0e514a79046399715e55fd824814b7e843aa6331c831486a51fc80f3']},
+      {mask:'계*희',photo:1,form:1,date:'2026-10-05',keys:['b95197ce1d175c8109b058e8f823032029ceb677525e3cf07c8a2532132fb445','4c08a3d375f3efa09a873a08a9fce0ba4b949a4158ecc187441129eacc0549d0']},
       {mask:'성*미',photo:1,form:1,paid:1,date:'2026-10-04',keys:['60804ded2c7583261ab781fe994d3db40db1737cb2ca2b2aeeded1e5720f3591','f2adb4817bb53ace1a0850e04a1c06eadf0c630757a55365b4697c99789c1503']},
       {mask:'김*선',photo:1,form:1,date:'2026-09-28',keys:['ad150ffb577d48910f54028ae86dd10876b2fac4bce078c67df2f3d6494c4e47','28df624bbd078c6d973ace7ecae49b6731fcd1af9d22b6d599235c7aaa58b059']},
       {mask:'심*자',photo:1,form:1,date:'2026-09-27',keys:['f165e53cbf07079a9a3859903850a3d146224842dda0cf640234a5572abab2b4','56ca4bd61064967ce4f43d156a9d03e0faaa50a73b0e7ebc579a562250839838','318a1429b265ba6e2aa4bad363229b89c05e2b41f76dae050f19f3820d33690e']},
@@ -191,6 +194,9 @@
     ];
 
     const applications={
+      '4e42b383fac4758f9734fc7ba8504544e1609493c85207ebcbd210b11b174517':{grade:'여행사진작가 2급',extras:[]},
+      '18263a4be804dac9c5de00cdbd5c5e74306332843b2f7f9f17435aebf6dd016c':{grade:'여행사진작가 2급',extras:[]},
+      'b95197ce1d175c8109b058e8f823032029ceb677525e3cf07c8a2532132fb445':{grade:'여행사진작가 2급',extras:[]},
       '60804ded2c7583261ab781fe994d3db40db1737cb2ca2b2aeeded1e5720f3591':{grade:'여행사진작가 1급',extras:[]},
       'b56c6e280ac4362fe083017e9784840b7c0f8595ee440c7552155000cd39fc25':{grade:'여행사진작가 1급',extras:[]},
       'aceee2bdbc3a7c439554159fc666c2863d26688a331c385726b1403951ce088a':{grade:'여행사진작가 1급',extras:[]},
