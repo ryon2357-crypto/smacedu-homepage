@@ -103,15 +103,15 @@
       <div id="result" class="result" aria-live="polite"></div>
 
       <div class="summary" aria-label="현재 확인 현황">
-        <div class="stat"><b>64명</b><span>과제 사진 메일 확인</span></div>
-        <div class="stat"><b>60명</b><span>자격증 신청서 확인</span></div>
-        <div class="stat"><b>60명</b><span>두 단계 모두 확인</span></div>
+        <div class="stat"><b>66명</b><span>과제 관련 이메일 수신 확인</span></div>
+        <div class="stat"><b>62명</b><span>자격증 신청서 확인</span></div>
+        <div class="stat"><b>62명</b><span>두 단계 모두 확인</span></div>
       </div>
     </section>
 
     <section class="notice" aria-label="확인 안내">
       <div class="notice-block"><strong>자격증 발급 안내</strong><br>확정 자격증은 10월 7일(수)까지 발급이 됩니다.</div>
-      <div class="notice-block"><strong>사진 접수 확인</strong><br>메일함에 과제 사진 또는 사진 다운로드 링크가 도착한 것을 확인했다는 뜻입니다. 사진 심사나 자격증 발급 완료를 뜻하지는 않습니다.</div>
+      <div class="notice-block"><strong>이메일 수신 확인</strong><br>메일함에 과제 관련 이메일 또는 다운로드 링크가 도착한 것을 확인했다는 뜻입니다. 사진 심사나 자격증 발급 완료를 뜻하지는 않습니다.</div>
       <div class="notice-block"><strong>방금 보내신 경우</strong><br>목록 반영 전일 수 있습니다. 1시간 뒤 다시 확인해 주세요. 같은 사진을 여러 번 보내실 필요는 없습니다.</div>
     </section>
 
@@ -127,6 +127,8 @@
     const FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLSdVOAsdlO5uaxm_zSL0RJhCOawjvDuhT6zlKKwd6zLoXoqJpQ/viewform';
     const MAIL_URL='mailto:ryon2357@gmail.com?subject=%EC%97%AC%ED%96%89%EC%82%AC%EC%A7%84%EC%9E%91%EA%B0%80%20%EC%9E%90%EA%B2%A9%EC%A6%9D%20%EA%B3%BC%EC%A0%9C%20%EC%82%AC%EC%A7%84%20%EC%A0%9C%EC%B6%9C';
     const records=[
+      {mask:'이*주',photo:1,form:1,date:'2026-10-05',keys:['078c438a3e90c797414136906f9e1a2b5c87345c74495f3de47bd818b62302fd','e65af290c070074761452eaf8dee1eec0c1f01ba6b986dab81922c85d2663152']},
+      {mask:'정*옥',photo:1,form:1,date:'2026-10-05',keys:['9d76c9e4df5d9aad3080cdeb921c85c4d57ef7adc8569d47de09c7e21c602e12','3acec961858abc0bbb8415520f8329f6c40889179efe9007b89c47ba2becd2aa']},
       {mask:'김*곤',photo:1,form:1,date:'2026-10-05',keys:['4e42b383fac4758f9734fc7ba8504544e1609493c85207ebcbd210b11b174517','bb6b96886b4c2a2f5cbf4dfa04375b7652bb77c7511d57a554ed405620db4387','a287e0e84679c8e3478e10f465bd9c2acd655d5fd3386fa77a910fb1f80855bc']},
       {mask:'이*진',photo:1,form:1,date:'2026-10-05',keys:['18263a4be804dac9c5de00cdbd5c5e74306332843b2f7f9f17435aebf6dd016c','5b741f3b0e514a79046399715e55fd824814b7e843aa6331c831486a51fc80f3']},
       {mask:'계*희',photo:1,form:1,date:'2026-10-05',keys:['b95197ce1d175c8109b058e8f823032029ceb677525e3cf07c8a2532132fb445','4c08a3d375f3efa09a873a08a9fce0ba4b949a4158ecc187441129eacc0549d0']},
@@ -194,6 +196,8 @@
     ];
 
     const applications={
+      '078c438a3e90c797414136906f9e1a2b5c87345c74495f3de47bd818b62302fd':{grade:'여행사진작가 2급',extras:[]},
+      '9d76c9e4df5d9aad3080cdeb921c85c4d57ef7adc8569d47de09c7e21c602e12':{grade:'여행사진작가 1급',extras:[]},
       '4e42b383fac4758f9734fc7ba8504544e1609493c85207ebcbd210b11b174517':{grade:'여행사진작가 2급',extras:[]},
       '18263a4be804dac9c5de00cdbd5c5e74306332843b2f7f9f17435aebf6dd016c':{grade:'여행사진작가 2급',extras:[]},
       'b95197ce1d175c8109b058e8f823032029ceb677525e3cf07c8a2532132fb445':{grade:'여행사진작가 2급',extras:[]},
@@ -317,13 +321,13 @@
       const paymentConfirmed=Boolean(item.paid);
       const both=photoConfirmed&&item.form;
       const application=applications[item.keys[0]];
-      const photoDetail=item.photo?`${item.date.replaceAll('-','.')}까지 받은 메일에서 확인했습니다.`:firstGradeConfirmed?'1급 확정 상태에 따라 과제 사진 메일도 확인 처리되었습니다.':'현재 받은 메일 기준으로 사진 첨부를 확인하지 못했습니다.';
+      const photoDetail=item.photo?`${item.date.replaceAll('-','.')}까지 받은 관련 이메일에서 확인했습니다.`:firstGradeConfirmed?'1급 확정 상태에 따라 관련 이메일도 확인 처리되었습니다.':'현재 받은 메일 기준으로 관련 이메일을 확인하지 못했습니다.';
       const formDetail=item.form?'자격증 신청서 응답이 정상 저장되어 있습니다.':'자격증 신청서 응답은 아직 확인되지 않습니다.';
       let next='';
       if(both) next='<strong>두 단계 모두 확인되었습니다.</strong> 추가 확인 문의 없이 기다려 주시면 됩니다.';
-      else if(photoConfirmed&&paymentConfirmed) next=`과제 사진과 입금은 확인되었습니다. 이제 <a href="${FORM_URL}" target="_blank" rel="noopener">자격증 신청서 작성</a>만 확인해 주세요.`;
-      else if(photoConfirmed) next=`사진은 잘 받았습니다. 이제 <a href="${FORM_URL}" target="_blank" rel="noopener">자격증 신청서 작성</a>만 확인해 주세요.`;
-      else next=`신청서는 확인되었습니다. 과제 사진은 <a href="${MAIL_URL}">ryon2357@gmail.com으로 보내기</a>를 확인해 주세요.`;
+      else if(photoConfirmed&&paymentConfirmed) next=`관련 이메일과 입금은 확인되었습니다. 이제 <a href="${FORM_URL}" target="_blank" rel="noopener">자격증 신청서 작성</a>만 확인해 주세요.`;
+      else if(photoConfirmed) next=`관련 이메일을 받았습니다. 이제 <a href="${FORM_URL}" target="_blank" rel="noopener">자격증 신청서 작성</a>만 확인해 주세요.`;
+      else next=`신청서는 확인되었습니다. 과제 관련 이메일은 <a href="${MAIL_URL}">ryon2357@gmail.com으로 보내기</a>를 확인해 주세요.`;
       let gradeState='';
       if(application?.grade==='여행사진작가 1급'){
         gradeState=firstGradeConfirmed
@@ -334,7 +338,7 @@
       }
       const applicationPanel=application?`<div class="application"><p class="application-label">신청서에 기록된 신청 급수</p><p class="application-grade">${application.grade}</p>${gradeState}<p class="application-extra"><strong>추가 자격증:</strong> ${application.extras.length?application.extras.join(' · '):'선택 없음'}</p></div>`:'';
       const paymentCheck=paymentConfirmed?status(true,'입금 확인','대표 확인 기준으로 입금이 확인되었습니다.'):'';
-      result.innerHTML=`<h2>접수 현황을 찾았습니다</h2><p class="who">조회 결과: ${item.mask}</p><div class="checks">${status(photoConfirmed,'과제 사진 메일',photoDetail)}${status(item.form,'자격증 신청서',formDetail)}${paymentCheck}</div>${applicationPanel}<p class="next">${next}</p>`;
+      result.innerHTML=`<h2>접수 현황을 찾았습니다</h2><p class="who">조회 결과: ${item.mask}</p><div class="checks">${status(photoConfirmed,'과제 관련 이메일',photoDetail)}${status(item.form,'자격증 신청서',formDetail)}${paymentCheck}</div>${applicationPanel}<p class="next">${next}</p>`;
     });
   </script>
 </body>
