@@ -116,8 +116,6 @@
   </div>
 </div>
 <script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz47FQesvuy7rBzB_VYye85Vj6cjDpstFYTVvdNnDdjsNyb_HgD4DQM-vi6udtSZApa/exec';
-
   document.getElementById('f').addEventListener('submit', async function (e) {
     e.preventDefault();
     const form = e.target;
@@ -136,16 +134,22 @@
     btn.textContent = '전송 중…';
 
     const data = new FormData(form);
-    data.append('form', 'certcorrection');
-    const params = new URLSearchParams();
-    for (const [k, v] of data.entries()) params.append(k, v);
+    const payload = Object.fromEntries(data.entries());
 
     try {
-      await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
+      const response = await fetch('/api/cert-correction', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || '접수에 실패했습니다.');
+      }
       form.style.display = 'none';
       document.getElementById('done').style.display = 'block';
-    } catch {
-      msg.textContent = '전송 실패, 다시 시도해주세요.';
+    } catch (error) {
+      msg.textContent = error.message || '전송 실패, 다시 시도해주세요.';
       msg.className = 'msg error';
       btn.disabled = false;
       btn.textContent = '정정 신청하기';
