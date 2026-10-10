@@ -440,6 +440,13 @@
     .rp-no { display: inline-flex; width: 26px; height: 26px; border-radius: 50%; background: #1b2a55; color: #e9d49a; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; }
     .rp-block ul { margin-top: 8px; }
     .rp-block li { font-size: 14.5px; }
+    .mode-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 600px; margin-bottom: 18px; }
+    .mode-opt { text-align: left; background: rgba(255,255,255,.04); border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 16px; color: var(--muted); cursor: pointer; font: inherit; font-size: 13px; line-height: 1.5; }
+    .mode-opt b { display: block; color: #fff; font-size: 15px; margin-bottom: 2px; }
+    .mode-opt.on { border-color: rgba(201,168,92,.8); background: rgba(201,168,92,.12); }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 10px; }
+    .demo-note { background: #fff4d6; color: #6b4e00; border-radius: 10px; padding: 12px 14px; font-size: 14px; margin-bottom: 16px; }
+    @media (max-width: 520px) { .mode-pick { grid-template-columns: 1fr; } }
     @media print {
       body { background: #fff !important; }
       nav, #hero, footer, .rp-actions, .rp-head { display: none !important; }
@@ -469,7 +476,12 @@
     <p class="hero-sub reveal">
       방문자는 3초 안에 "내 얘기인가?"를 판단하고, 대부분 그냥 나갑니다. 잘되는 페이지는 디자인이 아니라 <b>설득의 순서</b>가 다릅니다. 12가지 질문에 답하시면, 방문자를 신청자로 바꾸는 <b>설계도</b>와 코덱스에 그대로 붙여 넣을 제작 요청문이 나옵니다.
     </p>
-    <div class="reveal"><button class="btn btn-primary" onclick="startWizard()">✦ 내 페이지 설계도 받기</button></div>
+    <div class="mode-pick reveal" role="radiogroup" aria-label="만들 페이지 종류">
+      <button type="button" class="mode-opt on" data-mode="landing" onclick="pickMode('landing')"><b>🎯 랜딩페이지</b><span>신청·문의 하나에 집중하는 한 장짜리</span></button>
+      <button type="button" class="mode-opt" data-mode="site" onclick="pickMode('site')"><b>🏠 반응형 홈페이지</b><span>메뉴 3~4개(소개·강의·후기·문의)의 단순한 홈페이지</span></button>
+    </div>
+    <div class="reveal hero-cta"><button class="btn btn-primary" onclick="startWizard()">✦ 내 설계도 만들기 시작</button>
+      <button class="btn btn-outline" onclick="startDemo()">▶ 예시 답으로 1분 체험</button></div>
     <div class="hero-points reveal">
       <div class="hero-point"><strong>🔍 재료 진단 점수</strong>내 페이지의 약점을 먼저 짚어요</div>
       <div class="hero-point"><strong>🎯 헤드라인 3안</strong>첫 화면 한 줄을 초안으로</div>
@@ -528,12 +540,13 @@
       <div id="reportScreen">
         <div class="rp-head">
           <p class="section-label" style="margin-bottom:8px;">완성</p>
-          <div class="step-title">🎉 랜딩페이지 설계도가 만들어졌어요</div>
+          <div class="step-title" id="rpTitle">🎉 설계도가 만들어졌어요</div>
           <p class="step-helper">[PDF로 저장]을 누르면 보관할 수 있고, 맨 아래 <b>코덱스 제작 요청문</b>을 복사해 코덱스에 붙여 넣으면 제작이 시작됩니다.</p>
           <div class="rp-actions">
             <button class="btn btn-primary" onclick="window.print()">🖨 PDF로 저장 / 인쇄</button>
             <button class="btn btn-outline" onclick="copyReport()">📋 설계도 전체 복사</button>
             <button class="btn btn-outline" onclick="copyPrompt()">🤖 코덱스 요청문만 복사</button>
+            <button class="btn btn-outline" onclick="restart()">↺ 처음부터 내 답으로</button>
             <span class="toast" id="toast"></span>
           </div>
         </div>
@@ -626,7 +639,47 @@
   ];
 
   let current = 0;
+  let mode = 'landing';      // 'landing' 한 장짜리 랜딩 / 'site' 메뉴 있는 반응형 홈페이지
+  let demoMode = false;      // 예시 체험은 시트에 저장하지 않는다
   const answers = {};
+  const MODE_LABEL = { landing:'랜딩페이지', site:'반응형 홈페이지' };
+
+  /* 수업 시연용 예시 답 (가상의 사진 교실 — 숫자·후기는 예시) */
+  const DEMO = {
+    name:'강의 소개 · 인천 남동구 시니어 스마트폰 사진 교실',
+    who:'63세, 은퇴 후 손주 사진을 폰으로 찍는데 매번 흔들리고 어디 저장됐는지 몰라 자식에게 묻기 눈치 보이는 분',
+    pain:'"사진은 찍는데 어디 갔는지 몰라요"\n"자식한테 또 물어보기 눈치 보여요"\n"유튜브 따라 해도 화면이 달라요"',
+    dream:'3회 수업 뒤 직접 찍은 사진 10장을 가족 단톡방에 올려 손주에게 칭찬을 듣게 됩니다',
+    offers:'① 기초반 3회 (주 1회 2시간, 15만원, 복습 영상 제공)\n② 심화반 4회 (20만원)',
+    unique:'① 8명 소수 정원 1:1 지도\n② 수업 후 카톡 질문 무제한\n③ 20년 경력 현직 사진작가',
+    proof:'누적 수강생 1,200명\n출강 20곳\n"처음으로 가족에게 사진을 자랑했어요" 김OO(67)\n"단톡방에 올렸더니 손주가 멋지대요" 이OO(64)\n대표 박OO: 어머니께 폰 사진을 알려드리다 시작',
+    objection:'Q. 나이 많아서 못 따라가면? → 보조강사가 옆에서 도와드리고, 못 따라오면 다음 기수 무료 청강\nQ. 비싸지 않나요? → 1회 5만원, 복습 영상 평생 제공',
+    urgency:'선착순 8명\n신청자 전원 사진 정리 가이드 PDF 증정',
+    goal:'카카오톡으로 수강 신청',
+    info:'인천광역시 남동구 구월동 OO로 12, 3층 / 010-0000-0000 / 평일 10~18시 / 카톡채널 pf.kakao.com/_예시',
+    look:'수업 사진 10장 있음 / 따뜻한 느낌 / 일정은 내가 고칠 예정'
+  };
+
+  function pickMode(m) {
+    mode = m;
+    document.querySelectorAll('.mode-opt').forEach(b => b.classList.toggle('on', b.dataset.mode === m));
+  }
+  function startDemo() {
+    demoMode = true;
+    Object.keys(answers).forEach(k => delete answers[k]);
+    STEPS.forEach(s => { answers[s.key] = DEMO[s.key] || '[확인 필요]'; });
+    document.getElementById('wizard').classList.add('active');
+    renderReport('예시');
+    show('reportScreen');
+    document.getElementById('wizard').scrollIntoView({ behavior: 'smooth' });
+  }
+  function restart() {
+    demoMode = false;
+    Object.keys(answers).forEach(k => delete answers[k]);
+    Object.keys(nudged).forEach(k => delete nudged[k]);
+    renderStep(0);
+    document.getElementById('wizard').scrollIntoView({ behavior: 'smooth' });
+  }
   const nudged = {};
 
   document.getElementById('f-phone').addEventListener('input', e => {
@@ -637,6 +690,7 @@
   });
 
   function startWizard() {
+    demoMode = false;
     document.getElementById('wizard').classList.add('active');
     document.getElementById('wizard').scrollIntoView({ behavior: 'smooth' });
     renderStep(0);
@@ -727,7 +781,7 @@
       audience: j([['누구', g('who')], ['고민', g('pain')], ['변화', g('dream')]]),
       offers: g('offers'), strengths: g('unique'), trust: g('proof'),
       faq: j([['망설임', g('objection')], ['마감·혜택', g('urgency')]]),
-      info: g('info'), look: g('look'), ops: ''
+      info: g('info'), look: g('look'), ops: MODE_LABEL[mode]
     };
   }
 
@@ -747,7 +801,7 @@
     btn.disabled = true; btn.textContent = '설계도 만드는 중…';
     try {
       const params = new URLSearchParams({ type: 'homepage', name, email, phone, ...sheetPayload() });
-      await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
+      if (!demoMode) await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
     } catch (err) {
       /* 저장이 실패해도 수강생은 설계도를 받을 수 있어야 하므로 계속 진행 */
     }
@@ -871,8 +925,77 @@
     R.push({ no:'⑨', title:'망설임 해소 — 자주 묻는 질문', role:'FAQ는 정보 코너가 아니라 신청 직전 방어선입니다. 질문은 고객의 걱정 말투 그대로, 답은 안전장치로 끝내세요.',
       items: lines('objection').length ? lines('objection').map(x => `Q/A: ${x}`) : ['[망설이는 이유와 해소 답을 적어 주세요]'], ok: has('objection') });
     R.push({ no:'⑩', title:'마감 + 최종 버튼', role:'핵심 장점 3회차 반복 → 실제 마감 근거 → 첫 화면과 똑같은 버튼. 여기까지 읽은 사람이 누를 자리입니다.',
-      items:[ ...(lines('urgency').length ? lines('urgency').map(x => `⏰ ${x}`) : ['⏰ [실제 있는 마감·정원·선물을 하나 만드세요]']), `버튼: "${B}" (①과 같은 문구)`, has('info') ? `연락·위치: ${val('info').replace(/\n/g, ' / ')}` : '연락·위치: [연락처를 적어 주세요]' ], ok: has('urgency') && has('info') });
+      items:[ ...(lines('urgency').length ? lines('urgency').map(x => `⏰ ${x}`) : ['⏰ [실제 있는 마감·정원·선물을 하나 만드세요]']), `버튼: "${B}" (①과 같은 문구)`, has('info') ? `연락·위치: ${val('info').replace(/\n/g, ' / ')}` : '연락·위치: [연락처를 적어 주세요]', mapInfo() ? '지도: 주소 텍스트 + "네이버 지도에서 보기" 링크 (지도 삽입 안 함)' : '지도: [주소를 시·구·도로명까지 적으면 지도 링크가 만들어져요]' ], ok: has('urgency') && has('info') });
     return R;
+  }
+
+  /* 주소 → 네이버 지도 검색 링크 (API 키·지도 삽입 없이 링크만) */
+  function mapInfo() {
+    const parts = val('info').split(/\n|\//).map(x => x.trim()).filter(Boolean);
+    const addr = parts.find(x => /(특별시|광역시|도|시|군|구)\s/.test(x) && /(로|길|동|읍|면|리)(\s|\d|,|$)/.test(x) && !/^0\d{1,2}-/.test(x));
+    if (!addr) return null;
+    return { addr, url: 'https://map.naver.com/p/search/' + encodeURIComponent(addr.replace(/,.*$/, '').trim()) };
+  }
+  function mapLine() {
+    const m = mapInfo();
+    return m ? `- 지도: 지도 삽입(iframe·지도 API)은 하지 말고, 주소 텍스트 옆에 "네이버 지도에서 보기" 링크 버튼만 넣어 주세요(새 창). 링크 주소: ${m.url}`
+             : '- 지도: 지도 삽입(iframe·지도 API)은 하지 말고, 주소 텍스트 옆에 "네이버 지도에서 보기" 링크 버튼만 넣어 주세요(새 창). 링크는 https://map.naver.com/p/search/ 뒤에 주소를 붙인 형태로 만들어 주세요.';
+  }
+  function reviewLines() { return lines('proof').filter(x => /["“”'‘’]/.test(x)); }
+  function ownerLine() { return lines('proof').find(x => /대표|강사|원장|선생님|시작/.test(x)) || ''; }
+  function offerMenu() { const k = typeKey(); return k === 'shop' ? '메뉴' : k === 'person' ? '작업' : '강의'; }
+  function siteMenus() { return ['소개', offerMenu(), ...(reviewLines().length ? ['후기'] : []), '문의']; }
+
+  /* 반응형 홈페이지: 메뉴 3~4개, 한 파일 안의 섹션 이동(원페이지) — 수강생이 고치기 쉬운 구조 */
+  function siteBlocks() {
+    const U = lines('unique'), B = btnText(), rv = reviewLines(), ow = ownerLine(), m = mapInfo();
+    const num = lines('proof').find(x => /\d/.test(x) && !/["“”'‘’]/.test(x));
+    const R = [];
+    R.push({ no:'홈', title:'첫 화면', role:'누구를 위한 곳이고 무엇이 달라지는지 한 줄, 그리고 연락 버튼 하나. 결과물·수업 사진을 크게.',
+      items:[ '헤드라인: 위 3안 중 1개', `버튼: "${B}"`, num ? `신뢰 한 줄: ${num}` : '신뢰 한 줄: [숫자 증거를 하나 넣으세요]', '사진: 결과물·수업 장면 1장' ], ok: has('dream') && has('goal') });
+    R.push({ no:'소개', title:'소개 — 이런 분을 위한 곳', role:'고객의 고민 2~3줄로 공감 → 여기가 다른 점 3가지 → 대표 소개 3줄. 경력 나열보다 "왜 이 일을 하는지".',
+      items:[ ...lines('pain').slice(0, 3).map(x => `✔ ${x}`), ...U.slice(0, 3).map(x => `★ ${x}`), ow ? `대표: ${ow}` : '대표: [이름·시작한 이유 한 줄 — 확인 필요]' ], ok: has('pain') && U.length > 0 });
+    R.push({ no: offerMenu(), title:`${offerMenu()} — 무엇을 하나`, role:'카드 형태로 이름·대상·일정·가격. 카드마다 "이렇게 달라져요" 한 줄. 일정·가격은 자주 바뀌니 고치기 쉽게.',
+      items:[ ...(lines('offers').length ? lines('offers') : ['[강의·상품 구성을 적어 주세요]']), has('dream') ? `달라지는 모습: ${first('dream')}` : '달라지는 모습: [확인 필요]' ], ok: has('offers') });
+    if (rv.length) R.push({ no:'후기', title:'후기', role:'이니셜·나이·한 줄. 많을 필요 없이 진짜 3개면 충분합니다.', items: rv, ok: true });
+    else R.push({ no:'후기', title:'후기 — 지금은 메뉴에서 뺍니다', role:'후기가 없으면 가짜를 만들지 않고 메뉴를 3개로 줄입니다. 후기가 3개 모이면 코덱스에 "후기 메뉴를 추가해 줘" 한 줄이면 됩니다.',
+      items:[ '지난 수강생·단골 3명에게 카톡으로 "한 줄 후기 + 이니셜·나이 공개 동의" 요청', '받은 후기는 원문 그대로, 사진이 있으면 함께' ], ok: false, hidden: true });
+    R.push({ no:'문의', title:'문의 — 오시는 길·연락', role:'연락 버튼, 운영시간, 주소 텍스트 + "네이버 지도에서 보기" 링크. 지도 자체는 넣지 않습니다(API 키 필요). 자주 묻는 질문 2~3개도 여기에.',
+      items:[ `버튼: "${B}"`, has('info') ? `연락·시간: ${val('info').replace(/\n/g, ' / ')}` : '연락·시간: [확인 필요]',
+        m ? `지도 링크: ${m.addr} → 네이버 지도에서 보기` : '지도 링크: [주소를 시·구·도로명까지 적어 주세요]', ...lines('objection').slice(0, 3).map(x => `Q/A: ${x}`) ], ok: has('info') && !!m });
+    return R;
+  }
+
+  function sitePrompt() {
+    const g = (label, k) => `- ${label}: ${has(k) ? answers[k].replace(/\n/g, ' / ') : '(미정 — 지어내지 말고 [확인 필요]로 비워 두세요)'}`;
+    const N = shortName(), menus = siteMenus(), rv = reviewLines();
+    return [
+      `아래 정보로 ${TYPE_LABEL[typeKey()]} 반응형 홈페이지를 만들어 주세요. 복잡하지 않게, 메뉴 ${menus.length}개짜리 단순한 홈페이지입니다. 파일은 index.html 하나(한 페이지 안에서 메뉴를 누르면 해당 섹션으로 이동)로 만들어 주세요.`,
+      '', '[재료]',
+      g('이름·하는 일', 'name'), g('주로 오시는 분', 'who'), g('그분들의 고민(실제 말투)', 'pain'), g('달라지는 모습', 'dream'),
+      g('강의·상품', 'offers'), g('다른 곳과 다른 점', 'unique'), g('숫자·후기·대표 소개', 'proof'), g('자주 묻는 질문', 'objection'),
+      g('연락 방법(버튼 하나)', 'goal'), `- 버튼 문구 제안: ${btnText()}`, g('주소·연락처·운영시간', 'info'), g('사진·분위기·운영', 'look'),
+      '', `[메뉴 — ${menus.join(' · ')}, 이 ${menus.length}개만]`,
+      `- 상단 메뉴: 로고(이름) + ${menus.join(' · ')}. 메뉴 이름은 그대로 짧게, 폰에서도 한 줄에 들어가게 하고 햄버거 메뉴는 쓰지 마세요. 스크롤해도 메뉴가 위에 붙어 있게.`,
+      '- 홈(첫 화면): 헤드라인 + 한 줄 설명 + 연락 버튼 + 결과물·수업 사진 1장 + 숫자 신뢰 한 줄. 헤드라인은 서로 다른 3안(결과 약속형/고민 지적형/숫자형)을 먼저 보여 주고 1안을 적용, 나머지는 HTML 주석으로.',
+      '- 소개: "이런 분을 위한 곳" 고민 2~3줄(고객 말투 그대로) → 다른 점 3가지(짧은 글) → 대표 사진과 소개 3줄(재료에 있는 것만, 없으면 [확인 필요]).',
+      `- ${offerMenu()}: 카드 형태(이름·대상·일정·가격·"이렇게 달라져요" 한 줄). 일정·가격은 나중에 직접 고치기 쉽게, HTML 맨 위 주석에 "고치는 곳" 위치를 적어 주세요.`,
+      ...(rv.length ? ['- 후기: 재료에 있는 후기만 카드로(이니셜·나이·한 줄). 새로 지어내지 마세요.'] : ['- 후기: 재료에 후기가 없으니 후기 메뉴·섹션은 만들지 마세요. 가짜 후기 금지.']),
+      '- 문의: 연락 버튼(크게) · 운영시간 · 주소 텍스트 · "네이버 지도에서 보기" 버튼 · 자주 묻는 질문 2~3개(재료에 있는 것만).',
+      '', '[지켜 주세요]',
+      mapLine(),
+      `- 연락 버튼은 "${btnText()}" 하나로 통일해서 홈·소개 끝·문의, 3곳에 두세요. 폰에서는 첫 화면 버튼이 화면 밖으로 나간 뒤에만 하단 고정 버튼이 보이게.`,
+      '- 재료에 없는 숫자·후기·수상·언론·환불 약속은 절대 만들지 마세요. 없으면 [확인 필요].',
+      '- 재료의 숫자·사실을 섞어 새 성과 문장을 만들지 마세요(예: "1,200명의 손주 사진을 함께 찍었습니다"처럼 재료에 없는 문장). 다듬기는 되지만 새 사실은 안 됩니다.',
+      '- 문장은 짧게, 일반론("최고의", "체계적인") 대신 재료의 구체적인 말을 쓰세요. 본문 17px 이상, 줄간격 넉넉히, 제목은 text-wrap: balance.',
+      '- 사진: images/ 폴더에 hero.jpg, owner.jpg 등 이름으로 자리를 만들고, 어떤 사진을 어디에 넣을지 목록으로 알려 주세요. 무료·AI 이미지로 채우지 마세요.',
+      '', '[반응형·기술 조건]',
+      '- 휴대폰 우선 반응형: viewport 메타, flex/grid, @media. 375px에서 가로 스크롤 금지, 768px(태블릿)·1280px(PC)에서는 카드가 2~3열로 넓게.',
+      '- 날짜·전화번호 자동 감지 방지: <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">',
+      `- 제목 태그와 카카오톡 공유용 OG 태그(og:title, og:description, og:image 1200×630)를 넣고, 제목에는 ${N}의 이름과 하는 일을 담아 주세요.`,
+      '- 외부 라이브러리 없이 HTML·CSS·약간의 JS만. 이미지는 lazy 로딩(첫 화면 제외).',
+      '- 다 만든 뒤 375px·768px·1280px에서 깨지는 곳이 없는지 확인하고, 열어 보는 법과 일정·가격 고치는 법을 순서대로 알려 주세요.'
+    ].join('\n');
   }
 
   function promptText() {
@@ -909,6 +1032,7 @@
       '- 핵심 장점은 상·중·하단에 표현만 바꿔 3회 반복하세요.',
       '- 숫자를 쓸 수 있는 곳엔 숫자를 쓰세요. 단, 위 재료에 없는 숫자·후기·수상·언론은 절대 만들지 마세요. 없으면 [확인 필요]로 비우세요.',
       '- 마감·정원·혜택은 위 재료에 실제 적힌 것만 쓰세요. 꾸며낸 희소성 금지.',
+      '- 재료의 숫자·사실을 섞어 새 성과 문장을 만들지 마세요(예: "1,200명의 손주 사진을 함께 찍었습니다"처럼 재료에 없는 문장). 다듬기는 되지만 새 사실은 안 됩니다.',
       '- 후기는 이름(또는 이니셜)·나이·한 줄 변화 형식, 아직 없으면 자리만 만들고 [확인 필요].',
       '- 신청 폼이 있으면 이름·이메일·연락처 3~4칸만, 개인정보 수집·이용 동의 체크박스 필수. 폼 제출 후 감사·다음 안내 화면을 만들어 주세요.',
       '', '[기술 조건]',
@@ -916,6 +1040,7 @@
       '- 날짜·전화번호 자동 감지 방지: <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">',
       `- 카카오톡·SNS 공유용 OG 태그(og:title에 헤드라인, og:description, og:image 1200×630) 넣기. 제목 태그는 ${N}의 이름과 핵심 결과를 담아 주세요. og:image는 배포 후 https:// 로 시작하는 전체 주소로 바꿔야 한다고 알려 주세요.`,
       '- 사진: 첫 화면에는 "결과물"(작품·완성 사진·수업 장면) 사진 1장을 헤드라인 바로 옆/아래에 크게 두세요. 사진 파일은 images/ 폴더에 hero.jpg, owner.jpg, review1.jpg… 이름으로 자리를 만들고, 어떤 사진을 어디에 넣어야 하는지 목록으로 알려 주세요. 무료 이미지·AI 이미지로 채우지 마세요.',
+      mapLine(),
       '- 이미지는 lazy 로딩(첫 화면 사진 제외), 불필요한 라이브러리 금지(빠른 로딩).',
       '- 다 만든 뒤 375px(폰)·768px(태블릿)·1280px(PC)에서 깨지는 곳이 없는지 스스로 확인하고, 결과와 열어 보고 고치는 방법을 순서대로 알려 주세요.'
     ].join('\n');
@@ -925,8 +1050,10 @@
 
   function renderReport(name) {
     const today = new Date().toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
-    const dg = diagnose(), hl = headlines(), bl = blocks();
-    lastPrompt = promptText();
+    const site = mode === 'site';
+    const dg = diagnose(), hl = headlines(), bl = site ? siteBlocks() : blocks();
+    lastPrompt = site ? sitePrompt() : promptText();
+    document.getElementById('rpTitle').textContent = `🎉 ${MODE_LABEL[mode]} 설계도가 만들어졌어요`;
     const verdict = dg.pct >= 80 ? ['바로 제작해도 좋아요', '재료가 탄탄합니다. 아래 설계도 순서대로 만들면 후킹되는 페이지가 나옵니다.']
       : dg.pct >= 55 ? ['보강하고 제작하세요', '뼈대는 있어요. 붉게 표시된 재료만 채우면 전환력이 크게 올라갑니다.']
       : ['재료부터 모으세요', '지금 상태로 만들면 예쁘기만 하고 신청이 없는 페이지가 됩니다. 아래 "먼저 채울 것"부터 하세요.'];
@@ -934,7 +1061,8 @@
     const weak = dg.D.filter(d => d.s < 2).sort((a, b) => (b.w * (2 - b.s)) - (a.w * (2 - a.s)));
 
     document.getElementById('reportPaper').innerHTML = `
-      <h2>${esc(shortName())} · 신청을 부르는 랜딩페이지 설계도</h2>
+      ${demoMode ? '<div class="demo-note">예시 답(가상의 사진 교실)으로 만든 설계도입니다. 내 답으로 만들려면 위의 [↺ 처음부터 내 답으로]를 누르세요.</div>' : ''}
+      <h2>${esc(shortName())} · ${site ? '반응형 홈페이지 설계도' : '신청을 부르는 랜딩페이지 설계도'}</h2>
       <div class="rp-meta">${esc(name)} 님 · ${esc(today)} · SMAC EDU</div>
 
       <h3>1. 재료 진단 — 후킹할 힘이 얼마나 있나</h3>
@@ -945,12 +1073,13 @@
       <p class="rp-note" style="margin-top:0">방문자는 3초 안에 "나와 상관있나 / 얻을 게 있나"를 판단합니다. 이름·인사말·"환영합니다"는 헤드라인이 아닙니다. 아래는 입력하신 재료로 만든 <b>초안</b>이니 문장을 다듬어 쓰세요.</p>
       ${hl.map((h, i) => `<div class="rp-box rp-head-opt"><b>${i + 1}안 · ${esc(h.type)}</b><div class="rp-draft">${esc(h.draft)}</div><div class="rp-why">공식: ${esc(h.formula)}<br>${esc(h.why)}</div></div>`).join('')}
 
-      <h3>3. 버튼 — 페이지의 유일한 목적</h3>
-      <div class="rp-box"><b>추천 버튼 문구</b><div class="rp-draft">${esc(btnText())}</div><div class="rp-why">"제출·문의하기·확인" 같은 막연한 말 대신 "무엇을 얻는지"가 보이는 동사형으로. 첫 화면 · 증거 바로 뒤 · 맨 아래, 3곳에 <b>같은 문구</b>로 반복하고, 폰에서는 하단 고정 버튼도 둡니다. 다른 행동 버튼은 두지 않습니다.</div></div>
+      <h3>3. 버튼 — ${site ? '연락 방법은 하나로' : '페이지의 유일한 목적'}</h3>
+      <div class="rp-box"><b>추천 버튼 문구</b><div class="rp-draft">${esc(btnText())}</div><div class="rp-why">"제출·문의하기·확인" 같은 막연한 말 대신 "어디로, 무엇을"이 보이는 동사형으로. ${site ? '홈 · 소개 끝 · 문의, 3곳에' : '첫 화면 · 증거 바로 뒤 · 맨 아래, 3곳에'} <b>같은 문구</b>로 두고, 폰에서는 하단 고정 버튼도 둡니다.</div></div>
 
-      <h3>4. 설득 흐름 — 위에서 아래로 이 순서로 읽히게</h3>
-      <p class="rp-note" style="margin-top:0">공감 → 걱정 → 해결 → 증거 → 비교 → 방어 → 마감. 잘 팔리는 페이지는 정보 나열이 아니라 <b>감정의 순서</b>로 설계됩니다.</p>
-      ${bl.map(b => `<div class="rp-block ${b.ok ? '' : 'rp-weak'}"><div class="rp-bh"><span class="rp-no">${b.no}</span><b>${esc(b.title)}</b>${b.ok ? '' : '<span class="sc sc0">재료 부족</span>'}</div><div class="rp-why">${esc(b.role)}</div><ul>${b.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>${b.extra ? `<div class="rp-why">💡 ${esc(b.extra)}</div>` : ''}</div>`).join('')}
+      ${site ? `<h3>4. 홈페이지 구성 — 메뉴 ${siteMenus().length}개: ${esc(siteMenus().join(' · '))}</h3>
+      <p class="rp-note" style="margin-top:0">한 파일 안에서 메뉴를 누르면 해당 칸으로 이동하는 단순한 구조입니다. 메뉴를 늘릴수록 고치기 어렵고 방문자도 헤맵니다.</p>` : `<h3>4. 설득 흐름 — 위에서 아래로 이 순서로 읽히게</h3>
+      <p class="rp-note" style="margin-top:0">공감 → 걱정 → 해결 → 증거 → 비교 → 방어 → 마감. 잘 팔리는 페이지는 정보 나열이 아니라 <b>감정의 순서</b>로 설계됩니다.</p>`}
+      ${bl.map(b => `<div class="rp-block ${b.ok ? '' : 'rp-weak'}"><div class="rp-bh"><span class="rp-no" style="${String(b.no).length > 1 ? 'width:auto;padding:0 10px;border-radius:999px' : ''}">${b.no}</span><b>${esc(b.title)}</b>${b.ok ? '' : `<span class="sc sc0">${b.hidden ? '메뉴에서 뺌' : '재료 부족'}</span>`}</div><div class="rp-why">${esc(b.role)}</div><ul>${b.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>${b.extra ? `<div class="rp-why">💡 ${esc(b.extra)}</div>` : ''}</div>`).join('')}
 
       <h3>5. 제작 전에 먼저 채울 것 (효과 큰 순서)</h3>
       ${weak.length ? `<ol>${weak.map(d => `<li><b>${esc(d.name)}</b> — ${esc(d.fix)}</li>`).join('')}</ol>` : '<p>모든 재료가 충분합니다. 바로 제작 요청문을 사용하세요.</p>'}
@@ -960,18 +1089,25 @@
         <li>카카오톡 공유용 미리보기 이미지(1200×630)는 헤드라인과 혜택 한 줄을 담아 처음부터 만드세요.</li>
       </ul>
 
-      <h3>6. 반드시 지킬 전환 원칙 (요청문에도 들어 있어요)</h3>
-      <ul>
+      <h3>6. 반드시 지킬 원칙 (요청문에도 들어 있어요)</h3>
+      ${site ? `<ul>
+        <li><b>메뉴는 3~4개</b> — 소개·${esc(offerMenu())}·후기·문의. 늘릴수록 방문자는 헤매고 나는 못 고칩니다.</li>
+        <li><b>연락 버튼은 하나</b> — 카톡·전화·신청서 중 하나만 주인공으로.</li>
+        <li><b>지도는 링크로</b> — 주소 텍스트 + "네이버 지도에서 보기". 지도 삽입은 API 키가 필요해 하지 않습니다.</li>
+        <li><b>후기는 진짜만</b> — 없으면 메뉴에서 빼고, 모이면 추가합니다.</li>
+        <li><b>폰이 기본</b> — 375px에서 먼저 보기 좋게, PC에서는 넓게.</li>
+      </ul>` : `<ul>
         <li><b>한 페이지, 한 목표, 한 버튼</b> — 상단 메뉴·여러 행동은 전환을 깎습니다.</li>
         <li><b>핵심 장점 3회 반복</b> — 상·중·하단에 표현만 바꿔 각인.</li>
         <li><b>숫자는 구체적으로</b> — "많은 분" 대신 "1,200명".</li>
         <li><b>증거는 버튼 근처에</b> — 망설임이 생기는 자리에 후기와 보장을 둡니다.</li>
         <li><b>마감은 진짜만</b> — 꾸며낸 희소성은 한 번에 신뢰를 잃습니다.</li>
         <li><b>폰이 기본</b> — 방문자 대부분이 휴대폰이므로 375px 기준으로 먼저 설계하고 로딩을 가볍게.</li>
-      </ul>
+        <li><b>지도는 링크로</b> — 주소 텍스트 + "네이버 지도에서 보기". 지도 삽입은 API 키가 필요해 하지 않습니다.</li>
+      </ul>`}
 
       <h3>7. 코덱스 제작 요청문</h3>
-      <p>아래 글 전체를 복사해서 코덱스에 붙여 넣으세요. 재료·화면 순서·카피 지시·전환 원칙이 모두 들어 있어서, 코덱스가 <b>헤드라인 3안을 직접 쓰고 가장 센 안을 적용</b>합니다.</p>
+      <p>아래 글 전체를 복사해서 코덱스에 붙여 넣으세요. ${site ? '재료·메뉴 구성·반응형 조건이 모두 들어 있어서, 코덱스가 <b>메뉴 ' + siteMenus().length + '개짜리 반응형 홈페이지</b>를 만듭니다.' : '재료·화면 순서·카피 지시·전환 원칙이 모두 들어 있어서, 코덱스가 <b>헤드라인 3안을 직접 쓰고 가장 센 안을 적용</b>합니다.'}</p>
       <div class="rp-prompt">${esc(lastPrompt)}</div>
       <p class="rp-note">이 설계도는 입력하신 재료를 전환 원칙에 맞춰 정리한 초안입니다. 없는 재료는 지어내지 않고 [확인 필요]로 표시합니다. 더 도움이 필요하시면 SMAC EDU 강의에서 함께 만들어 보세요.</p>`;
     lastReportText = document.getElementById('reportPaper').innerText;
