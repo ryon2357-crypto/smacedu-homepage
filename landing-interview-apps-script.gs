@@ -161,6 +161,70 @@ function _handleHomepageSubmission(p) {
   }
 }
 
+// 홈페이지 설계도 전문 메일 (homepage-brief.html이 화면에 만든 설계도를 POST로 보낸다).
+// 아무 주소로나 메일을 뿌리는 통로가 되지 않도록: ① 방금 "홈페이지기획" 탭에 같은 이메일로 접수된 건만,
+// ② 같은 주소로는 10분에 1통만, ③ 본문은 길이 제한 + 이스케이프 후 고정 양식에만 넣는다.
+function doPost(e) {
+  try {
+    const b = JSON.parse((e.postData && e.postData.contents) || '{}');
+    if (b.type === 'homepage_report') return _handleHomepageReport(b);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: 'unknown type' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function _handleHomepageReport(b) {
+  const out = obj => ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+  const email = String(b.email || '').trim().toLowerCase();
+  const report = String(b.report || '').trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return out({ status: 'error', message: 'bad email' });
+  if (report.length < 200 || report.length > 40000) return out({ status: 'error', message: 'bad report length' });
+
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(HOMEPAGE_SHEET_NAME);
+  if (!sheet || sheet.getLastRow() < 2) return out({ status: 'error', message: 'no record' });
+  const n = Math.min(30, sheet.getLastRow() - 1);
+  const emails = sheet.getRange(sheet.getLastRow() - n + 1, 3, n, 1).getValues().map(r => String(r[0]).trim().toLowerCase());
+  if (emails.indexOf(email) < 0) return out({ status: 'error', message: 'no record' });
+
+  const cache = CacheService.getScriptCache();
+  const key = 'hpr_' + email;
+  if (cache.get(key)) return out({ status: 'skipped', message: 'recently sent' });
+  cache.put(key, '1', 600);
+
+  const name = String(b.name || '').trim().slice(0, 40) || '수강생';
+  const html = `
+<div style="font-family:sans-serif;max-width:680px;margin:0 auto;color:#1e293b;">
+  <div style="background:linear-gradient(135deg,#f59e0b,#ef4444);padding:30px 28px;border-radius:12px 12px 0 0;text-align:center;">
+    <h1 style="color:#fff;margin:0;font-size:22px;font-weight:900;">내 홈페이지 설계도가 도착했어요 🎉</h1>
+  </div>
+  <div style="background:#f8fafc;padding:26px 24px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
+    <p style="margin:0 0 14px;font-size:16px;"><strong>${escapeHtml(name)}</strong>님, 작성하신 답으로 만든 설계도입니다.</p>
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px 16px;margin-bottom:18px;">
+      <p style="margin:0;font-size:13px;color:#92400e;line-height:1.7;">
+        <strong>사용 방법</strong> — 맨 아래 <strong>코덱스 제작 요청문</strong>을 복사해 코덱스(또는 웹페이지를 만들어 주는 AI)의 채팅창에 붙여 넣으면 제작이 시작됩니다.
+      </p>
+    </div>
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:18px;font-size:14px;line-height:1.8;white-space:pre-wrap;word-break:break-word;">${escapeHtml(report)}</div>
+    <p style="margin:18px 0 0;color:#475569;line-height:1.7;font-size:14px;">
+      다시 만들고 싶다면 <a href="https://www.smacedu.kr/homepage-brief">설계도 만들기 페이지</a>에서 언제든 새로 작성하실 수 있어요.<br>
+      궁금한 점은 이 메일에 회신해 주세요.
+    </p>
+  </div>
+</div>`;
+
+  MailApp.sendEmail({
+    to: email,
+    subject: '[SMAC EDU] 내 홈페이지 설계도가 도착했습니다',
+    htmlBody: html,
+    replyTo: ADMIN_EMAIL,
+    name: '스마트미디어아트센터'
+  });
+  return out({ status: 'success' });
+}
+
 function _handleMaterialSubmission(p) {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
