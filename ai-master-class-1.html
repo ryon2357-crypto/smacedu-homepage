@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="챗GPT 질문법부터 이미지·영상·웹페이지·PPT 제작, AI 활용지도사 2급까지 배우는 AI 실전 마스터 과정 1기 안내입니다.">
+  <link rel="canonical" href="https://www.smacedu.kr/ai-master-class-1">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AI 실전 마스터 과정 1기 모집">
+  <meta property="og:description" content="총 3회 ZOOM 라이브 · 10/19, 10/26, 11/2 밤 9시 · 매 회차 녹화본 제공">
+  <meta property="og:url" content="https://www.smacedu.kr/ai-master-class-1">
+  <meta property="og:image" content="https://www.smacedu.kr/images/ai-master-class-1/AI실전마스터1기_썸네일_카톡안전영역_시안_v1.png">
+  <title>AI 실전 마스터 과정 1기 모집</title>
+  <style>
+    :root {
+      --ink: #102235;
+      --muted: #5f6f7e;
+      --navy: #123c63;
+      --blue: #1768d3;
+      --cyan: #36d7ff;
+      --violet: #7c4dff;
+      --gold: #ffb327;
+      --paper: #ffffff;
+      --pale: #eef6fb;
+      --line: #d8e3eb;
+      --shadow: 0 22px 70px rgba(17, 49, 81, .12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 4%, rgba(54, 215, 255, .16), transparent 27rem),
+        radial-gradient(circle at 94% 16%, rgba(124, 77, 255, .12), transparent 30rem),
+        #f5f8fb;
+      font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      line-height: 1.78;
+      word-break: keep-all;
+    }
+
+    a { color: inherit; }
+    img { display: block; max-width: 100%; }
+    .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(255,255,255,.18);
+      background: rgba(9, 28, 49, .9);
+      color: white;
+      backdrop-filter: blur(12px);
+    }
+    .topbar .wrap {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand { font-size: 14px; font-weight: 800; letter-spacing: -.02em; }
+    .top-cta {
+      text-decoration: none;
+      padding: 9px 16px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--cyan), #87f1ff);
+      color: #08243a;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .hero {
+      padding: 70px 0 84px;
+      background: linear-gradient(145deg, #07182b 0%, #0d3155 55%, #161858 100%);
+      color: white;
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr minmax(360px, 520px);
+      gap: 60px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 20px;
+      color: #9defff;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 28px; height: 2px; background: var(--cyan); }
+    h1 {
+      margin: 0;
+      font-size: clamp(42px, 5.2vw, 72px);
+      line-height: 1.08;
+      letter-spacing: -.055em;
+    }
+    .hero-copy { margin: 24px 0 28px; color: #d4e5f2; font-size: clamp(17px, 2vw, 21px); }
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
+    .hero-badges span {
+      padding: 8px 13px;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 999px;
+      background: rgba(255,255,255,.07);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 0 23px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 900;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button.primary { background: linear-gradient(135deg, var(--gold), #ffe27c); color: #342000; box-shadow: 0 12px 30px rgba(255,179,39,.24); }
+    .button.ghost { border: 1px solid rgba(255,255,255,.35); color: white; }
+    .hero-visual { position: relative; }
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: -24px;
+      border-radius: 34px;
+      background: linear-gradient(135deg, rgba(54,215,255,.26), rgba(124,77,255,.25));
+      filter: blur(30px);
+    }
+    .hero-visual img { position: relative; border-radius: 26px; box-shadow: 0 28px 80px rgba(0,0,0,.44); }
+
+    main { padding: 70px 0 0; }
+    .section { padding: 34px 0 70px; }
+    .section-head { max-width: 790px; margin-bottom: 30px; }
+    .kicker { margin: 0 0 8px; color: var(--blue); font-size: 14px; font-weight: 900; letter-spacing: .06em; }
+    h2 { margin: 0 0 14px; font-size: clamp(30px, 4vw, 46px); line-height: 1.22; letter-spacing: -.045em; }
+    h3 { margin: 0 0 12px; font-size: 22px; letter-spacing: -.03em; }
+    .lead { margin: 0; color: var(--muted); font-size: 18px; }
+
+    .problem {
+      margin-top: -105px;
+      position: relative;
+      z-index: 2;
+      padding: 34px 38px;
+      border: 1px solid rgba(255,255,255,.8);
+      border-radius: 22px;
+      background: rgba(255,255,255,.95);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    .problem p { margin: 0; font-size: 17px; }
+    .problem strong { color: var(--blue); }
+
+    .photo-story {
+      display: grid;
+      grid-template-columns: 1.04fr .96fr;
+      gap: 48px;
+      align-items: center;
+      margin-bottom: 46px;
+    }
+    .photo-story.reverse { grid-template-columns: .96fr 1.04fr; }
+    .photo-story.reverse .photo { order: 2; }
+    .photo {
+      overflow: hidden;
+      border-radius: 24px;
+      background: #dfe8ee;
+      box-shadow: var(--shadow);
+    }
+    .photo img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+    .story p { margin: 0 0 16px; color: #405365; }
+    .checklist { margin: 20px 0 0; padding: 0; list-style: none; }
+    .checklist li { position: relative; margin: 10px 0; padding-left: 30px; }
+    .checklist li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 1px;
+      width: 21px;
+      height: 21px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #dcf5ff;
+      color: #05639d;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .curriculum {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .lesson {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--paper);
+      box-shadow: 0 12px 40px rgba(22,62,99,.07);
+    }
+    .lesson .num {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--navy), var(--violet));
+      color: white;
+      font-weight: 900;
+    }
+    .lesson ul { margin: 0; padding-left: 19px; color: #46596b; }
+    .bonus { margin-top: 18px; padding: 18px 22px; border-radius: 16px; background: #fff5da; color: #624919; }
+
+    .audience {
+      padding: 56px;
+      border-radius: 28px;
+      background: #0e3154;
+      color: white;
+      box-shadow: var(--shadow);
+    }
+    .audience .kicker { color: #8fefff; }
+    .audience-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 13px 32px; margin-top: 24px; }
+    .audience-item { position: relative; padding-left: 25px; color: #dbe8f2; }
+    .audience-item::before { content: "•"; position: absolute; left: 5px; color: var(--cyan); font-weight: 900; }
+
+    .schedule-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: 44px; align-items: center; }
+    .schedule-layout .photo img { aspect-ratio: 3 / 2; }
+    .timeline { display: grid; gap: 13px; }
+    .time-row {
+      display: grid;
+      grid-template-columns: 68px 1fr;
+      gap: 18px;
+      padding: 19px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+    }
+    .time-row strong { color: var(--blue); }
+    .time-row p { margin: 0; color: #4d6070; }
+
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .price-card {
+      position: relative;
+      padding: 34px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: white;
+      overflow: hidden;
+    }
+    .price-card.featured { border: 2px solid var(--blue); }
+    .price-card.featured::after { content: "추천"; position: absolute; right: -32px; top: 18px; width: 115px; padding: 4px 0; text-align: center; transform: rotate(38deg); background: var(--blue); color: white; font-size: 12px; font-weight: 900; }
+    .price-card .old { color: #7a8996; text-decoration: line-through; }
+    .price-card .price { margin: 4px 0 12px; font-size: 38px; font-weight: 950; color: var(--blue); letter-spacing: -.05em; }
+    .price-card p { margin: 0; color: #536575; }
+    .deadline { margin-top: 22px; padding: 17px 22px; border-radius: 14px; background: #fff3dc; color: #5d4010; font-weight: 800; }
+
+    .apply {
+      padding: 58px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, #122f50, #27216c);
+      color: white;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .apply p { margin: 0 auto 25px; max-width: 680px; color: #dce7f2; }
+    .apply .button { min-width: 240px; }
+    .small-info { margin-top: 22px !important; font-size: 14px; color: #b8c8d8 !important; }
+
+    .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .note { padding: 26px; border: 1px solid var(--line); border-radius: 18px; background: white; }
+    .note p, .note ul { margin: 0; color: #536575; }
+    .note ul { padding-left: 20px; }
+
+    .closing { padding: 70px 0; text-align: center; }
+    .closing p { max-width: 790px; margin: 0 auto 24px; color: #4d6070; font-size: 18px; }
+    .contact { font-weight: 900; color: var(--navy); }
+    .tags { margin-top: 30px; color: #738390; font-size: 13px; line-height: 2; }
+
+    footer { padding: 28px 0 100px; color: #7b8995; text-align: center; font-size: 13px; }
+
+    .mobile-cta {
+      display: none;
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 14px;
+      z-index: 20;
+      min-height: 54px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ffb327, #ffe173);
+      color: #2f1d00;
+      text-decoration: none;
+      font-weight: 950;
+      box-shadow: 0 12px 30px rgba(29,39,51,.3);
+    }
+
+    @media (max-width: 860px) {
+      .hero { padding: 52px 0 120px; }
+      .hero-grid, .photo-story, .photo-story.reverse, .schedule-layout { grid-template-columns: 1fr; }
+      .hero-grid { gap: 42px; }
+      .hero-visual { width: min(560px, 100%); margin: 0 auto; }
+      .photo-story.reverse .photo { order: 0; }
+      .problem { grid-template-columns: 1fr; }
+      .curriculum { grid-template-columns: 1fr; }
+      .audience-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      html, body { max-width: 100%; overflow-x: hidden; }
+      .wrap { width: min(100% - 28px, 1120px); }
+      .hero-grid { display: block; min-width: 0; }
+      .hero-grid > * { min-width: 0; max-width: 100%; }
+      .topbar .brand { max-width: 180px; line-height: 1.25; }
+      .topbar .top-cta { display: none; }
+      .hero { padding-top: 42px; }
+      h1 { font-size: 36px; word-break: break-all; overflow-wrap: anywhere; }
+      h2, h3 { word-break: keep-all; overflow-wrap: break-word; }
+      .hero-copy { font-size: 17px; }
+      .hero-badges span { font-size: 13px; }
+      .hero-actions .button { width: 100%; }
+      .hero-visual { margin-top: 42px; }
+      .problem { margin-top: -78px; padding: 26px 22px; }
+      main { padding-top: 48px; }
+      .section { padding-bottom: 54px; }
+      .photo-story { gap: 25px; margin-bottom: 40px; }
+      .lesson { padding: 24px 22px; }
+      .audience, .apply { padding: 34px 24px; }
+      .pricing, .notes { grid-template-columns: 1fr; }
+      .price-card { padding: 28px 24px; }
+      .time-row { grid-template-columns: 58px 1fr; gap: 12px; padding: 16px; }
+      .mobile-cta { display: flex; }
+      footer { padding-bottom: 92px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="상단 메뉴">
+    <div class="wrap">
+      <div class="brand">스마트미디어아트센터 · AI 실전 마스터 1기</div>
+      <a class="top-cta" href="#apply">신청 안내 보기</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">AI Practical Master Class</p>
+        <h1>챗GPT 질문법부터<br>이미지·영상·웹페이지·PPT까지</h1>
+        <p class="hero-copy">AI를 단순히 ‘써 본 사람’에서 실제 결과물을 만드는 사람으로. 자격증 과정까지 한 번에 준비하는 3회 실전 수업입니다.</p>
+        <div class="hero-badges" aria-label="과정 핵심 정보">
+          <span>총 3회 ZOOM 라이브</span>
+          <span>매 회차 녹화본 제공</span>
+          <span>자격증 2종 선택</span>
+        </div>
+        <div class="hero-actions">
+          <a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLSfP0TfLrcmUszZKA9H320Nmn7T_Y3c-hhPPqdTtLJ5jRJncFQ/viewform" target="_blank" rel="noopener">AI 실전 마스터 1기 신청</a>
+          <a class="button ghost" href="#schedule">수업 일정 확인</a>
+        </div>
+      </div>
+      <figure class="hero-visual">
+        <img src="images/ai-master-class-1/AI실전마스터1기_썸네일_카톡안전영역_시안_v1.png" alt="AI 실전 마스터 과정 1기, 자격증 2종, 총 3회 줌 라이브, 10월 19일·26일과 11월 2일 밤 9시 안내 썸네일">
+      </figure>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="problem" aria-label="과정 소개">
+      <p>챗GPT에 “우리 가게 소개 글을 써 줘”라고 입력했는데 <strong>어디서 본 듯한 문장만</strong> 나온 적 있으신가요?</p>
+      <p>이미지는 예쁘지만 원하는 느낌과 다르고 영상 제작이 막막했다면, 문제는 AI가 아니라 <strong>AI에게 말 거는 방법</strong>일 수 있습니다.</p>
+    </section>
+  </div>
+
+  <main>
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">배우고, 만들고, 활용합니다</p>
+          <h2>프롬프트 이론으로 끝나지 않는 수업</h2>
+          <p class="lead">질문의 목적과 조건을 분명히 설계하고, 내 사진과 아이디어로 홍보 이미지·영상·소개 페이지·강의 PPT까지 직접 제작합니다.</p>
+        </div>
+
+        <div class="photo-story">
+          <figure class="photo">
+            <img src="images/ai-master-class-1/AI실전마스터1기_관련이미지01_프롬프트설계_실사.png" alt="노트에 정리하며 생성형 AI 프롬프트를 설계하는 중년 수강생의 실제 작업 장면" loading="lazy">
+          </figure>
+          <div class="story">
+            <h3>AI에게 제대로 요청하는 법</h3>
+            <p>첫 번째 수업에서는 프롬프트의 원리와 기본 기법 4가지를 익힙니다. 영상 제작에 활용하는 JSON 프롬프트도 배우고, 내 사진으로 홍보 이미지와 짧은 소개 영상을 만들어 봅니다.</p>
+            <ul class="checklist">
+              <li>시행착오를 줄이는 질문 방법</li>
+              <li>AI가 내놓은 답을 검증하는 습관</li>
+              <li>내 문제에 맞게 결과를 개선하는 방법</li>
+              <li>복잡한 일을 작은 단계로 나누는 방법</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="photo-story reverse">
+          <figure class="photo">
+            <img src="images/ai-master-class-1/AI실전마스터1기_관련이미지02_콘텐츠제작_실사.png" alt="AI를 활용해 이미지와 영상, 소개 페이지 콘텐츠를 제작하는 여성 창작자의 실제 작업 장면" loading="lazy">
+          </figure>
+          <div class="story">
+            <h3>AI로 실제 결과물을 만드는 과정</h3>
+            <p>두 번째 수업에서는 나 또는 내 회사·가게를 소개하는 페이지를 만듭니다. 챗GPT와 제미나이 같은 AI 검색이 내 페이지를 이해하고 찾게 하는 GEO의 기초도 살펴봅니다.</p>
+            <p>AI로 강의 PPT를 만드는 방법도 실습하며, 필요에 따라 인생 자서전·포토앨범·포트폴리오 제작으로 응용할 수 있습니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="curriculum">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">CURRICULUM</p>
+          <h2>3회 수업의 구성</h2>
+        </div>
+        <div class="curriculum">
+          <article class="lesson">
+            <div class="num">1강</div>
+            <h3>프롬프트와 이미지·영상</h3>
+            <ul>
+              <li>프롬프트 핵심 원리와 기본 기법 4가지</li>
+              <li>AI를 똑똑하게 사용하는 습관</li>
+              <li>영상용 JSON 프롬프트</li>
+              <li>홍보 이미지와 짧은 소개 영상 제작</li>
+            </ul>
+          </article>
+          <article class="lesson">
+            <div class="num">2강</div>
+            <h3>소개 페이지와 PPT</h3>
+            <ul>
+              <li>나·회사·가게 소개 페이지 만들기</li>
+              <li>AI 검색을 위한 GEO 기초</li>
+              <li>AI로 강의 PPT 만들기</li>
+              <li>자서전·포토앨범·포트폴리오 응용</li>
+            </ul>
+          </article>
+          <article class="lesson">
+            <div class="num">3강</div>
+            <h3>AI활용지도사 2급</h3>
+            <ul>
+              <li>AI활용지도사 2급 수업</li>
+              <li>AI 활용 역량 정리</li>
+              <li>실전 활용 사례 확장</li>
+              <li>자격증 과정 준비</li>
+            </ul>
+          </article>
+        </div>
+        <div class="bonus"><strong>보너스</strong> · AI 활용 자동 메일·일정 관리 사례 · AI 실전 마스터 과정 1기 동기 단톡방</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap audience">
+        <p class="kicker">RECOMMENDED FOR</p>
+        <h2>이런 분께 권합니다</h2>
+        <div class="audience-grid">
+          <div class="audience-item">챗GPT에 질문해도 원하는 답을 얻기 어려운 분</div>
+          <div class="audience-item">AI가 만든 글을 내 상황에 맞게 다듬고 싶은 분</div>
+          <div class="audience-item">내 사진으로 홍보 이미지와 영상을 만들고 싶은 분</div>
+          <div class="audience-item">나·회사·가게·강의 소개 페이지가 필요한 분</div>
+          <div class="audience-item">AI 검색에서 발견되는 GEO가 궁금한 분</div>
+          <div class="audience-item">AI로 강의 자료·자서전·포트폴리오를 만들고 싶은 분</div>
+          <div class="audience-item">AI 활용 능력과 관련 자격증을 함께 준비하고 싶은 분</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="schedule">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">LIVE SCHEDULE</p>
+          <h2>교육 일정과 진행 방법</h2>
+        </div>
+        <div class="schedule-layout">
+          <figure class="photo">
+            <img src="images/ai-master-class-1/AI실전마스터1기_관련이미지03_온라인수업_실사.png" alt="강사와 세 명의 수강생이 참여하는 온라인 라이브 수업과 자격증 과정 이미지" loading="lazy">
+          </figure>
+          <div class="timeline">
+            <div class="time-row"><strong>1강</strong><p>2026년 10월 19일(월)<br><b>밤 9시~11시</b> · 프롬프트와 이미지·영상 실습</p></div>
+            <div class="time-row"><strong>2강</strong><p>2026년 10월 26일(월)<br><b>밤 9시~11시</b> · 소개 페이지·GEO·PPT 실습</p></div>
+            <div class="time-row"><strong>3강</strong><p>2026년 11월 2일(월)<br><b>밤 9시~11시</b> · AI활용지도사 2급 수업</p></div>
+            <div class="time-row"><strong>진행</strong><p>ZOOM 라이브 강의<br><b>매 회차 녹화본 제공</b></p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">SUPER EARLY BIRD</p>
+          <h2>1기 슈퍼얼리버드 수강료</h2>
+        </div>
+        <div class="pricing">
+          <article class="price-card">
+            <h3>강의 + 자격증 1개</h3>
+            <p>AI프롬프트전문가 2급</p>
+            <div class="old">정상가 20만원</div>
+            <div class="price">5만원</div>
+            <p>강의 전 과정과 AI프롬프트전문가 2급 자격증 과정</p>
+          </article>
+          <article class="price-card featured">
+            <h3>강의 + 자격증 2개</h3>
+            <p>AI프롬프트전문가 2급 + AI활용지도사 2급</p>
+            <div class="old">정상가 30만원</div>
+            <div class="price">10만원</div>
+            <p>강의 전 과정과 두 자격증 과정을 함께 준비</p>
+          </article>
+        </div>
+        <div class="deadline">신청 마감: 2026년 10월 18일(일) · 입금 계좌: 신한은행 110-050-892636 박성욱</div>
+      </div>
+    </section>
+
+    <section class="section" id="apply">
+      <div class="wrap apply">
+        <p class="kicker">APPLICATION</p>
+        <h2>AI로 실제 결과물을 만드는 사람으로</h2>
+        <p>신청서에서 참여 과정을 선택하고 이름, 연락처, 이메일, 입금자명을 정확하게 입력해 주세요.</p>
+        <a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLSfP0TfLrcmUszZKA9H320Nmn7T_Y3c-hhPPqdTtLJ5jRJncFQ/viewform" target="_blank" rel="noopener">신청서 열기</a>
+        <p class="small-info">라이브 참여가 어려운 분도 녹화본으로 따라올 수 있습니다.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap notes">
+        <article class="note">
+          <h3>환불 안내</h3>
+          <ul>
+            <li>단톡방 입장 전: 100% 환불</li>
+            <li>단톡방 입장 후: 수업 자료 제공으로 환불 불가</li>
+          </ul>
+        </article>
+        <article class="note">
+          <h3>문의</h3>
+          <p>엘란비탈 박성욱 작가<br><a href="tel:01047170624">010-4717-0624</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="wrap">
+        <h2>세 번의 수업이 끝나면</h2>
+        <p>막연히 질문하는 단계를 넘어 원하는 결과를 얻기 위한 프롬프트를 구성하고, 이미지·영상·소개 페이지·PPT를 만드는 전체 흐름을 경험하게 됩니다.</p>
+        <div class="contact">스마트미디어아트센터 · 엘란비탈 박성욱</div>
+        <div class="tags">#AI실전마스터 #AI프롬프트전문가 #AI활용지도사 #AI자격증 #챗GPT강의 #생성형AI교육 #프롬프트작성법 #AI이미지 #AI영상 #웹페이지제작 #GEO #AI로PPT만들기 #업무자동화</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">신청 전에 일정과 환불 기준을 꼭 확인해 주세요.</div>
+  </footer>
+
+  <a class="mobile-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSfP0TfLrcmUszZKA9H320Nmn7T_Y3c-hhPPqdTtLJ5jRJncFQ/viewform" target="_blank" rel="noopener">AI 실전 마스터 1기 신청하기</a>
+</body>
+</html>
