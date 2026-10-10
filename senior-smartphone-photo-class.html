@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <!--
+    ==================== 고치는 곳 ====================
+    1. 기초반 일정: 본문에서 id="basic-schedule" 검색
+    2. 기초반 가격: 본문에서 id="basic-price" 검색
+    3. 심화반 일정: 본문에서 id="advanced-schedule" 검색
+    4. 심화반 가격: 본문에서 id="advanced-price" 검색
+    5. 개강일·심화반 대상·기대 변화: [확인 필요] 검색 후 확정된 내용만 입력
+    6. 가격을 바꿀 경우 문의 섹션 FAQ의 '1회 5만원' 안내도 확인
+    7. 카카오톡 링크를 바꿀 경우 https://pf.kakao.com/_aEIMC/chat 검색 후 모두 교체
+    8. 사진: index.html과 같은 위치의 images/ 폴더에 아래 파일명을 넣기
+       hero.jpg (첫 화면 수업 사진), owner.jpg (대표 사진),
+       class-02.jpg ~ class-05.jpg (강의 섹션 수업 사진 4장)
+    9. 카카오톡 공유 사진: images/og-image.jpg (1200 × 630)
+       웹사이트 공개 시 아래 og:image의 example.com을 실제 https 도메인으로 교체
+    ==================================================
+
+    헤드라인 1안(결과 약속형 / 현재 적용):
+    3회 수업 뒤, 내가 찍은 사진 10장을 가족 단톡방에
+
+    헤드라인 2안(고민 지적형 / 미적용):
+    “사진은 찍는데 어디 갔는지 몰라요”
+
+    헤드라인 3안(숫자형 / 미적용):
+    8명 소수 정원, 1:1 지도로 배우는 사진 교실
+  -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+  <meta name="theme-color" content="#fffaf4">
+  <title>인천 남동구 시니어 스마트폰 사진 교실 | 강의 소개</title>
+  <meta name="description" content="인천 남동구 시니어 스마트폰 사진 교실. 8명 소수 정원, 1:1 지도, 기초반 3회 15만원, 심화반 4회 20만원. 카카오톡으로 수강 신청하세요.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="인천 남동구 시니어 스마트폰 사진 교실 | 강의 소개">
+  <meta property="og:description" content="3회 수업 뒤, 내가 찍은 사진 10장을 가족 단톡방에. 8명 소수 정원, 1:1 지도.">
+  <!-- 공유할 때는 아래 URL을 실제 사이트의 절대 URL로 수정하세요. 이미지는 1200x630입니다. -->
+  <meta property="og:image" content="https://example.com/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <style>
+    :root {
+      color-scheme: light;
+      --cream: #fffaf4;
+      --paper: #ffffff;
+      --rose: #fff0e4;
+      --rose-light: #fff6ed;
+      --ink: #302c27;
+      --sub: #645a52;
+      --accent: #a94832;
+      --accent-deep: #803420;
+      --border: #eaded2;
+      --shade: 0 14px 38px rgba(91, 52, 31, .065);
+      --radius: 22px;
+      --content: 1140px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body, h1, h2, h3, h4, p, ul, ol, li, figure, blockquote, dl, dt, dd { margin: 0; }
+    ul, ol { padding: 0; list-style: none; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a:focus-visible, summary:focus-visible { outline: 3px solid #366ab0; outline-offset: 4px; }
+    h1, h2, h3 { line-height: 1.28; text-wrap: balance; word-break: keep-all; overflow-wrap: break-word; }
+    h1 { font-size: clamp(34px, 4.6vw, 62px); letter-spacing: -.055em; font-weight: 850; }
+    h2 { font-size: clamp(29px, 3vw, 42px); letter-spacing: -.045em; font-weight: 800; }
+    h3 { font-size: 22px; letter-spacing: -.035em; }
+    p { overflow-wrap: break-word; }
+    .container { width: min(calc(100% - 40px), var(--content)); margin-inline: auto; min-width: 0; }
+    .muted { color: var(--sub); }
+    .eyebrow { color: var(--accent); font-size: 15px; font-weight: 800; letter-spacing: .025em; line-height: 1.5; }
+    .section { padding-block: 92px; scroll-margin-top: 88px; }
+    .section-heading { margin-bottom: 32px; }
+    .section-heading .eyebrow { margin-bottom: 12px; }
+    .section-heading > p:last-child { margin-top: 14px; color: var(--sub); }
+    .cta {
+      display: inline-flex; justify-content: center; align-items: center;
+      gap: 10px; background: var(--accent); color: white;
+      font-size: 17px; font-weight: 800; line-height: 1.35;
+      text-align: center; padding: 17px 27px; border-radius: 14px;
+      box-shadow: 0 8px 18px rgba(169, 72, 50, .18);
+      transition: background .18s ease, transform .18s ease;
+      white-space: nowrap;
+    }
+    .cta:hover { background: var(--accent-deep); transform: translateY(-1px); }
+    .cta svg { flex: none; }
+
+    /* 위에 고정되는 메뉴. 모바일에서도 네 메뉴를 한 줄로 표시합니다. */
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255, 250, 244, .96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .header-row {
+      min-height: 70px; display: flex; justify-content: space-between;
+      align-items: center; gap: 12px;
+    }
+    .site-logo {
+      display: inline-flex; align-items: center; gap: 7px; min-width: 0;
+      flex-shrink: 1; font-weight: 850; font-size: 18px;
+      letter-spacing: -.04em; white-space: nowrap;
+    }
+    .logo-mark {
+      display: grid; place-items: center; flex: none; width: 31px; height: 31px;
+      border-radius: 10px; background: var(--accent); color: #fff;
+      font-size: 13px; font-weight: 900;
+    }
+    .primary-nav { display: flex; align-items: center; gap: clamp(8px, 1.8vw, 25px); flex: none; }
+    .primary-nav a { padding: 12px 2px; color: var(--sub); white-space: nowrap; font-size: 15px; font-weight: 700; }
+    .primary-nav a:hover, .primary-nav a:focus-visible { color: var(--accent); }
+
+    /* 첫 화면 */
+    .hero { padding-block: 74px 88px; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); align-items: center; gap: clamp(28px, 5vw, 72px); }
+    .hero-copy, .hero-visual { min-width: 0; }
+    .hero-copy .eyebrow { margin-bottom: 21px; }
+    .hero-copy h1 { max-width: 690px; }
+    .hero-copy h1 .highlight { color: var(--accent); }
+    .hero-description { margin-top: 25px; max-width: 525px; color: var(--sub); font-size: 18px; line-height: 1.85; word-break: keep-all; }
+    .hero-actions { margin-top: 32px; }
+    .trust-line { margin-top: 27px; display: flex; flex-wrap: wrap; gap: 9px; align-items: center; color: var(--sub); font-size: 15px; }
+    .trust-line strong { color: var(--ink); font-weight: 800; }
+    .trust-divider { color: #b8a699; }
+    .hero-visual { position: relative; }
+    .hero-visual::before {
+      content: ""; position: absolute; width: 75%; height: 70%; border-radius: 50%;
+      background: #f9e5d6; right: -3%; top: -6%; z-index: 0;
+    }
+
+    /* 사진 파일을 넣기 전에는 안내 상자가 보이고, 실제 사진이 존재하면 자동으로 표시됩니다. */
+    .photo-slot {
+      position: relative; min-width: 0; overflow: hidden;
+      border: 1px solid #eadbd0; background: #f8e9dc;
+      border-radius: var(--radius); isolation: isolate;
+    }
+    .photo-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; visibility: hidden; }
+    .photo-slot.has-image img { visibility: visible; }
+    .photo-slot.has-image .photo-placeholder { display: none; }
+    .photo-placeholder {
+      position: absolute; inset: 0; padding: 18px; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; text-align: center; color: #8a604c;
+      background: linear-gradient(142deg, #fcecdf, #f7dbca);
+    }
+    .photo-placeholder svg { opacity: .65; }
+    .photo-placeholder span { font-weight: 800; line-height: 1.45; }
+    .photo-placeholder small { font-size: 13px; color: #8d6b5c; overflow-wrap: anywhere; }
+    .hero-photo { width: 100%; aspect-ratio: 5 / 5.3; box-shadow: var(--shade); z-index: 1; }
+    .hero-photo .photo-placeholder span { font-size: 21px; }
+    .photo-note { margin-top: 12px; color: var(--sub); font-size: 14px; text-align: right; }
+
+    /* 소개 */
+    .intro { background: var(--paper); }
+    .quote-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
+    .problem-quote { padding: 25px; background: var(--rose-light); border: 1px solid #f0e1d3; border-radius: 18px; min-width: 0; }
+    .problem-quote p { font-size: 19px; font-weight: 800; line-height: 1.65; word-break: keep-all; }
+    .problem-quote p::before { content: "“"; color: var(--accent); }
+    .problem-quote p::after { content: "”"; color: var(--accent); }
+    .subheading { margin-block: 48px 21px; font-size: 26px; font-weight: 800; letter-spacing: -.04em; }
+    .feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .feature-card { padding: 25px; border: 1px solid var(--border); border-radius: 18px; background: #fff; min-width: 0; }
+    .feature-number { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 13px; background: #fff0e3; color: var(--accent); font-size: 17px; font-weight: 900; margin-bottom: 18px; }
+    .feature-card h3 { margin-bottom: 8px; font-size: 20px; }
+    .feature-card p { color: var(--sub); }
+    .owner-panel { display: grid; grid-template-columns: minmax(0, .73fr) minmax(0, 1.27fr); gap: 28px; align-items: center; margin-top: 49px; background: var(--rose-light); padding: 25px; border-radius: 24px; border: 1px solid var(--border); }
+    .owner-photo { aspect-ratio: 4 / 3; }
+    .owner-info { min-width: 0; }
+    .owner-info .eyebrow { margin-bottom: 9px; }
+    .owner-info h3 { margin-bottom: 17px; font-size: 27px; }
+    .owner-info p + p { margin-top: 7px; }
+    .intro-cta { margin-top: 32px; text-align: center; }
+
+    /* 강의 */
+    .course-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .course-card { display: flex; flex-direction: column; min-width: 0; padding: 30px; border-radius: var(--radius); background: #fff; border: 1px solid var(--border); box-shadow: var(--shade); }
+    .course-card:first-child { border-color: #e8bba9; }
+    .course-kicker { display: inline-block; margin-bottom: 9px; color: var(--accent); font-size: 15px; font-weight: 850; }
+    .course-card h3 { margin-bottom: 20px; font-size: 28px; }
+    .course-details { display: grid; gap: 14px; }
+    .course-details > div { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 12px; align-items: baseline; min-width: 0; }
+    .course-details dt { color: var(--sub); font-size: 16px; font-weight: 700; }
+    .course-details dd { font-size: 17px; min-width: 0; overflow-wrap: anywhere; word-break: keep-all; }
+    .course-details .course-price { font-weight: 900; font-size: 26px; letter-spacing: -.04em; color: var(--accent-deep); line-height: 1.45; }
+    .course-result { margin-top: auto; padding-top: 22px; }
+    .course-result p { border-top: 1px solid var(--border); padding-top: 19px; }
+    .course-result strong { color: var(--accent-deep); }
+    .class-gallery-label { margin: 52px 0 19px; font-size: 25px; font-weight: 800; letter-spacing: -.04em; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; }
+    .gallery-photo { aspect-ratio: 4 / 3; border-radius: 16px; }
+    .gallery-photo .photo-placeholder { padding: 9px; gap: 5px; }
+    .gallery-photo .photo-placeholder svg { width: 27px; height: 27px; }
+    .gallery-photo .photo-placeholder span { font-size: 14px; }
+    .gallery-photo .photo-placeholder small { font-size: 11px; }
+
+    /* 후기 */
+    .reviews { background: #fff; }
+    .review-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .review-card { background: var(--rose-light); border: 1px solid var(--border); border-radius: var(--radius); padding: 31px; min-width: 0; }
+    .review-card blockquote { font-size: 21px; font-weight: 800; letter-spacing: -.025em; line-height: 1.65; word-break: keep-all; }
+    .review-card cite { display: block; margin-top: 23px; color: var(--sub); font-size: 16px; font-style: normal; }
+
+    /* 문의 / FAQ */
+    .contact-top { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 24px; align-items: stretch; }
+    .contact-message { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 22px; min-width: 0; border-radius: var(--radius); padding: 33px; background: #f9e4d7; }
+    .contact-message p { font-size: 19px; color: var(--sub); }
+    .contact-details { padding: 30px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); min-width: 0; }
+    .contact-details dl { display: grid; gap: 19px; }
+    .contact-details dt { color: var(--sub); font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .contact-details dd { line-height: 1.65; overflow-wrap: anywhere; }
+    .map-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; padding: 10px 14px; border: 1px solid #c9b6a6; border-radius: 11px; color: var(--accent-deep); font-size: 15px; font-weight: 800; background: #fffaf6; }
+    .map-link:hover { background: #fff0e4; }
+    .faq-title { margin-top: 62px; margin-bottom: 20px; font-size: 27px; }
+    .faq-list { display: grid; gap: 13px; }
+    .faq-item { background: #fff; border: 1px solid var(--border); border-radius: 16px; min-width: 0; }
+    .faq-item summary { position: relative; cursor: pointer; font-weight: 800; font-size: 18px; padding: 22px 54px 22px 23px; list-style: none; word-break: keep-all; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { content: "+"; position: absolute; right: 23px; top: 50%; transform: translateY(-50%); font-size: 26px; font-weight: 400; color: var(--accent); }
+    .faq-item[open] summary::after { content: "−"; }
+    .faq-item > p { padding: 0 23px 23px; color: var(--sub); }
+    .site-footer { padding-block: 30px; border-top: 1px solid var(--border); background: #fff; }
+    .site-footer p { font-size: 14px; color: var(--sub); }
+
+    /* 첫 화면의 카카오톡 버튼이 화면 위로 사라진 뒤에만 표시하는 모바일 버튼 */
+    .floating-cta { display: none; }
+
+    @media (max-width: 950px) {
+      .hero { padding-block: 62px 74px; }
+      .hero-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 27px; }
+      .hero-description { font-size: 17px; }
+      .quote-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .quote-grid > :last-child { grid-column: 1 / -1; }
+      .feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .feature-grid > :last-child { grid-column: 1 / -1; }
+      .gallery-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 700px) {
+      .container { width: min(calc(100% - 32px), var(--content)); }
+      .section { padding-block: 65px; }
+      .header-row { min-height: 63px; gap: 9px; }
+      .site-logo { gap: 5px; font-size: 15px; }
+      .logo-mark { width: 25px; height: 25px; border-radius: 8px; font-size: 11px; }
+      .primary-nav { gap: 10px; }
+      .primary-nav a { padding: 12px 0; font-size: 14px; }
+      .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 31px; }
+      .hero { padding-top: 42px; padding-bottom: 62px; }
+      .hero-copy .eyebrow { margin-bottom: 17px; }
+      .hero-copy h1 { font-size: clamp(33px, 8vw, 42px); }
+      .hero-description { margin-top: 19px; }
+      .hero-actions { margin-top: 22px; }
+      .trust-line { margin-top: 22px; }
+      .hero-photo { aspect-ratio: 6 / 4.4; }
+      .quote-grid, .feature-grid, .course-grid, .review-grid, .contact-top { grid-template-columns: minmax(0, 1fr); }
+      .quote-grid > :last-child, .feature-grid > :last-child { grid-column: auto; }
+      .owner-panel { grid-template-columns: minmax(0, 1fr); }
+      .owner-photo { aspect-ratio: 5 / 3; }
+      .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .course-card, .review-card { padding: 26px; }
+      .contact-message, .contact-details { padding: 26px; }
+      .floating-cta {
+        display: block; position: fixed; z-index: 80; left: 0; right: 0; bottom: 0;
+        padding: 12px 16px max(12px, env(safe-area-inset-bottom));
+        background: rgba(255, 250, 244, .98); border-top: 1px solid var(--border);
+        box-shadow: 0 -8px 25px rgba(75, 44, 31, .09);
+        opacity: 0; visibility: hidden; pointer-events: none;
+        transform: translateY(12px); transition: opacity .18s ease, transform .18s ease, visibility .18s;
+      }
+      .floating-cta .cta { display: flex; width: 100%; }
+      body.show-floating-cta .floating-cta { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
+      .site-footer { padding-bottom: 100px; }
+    }
+    @media (max-width: 390px) {
+      .site-logo { font-size: 14px; }
+      .primary-nav { gap: 8px; }
+      .primary-nav a { font-size: 13px; }
+      .hero-copy h1 { font-size: 33px; }
+      .cta { width: 100%; padding-inline: 10px; }
+      .photo-note { text-align: left; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .cta, .floating-cta { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="site-logo" href="#top" aria-label="인천 남동구 시니어 스마트폰 사진 교실 첫 화면으로 이동">
+        <span class="logo-mark" aria-hidden="true">사진</span>
+        <span>남동구 사진교실</span>
+      </a>
+      <nav class="primary-nav" aria-label="주 메뉴">
+        <a href="#intro">소개</a>
+        <a href="#courses">강의</a>
+        <a href="#reviews">후기</a>
+        <a href="#contact">문의</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">인천 남동구 시니어 스마트폰 사진 교실</p>
+          <h1 id="hero-title">3회 수업 뒤,<br>내가 찍은 사진 <span class="highlight">10장</span>을<br>가족 단톡방에</h1>
+          <p class="hero-description">“사진은 찍는데 어디 갔는지 몰라요.” 손주 사진을 찍고 저장하는 일이 어려운 분들을 위한 스마트폰 사진 교실입니다.</p>
+          <div class="hero-actions">
+            <a id="hero-kakao-button" class="cta" href="https://pf.kakao.com/_aEIMC/chat" target="_blank" rel="noopener noreferrer">
+              카카오톡으로 신청하기
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+          <p class="trust-line"><strong>누적 수강생 1,200명</strong><span class="trust-divider" aria-hidden="true">·</span><strong>출강 20곳</strong></p>
+        </div>
+        <div class="hero-visual">
+          <figure>
+            <div class="photo-slot hero-photo">
+              <img src="images/hero.jpg" alt="인천 남동구 시니어 스마트폰 사진 교실 수업 모습" fetchpriority="high" loading="eager">
+              <div class="photo-placeholder" aria-hidden="true">
+                <svg width="50" height="50" viewBox="0 0 48 48" fill="none"><rect x="5" y="11" width="38" height="28" rx="6" stroke="currentColor" stroke-width="2.5"/><circle cx="24" cy="25" r="8" stroke="currentColor" stroke-width="2.5"/><path d="M14 11l3-4h14l3 4" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg>
+                <span>대표 수업 사진을 넣어 주세요</span>
+                <small>images/hero.jpg</small>
+              </div>
+            </div>
+            <figcaption class="photo-note">시니어 스마트폰 사진 교실</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section intro" id="intro" aria-labelledby="intro-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">소개</p>
+          <h2 id="intro-title">이런 분을 위한 곳</h2>
+        </div>
+        <div class="quote-grid" aria-label="수강생이 겪는 고민">
+          <blockquote class="problem-quote"><p>사진은 찍는데 어디 갔는지 몰라요</p></blockquote>
+          <blockquote class="problem-quote"><p>자식한테 또 물어보기 눈치 보여요</p></blockquote>
+          <blockquote class="problem-quote"><p>유튜브 따라 해도 화면이 달라요</p></blockquote>
+        </div>
+
+        <h3 class="subheading">이 교실이 다른 점 3가지</h3>
+        <div class="feature-grid">
+          <article class="feature-card"><span class="feature-number">01</span><h3>8명 소수 정원</h3><p>한 반에 8명만 모여 1:1 지도를 받습니다.</p></article>
+          <article class="feature-card"><span class="feature-number">02</span><h3>카톡 질문 무제한</h3><p>수업 후에도 카카오톡으로 질문할 수 있습니다.</p></article>
+          <article class="feature-card"><span class="feature-number">03</span><h3>현직 사진작가</h3><p>20년 경력의 현직 사진작가가 지도합니다.</p></article>
+        </div>
+
+        <div class="owner-panel">
+          <div class="photo-slot owner-photo">
+            <img src="images/owner.jpg" alt="대표 박OO 사진" loading="lazy">
+            <div class="photo-placeholder" aria-hidden="true">
+              <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="17" r="9" stroke="currentColor" stroke-width="2.5"/><path d="M8 41c0-9 7-15 16-15s16 6 16 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+              <span>대표 사진을 넣어 주세요</span>
+              <small>images/owner.jpg</small>
+            </div>
+          </div>
+          <div class="owner-info">
+            <p class="eyebrow">대표 소개</p>
+            <h3>대표 박OO</h3>
+            <p>어머니께 스마트폰 사진을 알려드리다가 시작했습니다.</p>
+            <p>20년 경력의 현직 사진작가입니다.</p>
+            <p>8명 소수 정원으로 1:1 지도를 합니다.</p>
+          </div>
+        </div>
+        <div class="intro-cta">
+          <a class="cta" href="https://pf.kakao.com/_aEIMC/chat" target="_blank" rel="noopener noreferrer">
+            카카오톡으로 신청하기
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section courses" id="courses" aria-labelledby="courses-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">강의</p>
+          <h2 id="courses-title">나에게 맞는 수업 고르기</h2>
+        </div>
+        <div class="course-grid">
+          <article class="course-card">
+            <div>
+              <span class="course-kicker">기초반</span>
+              <h3>스마트폰 사진 기초반</h3>
+              <dl class="course-details">
+                <div><dt>대상</dt><dd>사진이 흔들리거나 저장 위치를 찾기 어려운 분</dd></div>
+                <!-- [고치는 곳] 기초반 일정: 아래 basic-schedule 문구를 수정하세요. -->
+                <div><dt>일정</dt><dd id="basic-schedule">총 3회 · 주 1회 · 회당 2시간<br>개강일 [확인 필요]</dd></div>
+                <!-- [고치는 곳] 기초반 가격: 아래 basic-price 문구를 수정하세요. -->
+                <div><dt>가격</dt><dd id="basic-price" class="course-price">15만원</dd></div>
+                <div><dt>제공</dt><dd>복습 영상 제공</dd></div>
+              </dl>
+            </div>
+            <div class="course-result"><p><strong>이렇게 달라져요</strong><br>직접 찍은 사진 10장을 가족 단톡방에 올려 손주에게 칭찬을 듣습니다.</p></div>
+          </article>
+          <article class="course-card">
+            <div>
+              <span class="course-kicker">심화반</span>
+              <h3>스마트폰 사진 심화반</h3>
+              <dl class="course-details">
+                <div><dt>대상</dt><dd>[확인 필요]</dd></div>
+                <!-- [고치는 곳] 심화반 일정: 아래 advanced-schedule 문구를 수정하세요. -->
+                <div><dt>일정</dt><dd id="advanced-schedule">총 4회 · 요일·시간 [확인 필요]</dd></div>
+                <!-- [고치는 곳] 심화반 가격: 아래 advanced-price 문구를 수정하세요. -->
+                <div><dt>가격</dt><dd id="advanced-price" class="course-price">20만원</dd></div>
+              </dl>
+            </div>
+            <div class="course-result"><p><strong>이렇게 달라져요</strong><br>[확인 필요]</p></div>
+          </article>
+        </div>
+
+        <h3 class="class-gallery-label">수업 모습</h3>
+        <div class="gallery-grid" aria-label="수업 사진 모음">
+          <figure class="photo-slot gallery-photo"><img src="images/class-02.jpg" alt="수업 사진 2" loading="lazy"><div class="photo-placeholder" aria-hidden="true"><svg viewBox="0 0 48 48" width="34" height="34" fill="none"><rect x="7" y="9" width="34" height="30" rx="5" stroke="currentColor" stroke-width="2.5"/><path d="m12 33 9-10 7 7 5-5 5 8" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg><span>수업 사진 2</span><small>class-02.jpg</small></div></figure>
+          <figure class="photo-slot gallery-photo"><img src="images/class-03.jpg" alt="수업 사진 3" loading="lazy"><div class="photo-placeholder" aria-hidden="true"><svg viewBox="0 0 48 48" width="34" height="34" fill="none"><rect x="7" y="9" width="34" height="30" rx="5" stroke="currentColor" stroke-width="2.5"/><path d="m12 33 9-10 7 7 5-5 5 8" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg><span>수업 사진 3</span><small>class-03.jpg</small></div></figure>
+          <figure class="photo-slot gallery-photo"><img src="images/class-04.jpg" alt="수업 사진 4" loading="lazy"><div class="photo-placeholder" aria-hidden="true"><svg viewBox="0 0 48 48" width="34" height="34" fill="none"><rect x="7" y="9" width="34" height="30" rx="5" stroke="currentColor" stroke-width="2.5"/><path d="m12 33 9-10 7 7 5-5 5 8" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg><span>수업 사진 4</span><small>class-04.jpg</small></div></figure>
+          <figure class="photo-slot gallery-photo"><img src="images/class-05.jpg" alt="수업 사진 5" loading="lazy"><div class="photo-placeholder" aria-hidden="true"><svg viewBox="0 0 48 48" width="34" height="34" fill="none"><rect x="7" y="9" width="34" height="30" rx="5" stroke="currentColor" stroke-width="2.5"/><path d="m12 33 9-10 7 7 5-5 5 8" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg><span>수업 사진 5</span><small>class-05.jpg</small></div></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reviews" id="reviews" aria-labelledby="reviews-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">후기</p>
+          <h2 id="reviews-title">수강생이 남긴 한마디</h2>
+        </div>
+        <div class="review-grid">
+          <article class="review-card"><blockquote>“처음으로 가족에게 사진을 자랑했어요”</blockquote><cite>김OO · 67세</cite></article>
+          <article class="review-card"><blockquote>“단톡방에 올렸더니 손주가 멋지대요”</blockquote><cite>이OO · 64세</cite></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">문의</p>
+          <h2 id="contact-title">수강 신청과 문의</h2>
+        </div>
+        <div class="contact-top">
+          <div class="contact-message">
+            <p>수강 신청은 카카오톡으로 문의해 주세요.</p>
+            <a class="cta" href="https://pf.kakao.com/_aEIMC/chat" target="_blank" rel="noopener noreferrer">
+              카카오톡으로 신청하기
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+          <div class="contact-details">
+            <dl>
+              <div><dt>운영시간</dt><dd>평일 10시~18시</dd></div>
+              <div><dt>전화번호</dt><dd>010-0000-0000</dd></div>
+              <div>
+                <dt>주소</dt>
+                <dd>인천광역시 남동구 구월동 OO로 12, 3층</dd>
+                <a class="map-link" href="https://map.naver.com/p/search/%EC%9D%B8%EC%B2%9C%EA%B4%91%EC%97%AD%EC%8B%9C%20%EB%82%A8%EB%8F%99%EA%B5%AC%20%EA%B5%AC%EC%9B%94%EB%8F%99%20OO%EB%A1%9C%2012" target="_blank" rel="noopener noreferrer">네이버 지도에서 보기 ↗</a>
+              </div>
+            </dl>
+          </div>
+        </div>
+        <h3 class="faq-title">자주 묻는 질문</h3>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>나이가 많아서 못 따라가면 어떻게 하나요?</summary>
+            <p>보조강사가 옆에서 도와드립니다. 못 따라오시면 다음 기수에 무료로 청강하실 수 있습니다.</p>
+          </details>
+          <details class="faq-item">
+            <summary>수강료가 비싸지 않나요?</summary>
+            <p>1회 5만원입니다. 복습 영상은 평생 제공합니다.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container"><p>인천 남동구 시니어 스마트폰 사진 교실 · 인천광역시 남동구 구월동 OO로 12, 3층</p></div>
+  </footer>
+
+  <div class="floating-cta" aria-label="모바일 수강 신청 바로가기">
+    <a class="cta" href="https://pf.kakao.com/_aEIMC/chat" target="_blank" rel="noopener noreferrer">카카오톡으로 신청하기</a>
+  </div>
+
+  <script>
+    // images/ 폴더에 실제 사진이 들어오면 안내 상자를 사진으로 자동 교체합니다.
+    document.querySelectorAll('.photo-slot img').forEach(function (img) {
+      var slot = img.closest('.photo-slot');
+      function updatePhoto() {
+        if (img.complete && img.naturalWidth > 0) slot.classList.add('has-image');
+      }
+      img.addEventListener('load', updatePhoto);
+      updatePhoto();
+    });
+
+    // 스마트폰에서 첫 화면 신청 버튼이 위로 지나간 뒤에만 하단 버튼을 노출합니다.
+    var heroButton = document.getElementById('hero-kakao-button');
+    var mobileQuery = window.matchMedia('(max-width: 700px)');
+    function updateFloatingButton() {
+      var rect = heroButton.getBoundingClientRect();
+      var shouldShow = mobileQuery.matches && rect.bottom < 0;
+      document.body.classList.toggle('show-floating-cta', shouldShow);
+    }
+    window.addEventListener('scroll', updateFloatingButton, { passive: true });
+    window.addEventListener('resize', updateFloatingButton);
+    if (mobileQuery.addEventListener) mobileQuery.addEventListener('change', updateFloatingButton);
+    updateFloatingButton();
+  </script>
+</body>
+</html>
