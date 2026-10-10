@@ -541,7 +541,7 @@
         <div class="rp-head">
           <p class="section-label" style="margin-bottom:8px;">완성</p>
           <div class="step-title" id="rpTitle">🎉 설계도가 만들어졌어요</div>
-          <p class="step-helper">[PDF로 저장]을 누르면 보관할 수 있고, 맨 아래 <b>코덱스 제작 요청문</b>을 복사해 코덱스에 붙여 넣으면 제작이 시작됩니다.</p>
+          <p class="step-helper">[PDF로 저장]을 누르면 보관할 수 있고, 맨 아래 <b>코덱스 제작 요청문</b>을 복사해 코덱스에 붙여 넣으면 제작이 시작됩니다.<span id="mailNote" style="display:none"> 같은 내용을 입력하신 이메일로도 보내 드립니다(몇 분 걸릴 수 있어요. 안 보이면 스팸함도 확인해 주세요).</span></p>
           <div class="rp-actions">
             <button class="btn btn-primary" onclick="window.print()">🖨 PDF로 저장 / 인쇄</button>
             <button class="btn btn-outline" onclick="copyReport()">📋 설계도 전체 복사</button>
@@ -656,7 +656,7 @@
     objection:'Q. 나이 많아서 못 따라가면? → 보조강사가 옆에서 도와드리고, 못 따라오면 다음 기수 무료 청강\nQ. 비싸지 않나요? → 1회 5만원, 복습 영상 평생 제공',
     urgency:'선착순 8명\n신청자 전원 사진 정리 가이드 PDF 증정',
     goal:'카카오톡으로 수강 신청',
-    info:'인천광역시 남동구 구월동 OO로 12, 3층 / 010-0000-0000 / 평일 10~18시 / 카톡채널 pf.kakao.com/_예시',
+    info:'인천광역시 남동구 구월동 OO로 12, 3층 / 010-0000-0000 / 평일 10~18시 / 카톡채널 https://pf.kakao.com/_aEIMC/chat',
     look:'수업 사진 10장 있음 / 따뜻한 느낌 / 일정은 내가 고칠 예정'
   };
 
@@ -806,6 +806,12 @@
       /* 저장이 실패해도 수강생은 설계도를 받을 수 있어야 하므로 계속 진행 */
     }
     renderReport(name);
+    /* 설계도 전문을 입력한 이메일로도 보낸다(시트 저장이 끝난 뒤라야 스크립트가 접수 이력을 확인할 수 있다). 실패해도 화면 설계도는 그대로. */
+    document.getElementById('mailNote').style.display = demoMode ? 'none' : 'inline';
+    if (!demoMode) {
+      fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ type: 'homepage_report', name, email, report: lastReportText }) }).catch(() => {});
+    }
     show('reportScreen');
     document.getElementById('wizard').scrollIntoView({ behavior: 'smooth' });
     btn.disabled = false; btn.textContent = '✦ 설계도 만들기';
