@@ -1161,7 +1161,7 @@
             background:
                 radial-gradient(ellipse 70% 55% at 50% 0%, #fff3e8 0%, transparent 70%),
                 linear-gradient(180deg, #fffdfa 0%, #f8f5ef 100%);
-            min-height: auto; padding: 170px 40px 0;
+            min-height: auto; padding: 170px 40px 88px;
             flex-direction: column; align-items: center;
         }
         .hero-glow::before { background: radial-gradient(circle, rgba(234,106,31,.07) 0%, transparent 65%); }
@@ -1191,24 +1191,6 @@
         .hs-num { color: var(--navy); font-weight: 700; letter-spacing: -.02em; }
         .hs-lbl { color: var(--text-sub); }
 
-        /* 히어로 하단 작품 사진 띠 (천천히 흐름) */
-        .hero-gallery {
-            position: relative; z-index: 1;
-            align-self: stretch; margin: 64px -40px 0; overflow: hidden;
-            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-            -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-        }
-        .hero-gallery-track {
-            display: flex; gap: 14px; width: max-content;
-            padding: 0 7px 64px;
-            animation: heroGallery 70s linear infinite;
-        }
-        .hero-gallery img {
-            height: 220px; width: auto; border-radius: 10px; display: block;
-            box-shadow: 0 10px 28px rgba(27,37,64,.10);
-        }
-        @keyframes heroGallery { to { transform: translateX(-50%); } }
-        .hero-gallery:hover .hero-gallery-track { animation-play-state: paused; }
 
         /* ── 출강 기관 띠 (공공기관형 신뢰 요소) ── */
         .org-strip { background: #fff; border-top: 1px solid var(--gray-line); border-bottom: 1px solid var(--gray-line); padding: 56px 40px 48px; }
@@ -1221,10 +1203,14 @@
         }
         .org-grid li {
             border-right: 1px solid var(--gray-line); border-bottom: 1px solid var(--gray-line);
-            padding: 20px 10px; color: #5a6072; font-size: .93rem; font-weight: 600;
-            letter-spacing: -.02em; word-break: keep-all;
-            display: flex; align-items: center; justify-content: center; min-height: 64px;
+            padding: 18px 14px; min-height: 104px; background: #fff;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+            color: #5a6072; font-size: .78rem; font-weight: 600; letter-spacing: -.02em; word-break: keep-all; line-height: 1.35;
         }
+        .org-grid img { display: block; max-width: 150px; max-height: 44px; width: auto; height: auto; object-fit: contain; }
+        .org-grid li.has-cap img { max-height: 40px; }
+        .org-grid li.wordmark img { max-height: 34px; }
+        .org-grid li.sq img { max-height: 52px; }
         .org-more { margin-top: 22px; }
         .org-more a { color: var(--navy-mid); font-size: .9rem; font-weight: 500; text-decoration: none; border-bottom: 1px solid #cfc8bc; padding-bottom: 2px; }
         .org-more a:hover { color: var(--orange); border-color: var(--orange); }
@@ -1236,15 +1222,9 @@
         /* ── 성과 카드 ── */
         .achieve-strip { background: #fff; }
         .achieve-card { border: 1px solid var(--gray-line); border-radius: 12px; }
-        .achieve-card:hover, .phil-card:hover, .course-card:hover, .instructor-card:hover, .cert-card:hover {
+        .achieve-card:hover, .phil-card:hover, .instructor-card:hover, .cert-card:hover {
             border-color: #ddd6cb;
             box-shadow: 0 16px 36px rgba(27,37,64,.08);
-        }
-        .ach-icon {
-            width: 52px; height: 52px; margin: 0 auto 16px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%; background: var(--orange-lt);
-            color: var(--orange); font-size: 24px;
         }
         .ach-field-title { font-weight: 700; }
 
@@ -1255,23 +1235,6 @@
             color: var(--orange); font-size: .95rem; font-weight: 700; letter-spacing: 1px;
         }
 
-        /* ── 교육과정: 사진 썸네일, 사진 없는 과정은 선 아이콘 ── */
-        .course-card { border-radius: 12px; box-shadow: none; }
-        .course-thumb { height: 168px; }
-        .th-blue, .th-green, .th-purple, .th-rose, .th-orange,
-        .th-teal, .th-yellow, .th-indigo, .th-slate { background: #f4f1eb; }
-        .thumb-emoji { font-size: 44px; color: #b5aa98; }
-        .course-thumb img { transition: transform .6s ease; }
-        .course-card:hover .course-thumb img { transform: scale(1.04); }
-        .badge-hot, .badge-new, .badge-cert {
-            background: rgba(255,255,255,.94); color: var(--navy);
-            font-weight: 600; letter-spacing: 0; border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,.08);
-        }
-        .badge-hot { color: var(--orange); }
-        .course-cat { color: var(--text-sub); font-weight: 600; letter-spacing: 1px; }
-        .course-body h3 { font-weight: 700; }
-        .course-meta span { background: var(--gray-bg); border-color: transparent; color: var(--text-sub); }
 
         /* ── 대표·강사 ── */
         .dir-name { font-weight: 700; letter-spacing: -.03em; }
@@ -1320,13 +1283,12 @@
         @media (max-width:720px) {
             .org-strip { padding: 40px 20px 36px; }
             .org-grid { grid-template-columns: repeat(2, 1fr); }
-            .org-grid li { font-size: .85rem; padding: 14px 8px; min-height: 54px; }
-            .hero { padding: 130px 20px 0; }
-            .hero-gallery { margin: 48px -20px 0; }
-            .hero-gallery img { height: 150px; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .hero-gallery-track { animation-duration: 140s; }
+            .org-grid li { padding: 12px 8px; min-height: 76px; font-size: .72rem; gap: 6px; }
+            .org-grid li.sq img { max-height: 42px; }
+            .org-grid img { max-width: 88%; }
+            .org-grid li.wordmark img { max-height: 28px; }
+            .org-grid li.has-cap img { max-height: 34px; }
+            .hero { padding: 130px 20px 64px; }
         }
     </style>
 <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript></head>
@@ -1375,39 +1337,7 @@
         </div>
     </div>
 
-    <div class="hero-gallery" aria-hidden="true"><div class="hero-gallery-track"><img src="images/photo-artist-instructor/portfolio-04-hanbok-palace.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/portfolio-07-namsan-reflection.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/portfolio-03-autumn-palace.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/restored-02-iceland-longexposure.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/portfolio-05-pink-alley.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/portfolio-08-hanriver-sunset.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/portfolio-02-bluehour-bridge.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/portfolio-01-bangkok-sunset.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/restored-03-seoul-night.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/portfolio-04-hanbok-palace.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/portfolio-07-namsan-reflection.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/portfolio-03-autumn-palace.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/restored-02-iceland-longexposure.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/portfolio-05-pink-alley.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/portfolio-08-hanriver-sunset.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/portfolio-02-bluehour-bridge.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/portfolio-01-bangkok-sunset.jpg" alt="" loading="lazy"><img src="images/photo-artist-instructor/restored-03-seoul-night.jpg" alt="" loading="lazy"></div></div>
 </section>
-
-<!-- ══════ 출강 기관 ══════ -->
-<section class="org-strip" aria-label="주요 출강 기관"><div class="org-inner"><p class="org-head">교육연수원·인재개발원·대학·기업이 함께했습니다</p><ul class="org-grid"><li>인천광역시교육청 교육연수원</li><li>경기도교육연수원</li><li>서울특별시교육연수원</li><li>서울특별시 인재개발원</li><li>지방자치인재개발원</li><li>경남인재개발원</li><li>경북교육청</li><li>한국보육진흥원</li><li>시청자미디어재단</li><li>한국예탁결제원</li><li>니콘이미징코리아</li><li>현대자동차</li><li>조선일보</li><li>하나투어</li><li>인천대학교</li><li>인하대학교</li><li>울산대학교</li><li>부천대학교</li><li>남양주시청</li><li>고양시청</li></ul><p class="org-more"><a href="smartphone-photo-lecture.html#proof">출강 기관 전체 보기</a></p></div></section>
-
-
-<!-- ══════ 성과 카드 ══════ -->
-<div class="achieve-strip">
-    <div class="achieve-inner">
-        <div class="achieve-card reveal">
-            <span class="ach-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3.2"/></svg></span>
-            <p class="ach-field-title">스마트폰 사진작가</p>
-            <p class="ach-desc">스마트폰 하나로 작품 활동과 작가 브랜딩까지</p>
-        </div>
-        <div class="achieve-card reveal">
-            <span class="ach-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5z"/><path d="M6 12v5c3.3 2.7 8.7 2.7 12 0v-5"/><path d="M22 10v6"/></svg></span>
-            <p class="ach-field-title">스마트폰 사진강사</p>
-            <p class="ach-desc">사진 교육 전문가와 출강 강사 양성</p>
-        </div>
-        <div class="achieve-card reveal">
-            <span class="ach-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6z"/><path d="M19 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></span>
-            <p class="ach-field-title">AI 메이커스</p>
-            <p class="ach-desc">AI 이미지, 영상, 콘텐츠 제작 실전 교육</p>
-        </div>
-        <div class="achieve-card reveal">
-            <span class="ach-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg></span>
-            <p class="ach-field-title">SNS 마스터</p>
-            <p class="ach-desc">인스타그램, 유튜브, 쓰레드, 블로그 수익화 교육</p>
-        </div>
-    </div>
-</div>
-
 
 <!-- ══════ 핵심 철학 (연한 회색 배경) ══════ -->
 <section class="sec sec-gray">
@@ -1444,6 +1374,37 @@
 </section>
 
 
+<!-- ══════ 출강 기관 ══════ -->
+<section class="org-strip" aria-label="주요 출강 기관"><div class="org-inner"><p class="org-head">교육연수원·인재개발원·대학·기업이 함께했습니다</p><ul class="org-grid"><li class="has-cap"><img src="images/orgs/incheon-edu.png" alt="인천광역시교육청 교육연수원" loading="lazy"><span>인천광역시교육청 교육연수원</span></li><li class="has-cap"><img src="images/orgs/gyeonggi-edu.png" alt="경기도교육연수원" loading="lazy"><span>경기도교육연수원</span></li><li class="has-cap"><img src="images/orgs/seoul-edu.png" alt="서울특별시교육연수원" loading="lazy"><span>서울특별시교육연수원</span></li><li class="has-cap"><img src="images/orgs/seoul.png" alt="서울특별시 인재개발원" loading="lazy"><span>서울특별시 인재개발원</span></li><li class="wordmark"><img src="images/orgs/logodi.png" alt="지방자치인재개발원" loading="lazy"></li><li class="has-cap"><img src="images/orgs/gyeongnam.png" alt="경남인재개발원" loading="lazy"><span>경남인재개발원</span></li><li class="has-cap"><img src="images/orgs/gb-edu.png" alt="경북교육청" loading="lazy"><span>경북교육청</span></li><li class="wordmark"><img src="images/orgs/kcpi.png" alt="한국보육진흥원" loading="lazy"></li><li class="wordmark"><img src="images/orgs/kcmf.svg" alt="시청자미디어재단" loading="lazy"></li><li class="wordmark"><img src="images/orgs/ksd.jpg" alt="한국예탁결제원" loading="lazy"></li><li class="wordmark sq"><img src="images/orgs/nikon.png" alt="니콘이미징코리아" loading="lazy"></li><li class="wordmark"><img src="images/orgs/hyundai.png" alt="현대자동차" loading="lazy"></li><li class="wordmark"><img src="images/orgs/chosun.png" alt="조선일보" loading="lazy"></li><li class="wordmark"><img src="images/orgs/hanatour.png" alt="하나투어" loading="lazy"></li><li class="has-cap"><img src="images/orgs/inu.png" alt="인천대학교" loading="lazy"><span>인천대학교</span></li><li class="has-cap sq"><img src="images/orgs/inha.jpg" alt="인하대학교" loading="lazy"><span>인하대학교</span></li><li class="wordmark"><img src="images/orgs/ulsan.png" alt="울산대학교" loading="lazy"></li><li class="wordmark"><img src="images/orgs/bucheon.png" alt="부천대학교" loading="lazy"></li><li class="wordmark"><img src="images/orgs/namyangju.png" alt="남양주시청" loading="lazy"></li><li class="wordmark"><img src="images/orgs/goyang.png" alt="고양시청" loading="lazy"></li></ul><p class="org-more"><a href="smartphone-photo-lecture.html#proof">출강 기관 전체 보기</a></p></div></section>
+
+
+<!-- ══════ 성과 카드 ══════ -->
+<div class="achieve-strip">
+    <div class="achieve-inner">
+        <div class="achieve-card reveal">
+            <span class="ach-icon">📸</span>
+            <p class="ach-field-title">스마트폰 사진작가</p>
+            <p class="ach-desc">스마트폰 하나로 작품 활동과 작가 브랜딩까지</p>
+        </div>
+        <div class="achieve-card reveal">
+            <span class="ach-icon">🎓</span>
+            <p class="ach-field-title">스마트폰 사진강사</p>
+            <p class="ach-desc">사진 교육 전문가와 출강 강사 양성</p>
+        </div>
+        <div class="achieve-card reveal">
+            <span class="ach-icon">🤖</span>
+            <p class="ach-field-title">AI 메이커스</p>
+            <p class="ach-desc">AI 이미지, 영상, 콘텐츠 제작 실전 교육</p>
+        </div>
+        <div class="achieve-card reveal">
+            <span class="ach-icon">📱</span>
+            <p class="ach-field-title">SNS 마스터</p>
+            <p class="ach-desc">인스타그램, 유튜브, 쓰레드, 블로그 수익화 교육</p>
+        </div>
+    </div>
+</div>
+
+
 <!-- ══════ 교육과정 (화이트) ══════ -->
 <section class="sec sec-white" id="courses">
     <div class="container">
@@ -1457,7 +1418,7 @@
 
             <div class="course-card reveal">
                 <div class="course-thumb th-blue">
-                    <span class="thumb-emoji"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3.2"/></svg></span>
+                    <span class="thumb-emoji">📸</span>
                     <span class="badge-hot">인기</span>
                 </div>
                 <div class="course-body">
@@ -1465,14 +1426,14 @@
                     <h3>스마트폰 사진작가</h3>
                     <p>스마트폰 하나로 작가다운 사진을 찍습니다. 구도·빛·색감을 쉽고 재미있게 익힙니다.</p>
                     <div class="course-meta">
-                        <span>사진</span><span>누구나</span>
+                        <span>📷 사진</span><span>👶 누구나</span>
                     </div>
                 </div>
             </div>
 
             <div class="course-card reveal">
                 <div class="course-thumb th-teal">
-                    <span class="thumb-emoji"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5z"/><path d="M6 12v5c3.3 2.7 8.7 2.7 12 0v-5"/><path d="M22 10v6"/></svg></span>
+                    <span class="thumb-emoji">🎓</span>
                     <span class="badge-cert">강사양성</span>
                 </div>
                 <div class="course-body">
@@ -1480,14 +1441,14 @@
                     <h3>스마트폰 사진강사</h3>
                     <p>사진을 배우고, 가르치는 강사로 성장합니다. 누구에게나 쉽게 전달하는 법을 익힙니다.</p>
                     <div class="course-meta">
-                        <span>강사자격</span><span>초급~중급</span>
+                        <span>🎓 강사자격</span><span>👶 초급~중급</span>
                     </div>
                 </div>
             </div>
 
             <div class="course-card reveal">
                 <div class="course-thumb th-purple">
-                    <span class="thumb-emoji"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6z"/><path d="M19 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></span>
+                    <span class="thumb-emoji">🤖</span>
                     <span class="badge-new">NEW</span>
                 </div>
                 <div class="course-body">
@@ -1495,14 +1456,14 @@
                     <h3>AI 메이커스</h3>
                     <p>빠르게 변화하는 AI 트렌드에 맞춰 최신 도구로 글, 이미지, 영상 콘텐츠를 직접 만드는 실전 과정입니다.</p>
                     <div class="course-meta">
-                        <span>AI</span><span>누구나</span>
+                        <span>🤖 AI</span><span>👶 누구나</span>
                     </div>
                 </div>
             </div>
 
             <div class="course-card reveal">
                 <div class="course-thumb th-rose">
-                    <span class="thumb-emoji"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg></span>
+                    <span class="thumb-emoji">📱</span>
                     <span class="badge-hot">인기</span>
                 </div>
                 <div class="course-body">
@@ -1510,28 +1471,28 @@
                     <h3>SNS 마스터</h3>
                     <p>인스타그램·블로그·유튜브를 한 번에. 팔로워를 늘리고 나를 브랜드로 만드는 법을 배웁니다.</p>
                     <div class="course-meta">
-                        <span>SNS</span><span>초급~중급</span>
+                        <span>📱 SNS</span><span>👶 초급~중급</span>
                     </div>
                 </div>
             </div>
 
             <div class="course-card reveal">
                 <div class="course-thumb th-green">
-                    <span class="thumb-emoji"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></svg></span>
+                    <span class="thumb-emoji">📲</span>
                 </div>
                 <div class="course-body">
                     <p class="course-cat">SNS 실전</p>
                     <h3>SNS 실전교육</h3>
                     <p>이론 없이 바로 실습. 오늘 배운 것을 오늘 내 SNS에 올릴 수 있는 실전 중심 수업입니다.</p>
                     <div class="course-meta">
-                        <span>실전</span><span>입문~초급</span>
+                        <span>📲 실전</span><span>👶 입문~초급</span>
                     </div>
                 </div>
             </div>
 
             <div class="course-card reveal">
                 <div class="course-thumb th-indigo">
-                    <span class="thumb-emoji"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg></span>
+                    <span class="thumb-emoji">💻</span>
                     <span class="badge-new">NEW</span>
                 </div>
                 <div class="course-body">
@@ -1539,14 +1500,14 @@
                     <h3>바이브 코딩</h3>
                     <p>코딩을 몰라도 OK. AI와 함께 나만의 웹페이지·앱·자동화 도구를 뚝딱 만드는 과정입니다.</p>
                     <div class="course-meta">
-                        <span>코딩</span><span>누구나</span>
+                        <span>💻 코딩</span><span>👶 누구나</span>
                     </div>
                 </div>
             </div>
 
             <div class="course-card reveal">
                 <div class="course-thumb th-yellow">
-                    <span class="thumb-emoji"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg></span>
+                    <span class="thumb-emoji">📚</span>
                     <span class="badge-hot">대표 과정</span>
                 </div>
                 <div class="course-body">
@@ -1554,35 +1515,35 @@
                     <h3>출판 전문가</h3>
                     <p>아이디어에서 책 한 권까지. 전자책·종이책 출판의 전 과정을 단계별로 함께합니다.</p>
                     <div class="course-meta">
-                        <span>출판</span><span>누구나</span>
+                        <span>📚 출판</span><span>👶 누구나</span>
                     </div>
                 </div>
             </div>
 
             <div class="course-card reveal">
                 <div class="course-thumb th-orange">
-                    <span class="thumb-emoji"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h6M7 16h10"/></svg></span>
+                    <span class="thumb-emoji">📰</span>
                 </div>
                 <div class="course-body">
                     <p class="course-cat">언론·홍보</p>
                     <h3>언론 홍보 전문가</h3>
                     <p>보도자료 작성, 언론사 투고, 기사 홍보까지. 내 이야기를 세상에 알리는 법을 배웁니다.</p>
                     <div class="course-meta">
-                        <span>언론</span><span>초급~중급</span>
+                        <span>📰 언론</span><span>👶 초급~중급</span>
                     </div>
                 </div>
             </div>
 
             <div class="course-card reveal">
                 <div class="course-thumb th-slate">
-                    <span class="thumb-emoji"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15l5-5 4 4 3-3 6 6"/><circle cx="15.5" cy="8.5" r="1.5"/></svg></span>
+                    <span class="thumb-emoji">🖥️</span>
                 </div>
                 <div class="course-body">
                     <p class="course-cat">영상·디자인</p>
                     <h3>포토샵 & 프리미어프로</h3>
                     <p>사진 편집부터 영상 제작까지. 포토샵과 프리미어프로의 핵심 기능을 실습 중심으로 배웁니다.</p>
                     <div class="course-meta">
-                        <span>편집</span><span>초급~중급</span>
+                        <span>🖼️ 편집</span><span>👶 초급~중급</span>
                     </div>
                 </div>
             </div>
