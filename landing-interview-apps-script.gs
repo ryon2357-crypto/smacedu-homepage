@@ -49,6 +49,11 @@ const VIP_TIER_LABELS = {
 
 const MATERIAL_SHEET_NAME = '자료신청';
 const MATERIAL_HEADERS = ['타임스탬프', '이름', '이메일', '연락처', '신청유형'];
+
+// 홈페이지 기획서 만들기(homepage-brief.html, type=homepage) → "홈페이지기획" 탭 (없으면 자동 생성)
+const HOMEPAGE_SHEET_NAME = '홈페이지기획';
+const HOMEPAGE_KEYS = ['kind', 'oneliner', 'goal', 'audience', 'offers', 'strengths', 'trust', 'faq', 'info', 'look', 'ops'];
+const HOMEPAGE_HEADERS = ['타임스탬프', '이름', '이메일', '연락처', '홈페이지 종류', '이름·한 줄 소개', '마지막 행동', '보는 사람', '강의·상품 목록', '다른 곳과 다른 점', '믿을 근거', '자주 받는 질문', '기본 정보', '사진·분위기', '운영 방식'];
 const MATERIAL_DRIVE_LINK = 'https://drive.google.com/file/d/1eyQJL9qXZDdlukf1zISDTWC1pEYqo5jn/view?usp=sharing';
 const MATERIAL_DOC_LINK = 'https://docs.google.com/document/d/15XxOk0NGt0cilQh1yNGvZFEYVUQ-kDN8CmC5X1beTsE/edit?usp=sharing';
 
@@ -62,6 +67,7 @@ function doGet(e) {
     if (p.type === 'vip') return _handleVipSubmission(p);
     if (p.type === 'material') return _handleMaterialSubmission(p);
     if (p.type === 'instructor') return _handleInstructorSubmission(p);
+    if (p.type === 'homepage') return _handleHomepageSubmission(p);
 
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
     if (sheet.getLastRow() === 0) {
@@ -127,6 +133,26 @@ function _handleVipSubmission(p) {
     const sheetUrl = `${ss.getUrl()}#gid=${sheet.getSheetId()}`;
     _notifyAdminVipImmediate(p.name, p.email, p.phone, tierInfo, sheetUrl);
 
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function _handleHomepageSubmission(p) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let sheet = ss.getSheetByName(HOMEPAGE_SHEET_NAME);
+    if (!sheet) {
+      sheet = ss.insertSheet(HOMEPAGE_SHEET_NAME);
+      sheet.appendRow(HOMEPAGE_HEADERS);
+      sheet.getRange(1, 1, 1, HOMEPAGE_HEADERS.length).setFontWeight('bold');
+    }
+    const timestamp = _formatKoreanTimestamp(new Date(), Session.getScriptTimeZone());
+    sheet.appendRow([timestamp, p.name || '', p.email || '', p.phone || ''].concat(HOMEPAGE_KEYS.map(k => p[k] || '')));
+    _notifyAdmin(sheet, '홈페이지 기획서 만들기');
     return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {

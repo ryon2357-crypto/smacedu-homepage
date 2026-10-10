@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <script src="js/no-copy.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+  <title>내 홈페이지 기획서 만들기 — 11가지 질문에 답하면 보고서가 나와요</title>
+  <meta name="robots" content="noindex" />
+  <meta name="description" content="강의·가게 소개 홈페이지를 만들기 전에 11가지 질문에 답하면, 홈페이지 기획서와 코덱스 제작 요청문이 바로 만들어집니다." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #050a16;
+      --bg2:       #0a1530;
+      --bg3:       #0e1c3e;
+      --border:    rgba(201,168,92,.16);
+      --gold-deep: #8a6d23;
+      --gold:      #c6a35c;
+      --gold-lt:   #e9d49a;
+      --text:      #eef1f7;
+      --muted:     #8d96ab;
+      --grad:      linear-gradient(135deg, var(--gold), var(--gold-lt));
+      --grad-text: linear-gradient(135deg, var(--gold-deep) 0%, var(--gold-lt) 45%, var(--gold) 100%);
+      --radius:    14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background:
+        radial-gradient(circle at 14% -8%, rgba(201,168,92,.09) 0%, transparent 40%),
+        radial-gradient(circle at 90% 6%, rgba(58,92,180,.28) 0%, transparent 48%),
+        radial-gradient(circle at 50% 110%, rgba(40,70,150,.18) 0%, transparent 55%),
+        linear-gradient(180deg, #050a16 0%, #081230 55%, #050a16 100%);
+      color: var(--text);
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    section { padding: 80px 24px; }
+    .container { max-width: 720px; margin: 0 auto; }
+
+    .section-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+
+    .section-desc { color: var(--muted); font-size: 16px; }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(6,11,24,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 700;
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+
+    .nav-badge {
+      font-size: 12px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(201,168,92,0.5);
+      color: #e9d49a;
+      font-weight: 600;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 15px 32px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--grad);
+      color: #11141c;
+      box-shadow: 0 0 24px rgba(201,168,92,0.4);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 36px rgba(201,168,92,0.6); }
+    .btn-primary:active { transform: scale(0.97); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      color: var(--text);
+    }
+    .btn-outline:hover { border-color: rgba(201,168,92,0.6); color: #e9d49a; }
+
+    /* HERO */
+    #hero {
+      min-height: 86vh;
+      display: flex;
+      align-items: center;
+      padding-top: 120px;
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(201,168,92,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(201,168,92,0.15);
+      border: 1px solid rgba(201,168,92,0.35);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #e9d49a;
+      margin-bottom: 28px;
+    }
+    .hero-badge span { width: 6px; height: 6px; border-radius: 50%; background: #e9d49a; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(0.7); } }
+
+    #hero h1 {
+      font-size: clamp(30px, 5.4vw, 50px);
+      font-weight: 900;
+      line-height: 1.3;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    #hero h1 .grad {
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub { font-size: clamp(15px, 2.2vw, 18px); color: var(--muted); margin-bottom: 36px; max-width: 580px; }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin-top: 40px;
+      max-width: 600px;
+    }
+    .hero-point {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .hero-point strong { display: block; color: #fff; font-size: 14px; margin-bottom: 2px; }
+
+    /* WIZARD */
+    #wizard { background: var(--bg2); display: none; }
+    #wizard.active { display: block; }
+
+    .wizard-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--grad);
+      border-radius: 999px;
+      transition: width 0.35s ease;
+      width: 0%;
+    }
+    .progress-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #e9d49a;
+      letter-spacing: 0.05em;
+      margin-bottom: 22px;
+    }
+
+    .step-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    .step-badge.important { background: rgba(201,168,92,0.15); color: #e9d49a; border: 1px solid rgba(201,168,92,0.35); }
+    .step-badge.optional { background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid var(--border); }
+
+    .step-title {
+      font-size: clamp(19px, 3vw, 23px);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+    .step-helper {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 22px;
+      line-height: 1.7;
+    }
+
+    .step-input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 15px;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: inherit;
+      resize: vertical;
+    }
+    .step-input::placeholder { color: #555; }
+    .step-input:focus { border-color: rgba(201,168,92,0.6); }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .chip {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: #ccc;
+      font-size: 12.5px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .chip:hover { border-color: rgba(201,168,92,0.5); color: #e9d49a; }
+
+    .step-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 28px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .step-actions-left { display: flex; gap: 10px; }
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 8px 4px;
+    }
+    .link-btn:hover { color: #e9d49a; }
+
+    .step-error {
+      display: none;
+      margin-top: 10px;
+      font-size: 13px;
+      color: #fca5a5;
+    }
+
+    /* contact step */
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: #ccc; margin-bottom: 7px; }
+    .form-group input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 16px;
+      font-size: 15px;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input::placeholder { color: #555; }
+    .form-group input:focus { border-color: rgba(201,168,92,0.6); }
+
+    .form-checkbox label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 400;
+      color: #ccc;
+      cursor: pointer;
+      line-height: 1.5;
+    }
+    .form-checkbox input[type="checkbox"] {
+      flex-shrink: 0;
+      width: 16px; height: 16px;
+      margin-top: 1px;
+      accent-color: #c6a35c;
+      cursor: pointer;
+    }
+
+    .summary-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 22px;
+      font-size: 13px;
+      color: var(--muted);
+      max-height: 160px;
+      overflow-y: auto;
+    }
+    .summary-box .s-row { margin-bottom: 8px; }
+    .summary-box .s-row strong { color: #ddd; }
+
+    /* done screen */
+    #doneScreen { display: none; text-align: center; }
+    #doneScreen .emoji { font-size: 48px; margin-bottom: 18px; }
+
+    .form-msg {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .form-msg.error { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; display: block; }
+
+    footer {
+      text-align: center;
+      padding: 36px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 640px) {
+      section { padding: 60px 20px; }
+      nav { padding: 14px 20px; }
+      .wizard-card { padding: 26px; }
+    }
+
+    /* ── 보고서 ── */
+    #reportScreen { display: none; }
+    .rp-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 24px; }
+    .rp-paper { background: #fffdf8; color: #2b2622; border-radius: 14px; padding: 30px 28px; word-break: keep-all; }
+    .rp-paper h2 { font-size: 24px; margin-bottom: 4px; color: #1b2a55; }
+    .rp-paper .rp-meta { font-size: 13px; color: #7a6f63; margin-bottom: 22px; }
+    .rp-paper h3 { font-size: 17px; margin: 26px 0 10px; color: #8a6d23; border-bottom: 2px solid #e8dfd0; padding-bottom: 6px; }
+    .rp-paper p, .rp-paper li { font-size: 15px; line-height: 1.75; }
+    .rp-paper ul, .rp-paper ol { padding-left: 22px; }
+    .rp-box { background: #f6efe0; border-radius: 10px; padding: 14px 16px; margin: 8px 0; font-size: 15px; white-space: pre-wrap; }
+    .rp-box b { display: block; font-size: 13px; color: #8a6d23; margin-bottom: 2px; }
+    .rp-todo { color: #b4492a; font-weight: 700; }
+    .rp-prompt { background: #1b2a55; color: #eef1f7; border-radius: 10px; padding: 16px 18px; font-size: 14px; line-height: 1.7; white-space: pre-wrap; }
+    .rp-note { font-size: 13px; color: #7a6f63; margin-top: 18px; }
+    .toast { display: none; color: var(--gold-lt); font-size: 14px; align-self: center; }
+    @media print {
+      body { background: #fff !important; }
+      nav, #hero, footer, .rp-actions, .rp-head { display: none !important; }
+      section { padding: 0 !important; }
+      #wizard { background: #fff !important; }
+      .wizard-card { background: #fff !important; border: 0 !important; padding: 0 !important; box-shadow: none !important; }
+      .rp-paper { padding: 0; }
+      .rp-prompt { background: #f1f1f1; color: #000; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="https://www.smacedu.kr/">SMAC EDU</a>
+  <span class="nav-badge">홈페이지 기획서 만들기</span>
+</nav>
+
+<section id="hero">
+  <div class="container">
+    <div class="hero-badge reveal"><span></span>10분이면 끝나요</div>
+    <h1 class="reveal">
+      내 강의·가게 홈페이지,<br>
+      <span class="grad">기획서 한 장</span>으로<br>
+      먼저 정리하세요
+    </h1>
+    <p class="hero-sub reveal">
+      코덱스에게 홈페이지를 시키려면 "무엇을, 누구에게, 어떻게"가 정해져 있어야 합니다. 11가지 질문에 편하게 답하시면 홈페이지 기획서와, 코덱스에 그대로 붙여 넣을 제작 요청문이 만들어집니다. 모르는 건 건너뛰어도 괜찮아요.
+    </p>
+    <div class="reveal"><button class="btn btn-primary" onclick="startWizard()">✦ 기획서 만들기 시작</button></div>
+    <div class="hero-points reveal">
+      <div class="hero-point"><strong>📝 질문 11개</strong>한두 줄이면 충분해요</div>
+      <div class="hero-point"><strong>📄 보고서 즉시 생성</strong>인쇄·PDF·복사 가능</div>
+      <div class="hero-point"><strong>🤖 코덱스 요청문 포함</strong>붙여 넣기만 하면 시작</div>
+    </div>
+  </div>
+</section>
+
+<section id="wizard">
+  <div class="container">
+    <div class="wizard-card">
+
+      <div id="stepScreen">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel"></div>
+        <span class="step-badge" id="stepBadge">중요</span>
+        <div class="step-title" id="stepTitle"></div>
+        <p class="step-helper" id="stepHelper"></p>
+        <textarea class="step-input" id="stepInput" rows="3" placeholder=""></textarea>
+        <div class="chip-row" id="stepChips"></div>
+        <p class="step-error" id="stepError">내용을 입력하거나 건너뛰기를 눌러주세요.</p>
+        <div class="step-actions">
+          <div class="step-actions-left">
+            <button class="btn btn-outline" id="backBtn" onclick="goBack()">← 이전</button>
+            <button class="link-btn" id="skipBtn" onclick="skipStep()">잘 모르겠어요 (건너뛰기)</button>
+          </div>
+          <button class="btn btn-primary" id="nextBtn" onclick="goNext()">다음 →</button>
+        </div>
+      </div>
+
+      <div id="contactScreen" style="display:none;">
+        <p class="section-label" style="margin-bottom:8px;">마지막 단계</p>
+        <div class="step-title">기획서를 받을 분의 정보를 알려주세요</div>
+        <p class="step-helper">입력하시면 바로 아래에 기획서가 만들어집니다. 안내와 자료 발송에 사용됩니다.</p>
+        <div class="summary-box" id="summaryBox"></div>
+        <form id="contactForm" onsubmit="submitInterview(event)" novalidate>
+          <div class="form-group"><label for="f-name">이름 <span style="color:#e9d49a">*</span></label>
+            <input id="f-name" name="name" type="text" placeholder="홍길동" required autocomplete="name" /></div>
+          <div class="form-group"><label for="f-email">이메일 <span style="color:#e9d49a">*</span></label>
+            <input id="f-email" name="email" type="email" placeholder="example@email.com" required autocomplete="email" /></div>
+          <div class="form-group"><label for="f-phone">연락처 <span style="color:#e9d49a">*</span></label>
+            <input id="f-phone" name="phone" type="tel" placeholder="010-1234-5678" required autocomplete="tel" /></div>
+          <div class="form-group form-checkbox"><label for="f-consent">
+            <input id="f-consent" type="checkbox" required />
+            개인정보는 자료 제공 및 강의 안내 목적으로만 사용됩니다. 동의합니다. <span style="color:#e9d49a">*</span></label></div>
+          <div class="step-actions">
+            <button type="button" class="btn btn-outline" onclick="backToLastStep()">← 이전</button>
+            <button type="submit" class="btn btn-primary" id="submitBtn">✦ 기획서 만들기</button>
+          </div>
+          <div class="form-msg" id="formMsg"></div>
+        </form>
+      </div>
+
+      <div id="reportScreen">
+        <div class="rp-head">
+          <p class="section-label" style="margin-bottom:8px;">완성</p>
+          <div class="step-title">🎉 홈페이지 기획서가 만들어졌어요</div>
+          <p class="step-helper">[PDF로 저장]을 누르면 보관할 수 있고, 맨 아래 <b>코덱스 제작 요청문</b>을 복사해 코덱스에 붙여 넣으면 홈페이지 제작이 시작됩니다.</p>
+          <div class="rp-actions">
+            <button class="btn btn-primary" onclick="window.print()">🖨 PDF로 저장 / 인쇄</button>
+            <button class="btn btn-outline" onclick="copyReport()">📋 기획서 전체 복사</button>
+            <button class="btn btn-outline" onclick="copyPrompt()">🤖 코덱스 요청문만 복사</button>
+            <span class="toast" id="toast"></span>
+          </div>
+        </div>
+        <div class="rp-paper" id="reportPaper"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 SMAC EDU · <a href="privacy.html" style="color: #e9d49a; text-decoration: underline;">개인정보처리방침</a></p>
+</footer>
+
+<script>
+  /* 응답 저장용 Apps Script 웹앱(landing-interview-apps-script.gs). type=homepage 로 "홈페이지기획" 탭에 쌓입니다. */
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxqYBmeYzXx0P-iODP2kFmIRr95I7ri54zk6EB316ySh9qatmK9QGhKDE5f0Q9dmDfgvQ/exec';
+
+  const TYPE_LABEL = { lecture:'강의·클래스 소개', shop:'가게·매장 소개', both:'강의 + 가게 함께', person:'개인·작가 소개' };
+
+  const STEPS = [
+    { key:'kind', label:'홈페이지 종류', important:true,
+      title:'어떤 홈페이지를 만들고 싶으세요?',
+      helper:'가장 가까운 것을 골라 주세요. 둘 다라면 "둘 다"라고 적어도 돼요.',
+      placeholder:'예: 내 강의를 소개하는 홈페이지', rows:2,
+      chips:['내 강의 소개 홈페이지','가게·매장 소개 홈페이지','강의와 가게 둘 다','개인·작가 소개 홈페이지'] },
+    { key:'oneliner', label:'이름과 한 줄 소개', important:true,
+      title:'강의명 또는 가게 이름과, 한 줄 소개를 알려주세요.',
+      helper:'"어디에서 무엇을 하는 누구"인지 한 문장이면 충분해요.',
+      placeholder:'예: 인천 OO동 시니어 스마트폰 강의 / 30년 경력 수제 반찬 가게', rows:2 },
+    { key:'goal', label:'방문자가 할 행동', important:true,
+      title:'홈페이지를 본 사람이 마지막에 무엇을 했으면 좋겠나요?',
+      helper:'딱 하나만 고르는 것이 좋아요. 그래야 홈페이지가 헷갈리지 않아요.',
+      placeholder:'예: 카카오톡으로 문의하기', rows:2,
+      chips:['전화하기','카카오톡 문의하기','수강 신청하기','예약하기','가게로 찾아오기'] },
+    { key:'audience', label:'보는 사람', important:true,
+      title:'누가 이 홈페이지를 보게 될까요?',
+      helper:'나이대, 사는 곳, 어떤 계기로 들어오는지 알려주세요.',
+      placeholder:'예: 60대 주민, 블로그나 지인 소개로 들어오는 분', rows:3,
+      chips:['블로그·카페를 보고 온 분','지인 소개로 온 분','네이버 검색으로 온 분','동네 주민','수강생·단골 손님'] },
+    { key:'offers', label:'강의·상품 목록', important:true,
+      title:'소개할 강의나 상품을 알려주세요.',
+      helper:'이름, 대상, 일정, 가격, 장소 중 아는 것만 적어도 돼요.',
+      placeholder:'예: ① 스마트폰 기초반 (매주 화 10시, 월 5만원) ② 사진 촬영반', rows:4 },
+    { key:'strengths', label:'다른 곳과 다른 점', important:true,
+      title:'절반 왔어요! 👏 다른 곳과 다른 점 3가지만 꼽아주세요.',
+      helper:'"이건 우리가 확실히 낫다" 싶은 것들이요.',
+      placeholder:'예: ① 1:1 맞춤 지도 ② 20년 경력 ③ 수업 후 카톡 질문 무제한', rows:3,
+      chips:['1:1 맞춤 지도','오랜 경력','가격이 합리적','친절한 사후 관리','실습 중심','소규모 운영'] },
+    { key:'trust', label:'믿을 근거', important:false,
+      title:'"믿을 만하다"고 느끼게 해줄 근거가 있나요?',
+      helper:'후기, 수료생 말씀, 경력, 수상, 언론 보도 등이요. 없으면 건너뛰어도 괜찮아요.',
+      placeholder:'예: 수강생 후기 20건, 신문 인터뷰, 자격증 보유', rows:3,
+      chips:['수강생·손님 후기','경력·자격증','수상·인증','언론·방송 소개'] },
+    { key:'faq', label:'자주 받는 질문', important:false,
+      title:'손님이나 수강생이 자주 묻는 질문이 있나요?',
+      helper:'질문과 답을 같이 적어주시면 홈페이지에 "자주 묻는 질문"으로 넣어요.',
+      placeholder:'예: Q. 처음인데 따라갈 수 있나요? A. 네, 기초부터 시작합니다.', rows:4 },
+    { key:'info', label:'기본 정보', important:true,
+      title:'주소, 전화번호, 영업(강의)시간과 연결할 주소를 알려주세요.',
+      helper:'카카오톡 채널, 블로그, 인스타그램 주소가 있으면 함께 적어주세요.',
+      placeholder:'예: 인천시 OO구 OO로 12 / 010-0000-0000 / 평일 10~18시 / blog.naver.com/…', rows:4 },
+    { key:'look', label:'사진과 분위기', important:false,
+      title:'홈페이지에 쓸 사진이 있나요? 어떤 분위기를 원하세요?',
+      helper:'직접 찍은 사진이나 수업 현장 사진이 가장 좋아요. 마음에 드는 홈페이지 주소가 있으면 적어주세요. 예시를 보여주는 게 말로 설명하는 것보다 훨씬 잘 통해요.',
+      placeholder:'예: 수업 사진 10장 있음 / 따뜻하고 깔끔한 느낌 / 참고: https://…', rows:3,
+      chips:['사진 있음','사진 없음 (이제 찍을 예정)','깔끔한 느낌','따뜻한 느낌','전문적인 느낌'] },
+    { key:'ops', label:'운영 방식', important:false,
+      title:'마지막 질문이에요! 홈페이지를 나중에 직접 고치실 건가요?',
+      helper:'가격이나 일정이 자주 바뀌면 고치기 쉬운 구조로 만들어야 해요. 도메인(주소)이 있는지, 신청을 받을지도 알려주세요.',
+      placeholder:'예: 일정은 매달 내가 고침 / 신청 폼 필요 / 도메인은 아직 없음', rows:3,
+      chips:['내가 직접 고칠 예정','제작만 하고 고치지 않음','신청 폼이 필요해요','도메인 있음','도메인 없음 (무료 주소로 시작)'] }
+  ];
+
+  let current = 0;
+  const answers = {};
+
+  document.getElementById('f-phone').addEventListener('input', e => {
+    let d = e.target.value.replace(/\D/g, '').slice(0, 11);
+    if (d.length > 7) d = `${d.slice(0,3)}-${d.slice(3,7)}-${d.slice(7)}`;
+    else if (d.length > 3) d = `${d.slice(0,3)}-${d.slice(3)}`;
+    e.target.value = d;
+  });
+
+  function startWizard() {
+    document.getElementById('wizard').classList.add('active');
+    document.getElementById('wizard').scrollIntoView({ behavior: 'smooth' });
+    renderStep(0);
+  }
+
+  function show(id) {
+    ['stepScreen','contactScreen','reportScreen'].forEach(x => document.getElementById(x).style.display = x === id ? 'block' : 'none');
+  }
+
+  function renderStep(i) {
+    current = i;
+    const s = STEPS[i];
+    show('stepScreen');
+    document.getElementById('progressFill').style.width = `${((i + 1) / (STEPS.length + 1)) * 100}%`;
+    document.getElementById('progressLabel').textContent = `STEP ${i + 1}/${STEPS.length}`;
+    const badge = document.getElementById('stepBadge');
+    badge.textContent = s.important ? '중요' : '선택';
+    badge.className = `step-badge ${s.important ? 'important' : 'optional'}`;
+    document.getElementById('stepTitle').textContent = s.title;
+    document.getElementById('stepHelper').textContent = s.helper;
+    const input = document.getElementById('stepInput');
+    input.value = answers[s.key] && answers[s.key] !== '[확인 필요]' ? answers[s.key] : '';
+    input.placeholder = s.placeholder || '';
+    input.rows = s.rows || 3;
+    const chipRow = document.getElementById('stepChips');
+    chipRow.innerHTML = '';
+    (s.chips || []).forEach(text => {
+      const chip = document.createElement('button');
+      chip.type = 'button'; chip.className = 'chip'; chip.textContent = text;
+      chip.onclick = () => {
+        const ex = input.value.trim();
+        if (!ex) input.value = text; else if (!ex.includes(text)) input.value = `${ex}\n${text}`;
+        input.focus();
+      };
+      chipRow.appendChild(chip);
+    });
+    document.getElementById('backBtn').style.visibility = i === 0 ? 'hidden' : 'visible';
+    document.getElementById('skipBtn').style.display = s.important ? 'none' : 'inline';
+    document.getElementById('stepError').style.display = 'none';
+    input.focus();
+  }
+
+  function goNext() {
+    const s = STEPS[current];
+    const v = document.getElementById('stepInput').value.trim();
+    if (s.important && !v) { document.getElementById('stepError').style.display = 'block'; return; }
+    answers[s.key] = v || '[확인 필요]';
+    current < STEPS.length - 1 ? renderStep(current + 1) : showContactScreen();
+  }
+  function skipStep() {
+    const s = STEPS[current];
+    answers[s.key] = document.getElementById('stepInput').value.trim() || '[확인 필요]';
+    current < STEPS.length - 1 ? renderStep(current + 1) : showContactScreen();
+  }
+  function goBack() {
+    if (current === 0) return;
+    answers[STEPS[current].key] = document.getElementById('stepInput').value.trim() || '[확인 필요]';
+    renderStep(current - 1);
+  }
+  function backToLastStep() { renderStep(STEPS.length - 1); }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function showContactScreen() {
+    show('contactScreen');
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('summaryBox').innerHTML = STEPS.map(s =>
+      `<div class="s-row"><strong>${esc(s.label)}</strong> — ${esc(answers[s.key] || '(미입력)')}</div>`).join('');
+  }
+
+  async function submitInterview(e) {
+    e.preventDefault();
+    const name = document.getElementById('f-name').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+    const consent = document.getElementById('f-consent').checked;
+    const btn = document.getElementById('submitBtn');
+    document.getElementById('formMsg').style.display = 'none';
+    if (!name) return showMsg('이름을 입력해 주세요.');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showMsg('올바른 이메일을 입력해 주세요.');
+    if (!/^\d{3}-\d{4}-\d{4}$/.test(phone)) return showMsg('연락처는 010-1234-5678 형식으로 입력해 주세요.');
+    if (!consent) return showMsg('개인정보 수집·이용 동의에 체크해 주세요.');
+
+    btn.disabled = true; btn.textContent = '기획서 만드는 중…';
+    try {
+      const params = new URLSearchParams({ type: 'homepage', name, email, phone, ...answers });
+      await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
+    } catch (err) {
+      /* 저장이 실패해도 수강생은 기획서를 받을 수 있어야 하므로 계속 진행 */
+    }
+    renderReport(name);
+    show('reportScreen');
+    document.getElementById('wizard').scrollIntoView({ behavior: 'smooth' });
+    btn.disabled = false; btn.textContent = '✦ 기획서 만들기';
+  }
+
+  function showMsg(text) {
+    const el = document.getElementById('formMsg');
+    el.className = 'form-msg error'; el.textContent = text; el.style.display = 'block';
+  }
+
+  /* ───────── 보고서 생성 ───────── */
+  function has(k) { return answers[k] && answers[k] !== '[확인 필요]'; }
+  function typeKey() {
+    const t = answers.kind || '';
+    const l = /강의|클래스|수업/.test(t), s = /가게|매장|식당|상점/.test(t);
+    if (/둘 다|함께/.test(t) || (l && s)) return 'both';
+    if (s) return 'shop';
+    if (l) return 'lecture';
+    return 'person';
+  }
+
+  function sections() {
+    const k = typeKey();
+    const list = ['첫 화면 — 이름·한 줄 소개·"' + (has('goal') ? answers.goal.split('\n')[0] : '문의') + '" 버튼'];
+    list.push(k === 'shop' ? '가게 소개 — 대표 이야기와 대표 사진' : '소개 — 누구이고 무엇을 하는지');
+    list.push(k === 'shop' ? '상품·메뉴 목록 (사진·가격)' : k === 'both' ? '강의와 가게(상품) 안내' : '강의 안내 (대상·일정·가격·장소)');
+    list.push('다른 곳과 다른 점 3가지');
+    if (has('trust')) list.push('후기·경력·수상 (믿을 근거)');
+    if (has('faq')) list.push('자주 묻는 질문');
+    list.push('문의·오시는 길 — 주소·전화·시간·지도 + 마지막 행동 버튼');
+    return list;
+  }
+
+  function todos() {
+    const t = [];
+    STEPS.forEach(s => { if (!has(s.key)) t.push(`${s.label}: 아직 정하지 못했어요 → 기획서가 나온 뒤 채워 주세요`); });
+    if (has('look') && /사진 없음/.test(answers.look)) t.push('사진: 직접 찍은 사진 5~10장을 먼저 준비하세요 (저작권 문제를 피하려면 직접 촬영본이 안전해요)');
+    else if (!has('look')) t.push('사진: 쓸 수 있는 사진(수업 현장·가게·대표 사진)을 모아 두세요');
+    t.push('개인정보를 받는 신청 폼을 넣는다면 "개인정보 수집·이용 동의" 문구가 필요합니다');
+    return t;
+  }
+
+  function promptText() {
+    const L = (label, k) => `- ${label}: ${has(k) ? answers[k].replace(/\n/g, ' / ') : '(미정 — 적절히 제안해 주세요)'}`;
+    return [
+      `아래 정보로 ${TYPE_LABEL[typeKey()]} 홈페이지를 만들어 주세요. 모바일에서도 잘 보여야 하고, 파일은 index.html 하나로 시작해 주세요.`,
+      '', '[기본 정보]',
+      L('홈페이지 종류','kind'), L('이름·한 줄 소개','oneliner'), L('방문자가 마지막에 할 행동(버튼)','goal'), L('보는 사람','audience'),
+      '', '[넣을 내용]',
+      L('강의·상품 목록','offers'), L('다른 곳과 다른 점','strengths'), L('믿을 근거(후기·경력)','trust'), L('자주 묻는 질문','faq'), L('주소·연락처·연결 주소','info'),
+      '', '[디자인·운영]',
+      L('사진과 분위기','look'), L('운영 방식','ops'),
+      '', '[화면 구성 순서]', ...sections().map((x, i) => `${i + 1}. ${x}`),
+      '', '[지켜 주세요]',
+      '- 정보가 없는 부분은 그럴듯하게 지어내지 말고 "[확인 필요]"로 비워 두세요.',
+      '- 어르신도 읽기 쉽게 글자는 크게, 버튼은 크게 만들어 주세요.',
+      '- 만든 뒤 어떻게 열어 보고 고치는지 순서대로 알려 주세요.'
+    ].join('\n');
+  }
+
+  let lastReportText = '', lastPrompt = '';
+
+  function renderReport(name) {
+    const today = new Date().toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
+    const secs = sections(), td = todos();
+    lastPrompt = promptText();
+    const box = (label, k) => `<div class="rp-box"><b>${esc(label)}</b>${has(k) ? esc(answers[k]) : '<span class="rp-todo">[확인 필요]</span>'}</div>`;
+    document.getElementById('reportPaper').innerHTML = `
+      <h2>${esc(has('oneliner') ? answers.oneliner.split('\n')[0] : '내')} 홈페이지 기획서</h2>
+      <div class="rp-meta">${esc(name)} 님 · ${esc(today)} 작성 · SMAC EDU</div>
+
+      <h3>1. 한눈에 보기</h3>
+      ${box('어떤 홈페이지', 'kind')}${box('이름과 한 줄 소개', 'oneliner')}${box('마지막에 하게 할 행동', 'goal')}${box('보는 사람', 'audience')}
+
+      <h3>2. 홈페이지 화면 구성 (위에서 아래 순서)</h3>
+      <ol>${secs.map(x => `<li>${esc(x)}</li>`).join('')}</ol>
+
+      <h3>3. 넣을 내용</h3>
+      ${box('강의·상품 목록', 'offers')}${box('다른 곳과 다른 점', 'strengths')}${box('믿을 근거', 'trust')}${box('자주 묻는 질문', 'faq')}${box('기본 정보(주소·연락처·연결 주소)', 'info')}
+
+      <h3>4. 디자인·운영</h3>
+      ${box('사진과 분위기', 'look')}${box('운영 방식', 'ops')}
+
+      <h3>5. 제작 전에 준비하세요</h3>
+      <ul>${td.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+
+      <h3>6. 코덱스 제작 요청문</h3>
+      <p>아래 글 전체를 복사해서 코덱스에 붙여 넣으세요.</p>
+      <div class="rp-prompt">${esc(lastPrompt)}</div>
+      <p class="rp-note">이 기획서는 입력하신 내용을 정리한 것이며, 비어 있는 곳은 [확인 필요]로 표시됩니다. 더 도움이 필요하시면 SMAC EDU 강의에서 함께 만들어 보세요.</p>`;
+    lastReportText = document.getElementById('reportPaper').innerText;
+  }
+
+  function toast(msg) {
+    const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'inline';
+    setTimeout(() => t.style.display = 'none', 2500);
+  }
+  async function copyText(text, msg) {
+    try { await navigator.clipboard.writeText(text); toast(msg); }
+    catch (e) {
+      const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); toast(msg); } catch (e2) { toast('복사가 안 되면 직접 드래그해서 복사해 주세요'); }
+      document.body.removeChild(ta);
+    }
+  }
+  function copyReport() { copyText(lastReportText, '기획서 전체를 복사했어요'); }
+  function copyPrompt() { copyText(lastPrompt, '코덱스 요청문을 복사했어요'); }
+
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }),
+    { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
