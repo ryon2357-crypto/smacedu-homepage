@@ -32,12 +32,12 @@ button.go:disabled{opacity:.6}
 .small{font-size:14px;color:var(--sub)}
 button.sm{background:#fff;border:1.5px solid var(--clay);color:var(--clay-d);border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer;font-size:15px}
 .hide{display:none}
-.road{border-radius:18px;padding:18px;margin:0 0 14px;color:#fff;position:relative;overflow:hidden;transition:background .4s}
-.road .lane{height:10px;margin:12px 0 4px;border-radius:6px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.9) 0 26px,transparent 26px 46px);opacity:.85}
-.road .big{font-size:28px;font-weight:800;display:flex;align-items:center;gap:10px}.road .why{font-size:15px;opacity:.95;margin-top:4px}
+.road{border-radius:12px;padding:9px 14px;margin:0 0 10px;color:#fff;position:relative;overflow:hidden;transition:background .4s}
+.road .lane{height:4px;margin:6px 0 3px;border-radius:3px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.75) 0 18px,transparent 18px 34px);opacity:.7}
+.road .big{font-size:17px;font-weight:700;display:flex;align-items:center;gap:6px}.road .why{font-size:13px;opacity:.92;margin-top:2px}
 .road.g{background:#2f8f5b}.road.y{background:#d99a1e}.road.r{background:#c0453a}.road.n{background:#8a8079}
-.road.r .lane{animation:none;opacity:.5}.road.g .lane{animation:flow 1.2s linear infinite}.road.y .lane{animation:flow 3s linear infinite}
-@keyframes flow{from{background-position:0 0}to{background-position:46px 0}}
+.road.r .lane{animation:none;opacity:.5}.road.g .lane{animation:flow 6s linear infinite}.road.y .lane{animation:flow 3s linear infinite}
+@keyframes flow{from{background-position:0 0}to{background-position:34px 0}}
 /* 관리자 */
 .board{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0 16px}
 table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;word-break:break-all}
