@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="코덱스로 내 업무 하나를 일주일 동안 실제로 완성하는 바이브코딩 실전반. 10/25·11/1 일요일 밤 8시~10시 40분, 2회 ZOOM 라이브.">
+  <link rel="canonical" href="https://www.smacedu.kr/vibecoding-class-1">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="바이브코딩 실전반 — 내 업무 하나, 일주일 만에 완성">
+  <meta property="og:description" content="10/25·11/1 일요일 밤 8시~10시 40분 · 2회 ZOOM 라이브">
+  <meta property="og:url" content="https://www.smacedu.kr/vibecoding-class-1">
+  <title>바이브코딩 실전반 모집</title>
+  <style>
+    :root {
+      --ink: #102235;
+      --muted: #5f6f7e;
+      --navy: #123c63;
+      --blue: #1768d3;
+      --cyan: #36d7ff;
+      --mint: #3ee8b0;
+      --violet: #7c4dff;
+      --gold: #ffb327;
+      --paper: #ffffff;
+      --line: #d8e3eb;
+      --shadow: 0 22px 70px rgba(17, 49, 81, .12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 4%, rgba(62, 232, 176, .14), transparent 27rem),
+        radial-gradient(circle at 94% 16%, rgba(124, 77, 255, .12), transparent 30rem),
+        #f5f8fb;
+      font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      line-height: 1.78;
+      word-break: keep-all;
+    }
+
+    a { color: inherit; }
+    .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+
+    .topbar {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(9, 28, 49, .9); color: white;
+      backdrop-filter: blur(12px);
+    }
+    .topbar .wrap { min-height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { font-size: 14px; font-weight: 800; letter-spacing: -.02em; }
+    .top-cta {
+      text-decoration: none; padding: 9px 16px; border-radius: 999px;
+      background: linear-gradient(135deg, var(--mint), #a6ffe0); color: #06301f;
+      font-size: 13px; font-weight: 900;
+    }
+
+    .hero {
+      padding: 70px 0 160px;
+      background: linear-gradient(145deg, #07182b 0%, #0b3348 55%, #151a55 100%);
+      color: white; overflow: hidden;
+    }
+    .hero-grid { display: grid; grid-template-columns: 1fr minmax(340px, 500px); gap: 56px; align-items: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px; margin: 0 0 20px;
+      color: #9dffd9; font-size: 14px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 28px; height: 2px; background: var(--mint); }
+    h1 { margin: 0; font-size: clamp(42px, 5.2vw, 70px); line-height: 1.1; letter-spacing: -.055em; }
+    h1 em { font-style: normal; color: #9dffd9; }
+    .hero-copy { margin: 24px 0 28px; color: #d4e5f2; font-size: clamp(17px, 2vw, 21px); }
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
+    .hero-badges span {
+      padding: 8px 13px; border: 1px solid rgba(255,255,255,.2); border-radius: 999px;
+      background: rgba(255,255,255,.07); font-size: 14px; font-weight: 700;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .button {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 52px; padding: 0 23px; border-radius: 12px;
+      text-decoration: none; font-weight: 900; transition: transform .18s ease;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button.primary { background: linear-gradient(135deg, var(--gold), #ffe27c); color: #342000; box-shadow: 0 12px 30px rgba(255,179,39,.24); }
+    .button.ghost { border: 1px solid rgba(255,255,255,.35); color: white; }
+
+    /* 히어로 오른쪽: 코덱스 작업창 모형 */
+    .console { position: relative; }
+    .console::before {
+      content: ""; position: absolute; inset: -24px; border-radius: 34px;
+      background: linear-gradient(135deg, rgba(62,232,176,.24), rgba(124,77,255,.26)); filter: blur(30px);
+    }
+    .console-box {
+      position: relative; border-radius: 22px; overflow: hidden;
+      background: #0a1626; border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 28px 80px rgba(0,0,0,.44);
+      font-size: 15px;
+    }
+    .console-bar { display: flex; gap: 7px; padding: 14px 18px; background: #101f33; }
+    .console-bar i { width: 11px; height: 11px; border-radius: 50%; background: #ff6b6b; }
+    .console-bar i:nth-child(2) { background: #ffc94d; }
+    .console-bar i:nth-child(3) { background: #3ee8b0; }
+    .console-body { padding: 22px 24px 26px; display: grid; gap: 14px; }
+    .msg { padding: 13px 16px; border-radius: 14px; line-height: 1.6; }
+    .msg.me { background: #1d3a5c; color: #e6f1fa; justify-self: end; max-width: 88%; }
+    .msg.ai { background: #12283d; color: #bfe9da; border: 1px solid rgba(62,232,176,.25); max-width: 92%; }
+    .msg.ai b { color: #9dffd9; }
+    .done { display: flex; align-items: center; gap: 9px; color: #9dffd9; font-weight: 800; font-size: 14px; }
+    .done::before { content: "✓"; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: rgba(62,232,176,.18); }
+
+    main { padding: 70px 0 0; }
+    .section { padding: 34px 0 70px; }
+    .section-head { max-width: 790px; margin-bottom: 30px; }
+    .kicker { margin: 0 0 8px; color: var(--blue); font-size: 14px; font-weight: 900; letter-spacing: .06em; }
+    h2 { margin: 0 0 14px; font-size: clamp(30px, 4vw, 46px); line-height: 1.22; letter-spacing: -.045em; }
+    h3 { margin: 0 0 12px; font-size: 22px; letter-spacing: -.03em; }
+    .lead { margin: 0; color: var(--muted); font-size: 18px; }
+
+    .problem {
+      margin-top: -105px; position: relative; z-index: 2;
+      padding: 34px 38px; border-radius: 22px;
+      background: rgba(255,255,255,.96); box-shadow: var(--shadow);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+    }
+    .problem p { margin: 0; font-size: 17px; }
+    .problem strong { color: var(--blue); }
+
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .compare article { padding: 30px; border-radius: 20px; border: 1px solid var(--line); background: white; }
+    .compare article.on { border: 2px solid var(--blue); box-shadow: 0 12px 40px rgba(22,62,99,.08); }
+    .compare .tag { display: inline-block; margin-bottom: 10px; padding: 3px 11px; border-radius: 999px; background: #eef3f7; color: #5a6b7a; font-size: 13px; font-weight: 800; }
+    .compare .on .tag { background: #e3efff; color: var(--blue); }
+    .compare ul { margin: 0; padding-left: 19px; color: #46596b; }
+
+    .examples { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .example { padding: 24px; border-radius: 18px; background: white; border: 1px solid var(--line); }
+    .example .ico { font-size: 26px; line-height: 1; margin-bottom: 12px; }
+    .example h3 { font-size: 19px; margin-bottom: 6px; }
+    .example p { margin: 0; color: #536575; font-size: 15.5px; }
+
+    .flow { display: grid; grid-template-columns: 1fr 64px 1fr 64px 1fr; align-items: stretch; }
+    .step { padding: 28px; border-radius: 20px; background: white; border: 1px solid var(--line); box-shadow: 0 12px 40px rgba(22,62,99,.07); }
+    .step.mid { background: #f0fbf6; border-color: #bfeedd; }
+    .step .num {
+      display: inline-grid; place-items: center; min-width: 54px; height: 40px; padding: 0 12px; margin-bottom: 16px;
+      border-radius: 12px; background: linear-gradient(135deg, var(--navy), var(--violet)); color: white; font-weight: 900; font-size: 15px;
+    }
+    .step.mid .num { background: linear-gradient(135deg, #0f8a63, #3ee8b0); }
+    .step .date { margin: -6px 0 10px; color: var(--blue); font-weight: 800; font-size: 15px; }
+    .step.mid .date { color: #0f8a63; }
+    .step ul { margin: 0; padding-left: 19px; color: #46596b; }
+    .arrow { display: grid; place-items: center; color: #9fb2c2; font-size: 28px; font-weight: 900; }
+    .bonus { margin-top: 18px; padding: 18px 22px; border-radius: 16px; background: #fff5da; color: #624919; }
+
+    .audience { padding: 56px; border-radius: 28px; background: #0e3154; color: white; box-shadow: var(--shadow); }
+    .audience .kicker { color: #9dffd9; }
+    .audience-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 13px 32px; margin-top: 24px; }
+    .audience-item { position: relative; padding-left: 25px; color: #dbe8f2; }
+    .audience-item::before { content: "•"; position: absolute; left: 5px; color: var(--mint); font-weight: 900; }
+
+    .timeline { display: grid; gap: 13px; max-width: 760px; }
+    .time-row { display: grid; grid-template-columns: 76px 1fr; gap: 18px; padding: 19px; border: 1px solid var(--line); border-radius: 16px; background: white; }
+    .time-row strong { color: var(--blue); }
+    .time-row p { margin: 0; color: #4d6070; }
+
+    .pricing { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .price-card { position: relative; padding: 34px; border: 1px solid var(--line); border-radius: 22px; background: white; overflow: hidden; }
+    .price-card.featured { border: 2px solid var(--blue); }
+    .price-card.featured::after { content: "특강 참석자"; position: absolute; right: -34px; top: 20px; width: 140px; padding: 4px 0; text-align: center; transform: rotate(38deg); background: var(--blue); color: white; font-size: 12px; font-weight: 900; }
+    .pricing.single { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
+    .price-card .old { color: #7a8996; text-decoration: line-through; }
+    .price-card .price { margin: 4px 0 12px; font-size: 38px; font-weight: 950; color: var(--blue); letter-spacing: -.05em; }
+    .price-card p { margin: 0; color: #536575; }
+    .deadline { margin-top: 22px; padding: 17px 22px; border-radius: 14px; background: #fff3dc; color: #5d4010; font-weight: 800; }
+
+    .apply { padding: 58px; border-radius: 28px; background: linear-gradient(135deg, #122f50, #27216c); color: white; text-align: center; box-shadow: var(--shadow); }
+    .apply .kicker { color: #9dffd9; }
+    .apply p { margin: 0 auto 25px; max-width: 680px; color: #dce7f2; }
+    .apply .button { min-width: 240px; }
+    .small-info { margin-top: 22px !important; font-size: 14px; color: #b8c8d8 !important; }
+
+    .notes { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+    .note { padding: 26px; border: 1px solid var(--line); border-radius: 18px; background: white; }
+    .note p, .note ul { margin: 0; color: #536575; }
+    .note ul { padding-left: 20px; }
+
+    .closing { padding: 70px 0; text-align: center; }
+    .closing p { max-width: 790px; margin: 0 auto 24px; color: #4d6070; font-size: 18px; }
+    .contact { font-weight: 900; color: var(--navy); }
+    .tags { margin-top: 30px; color: #738390; font-size: 13px; line-height: 2; }
+
+    footer { padding: 28px 0 100px; color: #7b8995; text-align: center; font-size: 13px; }
+
+    .mobile-cta {
+      display: none; position: fixed; left: 16px; right: 16px; bottom: 14px; z-index: 20;
+      min-height: 54px; align-items: center; justify-content: center; border-radius: 14px;
+      background: linear-gradient(135deg, #ffb327, #ffe173); color: #2f1d00;
+      text-decoration: none; font-weight: 950; box-shadow: 0 12px 30px rgba(29,39,51,.3);
+    }
+
+    @media (max-width: 860px) {
+      .hero { padding: 52px 0 150px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 42px; }
+      .problem, .compare { grid-template-columns: 1fr; }
+      .examples { grid-template-columns: 1fr 1fr; }
+      .flow { grid-template-columns: 1fr; gap: 0; }
+      .arrow { height: 44px; transform: rotate(90deg); }
+      .audience-grid, .notes { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      html, body { max-width: 100%; overflow-x: hidden; }
+      .wrap { width: min(100% - 32px, 1120px); }
+      .hero-grid > * { min-width: 0; }
+      .topbar .brand { max-width: 190px; line-height: 1.25; }
+      .topbar .top-cta { display: none; }
+      .hero { padding-top: 42px; }
+      h1 { font-size: 38px; }
+      .hero-copy { font-size: 17px; }
+      .hero-badges span { font-size: 13px; }
+      .hero-actions .button { width: 100%; }
+      .console-box { font-size: 14px; }
+      .problem { margin-top: -78px; padding: 26px 22px; }
+      main { padding-top: 48px; }
+      .section { padding-bottom: 54px; }
+      .examples { grid-template-columns: 1fr; }
+      .step, .compare article { padding: 24px 22px; }
+      .audience, .apply { padding: 34px 22px; }
+      .pricing { grid-template-columns: 1fr; }
+      .price-card { padding: 28px 24px; }
+      .time-row { grid-template-columns: 60px 1fr; gap: 12px; padding: 16px; }
+      .mobile-cta { display: flex; }
+      footer { padding-bottom: 92px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="상단 메뉴">
+    <div class="wrap">
+      <div class="brand">스마트미디어아트센터 · 바이브코딩 실전반</div>
+      <a class="top-cta" href="#apply">신청 안내 보기</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Vibe Coding Practical Class</p>
+        <h1>맛보기는 끝났습니다.<br><em>내 업무 하나,</em><br>일주일 만에 완성</h1>
+        <p class="hero-copy">코덱스에게 말로 시켜서, 매주 반복하던 내 일을 대신 해 주는 도구를 직접 만듭니다. 첫 수업에서 시작하고, 일주일 동안 돌려 보고, 두 번째 수업에서 끝까지 완성합니다.</p>
+        <div class="hero-badges" aria-label="과정 핵심 정보">
+          <span>10/25 · 11/1 일요일 밤 8시~10시 40분</span>
+          <span>2회 ZOOM 라이브</span>
+          <span>수강료 8만원</span>
+        </div>
+        <div class="hero-actions">
+          <a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLSeyI_DVtqEjszsccX4InUhHpDoiOpqaDhB7nem8E-myp41nNQ/viewform" target="_blank" rel="noopener">바이브코딩 실전반 신청</a>
+          <a class="button ghost" href="#curriculum">수업 흐름 보기</a>
+        </div>
+      </div>
+      <div class="console" aria-hidden="true">
+        <div class="console-box">
+          <div class="console-bar"><i></i><i></i><i></i></div>
+          <div class="console-body">
+            <div class="msg me">매주 신청서 시트를 보고 새로 들어온 분께 안내 메일을 보내는데, 이걸 자동으로 해 줘</div>
+            <div class="msg ai">좋아요. 먼저 시트 구조를 확인할게요.<br><b>새 신청자 찾기 → 안내 메일 작성 → 보낸 사람 표시</b> 순서로 만들겠습니다.</div>
+            <div class="msg me">메일 보내기 전에 나한테 먼저 보여 줘</div>
+            <div class="msg ai">알겠습니다. <b>미리보기 확인 후 발송</b>으로 바꿨어요.</div>
+            <div class="done">내 업무 자동화 완성</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="problem" aria-label="과정 소개">
+      <p>특강에서 코덱스로 문서를 정리하고 홈페이지를 만들어 보셨다면, 이제 <strong>“그래서 내 일에는 어떻게 쓰지?”</strong>가 남았을 겁니다.</p>
+      <p>혼자 해 보면 첫 설정에서 막히고, 오류 한 줄에 멈추기 쉽습니다. 실전반은 <strong>각자 고른 업무 하나를 끝까지</strong> 함께 봐 드립니다.</p>
+    </section>
+  </div>
+
+  <main>
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">무료특강과 무엇이 다른가요</p>
+          <h2>따라 하는 수업에서<br>내 것을 만드는 수업으로</h2>
+          <p class="lead">무료특강은 모두가 같은 예제를 따라 했습니다. 실전반은 수강생마다 다른, 자기 업무 하나를 결과물로 가져갑니다.</p>
+        </div>
+        <div class="compare">
+          <article>
+            <span class="tag">10/11 무료특강</span>
+            <h3>코덱스 맛보기</h3>
+            <ul>
+              <li>같은 예제로 문서 정리·홈페이지 따라 하기</li>
+              <li>코덱스가 무엇을 할 수 있는지 확인</li>
+              <li>한 번의 수업으로 마무리</li>
+            </ul>
+          </article>
+          <article class="on">
+            <span class="tag">바이브코딩 실전반</span>
+            <h3>내 업무 하나 완성</h3>
+            <ul>
+              <li>각자 반복 업무 하나를 골라 직접 만들기</li>
+              <li>일주일 동안 실제로 써 보고 막힌 곳 해결</li>
+              <li>매주 다시 쓸 수 있는 도구로 완성</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">이런 걸 만들 수 있어요</p>
+          <h2>무엇을 만들지는 내 업무가 정합니다</h2>
+          <p class="lead">아래는 예시입니다. 1강에서 내 일 가운데 일주일 안에 끝낼 수 있는 크기의 업무 하나를 함께 고릅니다.</p>
+        </div>
+        <div class="examples">
+          <article class="example">
+            <div class="ico">📋</div>
+            <h3>신청서 자동 정리</h3>
+            <p>구글 시트에 쌓인 신청자를 정리하고 새로 들어온 분만 골라 표시합니다.</p>
+          </article>
+          <article class="example">
+            <div class="ico">✉️</div>
+            <h3>안내 메일 자동 발송</h3>
+            <p>신청자에게 일정·준비물 안내 메일을 미리보기 후 한 번에 보냅니다.</p>
+          </article>
+          <article class="example">
+            <div class="ico">📁</div>
+            <h3>사진·파일 정리</h3>
+            <p>흩어진 사진과 문서를 날짜·주제별 폴더로 나누고 이름을 정리합니다.</p>
+          </article>
+          <article class="example">
+            <div class="ico">🌐</div>
+            <h3>내 소개 페이지 공개</h3>
+            <p>특강에서 만든 홈페이지를 다듬어 실제 주소로 공개합니다.</p>
+          </article>
+          <article class="example">
+            <div class="ico">📊</div>
+            <h3>매출·일정 한눈에 보기</h3>
+            <p>엑셀에 적어 둔 기록을 한 화면에서 보는 나만의 현황판을 만듭니다.</p>
+          </article>
+          <article class="example">
+            <div class="ico">⏰</div>
+            <h3>정해진 시간에 자동 실행</h3>
+            <p>매일 아침, 매주 월요일처럼 정한 때에 알아서 돌도록 예약합니다.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="curriculum">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">CURRICULUM</p>
+          <h2>수업 2회 + 일주일 실전</h2>
+          <p class="lead">두 번의 수업 사이 일주일이 이 과정의 핵심입니다. 직접 돌려 봐야 진짜로 막히는 곳이 보이니까요.</p>
+        </div>
+        <div class="flow">
+          <article class="step">
+            <div class="num">1강</div>
+            <p class="date">10월 25일(일) 밤 8시~10시 40분</p>
+            <h3>세팅하고 착수</h3>
+            <ul>
+              <li>코덱스 작업 환경·권한 설정</li>
+              <li>AGENTS.md로 나만의 작업 규칙 만들기</li>
+              <li>내 업무 하나 고르고 범위 정하기</li>
+              <li>첫 버전 만들어 실행해 보기</li>
+            </ul>
+          </article>
+          <div class="arrow" aria-hidden="true">→</div>
+          <article class="step mid">
+            <div class="num">1주</div>
+            <p class="date">10/26 ~ 10/31</p>
+            <h3>내 업무에 써 보기</h3>
+            <ul>
+              <li>실제 업무에 돌려 보며 고치기</li>
+              <li>막힌 곳·오류 화면 기록해 두기</li>
+              <li>동기 단톡방에서 서로 묻고 답하기</li>
+            </ul>
+          </article>
+          <div class="arrow" aria-hidden="true">→</div>
+          <article class="step">
+            <div class="num">2강</div>
+            <p class="date">11월 1일(일) 밤 8시~10시 40분</p>
+            <h3>막힌 곳 풀고 완성</h3>
+            <ul>
+              <li>수강생별 막힌 곳 함께 해결</li>
+              <li>오류가 났을 때 코덱스에게 고치게 하는 법</li>
+              <li>실제 공개·예약 실행으로 마무리</li>
+              <li>다음 업무로 넓히는 방법</li>
+            </ul>
+          </article>
+        </div>
+        <div class="bonus"><strong>함께 드려요</strong> · 매 수업 <b>2시간 40분, 질의응답 포함</b> · 바이브코딩 실전반 동기 단톡방</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap audience">
+        <p class="kicker">RECOMMENDED FOR</p>
+        <h2>이런 분께 권합니다</h2>
+        <div class="audience-grid">
+          <div class="audience-item">10/11 코덱스 무료특강을 듣고 더 해 보고 싶은 분</div>
+          <div class="audience-item">매주 손으로 반복하는 업무가 하나쯤 있는 분</div>
+          <div class="audience-item">코딩은 몰라도 말로 설명은 할 수 있는 분</div>
+          <div class="audience-item">혼자 해 보다 첫 설정이나 오류에서 멈춘 분</div>
+          <div class="audience-item">특강에서 만든 홈페이지를 실제로 공개하고 싶은 분</div>
+          <div class="audience-item">AI를 써 보는 데서 그치지 않고 일에 붙이고 싶은 분</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="schedule">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">LIVE SCHEDULE</p>
+          <h2>교육 일정과 진행 방법</h2>
+        </div>
+        <div class="timeline">
+          <div class="time-row"><strong>1강</strong><p>2026년 10월 25일(일)<br><b>밤 8시~10시 40분</b> · 환경 세팅, 내 업무 고르기, 첫 버전 만들기</p></div>
+          <div class="time-row"><strong>2강</strong><p>2026년 11월 1일(일)<br><b>밤 8시~10시 40분</b> · 막힌 곳 해결, 공개·예약 실행으로 완성</p></div>
+          <div class="time-row"><strong>진행</strong><p>ZOOM 라이브 강의<br>회당 2시간 40분 · 질의응답 포함</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">TUITION</p>
+          <h2>수강료</h2>
+        </div>
+        <div class="pricing single">
+          <article class="price-card">
+            <h3>바이브코딩 실전반</h3>
+            <p>2회 전 과정 · 회당 2시간 40분</p>
+            <div class="old">20만원</div>
+            <div class="price">8만원</div>
+            <p>수업 2회 · 일주일 실전 · 동기 단톡방</p>
+          </article>
+        </div>
+        <div class="deadline">입금 계좌: 신한은행 110-050-892636 박성욱</div>
+      </div>
+    </section>
+
+    <section class="section" id="apply">
+      <div class="wrap apply">
+        <p class="kicker">APPLICATION</p>
+        <h2>이번엔 내 일을 끝까지</h2>
+        <p>신청서에 이름, 연락처, 이메일, 입금자명과 함께 <b>자동화하고 싶은 업무</b>를 한 줄로 적어 주세요. 1강 전에 미리 보고 들어갑니다.</p>
+        <a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLSeyI_DVtqEjszsccX4InUhHpDoiOpqaDhB7nem8E-myp41nNQ/viewform" target="_blank" rel="noopener" data-form-link>신청서 열기</a>
+        <p class="small-info">준비물: 윈도우 또는 맥 PC · 코덱스를 쓸 수 있는 챗GPT 계정</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap notes">
+        <article class="note">
+          <h3>준비물</h3>
+          <ul>
+            <li>윈도우 또는 맥 PC(휴대폰 불가)</li>
+            <li>코덱스를 쓸 수 있는 챗GPT 계정</li>
+            <li>자동화하고 싶은 업무 한 가지</li>
+          </ul>
+        </article>
+        <article class="note">
+          <h3>환불 안내</h3>
+          <ul>
+            <li>단톡방 입장 전: 100% 환불</li>
+            <li>단톡방 입장 후: 수업 자료 제공으로 환불 불가</li>
+          </ul>
+        </article>
+        <article class="note">
+          <h3>문의</h3>
+          <p>엘란비탈 박성욱 작가<br><a href="tel:01047170624">010-4717-0624</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="wrap">
+        <h2>두 번의 수업이 끝나면</h2>
+        <p>매주 손으로 하던 일 하나가 내 손을 떠나 있습니다. 그리고 다음 업무를 코덱스에게 어떻게 맡기면 되는지, 그 방법이 손에 남습니다.</p>
+        <div class="contact">스마트미디어아트센터 · 엘란비탈 박성욱<br><span style="font-weight:600;color:#5f6f7e;font-size:14px">사진작가 · 사진·영상·AI 교육 전문가</span></div>
+        <div class="tags">#바이브코딩 #코덱스 #Codex #바이브코딩강의 #업무자동화 #AI업무자동화 #챗GPT코덱스 #노코딩자동화 #AI활용교육 #생성형AI교육 #스마트미디어아트센터</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">신청 전에 일정과 환불 기준을 꼭 확인해 주세요.</div>
+  </footer>
+
+  <a class="mobile-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSeyI_DVtqEjszsccX4InUhHpDoiOpqaDhB7nem8E-myp41nNQ/viewform" target="_blank" rel="noopener" data-form-link>바이브코딩 실전반 신청하기</a>
+</body>
+</html>
