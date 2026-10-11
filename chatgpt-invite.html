@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>챗GPT 친구초대 품앗이 | 스마트미디어아트센터</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#faf7f2;--card:#fff;--ink:#2b2622;--sub:#6f655c;--line:#e8e0d6;--clay:#d97757;--clay-d:#b85c3d;--green:#2f8f5b;--blue:#2f6fb5;--gray:#9a9088;--red:#c0453a;--soft:#fbeee6}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans KR',sans-serif;font-size:17px;line-height:1.6}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:26px;margin:8px 0 4px}p.lead{color:var(--sub);margin:0 0 16px}
+.clock{background:var(--ink);color:#fff;border-radius:16px;padding:16px 18px;margin:12px 0 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.clock .t{font-size:30px;font-weight:800;letter-spacing:1px}.clock .d{font-size:15px;opacity:.85}
+.notice{background:var(--soft);border:1px solid #f1d2c2;border-radius:14px;padding:14px 16px;margin-bottom:18px}
+.stats{display:flex;gap:10px;margin:0 0 18px;flex-wrap:wrap}.stat{flex:1;min-width:140px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}.stat b{font-size:24px;display:block}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.tab{border:2px solid var(--line);background:var(--card);border-radius:14px;padding:12px 8px;font-size:15px;font-weight:600;cursor:pointer;text-align:center;color:var(--ink)}
+.tab.on{border-color:var(--clay);background:var(--soft)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 18px;margin-bottom:16px}
+.card h2{font-size:20px;margin:0 0 6px}.card .hint{color:var(--sub);font-size:15px;margin:0 0 14px}
+label{display:block;font-weight:600;margin:12px 0 6px}
+input[type=text],input[type=email],select{width:100%;font-size:18px;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--sub);margin-top:14px}.chk input{width:22px;height:22px;margin-top:2px}
+button.go{width:100%;margin-top:16px;background:var(--clay);color:#fff;border:0;border-radius:14px;padding:16px;font-size:19px;font-weight:800;cursor:pointer}
+button.go:disabled{opacity:.6}
+.msg{margin-top:14px;padding:14px;border-radius:12px;display:none}.msg.ok{display:block;background:#eaf6ef;color:#1f6b43}.msg.err{display:block;background:#fbeaea;color:#9b2f27}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:13px;font-weight:600;color:#fff}
+.s-matched{background:var(--gray)}.s-invited{background:var(--blue)}.s-accepted{background:var(--green)}.s-cancelled{background:var(--red)}.s-legacy{background:#c9b9a8}.s-waiting{background:#e0a23b}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.small{font-size:14px;color:var(--sub)}
+button.sm{background:#fff;border:1.5px solid var(--clay);color:var(--clay-d);border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer;font-size:15px}
+.hide{display:none}
+/* 관리자 */
+.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0 16px}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;word-break:break-all}
+@media (max-width:520px){.tabs{grid-template-columns:1fr}.clock .t{font-size:26px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>챗GPT 친구초대 품앗이</h1>
+  <p class="lead">초대가 필요한 분과 초대해 줄 수 있는 Plus 회원을 바로 연결해 드립니다.</p>
+
+  <div class="clock"><div><div class="d">지금 시각 (한국)</div><div class="t" id="clock">--:--:--</div></div><div class="d" id="date"></div></div>
+
+  <div class="notice">⏰ <b>신청한 지 3시간이 지났는데 아직 초대 메일을 못 받으셨나요?</b><br>아래 <b>① 아직 초대를 못 받았어요</b>에 남겨 주세요. 기존 연결은 취소하고, 지금 바로 초대해 줄 수 있는 Plus 회원에게 다시 연결해 드립니다.</div>
+
+  <div class="stats" id="stats">
+    <div class="stat"><span class="small">초대 기다리는 분</span><b id="stWait">-</b></div>
+    <div class="stat"><span class="small">지금 초대 가능한 Plus</span><b id="stReady">-</b></div>
+    <div class="stat"><span class="small">새로 연결된 건수</span><b id="stMatched">-</b></div>
+  </div>
+
+  <div id="userArea">
+  <div class="tabs">
+    <button class="tab on" data-t="free">① 아직 초대를<br>못 받았어요</button>
+    <button class="tab" data-t="plus">② 초대해 드릴 수<br>있어요 (Plus)</button>
+    <button class="tab" data-t="look">③ 내 상태<br>확인하기</button>
+  </div>
+
+  <div class="card" id="p-free">
+    <h2>아직 초대를 못 받았어요</h2>
+    <p class="hint">ChatGPT에 가입한 이메일을 정확히 적어 주세요. 이 주소로 초대가 갑니다.</p>
+    <label>성함</label><input type="text" id="f-name" autocomplete="name">
+    <label>ChatGPT 가입 이메일</label><input type="email" id="f-email" autocomplete="email" placeholder="example@gmail.com">
+    <div class="chk"><input type="checkbox" id="f-ok"><span>[필수] 매칭 안내를 위해 성함·이메일을 수집하며, 품앗이 종료 후 파기합니다. 매칭된 Plus 회원에게는 이메일 주소만 전달됩니다. 동의합니다.</span></div>
+    <button class="go" id="f-go">다시 연결해 주세요</button>
+    <div class="msg" id="f-msg"></div>
+  </div>
+
+  <div class="card hide" id="p-plus">
+    <h2>초대해 드릴 수 있어요 (Plus 이상)</h2>
+    <p class="hint">지금 바로 친구 초대를 보내 주실 수 있는 Plus·Pro 회원님만 남겨 주세요. 초대가 필요한 분을 메일로 바로 보내 드립니다.</p>
+    <label>성함</label><input type="text" id="p-name" autocomplete="name">
+    <label>ChatGPT 가입 이메일</label><input type="email" id="p-email" autocomplete="email" placeholder="example@gmail.com">
+    <label>더 초대할 수 있는 인원</label>
+    <select id="p-cap"><option value="1">1명</option><option value="2">2명</option><option value="3" selected>3명</option></select>
+    <div class="chk"><input type="checkbox" id="p-ok"><span>[필수] 매칭 안내를 위해 성함·이메일을 수집하며, 품앗이 종료 후 파기합니다. 동의합니다.</span></div>
+    <button class="go" id="p-go">초대 준비됐어요</button>
+    <div class="msg" id="p-msg"></div>
+  </div>
+
+  <div class="card hide" id="p-look">
+    <h2>내 상태 확인하기</h2>
+    <p class="hint">남기실 때 쓴 성함과 이메일을 그대로 입력해 주세요.</p>
+    <label>성함</label><input type="text" id="l-name">
+    <label>이메일</label><input type="email" id="l-email">
+    <button class="go" id="l-go">확인하기</button>
+    <div class="msg" id="l-msg"></div>
+    <div id="l-view"></div>
+  </div>
+  </div>
+
+  <div id="adminArea" class="hide">
+    <div class="card"><h2>관리자 현황</h2><p class="small">30초마다 자동 새로고침 · 데이터는 구글 시트 '앱_회원'·'앱_매칭' 탭</p>
+      <div class="board" id="aBoard"></div>
+      <h2 style="font-size:17px">기다리는 무료 회원</h2><table id="aWait"></table>
+      <h2 style="font-size:17px;margin-top:18px">준비된 Plus 회원</h2><table id="aPlus"></table>
+      <h2 style="font-size:17px;margin-top:18px">앱 매칭 (최근순)</h2><table id="aPairs"></table>
+    </div>
+  </div>
+</div>
+<script>
+const API='/api/chatgpt-invite'
+const ST={matched:'연결됨',invited:'초대 보냄',accepted:'초대 받음',cancelled:'취소',legacy:'구글폼 매칭',waiting:'대기 중',active:'연결됨',ready:'준비됨'}
+const $=id=>document.getElementById(id)
+function tick(){const d=new Date();const o={timeZone:'Asia/Seoul'};$('clock').textContent=d.toLocaleTimeString('ko-KR',{...o,hour12:false});$('date').textContent=d.toLocaleDateString('ko-KR',{...o,month:'long',day:'numeric',weekday:'long'})}
+tick();setInterval(tick,1000)
+async function call(body){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json().catch(()=>({error:'응답 오류'}));if(!r.ok)throw new Error(j.error||'오류');return j}
+function show(el,ok,t){el.className='msg '+(ok?'ok':'err');el.textContent=t}
+async function stats(){try{const r=await fetch(API+'?action=stats');const j=await r.json();$('stWait').textContent=j.waiting+'명';$('stReady').textContent=j.readyPlus+'명';$('stMatched').textContent=j.matched+'건'}catch(e){}}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));['free','plus','look'].forEach(k=>$('p-'+k).classList.toggle('hide',k!==b.dataset.t))})
+function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function renderView(v,name,email){
+  if(!v)return ''
+  if(v.role==='plus'){
+    let h=`<div class="row"><b>${esc(v.name)} 님 · Plus</b><span class="small">초대 가능 ${v.cap||0}명</span></div>`
+    if(!v.invites.length)h+=`<p class="small">아직 배정된 분이 없습니다. 배정되면 메일로 알려 드립니다.</p>`
+    v.invites.forEach(x=>{h+=`<div class="row"><div><div>초대할 이메일: <b>${esc(x.email)}</b></div><div class="small">${esc(x.at)}</div></div><div><span class="pill s-${x.status}">${ST[x.status]||x.status}</span> ${x.status==='matched'?`<button class="sm" data-sent="${x.id}">초대 보냈어요</button>`:''}</div></div>`})
+    return h
+  }
+  let h=`<div class="row"><b>${esc(v.name)} 님</b><span class="pill s-${v.current?v.current.status:v.status}">${v.current?ST[v.current.status]:(ST[v.status]||'')}</span></div>`
+  if(v.current)h+=`<p>${esc(v.current.plus)} 님이 초대해 드릴 예정입니다. ChatGPT에서 초대 메일(스팸함 포함)을 확인해 주세요.</p>${v.current.status!=='accepted'?'<button class="sm" id="gotIt">초대 받았어요</button>':''}`
+  else if(v.status==='waiting')h+=`<p>초대해 드릴 Plus 회원을 기다리는 중입니다. 앞에 ${v.waitingAhead}명이 있습니다. 연결되면 메일로 알려 드립니다.</p>`
+  return h
+}
+async function bindView(name,email){
+  document.querySelectorAll('[data-sent]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{const j=await call({action:'plus_sent',name,email,id:b.dataset.sent});$('l-view').innerHTML=renderView(j.view);bindView(name,email)}catch(e){alert(e.message)}})
+  const g=$('gotIt');if(g)g.onclick=async()=>{g.disabled=true;try{const j=await call({action:'free_received',name,email});$('l-view').innerHTML=renderView(j.view);bindView(name,email)}catch(e){alert(e.message)}}
+}
+$('f-go').onclick=async()=>{const b=$('f-go'),m=$('f-msg');b.disabled=true;b.textContent='처리 중…';try{const name=$('f-name').value,email=$('f-email').value;const j=await call({action:'not_received',name,email,consent:$('f-ok').checked});show(m,true,j.message||'접수되었습니다.');stats()}catch(e){show(m,false,e.message)}b.disabled=false;b.textContent='다시 연결해 주세요'}
+$('p-go').onclick=async()=>{const b=$('p-go'),m=$('p-msg');b.disabled=true;b.textContent='처리 중…';try{const j=await call({action:'ready_plus',name:$('p-name').value,email:$('p-email').value,cap:$('p-cap').value,consent:$('p-ok').checked});show(m,true,j.message||'등록되었습니다.');stats()}catch(e){show(m,false,e.message)}b.disabled=false;b.textContent='초대 준비됐어요'}
+$('l-go').onclick=async()=>{const m=$('l-msg');const name=$('l-name').value,email=$('l-email').value;try{const j=await call({action:'lookup',name,email});m.className='msg';$('l-view').innerHTML=renderView(j.view);bindView(name,email)}catch(e){show(m,false,e.message);$('l-view').innerHTML=''}}
+stats();setInterval(stats,60000)
+// 관리자
+const key=new URLSearchParams(location.search).get('admin')
+async function admin(){
+  try{const j=await call({action:'admin',key});
+    const P=j.pairs,M=j.members,cnt=s=>P.filter(x=>x.status===s).length
+    const waiting=M.filter(m=>m.plan==='free'&&m.status==='waiting'),ready=M.filter(m=>m.plan==='plus'&&m.status==='ready')
+    $('aBoard').innerHTML=[['대기 중',waiting.length,'waiting'],['준비된 Plus',ready.length,'invited'],['연결됨',cnt('matched'),'matched'],['초대 보냄',cnt('invited'),'invited'],['초대 받음',cnt('accepted'),'accepted'],['취소',cnt('cancelled'),'cancelled']].map(([a,b,c])=>`<div class="stat"><span class="pill s-${c}">${a}</span><b>${b}</b></div>`).join('')
+    $('aWait').innerHTML='<tr><th>남긴 시각</th><th>성함</th><th>이메일</th></tr>'+waiting.map(m=>`<tr><td>${esc(m.at)}</td><td>${esc(m.name)}</td><td>${esc(m.email)}</td></tr>`).join('')
+    const done=e=>P.filter(x=>x.plusEmail===e&&['matched','invited','accepted'].includes(x.status)).length
+    $('aPlus').innerHTML='<tr><th>성함</th><th>이메일</th><th>배정/여력</th></tr>'+ready.map(m=>`<tr><td>${esc(m.name)}</td><td>${esc(m.email)}</td><td>${done(m.email)} / ${m.cap}</td></tr>`).join('')
+    $('aPairs').innerHTML='<tr><th>시각</th><th>Plus</th><th>무료</th><th>상태</th></tr>'+P.filter(x=>x.status!=='legacy').slice().reverse().map(x=>`<tr><td>${esc(x.updated||x.at)}</td><td>${esc(x.plusName)}<br><span class="small">${esc(x.plusEmail)}</span></td><td>${esc(x.freeName)}<br><span class="small">${esc(x.freeEmail)}</span></td><td><span class="pill s-${x.status}">${ST[x.status]||x.status}</span><div class="small">${esc(x.reason)}</div></td></tr>`).join('')
+  }catch(e){$('aBoard').textContent='관리자 정보를 불러오지 못했습니다: '+e.message}
+}
+if(key){$('userArea').classList.add('hide');$('adminArea').classList.remove('hide');admin();setInterval(admin,30000)}
+</script>
+</body>
+</html>
