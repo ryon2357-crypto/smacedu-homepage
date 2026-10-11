@@ -136,7 +136,9 @@ module.exports = async function handler(req, res) {
       return res.json({ members: st.members, pairs: st.pairs })
     }
     if (action === 'stats') {
-      return res.json({ readyPlus: st.members.filter((m) => m.plan === 'plus' && m.status === 'ready' && doneCount(st, m.email) < Math.min(m.cap || 1, MAX_CAP)).length, waiting: st.members.filter((m) => m.plan === 'free' && m.status === 'waiting').length, matched: st.pairs.filter((x) => x.memo === '앱 매칭').length })
+      const ready = st.members.filter((m) => m.plan === 'plus' && m.status === 'ready' && doneCount(st, m.email) < Math.min(m.cap || 1, MAX_CAP))
+      const slots = ready.reduce((s, m) => s + Math.min(m.cap || 1, MAX_CAP) - doneCount(st, m.email), 0)
+      return res.json({ readyPlus: ready.length, slots, waiting: st.members.filter((m) => m.plan === 'free' && m.status === 'waiting').length, matched: st.pairs.filter((x) => x.memo === '앱 매칭').length })
     }
     const email = normEmail(b.email)
     const name = clean(b.name, 50)

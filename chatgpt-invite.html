@@ -32,6 +32,12 @@ button.go:disabled{opacity:.6}
 .small{font-size:14px;color:var(--sub)}
 button.sm{background:#fff;border:1.5px solid var(--clay);color:var(--clay-d);border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer;font-size:15px}
 .hide{display:none}
+.road{border-radius:18px;padding:18px;margin:0 0 14px;color:#fff;position:relative;overflow:hidden;transition:background .4s}
+.road .lane{height:10px;margin:12px 0 4px;border-radius:6px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.9) 0 26px,transparent 26px 46px);opacity:.85}
+.road .big{font-size:28px;font-weight:800;display:flex;align-items:center;gap:10px}.road .why{font-size:15px;opacity:.95;margin-top:4px}
+.road.g{background:#2f8f5b}.road.y{background:#d99a1e}.road.r{background:#c0453a}.road.n{background:#8a8079}
+.road.r .lane{animation:none;opacity:.5}.road.g .lane{animation:flow 1.2s linear infinite}.road.y .lane{animation:flow 3s linear infinite}
+@keyframes flow{from{background-position:0 0}to{background-position:46px 0}}
 /* 관리자 */
 .board{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0 16px}
 table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;word-break:break-all}
@@ -47,9 +53,11 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:8px 6px;b
 
   <div class="notice">⏰ <b>신청한 지 1시간이 지났는데 아직 초대 메일을 못 받으셨나요?</b><br>아래 <b>① 아직 초대를 못 받았어요</b>에 남겨 주세요. 기존 연결은 취소하고, 지금 바로 초대해 줄 수 있는 Plus 회원에게 다시 연결해 드립니다.</div>
 
+  <div class="road n" id="road"><div class="big"><span id="roadIcon">⏳</span><span id="roadTxt">교통 상황 확인 중…</span></div><div class="lane"></div><div class="why" id="roadWhy"></div></div>
+
   <div class="stats" id="stats">
     <div class="stat"><span class="small">초대 기다리는 분</span><b id="stWait">-</b></div>
-    <div class="stat"><span class="small">지금 초대 가능한 Plus</span><b id="stReady">-</b></div>
+    <div class="stat"><span class="small">지금 초대 가능한 자리</span><b id="stReady">-</b></div>
     <div class="stat"><span class="small">새로 연결된 건수</span><b id="stMatched">-</b></div>
   </div>
 
@@ -108,7 +116,13 @@ function tick(){const d=new Date();const o={timeZone:'Asia/Seoul'};$('clock').te
 tick();setInterval(tick,1000)
 async function call(body){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json().catch(()=>({error:'응답 오류'}));if(!r.ok)throw new Error(j.error||'오류');return j}
 function show(el,ok,t){el.className='msg '+(ok?'ok':'err');el.textContent=t}
-async function stats(){try{const r=await fetch(API+'?action=stats');const j=await r.json();$('stWait').textContent=j.waiting+'명';$('stReady').textContent=j.readyPlus+'명';$('stMatched').textContent=j.matched+'건'}catch(e){}}
+function road(j){const w=j.waiting||0,sl=j.slots||0;let c,i,t,y
+ if(w===0){c='g';i='🟢';t='원활';y='기다리는 분이 없습니다. 남기시면 바로 연결됩니다.'}
+ else if(sl>=w){c='g';i='🟢';t='원활';y=`기다리는 ${w}명 모두 바로 연결될 수 있습니다.`}
+ else if(w<=sl*2+2){c='y';i='🟡';t='서행';y=`기다리는 분 ${w}명 · 초대 가능 ${sl}자리 — Plus 회원님의 참여가 조금 더 필요합니다.`}
+ else{c='r';i='🔴';t='정체';y=`기다리는 분 ${w}명 · 초대 가능 ${sl}자리 — Plus 회원님, ②에 남겨 주시면 정체가 풀립니다!`}
+ $('road').className='road '+c;$('roadIcon').textContent=i;$('roadTxt').textContent='초대 교통 상황: '+t;$('roadWhy').textContent=y}
+async function stats(){try{const r=await fetch(API+'?action=stats');const j=await r.json();$('stWait').textContent=j.waiting+'명';$('stReady').textContent=(j.slots||0)+'자리 ('+j.readyPlus+'명)';$('stMatched').textContent=j.matched+'건';road(j)}catch(e){}}
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));['free','plus','look'].forEach(k=>$('p-'+k).classList.toggle('hide',k!==b.dataset.t))})
 function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 function renderView(v,name,email){
@@ -131,7 +145,7 @@ async function bindView(name,email){
 $('f-go').onclick=async()=>{const b=$('f-go'),m=$('f-msg');b.disabled=true;b.textContent='처리 중…';try{const name=$('f-name').value,email=$('f-email').value;const j=await call({action:'not_received',name,email});show(m,true,j.message||'접수되었습니다.');stats()}catch(e){show(m,false,e.message)}b.disabled=false;b.textContent='다시 연결해 주세요'}
 $('p-go').onclick=async()=>{const b=$('p-go'),m=$('p-msg');b.disabled=true;b.textContent='처리 중…';try{const j=await call({action:'ready_plus',name:$('p-name').value,email:$('p-email').value,cap:$('p-cap').value});show(m,true,j.message||'등록되었습니다.');stats()}catch(e){show(m,false,e.message)}b.disabled=false;b.textContent='초대 준비됐어요'}
 $('l-go').onclick=async()=>{const m=$('l-msg');const name=$('l-name').value,email=$('l-email').value;try{const j=await call({action:'lookup',name,email});m.className='msg';$('l-view').innerHTML=renderView(j.view);bindView(name,email)}catch(e){show(m,false,e.message);$('l-view').innerHTML=''}}
-stats();setInterval(stats,60000)
+stats();setInterval(stats,30000)
 // 관리자
 const key=new URLSearchParams(location.search).get('admin')
 async function admin(){
