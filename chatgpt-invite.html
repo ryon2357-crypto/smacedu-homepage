@@ -65,7 +65,6 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:8px 6px;b
     <p class="hint">ChatGPT에 가입한 이메일을 정확히 적어 주세요. 이 주소로 초대가 갑니다.</p>
     <label>성함</label><input type="text" id="f-name" autocomplete="name">
     <label>ChatGPT 가입 이메일</label><input type="email" id="f-email" autocomplete="email" placeholder="example@gmail.com">
-    <div class="chk"><input type="checkbox" id="f-ok"><span>[필수] 매칭 안내를 위해 성함·이메일을 수집하며, 품앗이 종료 후 파기합니다. 매칭된 Plus 회원에게는 이메일 주소만 전달됩니다. 동의합니다.</span></div>
     <button class="go" id="f-go">다시 연결해 주세요</button>
     <div class="msg" id="f-msg"></div>
   </div>
@@ -77,7 +76,6 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:8px 6px;b
     <label>ChatGPT 가입 이메일</label><input type="email" id="p-email" autocomplete="email" placeholder="example@gmail.com">
     <label>더 초대할 수 있는 인원</label>
     <select id="p-cap"><option value="1">1명</option><option value="2">2명</option><option value="3" selected>3명</option></select>
-    <div class="chk"><input type="checkbox" id="p-ok"><span>[필수] 매칭 안내를 위해 성함·이메일을 수집하며, 품앗이 종료 후 파기합니다. 동의합니다.</span></div>
     <button class="go" id="p-go">초대 준비됐어요</button>
     <div class="msg" id="p-msg"></div>
   </div>
@@ -130,8 +128,8 @@ async function bindView(name,email){
   document.querySelectorAll('[data-sent]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{const j=await call({action:'plus_sent',name,email,id:b.dataset.sent});$('l-view').innerHTML=renderView(j.view);bindView(name,email)}catch(e){alert(e.message)}})
   const g=$('gotIt');if(g)g.onclick=async()=>{g.disabled=true;try{const j=await call({action:'free_received',name,email});$('l-view').innerHTML=renderView(j.view);bindView(name,email)}catch(e){alert(e.message)}}
 }
-$('f-go').onclick=async()=>{const b=$('f-go'),m=$('f-msg');b.disabled=true;b.textContent='처리 중…';try{const name=$('f-name').value,email=$('f-email').value;const j=await call({action:'not_received',name,email,consent:$('f-ok').checked});show(m,true,j.message||'접수되었습니다.');stats()}catch(e){show(m,false,e.message)}b.disabled=false;b.textContent='다시 연결해 주세요'}
-$('p-go').onclick=async()=>{const b=$('p-go'),m=$('p-msg');b.disabled=true;b.textContent='처리 중…';try{const j=await call({action:'ready_plus',name:$('p-name').value,email:$('p-email').value,cap:$('p-cap').value,consent:$('p-ok').checked});show(m,true,j.message||'등록되었습니다.');stats()}catch(e){show(m,false,e.message)}b.disabled=false;b.textContent='초대 준비됐어요'}
+$('f-go').onclick=async()=>{const b=$('f-go'),m=$('f-msg');b.disabled=true;b.textContent='처리 중…';try{const name=$('f-name').value,email=$('f-email').value;const j=await call({action:'not_received',name,email});show(m,true,j.message||'접수되었습니다.');stats()}catch(e){show(m,false,e.message)}b.disabled=false;b.textContent='다시 연결해 주세요'}
+$('p-go').onclick=async()=>{const b=$('p-go'),m=$('p-msg');b.disabled=true;b.textContent='처리 중…';try{const j=await call({action:'ready_plus',name:$('p-name').value,email:$('p-email').value,cap:$('p-cap').value});show(m,true,j.message||'등록되었습니다.');stats()}catch(e){show(m,false,e.message)}b.disabled=false;b.textContent='초대 준비됐어요'}
 $('l-go').onclick=async()=>{const m=$('l-msg');const name=$('l-name').value,email=$('l-email').value;try{const j=await call({action:'lookup',name,email});m.className='msg';$('l-view').innerHTML=renderView(j.view);bindView(name,email)}catch(e){show(m,false,e.message);$('l-view').innerHTML=''}}
 stats();setInterval(stats,60000)
 // 관리자

@@ -146,7 +146,6 @@ module.exports = async function handler(req, res) {
     const consentOk = b.consent === true || b.consent === 'true'
 
     if (action === 'not_received' || action === 'ready_plus') {
-      if (!consentOk) return res.status(400).json({ error: '개인정보 수집·이용에 동의해 주세요.' })
       const g = await accessToken(process.env.G_GMAIL_REFRESH)
       if (action === 'ready_plus') {
         const cap = Math.max(1, Math.min(MAX_CAP, Number(b.cap) || 1))
