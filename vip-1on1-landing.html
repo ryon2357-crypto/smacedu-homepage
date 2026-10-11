@@ -47,7 +47,7 @@
       overflow-wrap: break-word;
     }
     a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; border-radius: var(--radius); }
+    img { max-width: 100%; height: auto; border-radius: var(--radius); }
 
     /* ─── Utility ──────────────────────────────────── */
     .top-bar { height: 3px; background: linear-gradient(90deg, transparent, var(--gold-deep), var(--gold-lt), var(--gold-deep), transparent); }
@@ -107,8 +107,61 @@
     .hero {
       padding: 100px 0 80px;
       border-bottom: 1px solid var(--border);
-      text-align: center;
+      overflow: hidden;
     }
+    .hero .container { max-width: 1180px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .92fr) minmax(430px, 1.08fr);
+      align-items: center;
+      gap: clamp(44px, 6vw, 80px);
+    }
+    .hero-copy { text-align: left; }
+    .hero-visual {
+      position: relative;
+      isolation: isolate;
+    }
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: -12%;
+      z-index: -1;
+      background: radial-gradient(circle, rgba(201,168,92,.22), transparent 64%);
+      filter: blur(18px);
+    }
+    .hero-image-shell {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(233,212,154,.34);
+      border-radius: 24px;
+      box-shadow: 0 34px 90px rgba(0,0,0,.55), 0 0 0 8px rgba(201,168,92,.04);
+    }
+    .hero-image-shell img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1.6 / 1;
+      object-fit: cover;
+      border-radius: 0;
+    }
+    .visual-chip {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 15px;
+      background: rgba(18,14,10,.9);
+      border: 1px solid rgba(233,212,154,.38);
+      border-radius: 12px;
+      color: #f7eed6;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 12px 35px rgba(0,0,0,.45);
+    }
+    .visual-chip::before { content: "✦"; color: var(--gold-lt); }
+    .visual-chip.one { left: -22px; bottom: 38px; }
+    .visual-chip.two { right: -16px; top: 34px; }
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
       font-size: 12px; font-weight: 700; letter-spacing: .06em;
@@ -129,10 +182,10 @@
     .hero-sub {
       font-size: clamp(1rem, 2vw, 1.2rem);
       color: #aab2c4;
-      max-width: 600px;
-      margin: 0 auto 40px;
+      max-width: 560px;
+      margin: 0 0 34px;
     }
-    .hero-cta-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .hero-cta-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
     .btn-primary {
       display: inline-block;
       background: linear-gradient(135deg, var(--gold), var(--gold-lt));
@@ -163,7 +216,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 20px 32px;
-      margin: 40px auto 0;
+      margin: 34px 0 0;
       box-shadow: 0 16px 40px rgba(0,0,0,.35);
     }
     .price-old {
@@ -311,7 +364,36 @@
       margin-top: 2px;
     }
     .result-list p { font-size: .93rem; color: #c2c8da; margin: 0; }
-
+    .outcomes-visual {
+      position: relative;
+      margin-top: 42px;
+      overflow: hidden;
+      border: 1px solid rgba(233,212,154,.3);
+      border-radius: 22px;
+      background: #0d0b09;
+      box-shadow: 0 28px 70px rgba(0,0,0,.42);
+    }
+    .outcomes-visual img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1.6 / 1;
+      object-fit: cover;
+      border-radius: 22px;
+    }
+    .outcomes-caption {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      z-index: 2;
+      padding: 10px 14px;
+      border: 1px solid rgba(233,212,154,.32);
+      border-radius: 10px;
+      background: rgba(10,8,6,.82);
+      color: var(--gold-lt);
+      font-size: 12px;
+      font-weight: 700;
+      backdrop-filter: blur(10px);
+    }
     /* ─── 왜 지금 1:1인가 ───────────────────────────── */
     .why-grid {
       display: flex;
@@ -594,6 +676,17 @@
       .deadline-box { padding: 36px 20px; }
       .why-card { flex-direction: column; }
     }
+    @media (max-width: 900px) {
+      .hero { padding-top: 72px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+      .hero-copy { text-align: center; }
+      .hero-sub { margin-left: auto; margin-right: auto; }
+      .hero-cta-wrap { align-items: center; }
+      .price-badge { margin-left: auto; margin-right: auto; }
+      .hero-visual { max-width: 680px; margin: 0 auto; }
+      .visual-chip.one { left: 14px; bottom: 18px; }
+      .visual-chip.two { right: 14px; top: 18px; }
+    }
   </style>
 </head>
 <body>
@@ -642,28 +735,40 @@
 <!-- ── HERO ────────────────────────────────────────── -->
 <section class="hero">
   <div class="container">
-    <div class="hero-eyebrow">✦ VIP 회원 한정 · 선착순 5명</div>
-    <h1>
-      직접 완성까지<br />
-      <span class="gold">옆에서 함께</span>합니다
-    </h1>
-    <p class="hero-sub">
-      홈페이지 + 랜딩페이지 4개 + 업무 자동화 + 앱까지<br />
-      1:1 맞춤 지도로, <strong style="color:#fff;">될 때까지</strong> 완성합니다
-    </p>
-    <div class="hero-cta-wrap">
-      <button class="btn-primary" onclick="handleApply('light')">✦ 2시간 라이트 신청하기</button>
-      <span class="hero-note">온라인 원격 · 2시간 · 1:1 맞춤 지도</span>
-      <a href="#apply" style="margin-top:6px;font-size:13px;color:#aab2c4;text-decoration:underline;">더 제대로, 처음부터 끝까지 함께하고 싶다면 — VIP 얼리버드(50만원) →</a>
-    </div>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="hero-eyebrow">✦ VIP 회원 한정 · 선착순 5명</div>
+        <h1>
+          직접 완성까지<br />
+          <span class="gold">옆에서 함께</span>합니다
+        </h1>
+        <p class="hero-sub">
+          홈페이지 + 랜딩페이지 4개 + 업무 자동화 + 앱까지<br />
+          1:1 맞춤 지도로, <strong style="color:#fff;">될 때까지</strong> 완성합니다
+        </p>
+        <div class="hero-cta-wrap">
+          <button class="btn-primary" onclick="handleApply('light')">✦ 2시간 라이트 신청하기</button>
+          <span class="hero-note">온라인 원격 · 2시간 · 1:1 맞춤 지도</span>
+          <a href="#apply" style="margin-top:6px;font-size:13px;color:#aab2c4;text-decoration:underline;">더 제대로, 처음부터 끝까지 함께하고 싶다면 — VIP 얼리버드(50만원) →</a>
+        </div>
 
-    <!-- 가격 배지 -->
-    <div class="price-badge">
-      <div class="price-new-wrap">
-        <div class="price-label">온라인 원격 2시간 · 1:1 라이트</div>
-        <div class="price-new">15만원</div>
-        <div class="price-vat">VAT 제외</div>
+        <!-- 가격 배지 -->
+        <div class="price-badge">
+          <div class="price-new-wrap">
+            <div class="price-label">온라인 원격 2시간 · 1:1 라이트</div>
+            <div class="price-new">15만원</div>
+            <div class="price-vat">VAT 제외</div>
+          </div>
+        </div>
       </div>
+
+      <figure class="hero-visual" aria-label="1:1 맞춤 제작 지도 장면">
+        <div class="hero-image-shell">
+          <img src="/images/vip-1on1/mentor-session-v1.jpg" alt="멘토와 수강생이 노트북으로 홈페이지를 함께 만드는 모습" width="1586" height="992" fetchpriority="high" />
+        </div>
+        <figcaption class="visual-chip one">막히는 순간, 바로 해결</figcaption>
+        <div class="visual-chip two" aria-hidden="true">내 결과물로 완성</div>
+      </figure>
     </div>
 
     <!-- 수강생 전용 안내 -->
@@ -767,6 +872,10 @@
   <div class="container">
     <div class="tag">수료 후 손에 쥐는 것</div>
     <h2>8시간 + 될 때까지,<br /><span class="gold">이것들이 내 것이 됩니다</span></h2>
+    <figure class="outcomes-visual">
+      <img src="/images/vip-1on1/digital-outcomes-v1.jpg" alt="홈페이지, 랜딩페이지, 업무 자동화, 모바일 앱 결과물을 함께 보여주는 디지털 작업 공간" width="1586" height="992" loading="lazy" />
+      <figcaption class="outcomes-caption">배우고 끝나는 수업이 아니라, 작동하는 결과물을 남깁니다</figcaption>
+    </figure>
     <ul class="result-list">
       <li>
         <span class="check">✦</span>
@@ -1035,6 +1144,7 @@
     el.textContent = text;
     el.style.display = 'block';
   }
+
 </script>
 
 </body>
