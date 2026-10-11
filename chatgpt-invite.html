@@ -32,12 +32,14 @@ button.go:disabled{opacity:.6}
 .small{font-size:14px;color:var(--sub)}
 button.sm{background:#fff;border:1.5px solid var(--clay);color:var(--clay-d);border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer;font-size:15px}
 .hide{display:none}
-.road{border-radius:12px;padding:9px 14px;margin:0 0 10px;color:#fff;position:relative;overflow:hidden;transition:background .4s}
-.road .lane{height:4px;margin:6px 0 3px;border-radius:3px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.75) 0 18px,transparent 18px 34px);opacity:.7}
-.road .big{font-size:17px;font-weight:700;display:flex;align-items:center;gap:6px}.road .why{font-size:13px;opacity:.92;margin-top:2px}
-.road.g{background:#2f8f5b}.road.y{background:#d99a1e}.road.r{background:#c0453a}.road.n{background:#8a8079}
-.road.r .lane{animation:none;opacity:.5}.road.g .lane{animation:flow 6s linear infinite}.road.y .lane{animation:flow 3s linear infinite}
-@keyframes flow{from{background-position:0 0}to{background-position:34px 0}}
+.road{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px;margin:0 0 10px;color:var(--ink)}
+.road .big{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.road .tag{color:#fff;border-radius:99px;padding:2px 10px;font-size:14px;background:#8a8079}
+.road .lane{height:4px;margin:7px 0 3px;border-radius:3px;background:#e8e0d6;position:relative;overflow:hidden}
+.road .lane i{position:absolute;left:0;top:0;bottom:0;width:30%;border-radius:3px;background:#8a8079}
+.road .why{font-size:13px;color:var(--sub);margin-top:2px}
+.road.g .tag,.road.g .lane i{background:#2f8f5b}.road.y .tag,.road.y .lane i{background:#d99a1e}.road.r .tag,.road.r .lane i{background:#c0453a}
+.road.g .lane i{width:100%}.road.y .lane i{width:55%}.road.r .lane i{width:20%}
 /* 관리자 */
 .board{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0 16px}
 table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;word-break:break-all}
@@ -53,7 +55,7 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:8px 6px;b
 
   <div class="notice">⏰ <b>신청한 지 1시간이 지났는데 아직 초대 메일을 못 받으셨나요?</b><br>아래 <b>① 아직 초대를 못 받았어요</b>에 남겨 주세요. 기존 연결은 취소하고, 지금 바로 초대해 줄 수 있는 Plus 회원에게 다시 연결해 드립니다.</div>
 
-  <div class="road n" id="road"><div class="big"><span id="roadIcon">⏳</span><span id="roadTxt">교통 상황 확인 중…</span></div><div class="lane"></div><div class="why" id="roadWhy"></div></div>
+  <div class="road n" id="road"><div class="big"><span>초대 교통 상황</span><span class="tag"><span id="roadIcon">⏳</span> <span id="roadTxt">확인 중</span></span></div><div class="lane"><i></i></div><div class="why" id="roadWhy"></div></div>
 
   <div class="stats" id="stats">
     <div class="stat"><span class="small">초대 기다리는 분</span><b id="stWait">-</b></div>
@@ -117,11 +119,11 @@ tick();setInterval(tick,1000)
 async function call(body){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json().catch(()=>({error:'응답 오류'}));if(!r.ok)throw new Error(j.error||'오류');return j}
 function show(el,ok,t){el.className='msg '+(ok?'ok':'err');el.textContent=t}
 function road(j){const w=j.waiting||0,sl=j.slots||0;let c,i,t,y
- if(w===0){c='g';i='🟢';t='원활';y='기다리는 분이 없습니다. 남기시면 바로 연결됩니다.'}
- else if(sl>=w){c='g';i='🟢';t='원활';y=`기다리는 ${w}명 모두 바로 연결될 수 있습니다.`}
- else if(w<=sl*2+2){c='y';i='🟡';t='서행';y=`기다리는 분 ${w}명 · 초대 가능 ${sl}자리 — Plus 회원님의 참여가 조금 더 필요합니다.`}
- else{c='r';i='🔴';t='정체';y=`기다리는 분 ${w}명 · 초대 가능 ${sl}자리 — Plus 회원님, ②에 남겨 주시면 정체가 풀립니다!`}
- $('road').className='road '+c;$('roadIcon').textContent=i;$('roadTxt').textContent='초대 교통 상황: '+t;$('roadWhy').textContent=y}
+ if(w===0){c='g';i='●';t='원활';y='기다리는 분이 없습니다. 남기시면 바로 연결됩니다.'}
+ else if(sl>=w){c='g';i='●';t='원활';y=`기다리는 ${w}명 모두 바로 연결될 수 있습니다.`}
+ else if(w<=sl*2+2){c='y';i='●';t='서행';y=`기다리는 분 ${w}명 · 초대 가능 ${sl}자리 — Plus 회원님의 참여가 조금 더 필요합니다.`}
+ else{c='r';i='●';t='정체';y=`기다리는 분 ${w}명 · 초대 가능 ${sl}자리 — Plus 회원님, ②에 남겨 주시면 정체가 풀립니다!`}
+ $('road').className='road '+c;$('roadIcon').textContent=i;$('roadTxt').textContent=t;$('roadWhy').textContent=y}
 async function stats(){try{const r=await fetch(API+'?action=stats');const j=await r.json();$('stWait').textContent=j.waiting+'명';$('stReady').textContent=(j.slots||0)+'자리 ('+j.readyPlus+'명)';$('stMatched').textContent=j.matched+'건';road(j)}catch(e){}}
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));['free','plus','look'].forEach(k=>$('p-'+k).classList.toggle('hide',k!==b.dataset.t))})
 function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
