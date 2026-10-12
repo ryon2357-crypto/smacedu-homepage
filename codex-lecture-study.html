@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>코덱스 특강 학습자료</title>
+<style>
+:root{--bg:#faf6ef;--card:#fffdf8;--ink:#2b2622;--sub:#6b625a;--clay:#c2603a;--clay-soft:#f6e3d9;--line:#e6dccd;--ok:#2f7a4f;--ok-soft:#e3f2e8;--warn:#a8630f;--warn-soft:#fbefd5;--tip:#2f5f8a;--tip-soft:#e3eef8}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;font-size:18px;line-height:1.8;word-break:keep-all}
+.wrap{max-width:820px;margin:0 auto;padding:0 18px 80px}
+header{padding:48px 0 24px}
+.badge{display:inline-block;background:var(--clay-soft);color:var(--clay);font-weight:700;font-size:14px;padding:4px 12px;border-radius:99px}
+h1{font-size:34px;line-height:1.35;margin:14px 0 10px}
+.lead{color:var(--sub);font-size:19px;margin:0}
+.meta{margin-top:14px;font-size:15px;color:var(--sub)}
+nav.toc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 24px;margin:20px 0 40px}
+nav.toc b{display:block;margin-bottom:6px}
+nav.toc ol{margin:0;padding-left:22px}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--clay);text-decoration:underline}
+section{margin:0 0 56px}
+h2{font-size:26px;line-height:1.4;margin:0 0 14px;padding-bottom:10px;border-bottom:3px solid var(--clay)}
+h2 .n{color:var(--clay);margin-right:6px}
+h3{font-size:21px;margin:30px 0 8px}
+p{margin:10px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 22px;margin:16px 0}
+.box{border-radius:14px;padding:14px 20px;margin:16px 0;border-left:6px solid}
+.box.ok{background:var(--ok-soft);border-color:var(--ok)}
+.box.warn{background:var(--warn-soft);border-color:var(--warn)}
+.box.tip{background:var(--tip-soft);border-color:var(--tip)}
+.box b.t{display:block;margin-bottom:2px}
+ol.steps{counter-reset:s;list-style:none;padding:0;margin:14px 0}
+ol.steps>li{counter-increment:s;position:relative;padding:4px 0 10px 50px}
+ol.steps>li::before{content:counter(s);position:absolute;left:0;top:4px;width:34px;height:34px;border-radius:50%;background:var(--clay);color:#fff;font-weight:700;text-align:center;line-height:34px}
+.prompt{background:#fff;border:2px dashed var(--clay);border-radius:12px;padding:14px 18px;margin:12px 0;font-size:17px;white-space:pre-wrap}
+.prompt::before{content:"📋 이렇게 말해 보세요";display:block;font-size:13px;color:var(--clay);font-weight:700;margin-bottom:4px}
+table{width:100%;border-collapse:collapse;margin:14px 0;background:var(--card);font-size:16px}
+th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+th{background:var(--clay-soft)}
+.term{display:grid;grid-template-columns:1fr;gap:10px}
+.term div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 16px}
+.term b{color:var(--clay)}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:10px 0}
+summary{cursor:pointer;font-weight:700}
+.check li{list-style:none;margin:6px 0}
+.check{padding-left:4px}
+footer{color:var(--sub);font-size:14px;border-top:1px solid var(--line);padding-top:18px}
+@media(max-width:560px){body{font-size:17px}h1{font-size:27px}h2{font-size:22px}table{font-size:14px}}
+@media print{body{background:#fff}nav.toc{display:none}.card,.box,details{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="badge">2026.10.11 무료특강 · 복습용</span>
+  <h1>챗GPT 코덱스,<br>처음 쓰는 사람을 위한 학습자료</h1>
+  <p class="lead">어려운 코딩 지식 없이, <b>말로 시켜서</b> 폴더 정리 · 홈페이지 · 업무 자동화까지 해 보는 방법을 순서대로 정리했습니다.</p>
+  <div class="meta">엘란비탈 박성욱 작가 · 스마트미디어아트센터<br>강의 내용을 복습하며 따라 하실 수 있도록, 화면 순서대로 풀어 썼습니다.</div>
+</header>
+
+<nav class="toc">
+  <b>📚 차례</b>
+  <ol>
+    <li><a href="#s0">이 강의 한눈에 보기</a></li>
+    <li><a href="#s1">먼저 알아야 할 말 (용어 풀이)</a></li>
+    <li><a href="#s2">준비하기 — 설치와 로그인</a></li>
+    <li><a href="#s3">사용량(크레딧) 아껴 쓰는 법</a></li>
+    <li><a href="#s4">실습 1 — 어지러운 폴더 정리</a></li>
+    <li><a href="#s5">실습 2 — 지침서(AGENTS.md)와 기본 폴더</a></li>
+    <li><a href="#s6">실습 3 — 홈페이지·랜딩페이지 만들기</a></li>
+    <li><a href="#s7">실습 4 — 업무 자동화 맛보기</a></li>
+    <li><a href="#s8">더 해 볼 것 — 영상 편집, 비서(에이전트)</a></li>
+    <li><a href="#s9">막혔을 때 · 자주 하는 실수</a></li>
+    <li><a href="#s10">오늘 배운 것 점검표 · 숙제</a></li>
+  </ol>
+</nav>
+
+<section id="s0">
+  <h2><span class="n">0</span>이 강의 한눈에 보기</h2>
+  <div class="card">
+    <p><b>핵심 한 줄</b><br>“문제가 있으면, 그 문제를 푸는 프로그램을 <u>말로 시켜서</u> 만들 수 있다. 누구나 할 수 있는 시대다.”</p>
+  </div>
+  <p>오늘 강의에서 한 일을 순서대로 보면 이렇습니다.</p>
+  <table>
+    <tr><th>순서</th><th>한 일</th><th>배운 것</th></tr>
+    <tr><td>준비</td><td>ChatGPT 데스크톱 앱 설치 · 코덱스로 전환</td><td>코덱스는 <b>내 PC에 설치한 앱</b>에서 쓴다</td></tr>
+    <tr><td>실습 1</td><td>뒤죽박죽 폴더 정리</td><td>폴더 주소를 알려 주면 AI가 직접 파일을 정리한다</td></tr>
+    <tr><td>실습 2</td><td>지침서(AGENTS.md)와 기본 폴더 만들기</td><td>AI가 마음대로 일하지 않게 <b>규칙</b>을 먼저 정한다</td></tr>
+    <tr><td>실습 3</td><td>홈페이지·랜딩페이지 만들기</td><td>글 + 사진을 폴더에 넣어 주면 웹페이지가 만들어진다</td></tr>
+    <tr><td>실습 4</td><td>신청서 접수 현황 점검</td><td>반복되는 업무를 AI에게 맡긴다</td></tr>
+    <tr><td>보너스</td><td>영상 편집, 메일 정리, 비서(에이전트)</td><td>내 일에 맞게 확장할 수 있다</td></tr>
+  </table>
+  <div class="box tip"><b class="t">💡 이렇게 공부하세요</b>처음부터 끝까지 한 번에 하지 않아도 됩니다. <b>준비 → 실습 1</b>만 해 보셔도 “아, 이런 거구나” 하는 감이 옵니다. 나머지는 하루에 하나씩 해 보세요.</div>
+</section>
+
+<section id="s1">
+  <h2><span class="n">1</span>먼저 알아야 할 말</h2>
+  <p>낯선 단어 때문에 어렵게 느껴질 뿐, 뜻은 쉽습니다.</p>
+  <div class="term">
+    <div><b>챗GPT 채팅(Chat)</b> — 우리가 흔히 쓰는 “물어보면 답해 주는” 대화창입니다. 이미지·인포그래픽도 여기서 만들 수 있습니다.</div>
+    <div><b>워크(Work)</b> — 채팅보다 한 걸음 더 나아가, PPT 만들기·수정, 메일 확인처럼 <b>일을 대신 해 주는</b> 기능입니다. 유료(플러스) 회원만 쓸 수 있습니다.</div>
+    <div><b>코덱스(Codex)</b> — <b>내 컴퓨터 안의 폴더와 파일을 직접 열어서 일하는 AI</b>입니다. 프로그램을 만들고, 파일을 정리하고, 웹페이지도 만듭니다. 이름은 ‘코딩’처럼 들리지만 <b>코딩을 몰라도</b> 됩니다.</div>
+    <div><b>프롬프트</b> — AI에게 하는 <b>말(지시문)</b>입니다. 어렵게 쓸 필요 없이, 사람에게 일을 부탁하듯 쓰면 됩니다.</div>
+    <div><b>바이브 코딩</b> — 코드를 직접 짜지 않고 <b>말로 설명해서</b> 프로그램을 만드는 방식입니다. 오늘 한 실습이 전부 바이브 코딩입니다.</div>
+    <div><b>폴더 경로(주소)</b> — 폴더가 컴퓨터 어디에 있는지 알려 주는 주소입니다. 폴더를 연 뒤 위쪽 <b>주소창을 한 번 클릭 → Ctrl+C</b>로 복사합니다.</div>
+    <div><b>MD 파일(.md)</b> — 글자만 들어 있는 안내문 파일입니다. 메모장으로 열 수 있습니다. AI에게 주는 “업무 지침서”로 많이 씁니다.</div>
+    <div><b>HTML 파일</b> — 웹페이지 파일입니다. 더블클릭하면 인터넷 창(크롬 등)에서 열립니다.</div>
+    <div><b>랜딩페이지</b> — 신청을 받기 위한 <b>한 장짜리</b> 소개 페이지입니다. 반대로 메뉴가 여러 개 있는 것은 <b>반응형 홈페이지</b>(여러 페이지, 휴대폰 화면에도 맞게 바뀜)입니다.</div>
+    <div><b>배포</b> — 만든 웹페이지를 <b>다른 사람도 볼 수 있게 인터넷에 올리는 것</b>입니다.</div>
+    <div><b>크레딧 · 사용량</b> — AI를 쓸 수 있는 <b>양(연료)</b>입니다. 많이 쓰면 줄어듭니다. 3장에서 자세히 설명합니다.</div>
+    <div><b>에이전트</b> — 시키는 일을 스스로 여러 단계로 처리하는 AI 도우미입니다.</div>
+  </div>
+</section>
+
+<section id="s2">
+  <h2><span class="n">2</span>준비하기 — 설치와 로그인</h2>
+  <div class="box warn"><b class="t">⚠️ 꼭 기억하세요</b>코덱스 실습은 <b>PC(컴퓨터)에서</b> 합니다. 휴대폰으로는 따라오기 어렵습니다. 그리고 <b>웹사이트(인터넷 창)가 아니라 ‘데스크톱 앱’</b>에서 합니다.</div>
+
+  <h3>2-1. ChatGPT 데스크톱 앱 설치</h3>
+  <ol class="steps">
+    <li>인터넷 창에서 <b>chatgpt.com</b>으로 들어갑니다. (주소를 직접 치는 것이 안전합니다. 검색하면 엉뚱한 사이트가 나올 때가 있습니다.)</li>
+    <li>“ChatGPT 데스크톱 앱 다운로드”를 찾아 PC용을 받아 설치합니다. 못 찾겠으면 <b>‘ChatGPT 다운로드’로 검색</b>하세요.</li>
+    <li>설치가 끝나면 윈도우 아래쪽 검색창에 <b>영어로 “ChatGPT”</b>를 입력해 앱을 엽니다. (한글로는 안 나옵니다.)</li>
+  </ol>
+
+  <h3>2-2. 로그인하고 코덱스로 바꾸기</h3>
+  <ol class="steps">
+    <li>앱이 열리면 <b>로그인 계속하기</b>를 누르고, 내 계정을 선택합니다. (한 번 더 “개인 계정 계속”이 나오면 눌러 줍니다.)</li>
+    <li>화면 위쪽에서 <b>Chat → Codex</b>로 바꿉니다. 왼쪽 위에 “Codex”라고 보이면 성공입니다.</li>
+    <li>“브라우저에서 로그인을 계속하세요” 같은 창이 따로 뜨면 안내대로 한 번만 진행합니다. 이미 로그인되어 있으면 무시해도 됩니다.</li>
+  </ol>
+  <div class="box ok"><b class="t">✅ 확인</b>화면 맨 위가 “ChatGPT”이고, 왼쪽 위에 “Codex”가 보이면 준비 끝입니다.</div>
+
+  <h3>2-3. 실습자료 내려받기</h3>
+  <ol class="steps">
+    <li>강의 때 받은 <b>구글 드라이브 링크</b>에서 실습자료(압축파일 .zip)를 내 <b>PC</b>에 내려받습니다.</li>
+    <li>PC에 강의용 폴더를 하나 만듭니다. 예) <b>D:\1011_코덱스</b> (C 드라이브가 부담스러우면 D 드라이브 추천)</li>
+    <li>압축파일을 폴더에 넣고 <b>마우스 오른쪽 → 압축 풀기</b>를 합니다.</li>
+  </ol>
+  <details><summary>📦 실습자료 폴더 안에는 무엇이 있나요?</summary>
+    <table>
+      <tr><th>폴더</th><th>용도</th></tr>
+      <tr><td>01_문서정리_실습</td><td>일부러 어지럽게 만든 폴더(어지러운폴더) — 실습 1</td></tr>
+      <tr><td>02_홈페이지_실습</td><td>강사소개·강의일정·수강후기 글 + 사진 3장 — 실습 3</td></tr>
+      <tr><td>03_자동화_실습</td><td>가상 신청서 접수현황(엑셀) + 점검 기준 — 실습 4</td></tr>
+      <tr><td>04_지시문_카드</td><td>복사해서 붙여 넣는 지시문 모음</td></tr>
+      <tr><td>랜딩페이지 · 반응형 홈페이지</td><td>완성된 예시(참고용)</td></tr>
+    </table>
+  </details>
+
+  <h3>2-4. 무료 회원이라면?</h3>
+  <p>무료 계정으로도 코덱스를 써 볼 수는 있지만 사용량이 적습니다(‘워크’는 유료 전용). 유료(플러스)가 더 넉넉합니다. 강의에서는 <b>플러스 회원이 친구를 초대하면, 초대한 분과 초대받은 분 모두에게 크레딧이 지급되는 방식</b>으로 서로 연결해 드렸습니다.</p>
+  <ul>
+    <li>초대받으면 이메일로 <b>“ChatGPT 데스크톱 앱에 초대되었습니다”</b>라는 메일이 옵니다 → <b>초대 수락하기</b>를 누릅니다.</li>
+    <li>잠시 뒤 “추천 보상이 준비되었습니다” 메일이 오면 크레딧이 들어온 것입니다.</li>
+    <li>초대는 <b>한 달에 횟수 제한</b>이 있습니다. 제한을 넘기면 다음 달에 해야 합니다.</li>
+    <li>가끔 보상이 안 들어오기도 합니다. 그럴 땐 <b>다른 이메일 계정</b>으로 다시 시도해 보세요.</li>
+    <li>🚫 <b>계정을 여러 명이 같이 쓰는 ‘공동 계정’은 쓰지 마세요.</b> 한꺼번에 많이 쓰면 계정이 막혀서 정작 결제한 분이 못 쓰게 됩니다. 본인 계정으로 쓰세요.</li>
+  </ul>
+  <div class="box tip"><b class="t">💡 클로드(Claude)를 쓰시는 분</b>클로드 앱에도 비슷한 기능(프로젝트 → ‘+’ 버튼 → 폴더 연결)이 있어서 같은 방식으로 따라 하실 수 있습니다. 원리는 같습니다.</div>
+</section>
+
+<section id="s3">
+  <h2><span class="n">3</span>사용량(크레딧) 아껴 쓰는 법</h2>
+  <p>AI는 쓸수록 사용량이 줄어듭니다. 아래 다섯 가지만 알아도 오래 쓸 수 있습니다.</p>
+
+  <h3>3-1. 내 사용량 확인하는 곳</h3>
+  <ol class="steps">
+    <li>왼쪽 아래 <b>내 프로필(이름)</b>을 누릅니다.</li>
+    <li><b>설정 → 사용량 및 청구</b>로 들어갑니다.</li>
+    <li>“5시간” 사용량과 “주간” 사용량, <b>크레딧 잔액</b>이 보입니다.</li>
+  </ol>
+  <ul>
+    <li>5시간 사용량은 <b>5시간마다 새로 채워집니다.</b></li>
+    <li>하지만 <b>주간 한도</b>가 따로 있어서, 일주일 치를 사흘 만에 다 쓰면 기다리거나 크레딧을 사야 합니다.</li>
+  </ul>
+
+  <h3>3-2. 크레딧을 아끼는 다섯 가지 요령</h3>
+  <table>
+    <tr><th>요령</th><th>이유 · 방법</th></tr>
+    <tr><td>① 비싼 모델을 기본으로 쓰지 않기</td><td>화면 <b>오른쪽 아래</b>에 모델 이름이 있습니다. 가장 비싼(최상위) 모델은 사용량이 빨리 닳습니다. <b>중간 단계 모델이면 PPT·문서·홈페이지도 충분</b>합니다. 아주 복잡한 일일 때만 올립니다.</td></tr>
+    <tr><td>② ‘빠르게(번개)’ 기능은 함부로 쓰지 않기</td><td>빨라지는 대신 크레딧이 훨씬 빨리 줄어듭니다.</td></tr>
+    <tr><td>③ 일이 바뀌면 <b>새 세션(새 대화)</b> 열기</td><td>한 대화에서 하루 종일 하면, AI가 앞의 내용을 매번 다시 읽어서 사용량이 급격히 줄어듭니다. 새 일은 새 세션에서 시작하세요.</td></tr>
+    <tr><td>④ 대화가 길어지면 <b>/compact</b></td><td>입력창에 <b>/compact</b>를 치면 지금까지 대화를 요약·압축해 줍니다.</td></tr>
+    <tr><td>⑤ PPT는 코덱스 말고 채팅/워크로도 가능</td><td>PPT 만들기·수정은 코덱스를 쓰지 않아도 됩니다.</td></tr>
+  </table>
+  <div class="box warn"><b class="t">⚠️ 사용량이 갑자기 0이 되었다면</b>설정 → 사용량 및 청구 아래쪽의 <b>‘사용 한도 초기화’</b>를 확인하세요. 초기화 시간까지 기다리거나, 다음 날 이어서 해도 됩니다. 급하지 않은 작업은 <b>예약</b>을 걸어 두면 초기화 시간 이후에 알아서 실행됩니다.</div>
+</section>
+
+<section id="s4">
+  <h2><span class="n">4</span>실습 1 — 어지러운 폴더 정리</h2>
+  <div class="card">
+    <b>목표</b> 영수증, 강의계획서, 사진이 마구 섞인 폴더를 AI가 종류별로 정리하게 해 봅니다.<br>
+    <b>쓰는 자료</b> 실습자료 → <code>01_문서정리_실습\어지러운폴더</code>
+  </div>
+
+  <h3>따라 하기</h3>
+  <ol class="steps">
+    <li>PC에서 <b>어지러운폴더</b>를 엽니다. 파일 이름도 제각각이고(‘최종_진짜최종’ 같은), 종류가 뒤섞여 있습니다.</li>
+    <li>폴더 안쪽으로 한 번 들어간 뒤, 위쪽 <b>주소창을 클릭 → Ctrl+C</b>로 폴더 주소를 복사합니다.</li>
+    <li>코덱스 입력창에 <b>Ctrl+V</b>로 붙여 넣고, 아래처럼 <b>“조사만”</b> 먼저 시킵니다.</li>
+  </ol>
+  <div class="prompt">원본 파일은 절대 수정하거나 삭제하지 말고, 복사본에서만 작업해 줘.
+이 폴더(붙여 넣은 주소)에 있는 파일을 전부 살펴보고, 어떤 종류의 파일이 몇 개씩 있는지 표로 알려 줘.
+파일 이름과 실제 내용이 다른 것, 똑같은 내용의 중복 파일, 업무와 관련 없어 보이는 파일도 따로 찾아 줘.
+아직 아무것도 바꾸지 마.</div>
+  <ol class="steps" start="4">
+    <li>표가 나오면 읽어 봅니다. (코덱스가 “터미널을 실행해도 되나요?”라고 물으면 <b>‘한 번만 허용’</b>을 눌러도 됩니다. 내 PC의 파일을 읽을 권한을 주는 것입니다.)</li>
+    <li>그다음 정리를 시킵니다.</li>
+  </ol>
+  <div class="prompt">폴더는 [영수증 / 강의계획서 / 수강신청서 / 회의록 / 견적서 / 행사사진 / 안내문 / 확인필요]로 나눠 줘.
+파일 이름은 [날짜_종류_내용] 형식으로 바꿔 줘.
+무엇이 어디로 가고 이름이 어떻게 바뀌는지 표로 먼저 보여 줘.</div>
+  <ol class="steps" start="6">
+    <li>계획이 마음에 들면 <b>“진행해 줘”</b>라고 합니다.</li>
+    <li>끝나면 <b>정리 전·후 파일 개수를 비교</b>하게 하고, 전체 목록을 엑셀로 저장하게 합니다.</li>
+  </ol>
+
+  <div class="box warn"><b class="t">⚠️ 이 실습의 핵심 3가지</b>
+    ① <b>“아직 아무것도 바꾸지 마”</b>를 꼭 붙입니다. 안 붙이면 AI가 바로 파일을 옮기고 이름을 바꿉니다.<br>
+    ② <b>원본은 따로 보관</b>하세요. 중요한 자료는 복사본으로 연습하세요.<br>
+    ③ C 드라이브 깊숙한 폴더(윈도우·프로그램 폴더)는 건드리지 마세요. 필요하면 C 드라이브에 <b>새 폴더를 만들어서</b> 거기서 작업하세요.
+  </div>
+  <div class="box tip"><b class="t">🔎 함정 찾기</b>이 폴더에는 <b>함정</b>이 숨어 있었습니다. 이름과 내용이 다른 파일, 다른 폴더에 있어야 할 파일 같은 것입니다. “<b>이름과 실제 내용이 다른 자료는 없었어?</b>”라고 AI에게 되물어 보면 검수가 됩니다. <b>AI가 한 일은 사람이 한 번 훑어보는 것이 좋습니다.</b></div>
+  <p>사람마다 결과가 조금씩 다른 것은 정상입니다. AI는 <b>평소 내가 어떻게 시켜 왔는지</b>에 따라 다르게 반응합니다. 마음에 안 들면 직접 고쳐도 되고, 다시 시켜도 됩니다.</p>
+
+  <details><summary>🙋 다른 폴더도 정리하고 싶다면?</summary>
+    복잡하게 쓸 필요 없이 <b>폴더 주소를 붙여 넣고 “이 폴더 정리해 줘”</b>만 해도 AI가 알아서 정리합니다. 다만 항목(영수증·강의자료 등)을 내가 정해 주면 결과가 훨씬 정확합니다.
+  </details>
+</section>
+
+<section id="s5">
+  <h2><span class="n">5</span>실습 2 — 지침서(AGENTS.md)와 기본 폴더</h2>
+  <div class="card">
+    <b>목표</b> AI가 자기 멋대로 일하지 않도록 <b>내 업무 규칙</b>을 문서로 만들어 줍니다.<br>
+    <b>왜 필요한가</b> 일을 시작할 때 규칙을 정해 두는 것과 그냥 시작하는 것은 결과 차이가 큽니다. 자료가 늘어날수록 더 그렇습니다.
+  </div>
+  <h3>5-1. MD 파일이란?</h3>
+  <p>글자만 들어 있는 안내문입니다. 더블클릭해서 열리지 않으면 <b>마우스 오른쪽 → 연결 프로그램 → 메모장</b>으로 여세요. (항상 메모장으로 열도록 바꾸지는 말고, 볼 때만 한 번 열어 보세요.)</p>
+  <table>
+    <tr><th>파일</th><th>누가 읽나</th><th>내용</th></tr>
+    <tr><td><b>AGENTS.md</b></td><td>AI(코덱스)</td><td>프로젝트 목적, 지시 우선순위, 기본 작업 원칙 — “이 규칙대로 일해”</td></tr>
+    <tr><td><b>README.md</b></td><td>사람(나)</td><td>이 폴더가 무엇인지 설명</td></tr>
+  </table>
+
+  <h3>5-2. 따라 하기</h3>
+  <ol class="steps">
+    <li>실습자료의 <b>코덱스_AGENTS_md_강의용_템플릿</b> 파일(강의 때 드린 것)을 준비합니다.</li>
+    <li>코덱스를 <b>새 세션</b>으로 열고, 오늘 쓸 폴더 주소를 붙여 넣습니다.</li>
+    <li>이렇게 물어봅니다.</li>
+  </ol>
+  <div class="prompt">이 폴더에 있는 md 파일 내용을 짧게 정리해 줘.</div>
+  <ol class="steps" start="4">
+    <li>이해가 되면, 내 일에 맞게 바꿉니다.</li>
+  </ol>
+  <div class="prompt">이 템플릿을 기준으로, 이 폴더의 작업 지침서(AGENTS.md)로 저장해 줘.
+이름은 내 상황에 맞게 바꿔 줘.</div>
+  <ol class="steps" start="5">
+    <li>폴더 구조도 만들게 합니다. 강의에서는 이렇게 만들었습니다.</li>
+  </ol>
+  <div class="card">
+    <b>input</b> — 새로 들어오는 자료를 넣는 곳<br>
+    <b>output</b> — 완성된 결과물이 저장되는 곳<br>
+    <b>work</b> — 작업 중인 파일
+  </div>
+  <div class="prompt">이 지침서에 맞는 기본 폴더(input, output, work)를 만들어 줘.
+앞으로 새 파일은 날짜가 들어간 이름으로 저장해 줘.</div>
+
+  <div class="box ok"><b class="t">✅ 이렇게 해 두면 좋은 점</b>
+    “어제 작업한 파일 띄워 줘”처럼 <b>대충 말해도</b> AI가 찾아 줍니다. 처음에는 같은 일을 시켜도 매번 설명이 필요하지만, <b>내 블로그·홈페이지·업무 방식을 AI가 알게 될수록</b> 점점 짧은 말로도 통합니다. 이것을 “길들인다”고 표현했습니다.
+  </div>
+  <p>지침서(AGENTS.md)는 <b>수정해도 됩니다.</b> 일하다가 “이 규칙은 빼자” 싶으면 코덱스에게 “지침서에서 이 부분을 이렇게 고쳐 줘”라고 하면 됩니다.</p>
+</section>
+
+<section id="s6">
+  <h2><span class="n">6</span>실습 3 — 홈페이지·랜딩페이지 만들기</h2>
+  <div class="card">
+    <b>목표</b> 강사 소개 + 강의 일정 + 후기 + 신청 버튼이 있는 웹페이지를 만듭니다.<br>
+    <b>쓰는 자료</b> 실습자료 → <code>02_홈페이지_실습</code> (글 4개 + 사진 3장)<br>
+    <b>핵심 원리</b> <u>글(내용)</u>과 <u>사진(소스)</u>을 폴더에 넣고, 폴더 주소를 AI에게 준다.
+  </div>
+
+  <h3>6-1. 먼저 알아 두기 — 두 가지 종류</h3>
+  <table>
+    <tr><th></th><th>랜딩페이지</th><th>반응형 홈페이지</th></tr>
+    <tr><td>모양</td><td>한 장짜리 긴 페이지</td><td>강좌 안내·수강후기·문의 신청 등 여러 메뉴</td></tr>
+    <tr><td>용도</td><td>“이 강의 신청하세요”</td><td>내 가게·강의를 소개하는 사이트</td></tr>
+    <tr><td>어떤 AI로?</td><td>채팅 AI로도 가능</td><td>여러 파일이 필요하니 <b>코덱스</b>가 유리</td></tr>
+  </table>
+
+  <h3>6-2. 따라 하기</h3>
+  <ol class="steps">
+    <li>코덱스를 <b>새 세션</b>으로 열고 <code>02_홈페이지_실습</code> 폴더 주소를 붙여 넣습니다. (폴더를 열고 주소창을 클릭해 복사하세요. 내 PC의 폴더 위치는 사람마다 다르니 <b>내 폴더 주소</b>를 써야 합니다.)</li>
+    <li>이렇게 시킵니다.</li>
+  </ol>
+  <div class="prompt">이 폴더의 1~4번 텍스트와 사진 3장을 사용해서 강사 소개 홈페이지를 만들어 줘.
+- 한 페이지, 카드 모양의 강좌 소개, 후기, 문의 방법, 신청 버튼
+- 따뜻하고 밝은 분위기, 글자는 크게
+- 휴대폰 화면에서도 글자가 잘리지 않게
+다 만들면 직접 열어서 확인하고, 문제가 있으면 스스로 고친 뒤 무엇을 고쳤는지 알려 줘.</div>
+  <ol class="steps" start="3">
+    <li>만들어지면 폴더에 <b>index.html</b> 파일이 생깁니다. 더블클릭하면 인터넷 창에서 열립니다. 코덱스 안에도 미리보기가 나옵니다.</li>
+    <li>코덱스는 만든 뒤 <b>스스로 열어서 검수</b>합니다. 모바일 화면에서 사진이 잘리면 “이미지 높이를 자동 계산으로 고쳤다” 같은 보고를 합니다. (채팅 AI는 만들고 끝이지만, 코덱스는 검수까지 합니다.)</li>
+  </ol>
+
+  <h3>6-3. 고쳐 달라고 하기 (말로 하면 됩니다)</h3>
+  <ul>
+    <li>제목 글자를 더 크게 하고 배경을 연한 노란색으로 바꿔 줘.</li>
+    <li>신청 버튼을 화면 맨 아래에도 하나 더 추가해 줘.</li>
+    <li>휴대폰 화면에서 보면 어떻게 보이는지 확인하고 어색한 곳을 고쳐 줘.</li>
+  </ul>
+
+  <h3>6-4. 내 사진 넣기</h3>
+  <ol class="steps">
+    <li>내 사진을 폴더(예: 사진 폴더)에 넣습니다.</li>
+    <li>“<b>사진 폴더에 실제 사진을 넣었으니, 그 사진을 이용해서 다시 만들어 줘</b>”라고 합니다.</li>
+  </ol>
+  <div class="box tip"><b class="t">💡 말로 입력이 힘들다면</b>윈도우 키 + <b>H</b>를 누르면 <b>음성으로 입력</b>할 수 있습니다. 많이 길게 말해도 됩니다.</div>
+
+  <h3>6-5. “신청하기” 버튼에 링크 연결하기</h3>
+  <p>예전에는 버튼의 위치(좌표)를 일일이 계산해야 했습니다. 지금은 <b>말로만</b> 하면 됩니다.</p>
+  <div class="prompt">‘신청하기’ 버튼을 누르면 이 링크(오픈채팅방/신청서 주소)로 연결해 줘.
+‘블로그 활동 보기’ 버튼은 내 블로그 주소로 연결해 줘.</div>
+  <p>연결이 안 되면 <b>“왜 연결이 안 돼?”</b>라고 이유부터 물어보세요. 그러면 AI가 원인을 알려 주고 고칩니다.</p>
+
+  <h3>6-6. 더 잘 만드는 비결 (레퍼런스)</h3>
+  <ul>
+    <li><b>마음에 드는 사이트</b>의 주소나 화면 캡처를 AI에게 같이 주고, <b>“이런 디자인을 참고해서 만들어 줘”</b>라고 하면 훨씬 좋아집니다. (“레퍼런스가 있으면 쉽다”)</li>
+    <li><b>내 블로그 글</b>을 복사해서 붙여 넣고 “이 내용을 기반으로 랜딩페이지 만들어 줘”라고 해도 됩니다.</li>
+    <li>네이버 블로그 주소는 AI가 읽지 못하는 경우가 많습니다. 그럴 땐 <b>글을 복사해서 붙여 넣으세요.</b></li>
+    <li>내 매장·강의라면 <b>직접 찍은 사진</b>을 넣어야 진짜 내 페이지가 됩니다.</li>
+    <li>“빵집 홈페이지 만들어 줘”처럼 짧게만 말하면 AI가 내용을 모르니 엉뚱한 결과가 나옵니다. <b>무엇을 / 어떤 자료로 / 꼭 들어갈 것 / 완성 기준</b> 네 가지를 말해 주세요.</li>
+  </ul>
+
+  <h3>6-7. 배포 — 다른 사람도 보게 하려면</h3>
+  <p>html 파일을 카톡으로 보내도 상대방은 열기 어렵습니다. 그래서 <b>인터넷에 올리는(배포)</b> 단계가 필요합니다.</p>
+  <table>
+    <tr><th>방법</th><th>설명</th></tr>
+    <tr><td>ChatGPT 사이트 배포</td><td>코덱스에게 <b>“배포해 줘”</b>라고 말하면 간단히 올려 줍니다. 가장 쉽습니다.</td></tr>
+    <tr><td>Claude 아티팩트</td><td>클로드에서 만든 경우 아티팩트로 공유할 수 있습니다.</td></tr>
+    <tr><td>Vercel 등 외부 서비스</td><td>가장 널리 쓰는 방법이지만 별도 공부가 필요합니다.</td></tr>
+    <tr><td>내 도메인·서버</td><td>본격 운영용입니다. 강의의 홈페이지도 이런 방식입니다.</td></tr>
+  </table>
+  <p>“나 이거 배포하고 싶어. 어떻게 해야 해?”라고 AI에게 물으면 필요한 계정이나 정보를 알려 줍니다. 그대로 따라 하면 됩니다.</p>
+  <div class="box warn"><b class="t">⚠️ 오늘 강의에서는 배포를 직접 하지 못했습니다</b>배포는 별도의 준비가 필요해서, 이후 강의에서 다룹니다.</div>
+</section>
+
+<section id="s7">
+  <h2><span class="n">7</span>실습 4 — 업무 자동화 맛보기</h2>
+  <div class="card">
+    <b>목표</b> 신청서 접수 현황을 AI가 점검하고, 문제 있는 건만 골라 보고서를 만들게 합니다.<br>
+    <b>쓰는 자료</b> 실습자료 → <code>03_자동화_실습</code> (가상_신청서_접수현황.xlsx + 접수확인_기준.txt)
+  </div>
+  <p>강의를 자주 하면 신청서가 구글 시트에 매일 쌓입니다. 사람이 하나하나 확인하려면 시간이 오래 걸립니다. 이걸 AI에게 시킬 수 있습니다.</p>
+  <ol class="steps">
+    <li>코덱스를 <b>새 세션</b>으로 열고 <code>03_자동화_실습</code> 폴더 주소를 붙여 넣습니다.</li>
+    <li>아래처럼 시킵니다.</li>
+  </ol>
+  <div class="prompt">'가상_신청서_접수현황.xlsx'를 '접수확인_기준.txt'의 기준대로 점검해 줘.
+- 문제 없는 건과 확인이 필요한 건을 나눠서 새 엑셀 파일로 저장
+- 확인이 필요한 건은 어떤 문제인지 이유를 한 칸에 적기
+- 마지막에 한 장짜리 요약 보고서(총 접수, 정상, 확인 필요, 정원 현황)를 만들어 줘
+- 원본 파일은 수정하지 마</div>
+  <ol class="steps" start="3">
+    <li>결과로 <b>총 접수 / 정상 / 확인 필요 / 정원 현황</b> 요약이 나옵니다. (연락처 오류 2건, 중복 같은 문제를 찾아 줍니다.)</li>
+  </ol>
+  <div class="box ok"><b class="t">✅ 왜 “원본은 수정하지 마”가 중요한가</b>AI는 시키지 않아도 고쳐 버릴 수 있습니다. 원본은 그대로 두고 <b>새 파일</b>로 결과를 받아야 안전합니다.</div>
+
+  <h3>7-1. 자동화는 이렇게 넓어집니다</h3>
+  <ul>
+    <li><b>입금 확인 메일</b> — “입금이 확인되면 입금 확인 이메일을 보내고 싶은데, 어떻게 하면 돼?”라고 먼저 <b>물어보세요.</b> 방법을 알려 줍니다.</li>
+    <li><b>메일 정리</b> — 이번 주 메일을 정리해서 “결정·회신이 필요한 것, 일정 확정, 돈·서류” 순으로 보고하게 할 수 있습니다. 네이버 메일과 지메일을 한꺼번에 모을 수도 있습니다.</li>
+    <li><b>매일 아침 자동 보고</b> — 매일 정해진 시간에 보고 메일을 보내게 예약할 수 있습니다.</li>
+    <li><b>카카오톡 창 정리</b> — 열린 카톡 창이 너무 많을 때 단축키로 한쪽에 정렬하도록 프로그램을 만들 수 있습니다.</li>
+    <li><b>프로그램 실행·설치</b> — “포토샵 실행해 줘”, “PC용 카카오톡 깔아 줘”도 됩니다.</li>
+  </ul>
+  <div class="box tip"><b class="t">💡 처음에는 “못 해요”라고 할 수 있습니다</b>그럴 땐 “<b>할 수 있어. 방법을 찾아 봐</b>”, “<b>왜 안 돼?</b>”라고 하세요. 안 풀리면 <b>상위 모델</b>로 올려서 시켜 보세요. 대화하며 하나씩 해결해 가면 됩니다.</div>
+</section>
+
+<section id="s8">
+  <h2><span class="n">8</span>더 해 볼 것</h2>
+  <h3>8-1. 영상 편집 시키기</h3>
+  <p>강의에서는 <b>AI로 만든 짧은 영상 8개</b>를 폴더에 넣고 이렇게 시켰습니다.</p>
+  <div class="prompt">이 폴더의 영상들을 이어서 한 편의 영상으로 만들어 줘.
+중간에 무음 구간이나 필요 없는 구간은 잘라내고, 자막은 읽기 좋게 넣어 줘.</div>
+  <ul>
+    <li>약 6분 동안 작업해 편집본을 만들었습니다.</li>
+    <li>“<b>너 영상 편집 가능해?</b>”라고 먼저 물어보세요. 못 한다고 하면 <b>“필요한 도구를 찾아서 설치해서 할 수 있게 해 줘”</b>라고 하면 스스로 도구를 찾아옵니다.</li>
+    <li>컷 편집·자막은 잘합니다. <b>나레이션과 음악</b>은 따로 만들어 같은 폴더에 넣어 주세요. 구별해서 알려 주지 않아도 됩니다.</li>
+    <li>예) “백두산 사진 50장으로 포토 영상 앨범 만들어 줘”(사진 폴더 주소를 함께 줍니다).</li>
+    <li>영상 편집은 크레딧을 크게 쓰는 일은 아닙니다.</li>
+  </ul>
+
+  <h3>8-2. 구글 드라이브·블로그</h3>
+  <ul>
+    <li>구글 드라이브를 연결해 두면 “구글 드라이브 정리해 줘”도 할 수 있습니다.</li>
+    <li>블로그 글을 쓸 때 <b>사진을 먼저 폴더에 주면</b> 글에 맞게 넣어 줍니다. (채팅 AI는 이미지까지 만들어 줄 수 있고, 클로드는 이미지 생성이 안 됩니다.)</li>
+  </ul>
+
+  <h3>8-3. 비서(에이전트) 만들기</h3>
+  <p>업무가 많아지면 한 AI에게 다 맡기기 어렵습니다. <b>부서처럼 역할을 나눠서</b> 맡기면 각자 전문성이 생깁니다. (예: 전략기획부 / 교육사업부 / 홍보부)</p>
+  <ul>
+    <li>처음부터 잘 되지 않습니다. <b>AI와 대화를 많이 나눠서 내 업무를 알려 줘야</b> 합니다.</li>
+    <li>내 블로그·홈페이지를 알게 되면 “그거 띄워 줘”처럼 <b>툭 던져도</b> 찾아냅니다.</li>
+    <li>처음 설정은 “나는 이런 일을 하는 사람이야. 이 일을 부서별로 나누어 맡을 에이전트를 만들어 줘”로 시작합니다.</li>
+  </ul>
+</section>
+
+<section id="s9">
+  <h2><span class="n">9</span>막혔을 때 · 자주 하는 실수</h2>
+
+  <details open><summary>❓ “코덱스가 안 보여요 / 프로젝트가 안 보여요”</summary>
+    <p>인터넷 창(웹사이트)에서 열었을 가능성이 큽니다. <b>PC에 설치한 ChatGPT 앱</b>에서 열어야 합니다. 윈도우 검색창에 <b>영어로 ChatGPT</b>를 입력해 앱을 여세요. 그래도 안 되면 화면 전체를 캡처해서 문의해 주세요.</p>
+    <p>프로젝트를 못 만들어도 괜찮습니다. 폴더 주소를 입력창에 붙여 넣고 “이 폴더에 접근할 수 있어?”라고 물어보면 시작할 수 있습니다.</p>
+  </details>
+  <details open><summary>❓ “AI가 ‘수정 권한이 없다’며 못 한다고 해요”</summary>
+    <p>가끔 할 수 있는데도 못 한다고 합니다. <b>“분명히 할 수 있는데 왜 못 해?”</b>라고 다시 말해 보세요. 그래도 안 되면 <b>앱을 완전히 종료했다가 다시 열어</b> 시키면 됩니다.</p>
+  </details>
+  <details open><summary>❓ “같은 말을 계속 맴돌며 크레딧만 써요”</summary>
+    <p>AI가 뱅글뱅글 도는 상태입니다. <b>일단 멈추고</b> “지금 어떤 문제가 있어?”라고 물어보세요. AI가 원인을 말하면, 그 문제를 풀어 주면 됩니다.</p>
+  </details>
+  <details open><summary>❓ “일하는 중간에 새 지시를 넣고 싶어요”</summary>
+    <p>AI가 작업 중일 때 명령을 보내면 <b>‘대기 항목’</b>에 쌓여서 끝난 뒤에야 처리됩니다. 중간에 끼어들려면 대기 항목에 있는 해당 명령의 <b>끼어들기(바로 지시) 버튼</b>을 누르세요. 아니면 <b>정지</b>하고 다시 지시해도 됩니다.</p>
+  </details>
+  <details open><summary>❓ “허용할까요?” 창이 계속 떠요</summary>
+    <p>AI가 내 PC에서 일하기 위한 권한 확인입니다. <b>한 번만 허용</b>은 이번 한 번만, <b>계속 허용(나 대신 승인)</b>은 앞으로도 허용합니다. 처음에는 직접 확인하다가, 익숙해지면 ‘나 대신 승인’으로 바꿔도 됩니다. 단, <b>작업용 폴더를 따로 정해 그 폴더만 열어 주는 것이 안전합니다.</b> 다른 폴더가 필요하면 그때 그 폴더 주소만 알려 주세요.</p>
+  </details>
+
+  <h3>이렇게 시키면 안 됩니다</h3>
+  <table>
+    <tr><th>❌ 이렇게 말하면</th><th>⭕ 이렇게 바꾸세요</th></tr>
+    <tr><td>“똑바로 해”, “마음에 안 들어”, “더 멋지게”</td><td>“제목 글자를 더 크게”, “버튼을 아래에도 추가해 줘”처럼 <b>어디를 어떻게</b> 고칠지 구체적으로</td></tr>
+    <tr><td>“만들어 줘”(한 줄)</td><td>무엇을 / 어떤 자료로 / 꼭 들어갈 것 / 완성 기준을 말해 주기</td></tr>
+    <tr><td>원본 폴더에서 바로 시키기</td><td>복사본에서 작업, “원본은 수정하지 마”</td></tr>
+    <tr><td>한 대화창에서 하루 종일 이어서</td><td>일이 바뀌면 새 세션, 길어지면 /compact</td></tr>
+  </table>
+  <p>화를 내거나 다그쳐도 결과는 좋아지지 않습니다. <b>정확한 수정 지시</b>가 가장 빠릅니다.</p>
+</section>
+
+<section id="s10">
+  <h2><span class="n">10</span>오늘 배운 것 점검표 · 숙제</h2>
+  <h3>✅ 체크해 보세요</h3>
+  <ul class="check">
+    <li>☐ ChatGPT 데스크톱 앱을 설치하고, 코덱스(Codex)로 바꿀 수 있다</li>
+    <li>☐ 폴더 주소를 복사해서 AI에게 줄 수 있다 (주소창 클릭 → Ctrl+C)</li>
+    <li>☐ “아직 아무것도 바꾸지 마”와 “원본은 수정하지 마”를 붙여야 하는 이유를 안다</li>
+    <li>☐ 사용량을 확인하는 곳(프로필 → 설정 → 사용량 및 청구)을 안다</li>
+    <li>☐ 일이 바뀌면 새 세션을 연다</li>
+    <li>☐ 글 + 사진 폴더로 홈페이지를 만들 수 있다</li>
+    <li>☐ 안 될 때 “왜 안 돼?”라고 물어볼 수 있다</li>
+  </ul>
+
+  <h3>📝 숙제 — 내 업무에 적용하기</h3>
+  <p>“내가 <b>매주 반복하는 일</b>”을 하나 정해서, 아래 카드로 시작해 보세요.</p>
+  <div class="prompt">[내가 매주 반복하는 일]을 하려고 해.
+어떤 자료가 필요하고, 어떤 순서로 하면 되는지 먼저 질문해 줘.
+그다음 ‘무엇을 / 어떤 자료로 / 꼭 들어갈 것 / 완성 기준’ 네 가지를 정리해서 보여 줘.</div>
+  <p>이 카드는 <b>AI가 먼저 질문하게 만드는 방법</b>이라, 뭘 말해야 할지 모를 때 가장 쉽습니다.</p>
+
+  <div class="box ok"><b class="t">🌱 마지막으로</b>오늘 가장 중요한 한마디입니다. <b>“문제가 있으면 프로그램으로 해결할 수 있다. 나도 만들 수 있다.”</b> 자잘한 기능을 다 알 필요는 없습니다. 이런 일이 된다는 것을 아는 것만으로도 시작할 수 있습니다.</div>
+
+  <div class="card">
+    <b>다음 단계가 궁금하다면</b><br>
+    코덱스와 클로드로 내 업무 도구를 직접 만들어 보는 <b>바이브코딩 실전반 1기</b>(10/25·11/1)가 준비되어 있습니다. 안내 페이지: <a href="https://www.smacedu.kr/vibecoding-class-1">smacedu.kr/vibecoding-class-1</a>
+  </div>
+</section>
+
+<footer>
+  이 자료는 2026년 10월 11일 코덱스 무료특강(녹화 2시간 54분)의 내용을 바탕으로 정리했습니다. 프로그램 화면과 메뉴 이름은 업데이트로 달라질 수 있습니다.<br>
+  © 엘란비탈 박성욱 · 스마트미디어아트센터
+</footer>
+
+</div>
+</body>
+</html>
