@@ -1,0 +1,58 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>실제 강의 실습 프롬프트 따라하기</title><style>
+:root{--bg:#f5f0e6;--paper:#fffdf8;--ink:#2b2622;--sub:#6b6258;--clay:#c4623a;--clay2:#a8684a;--line:#e4dccd;--soft:#fbf3e6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Malgun Gothic','맑은 고딕','Apple SD Gothic Neo',sans-serif;line-height:1.75;font-size:17px;-webkit-text-size-adjust:100%}
+.wrap{max-width:860px;margin:0 auto;padding:28px 18px 60px}
+.hero{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:30px 26px;margin-bottom:22px}
+.kicker{color:var(--clay);font-weight:bold;font-size:14px;letter-spacing:.04em}
+h1{margin:6px 0 10px;font-size:30px;line-height:1.35}
+h2{margin:34px 0 6px;font-size:23px;line-height:1.4;border-bottom:3px solid var(--clay);padding-bottom:6px}
+h3{margin:22px 0 6px;font-size:18px;color:var(--clay2)}
+p{margin:0 0 12px}
+.lead{color:var(--sub);font-size:16px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 12px;break-inside:avoid}
+.card .tag{display:inline-block;font-size:12.5px;font-weight:bold;color:#fff;background:var(--clay);border-radius:20px;padding:1px 10px;margin-bottom:4px}
+.card .ttl{font-weight:bold;margin:2px 0 4px}
+.prompt{background:var(--soft);border-left:4px solid var(--clay);border-radius:6px;padding:10px 14px;margin:6px 0 8px;font-size:16px;white-space:pre-wrap}
+button.cp{font:inherit;font-size:14px;background:var(--clay);color:#fff;border:0;border-radius:8px;padding:6px 14px;cursor:pointer}
+button.cp.done{background:#5b8a5a}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.tile{display:block;text-decoration:none;color:inherit;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.tile b{display:block;font-size:18px;margin-bottom:4px}
+.tile span{color:var(--sub);font-size:14.5px}
+.tile .no{color:var(--clay);font-weight:bold;font-size:13px}
+table{width:100%;border-collapse:collapse;margin:8px 0 16px;font-size:15.5px;background:var(--paper)}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top}
+th{background:var(--soft)}
+.box{background:var(--soft);border-radius:12px;padding:14px 18px;margin:12px 0}
+.blank{display:inline-block;min-width:120px;border-bottom:2px solid #b9ad9b}
+.ws{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:10px 0}
+.ws .line{border-bottom:1.5px dashed #b9ad9b;height:34px}
+ol,ul{margin:0 0 12px;padding-left:22px}
+.nav{font-size:14px;margin-bottom:12px}.nav a{color:var(--clay);text-decoration:none}
+.foot{margin-top:40px;font-size:13px;color:var(--sub);text-align:center;border-top:1px solid var(--line);padding-top:14px}
+@media print{body{background:#fff;font-size:14px}.wrap{padding:0}button.cp,.nav{display:none}.hero,.card,.ws{border-color:#ccc}h2{break-after:avoid}}
+</style></head><body><div class="wrap"><div class="nav"><a href="index.html">← 선물 꾸러미 처음으로</a></div>
+<div class="hero"><div class="kicker">자료 09 · 10월 17일 스마트폰 AI 무료특강 선물</div><h1>실제 강의 실습 프롬프트 따라하기</h1><p class="lead">지난 특강에서 실제로 쓴 요청을 순서대로 담았습니다. 여행 일정부터 인포그래픽, 인물 만들기, 스토리보드, 한국어 대사 영상까지.</p></div>
+<div class="box"><b>이 자료는</b> 10월 1일 같은 주제의 특강에서 실제로 쓴 요청들을 순서대로 정리한 것입니다. 한 번에 완벽하게 말하지 않고, 짧게 말한 뒤 결과를 보고 조건을 하나씩 보태는 방식입니다.</div><h2>실습 1 · 말로 여행 일정 만들기</h2><div class="card"><span class="tag">강의 요청</span><div class="ttl">처음에는 이렇게 짧게</div><div class="prompt">이번 10월 연휴에 부산 2박 3일 사진여행 갈 거야. 일정 짜줘.</div><button class="cp" type="button">복사하기</button></div><div class="card"><span class="tag">이어서</span><div class="ttl">결과를 본 다음 조건 보태기</div><div class="prompt">시간 순으로 타임테이블을 만들어 줘. 촬영 포인트, 도착 시간, 식사, 숙소 위치까지 시간 단위로 정리해 줘.</div><button class="cp" type="button">복사하기</button></div><p class="lead">핵심: 처음부터 완벽하게 말하지 말고, 1차 결과를 본 뒤 날짜·이동·촬영 시간을 보충하세요.</p><h2>실습 2 · 일정을 한 장의 인포그래픽으로</h2><div class="card"><span class="tag">복습용</span><div class="ttl">이미지 만들기 전에 글과 구성부터</div><div class="prompt">역할: 여행 플래너이자 사진 촬영 가이드
+맥락: 50~60대 초보 사진가가 ○○ 2박 3일 출사를 간다.
+조건: 일자별 타임테이블, 일출·일몰 촬영지, 식사, 이동 시간, 준비물을 넣는다.
+형식: 스마트폰에서 읽기 쉬운 세로형 인포그래픽
+톤: 계절에 맞는 색상, 글자는 크게
+이 조건으로 인포그래픽용 문구와 레이아웃을 먼저 제안해 줘.</div><button class="cp" type="button">복사하기</button></div><p class="lead">핵심: 이미지를 만들기 전에 글과 구성을 먼저 검수하면 한글 오타와 정보 누락이 줄어듭니다.</p><h2>실습 3 · 상황을 말하면 공지 문자가 된다</h2><div class="card"><span class="tag">강의 요청</span><div class="ttl">모임 안내 문자</div><div class="prompt">토요일 오후 두 시에 우리 동네 사진 모임이 있어. 장소는 시민공원 입구야. 늦지 않게 와 달라는 따뜻한 안내 문자를 100자 안으로 써 줘.</div><button class="cp" type="button">복사하기</button></div><div class="card"><span class="tag">이어서</span><div class="ttl">길면 줄이기</div><div class="prompt">절반 길이로 줄여 줘.</div><button class="cp" type="button">복사하기</button></div><p class="lead">바꿔 말할 부분: 모임 이름, 날짜, 시간, 장소, 분위기, 글자 수.</p><h2>실습 4 · 기준 인물을 만들고, 배경과 소품을 하나씩 바꾸기</h2><div class="card"><span class="tag">강의 요청</span><div class="ttl">먼저 기준 인물 확정</div><div class="prompt">20대 후반 한국 여성 사진 모델을 만들어 줘.</div><button class="cp" type="button">복사하기</button></div><div class="card"><span class="tag">이어서</span><div class="ttl">배경 바꾸기</div><div class="prompt">이 모델을 ○○ 바다의 요트 위에 세워서 시원하게 보이도록 바꿔 줘.</div><button class="cp" type="button">복사하기</button></div><div class="card"><span class="tag">이어서</span><div class="ttl">소품 바꾸기</div><div class="prompt">카메라를 들고 있는 장면으로 바꿔 줘.</div><button class="cp" type="button">복사하기</button></div><p class="lead">핵심: 기준 인물을 먼저 정한 뒤 배경, 의상, 소품을 하나씩 바꿔야 인물이 덜 흔들립니다.</p><h2>실습 5 · 어려운 설명은 사진으로 대신하기 (레퍼런스)</h2><div class="card"><span class="tag">복습용</span><div class="ttl">사진 여러 장에 역할 지정하기</div><div class="prompt">첫 번째 이미지의 인물은 그대로 유지해 줘.
+두 번째 이미지의 요트 형태와 크기를 참고해 줘.
+배경은 맑은 낮의 바다, 자연스러운 사진 느낌으로 해 줘.
+인물의 얼굴, 머리, 나이, 의상은 바꾸지 마.
+가로 16:9, 광고 사진처럼 또렷하게 만들어 줘.</div><button class="cp" type="button">복사하기</button></div><p class="lead">사진을 여러 장 올릴 때는 "첫 번째", "두 번째"처럼 각 사진의 역할을 분명히 말해 주세요.</p><h2>실습 6 · 영상 만들기 전에 스토리보드부터</h2><div class="card"><span class="tag">복습용</span><div class="ttl">10초 영상을 8컷으로 설계</div><div class="prompt">역할: 10초 세로형 홍보영상을 기획하는 영상 감독
+목표: 여행사진가의 감성을 보여주는 8컷 스토리보드
+조건: 각 컷에 시간, 장면, 인물 행동, 카메라 움직임, 자막, 효과음을 적어 줘.
+형식: 00:00~00:01처럼 초 단위 표
+톤: 따뜻하고 잔잔한 영화 예고편</div><button class="cp" type="button">복사하기</button></div><p class="lead">핵심: "영상 만들어 줘"보다 장면 순서를 먼저 정하면 다시 만드는 일이 줄어듭니다.</p><h2>실습 7 · 이미지를 움직이고 한국어 대사 넣기</h2><div class="card"><span class="tag">강의 요청</span><div class="ttl">한 줄 요청</div><div class="prompt">카메라로 사진을 찍으면서 한국말로 &#x27;이 카메라 정말 훌륭하네요&#x27;라고 대사를 한다.</div><button class="cp" type="button">복사하기</button></div><div class="card"><span class="tag">보강</span><div class="ttl">조건을 넣은 버전</div><div class="prompt">인물의 얼굴과 옷을 유지한다. 카메라를 눈높이까지 천천히 들고 한 번 촬영한 뒤 미소 짓는다. 카메라는 완만하게 인물을 향해 다가간다. 자연스러운 한국어로 &#x27;○○○&#x27;라고 말한다. 8초, 가로 16:9.</div><button class="cp" type="button">복사하기</button></div><p class="lead">핵심: 인물 움직임과 카메라 움직임을 둘 다 복잡하게 주지 말고, 하나는 간단하게 지정하세요.</p><h2>실습 8 · 같은 AI인데 결과가 달라지는 이유</h2><table><tr><th>역할</th><th>맥락</th><th>조건</th><th>예시</th></tr><tr><td>누가 하는 일인지</td><td>어떤 상황인지</td><td>길이·수량·비율</td><td>원하는 톤과 형식</td></tr></table><div class="card"><span class="tag">비교</span><div class="ttl">한 줄 요청 vs 구조 있는 요청</div><div class="prompt">한 줄 요청: 우리 가게 소개 글 써 줘.
+
+구조 있는 요청:
+역할: 너는 동네 빵집 홍보 담당자야.
+맥락: 우리 가게는 아침 7시에 문을 여는 크루아상 전문점이야.
+조건: 인스타그램용 5줄, 이모지는 2개만 사용해 줘.
+예시: &#x27;갓 구운 냄새로 하루를 엽니다&#x27;처럼 시작해 줘.
+이 조건으로 반복 없이 따뜻한 홍보 글을 써 줘.</div><button class="cp" type="button">복사하기</button></div><h2>오늘 바로 해보는 15분 실습</h2><ol><li>챗GPT 앱에서 마이크를 누르고 "내일 해야 할 일 5개를 우선순위로 정리해 줘"라고 말해 보세요.</li><li>결과에서 아쉬운 점 하나를 고르고 조건을 추가해 다시 요청하세요.</li><li>마음에 드는 이미지 하나를 첨부하고 "이 분위기와 구성을 참고해 만들어 줘"라고 요청하세요.</li><li>완성한 이미지를 영상 도구에 올려 짧은 영상과 한국어 대사를 만들어 보세요.</li></ol><div class="box">좋은 결과는 긴 프롬프트보다, 결과를 보고 하나씩 고치는 힘에서 나옵니다.</div>
+<p style="text-align:center;margin-top:24px"><a href="pdf/09-lecture-practice.pdf" style="color:#c4623a">이 자료 인쇄용 PDF 받기</a></p><div class="foot">스마트미디어아트센터 · 엘란비탈 박성욱 · 강의자료의 무단 재판매와 다른 강의에서의 무단 사용을 금지합니다.</div></div><script>document.querySelectorAll('button.cp').forEach(function(b){b.addEventListener('click',function(){var t=b.parentNode.querySelector('.prompt').innerText;var ok=function(){b.textContent='복사됐어요 ✓';b.classList.add('done');setTimeout(function(){b.textContent='복사하기';b.classList.remove('done')},1600)};try{navigator.clipboard.writeText(t).then(ok,function(){fb(t,ok)})}catch(e){fb(t,ok)}});});function fb(t,ok){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(a)}</script></body></html>
