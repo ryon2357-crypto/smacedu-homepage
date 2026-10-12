@@ -13,3 +13,5 @@ video_output/
 video_work/
 subtitle_check.png
 documents/*.docx
+.vercel
+.env*
