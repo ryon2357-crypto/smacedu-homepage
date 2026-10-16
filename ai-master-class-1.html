@@ -267,6 +267,24 @@
     .price-card .old { color: #7a8996; text-decoration: line-through; }
     .price-card .price { margin: 4px 0 12px; font-size: 38px; font-weight: 950; color: var(--blue); letter-spacing: -.05em; }
     .price-card p { margin: 0; color: #536575; }
+    .track { margin-top: 18px; padding: 18px 22px; border-radius: 16px; background: #e8f2ff; color: #173d66; }
+    .objection {
+      padding: 56px;
+      border-radius: 28px;
+      background: #0e3154;
+      color: white;
+      box-shadow: var(--shadow);
+    }
+    .objection .kicker { color: #8fefff; }
+    .objection .lead { color: #dbe8f2; max-width: 760px; }
+    .objection .lead strong { color: #ffe27c; }
+    .objection-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 28px; }
+    .objection-item { padding: 22px 24px; border: 1px solid rgba(255,255,255,.16); border-radius: 18px; background: rgba(255,255,255,.06); }
+    .objection-item h3 { margin: 0 0 6px; font-size: 19px; color: #9defff; }
+    .objection-item p { margin: 0; color: #dbe8f2; }
+    .objection-close { margin: 26px 0 0; padding: 16px 20px; border-radius: 14px; background: rgba(54,215,255,.14); color: white; font-weight: 800; }
+    .fee-free { margin-bottom: 20px; padding: 18px 22px; border-radius: 14px; background: linear-gradient(135deg, #ffb327, #ffe173); color: #2f1d00; font-size: 17px; }
+    .price-diff { margin: 18px 0 0; color: var(--navy); font-weight: 800; }
     .deadline { margin-top: 22px; padding: 17px 22px; border-radius: 14px; background: #fff3dc; color: #5d4010; font-weight: 800; }
 
     .apply {
@@ -341,7 +359,8 @@
       .section { padding-bottom: 54px; }
       .photo-story { gap: 25px; margin-bottom: 40px; }
       .lesson { padding: 24px 22px; }
-      .audience, .apply { padding: 34px 24px; }
+      .audience, .apply, .objection { padding: 34px 24px; }
+      .objection-grid { grid-template-columns: 1fr; }
       .pricing, .notes { grid-template-columns: 1fr; }
       .price-card { padding: 28px 24px; }
       .time-row { grid-template-columns: 58px 1fr; gap: 12px; padding: 16px; }
@@ -367,7 +386,8 @@
         <div class="hero-badges" aria-label="과정 핵심 정보">
           <span>총 3회 ZOOM 라이브</span>
           <span>매 회차 녹화본 제공</span>
-          <span>자격증 2종 선택</span>
+          <span>🎁 1기만 자격증 발급비 0원</span>
+          <span>슈퍼얼리버드 10/17(토)까지</span>
         </div>
         <div class="hero-actions">
           <a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLSfP0TfLrcmUszZKA9H320Nmn7T_Y3c-hhPPqdTtLJ5jRJncFQ/viewform" target="_blank" rel="noopener">AI 실전 마스터 1기 신청</a>
@@ -454,15 +474,17 @@
           </article>
           <article class="lesson">
             <div class="num">3강</div>
-            <h3>AI활용지도사 2급</h3>
+            <h3>AI활용지도사 2급 수업</h3>
             <ul>
-              <li>AI활용지도사 2급 수업</li>
-              <li>AI 활용 역량 정리</li>
-              <li>실전 활용 사례 확장</li>
-              <li>자격증 과정 준비</li>
+              <li>AI 수업 설계 원리</li>
+              <li>지도안 틀·수업용 프롬프트 모음</li>
+              <li>시니어 눈높이 수업 사례</li>
+              <li>2강에서 만든 페이지를 내 강사 프로필로</li>
+              <li>자격 취득 후 활동 방법</li>
             </ul>
           </article>
         </div>
+        <div class="track"><strong>강의 2회(1·2강)</strong>만으로도 AI프롬프트전문가 2급 과정이 완성되고 이미지·영상·소개 페이지·PPT 결과물 4가지가 남습니다. <strong>강의 3회</strong>까지 들으면 AI활용지도사 2급까지 자격증이 2개입니다.</div>
         <div class="bonus"><strong>보너스</strong> · AI 활용 자동 메일·일정 관리 사례 · AI 실전 마스터 과정 1기 동기 단톡방</div>
       </div>
     </section>
@@ -503,29 +525,46 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="why-instructor">
+      <div class="wrap objection">
+        <p class="kicker">AI활용지도사 2급</p>
+        <h2>“강의는 안 할 건데요?”<br>그래서 더 필요합니다</h2>
+        <p class="lead">지도사 자격은 강단에 서는 사람만의 자격이 아닙니다. 주변에 AI를 <strong>알려 줄 수 있는 사람</strong>이라는 증명입니다.</p>
+        <div class="objection-grid">
+          <div class="objection-item"><h3>회사·기관에서</h3><p>“AI는 ○○님한테 물어봐” 하는 그 사람이 됩니다.</p></div>
+          <div class="objection-item"><h3>가게·내 사업에서</h3><p>직원과 가족에게 AI 일을 넘겨줄 순서가 생깁니다.</p></div>
+          <div class="objection-item"><h3>가족·모임에서</h3><p>부모님·자녀·동호회에 막힘없이 알려 줍니다.</p></div>
+          <div class="objection-item"><h3>나 자신에게</h3><p>남에게 설명할 수 있어야 진짜 내 실력이 됩니다.</p></div>
+        </div>
+        <p class="objection-close">강의를 하든 안 하든, 3강에서 배우는 ‘설명하는 순서’는 내 일에 그대로 씁니다.</p>
+      </div>
+    </section>
+
+    <section class="section" id="price">
       <div class="wrap">
         <div class="section-head">
           <p class="kicker">SUPER EARLY BIRD</p>
           <h2>1기 슈퍼얼리버드 수강료</h2>
         </div>
+        <div class="fee-free">🎁 강의만 들으면 <strong>자격증 발급비 0원</strong> — 이번 1기뿐입니다. 다음 기수부터는 자격증 발급비를 별도로 내야 합니다.</div>
         <div class="pricing">
-          <article class="price-card">
-            <h3>강의 + 자격증 1개</h3>
-            <p>AI프롬프트전문가 2급</p>
-            <div class="old">정상가 20만원</div>
-            <div class="price">5만원</div>
-            <p>강의 전 과정과 AI프롬프트전문가 2급 자격증 과정</p>
-          </article>
           <article class="price-card featured">
-            <h3>강의 + 자격증 2개</h3>
+            <h3>강의 3회 + 자격증 2개</h3>
             <p>AI프롬프트전문가 2급 + AI활용지도사 2급</p>
             <div class="old">정상가 30만원</div>
             <div class="price">10만원</div>
-            <p>강의 전 과정과 두 자격증 과정을 함께 준비</p>
+            <p>1·2·3강 전체 · 20만원 할인</p>
+          </article>
+          <article class="price-card">
+            <h3>강의 2회 + 자격증 1개</h3>
+            <p>AI프롬프트전문가 2급</p>
+            <div class="old">정상가 20만원</div>
+            <div class="price">5만원</div>
+            <p>1·2강 · 결과물 4가지 완성 · 15만원 할인</p>
           </article>
         </div>
-        <div class="deadline">신청 마감: 2026년 10월 18일(일) · 입금 계좌: 신한은행 110-050-892636 박성욱</div>
+        <p class="price-diff">두 과정 차이는 5만원 — 그 5만원으로 정상가 10만원짜리 AI활용지도사 2급이 하나 더 붙습니다.</p>
+        <div class="deadline">슈퍼얼리버드 마감: 2026년 10월 17일(토) · 입금 계좌: 신한은행 110-050-892636 박성욱</div>
       </div>
     </section>
 
@@ -533,7 +572,7 @@
       <div class="wrap apply">
         <p class="kicker">APPLICATION</p>
         <h2>AI로 실제 결과물을 만드는 사람으로</h2>
-        <p>신청서에서 참여 과정을 선택하고 이름, 연락처, 이메일, 입금자명을 정확하게 입력해 주세요.</p>
+        <p>신청서에서 과정을 고르고 이름·연락처·이메일·입금자명만 적으면 끝납니다. 1분이면 충분합니다.</p>
         <a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLSfP0TfLrcmUszZKA9H320Nmn7T_Y3c-hhPPqdTtLJ5jRJncFQ/viewform" target="_blank" rel="noopener">신청서 열기</a>
         <p class="small-info">라이브 참여가 어려운 분도 녹화본으로 따라올 수 있습니다.</p>
       </div>
