@@ -91,7 +91,7 @@
     </header>
 
     <section class="card" aria-labelledby="search-title">
-      <div class="updated">2026년 10월 7일 오후 3시 기준</div>
+      <div class="updated">2026년 10월 17일 오후 4시 기준</div>
       <form id="lookup-form">
         <label id="search-title" for="lookup">이름 또는 사진을 보낸 이메일</label>
         <div class="search-row">
@@ -103,14 +103,14 @@
       <div id="result" class="result" aria-live="polite"></div>
 
       <div class="summary" aria-label="현재 확인 현황">
-        <div class="stat"><b>66명</b><span>과제 관련 이메일 수신 확인</span></div>
-        <div class="stat"><b>62명</b><span>자격증 신청서 확인</span></div>
-        <div class="stat"><b>62명</b><span>두 단계 모두 확인</span></div>
+        <div class="stat"><b>67명</b><span>과제 관련 이메일 수신 확인</span></div>
+        <div class="stat"><b>65명</b><span>자격증 신청서 확인</span></div>
+        <div class="stat"><b>65명</b><span>두 단계 모두 확인</span></div>
       </div>
     </section>
 
     <section class="notice" aria-label="확인 안내">
-      <div class="notice-block"><strong>자격증 발급 안내</strong><br>확정 자격증은 10월 7일(수)까지 발급이 됩니다.</div>
+      <div class="notice-block"><strong>자격증 발급 안내</strong><br>10월 7일까지 확정된 자격증은 발급을 마쳤습니다. 이후 접수분은 확정되는 대로 순차 발급됩니다.</div>
       <div class="notice-block"><strong>이메일 수신 확인</strong><br>메일함에 과제 관련 이메일 또는 다운로드 링크가 도착한 것을 확인했다는 뜻입니다. 사진 심사나 자격증 발급 완료를 뜻하지는 않습니다.</div>
       <div class="notice-block"><strong>방금 보내신 경우</strong><br>목록 반영 전일 수 있습니다. 1시간 뒤 다시 확인해 주세요. 같은 사진을 여러 번 보내실 필요는 없습니다.</div>
     </section>
@@ -127,6 +127,7 @@
     const FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLSdVOAsdlO5uaxm_zSL0RJhCOawjvDuhT6zlKKwd6zLoXoqJpQ/viewform';
     const MAIL_URL='mailto:ryon2357@gmail.com?subject=%EC%97%AC%ED%96%89%EC%82%AC%EC%A7%84%EC%9E%91%EA%B0%80%20%EC%9E%90%EA%B2%A9%EC%A6%9D%20%EA%B3%BC%EC%A0%9C%20%EC%82%AC%EC%A7%84%20%EC%A0%9C%EC%B6%9C';
     const records=[
+      {mask:'홍*옥',photo:1,form:1,paid:1,date:'2026-10-16',keys:['cbd2d4db39ccf6fbcfcffedd1fbad5dac920a8f77895025602de52368f396c54','aef9b302ffc9fa8400365353edf03d73a8554f8a7c193b0e953a2dd492102946']},
       {mask:'이*주',photo:1,form:1,date:'2026-10-05',keys:['078c438a3e90c797414136906f9e1a2b5c87345c74495f3de47bd818b62302fd','e65af290c070074761452eaf8dee1eec0c1f01ba6b986dab81922c85d2663152']},
       {mask:'정*옥',photo:1,form:1,date:'2026-10-05',keys:['9d76c9e4df5d9aad3080cdeb921c85c4d57ef7adc8569d47de09c7e21c602e12','3acec961858abc0bbb8415520f8329f6c40889179efe9007b89c47ba2becd2aa']},
       {mask:'김*곤',photo:1,form:1,date:'2026-10-05',keys:['4e42b383fac4758f9734fc7ba8504544e1609493c85207ebcbd210b11b174517','bb6b96886b4c2a2f5cbf4dfa04375b7652bb77c7511d57a554ed405620db4387','a287e0e84679c8e3478e10f465bd9c2acd655d5fd3386fa77a910fb1f80855bc']},
@@ -145,7 +146,7 @@
       {mask:'김*정',photo:1,form:1,date:'2026-09-27',keys:['f3c450a85dd9d2c5e27e5dcadd490a7039acbdc887795da57601e7bb376df8d3','25cd191c3411a89c83dc3eb2a3457b1f5b1b6cc2dc0d799851b12b8625b8c40e']},
       {mask:'최*숙',photo:1,form:1,date:'2026-09-28',keys:['cb0e6645c718c8e97f99f892d2f18a62286ddcb3d2183f42510a133e004b3ebc','e83cc52eea21ff22673d146669c2389ca13d2ada53e7e3c782ff98971ad2a247']},
       {mask:'하*희',photo:1,form:0,date:'2026-09-28',keys:['acca1a47f7d98d6f14a64ab130c34d34a5ff4b5d037054ac71d456433041ac24','0cedaf624b8e3828344f1998ccdfdbd6d62b16e9f130982a07a2d26540d9c464']},
-      {mask:'심*자',photo:1,form:0,date:'2026-09-28',keys:['1bf25d99cfd717011eaeb400921cc40f1c517867bd9fee3e4150b152965d46e5','30e02741969c84a8e53272816fd15d7098e8a83200d857e571a0fea491bd1664']},
+      {mask:'심*자',photo:1,form:1,date:'2026-09-28',keys:['1bf25d99cfd717011eaeb400921cc40f1c517867bd9fee3e4150b152965d46e5','30e02741969c84a8e53272816fd15d7098e8a83200d857e571a0fea491bd1664']},
       {mask:'권*아',photo:1,form:1,date:'2026-09-28',keys:['b56c6e280ac4362fe083017e9784840b7c0f8595ee440c7552155000cd39fc25','56ea14ada7e8c3f2d952a62fcb90f7ff6f50a03b832622d973f1c413e4c7b975']},
       {mask:'김*랑',photo:1,form:1,date:'2026-09-28',keys:['eaf8ac275a261f55e7e2677ec2aca6e4ac69e055726206c484c41f3c5f7c64bd','61015c8586bcf161f788441beae0d4723d8e6b7c9ce54eb48278cc5dbcc6b6f5']},
       {mask:'배*생',photo:1,form:1,date:'2026-09-28',keys:['3438d48da6f5016e49b4494c2d8c9681e15bc3b1c3a602813a8980dc80582902','e22682e8006e140431cd4a06f9c969803afbe4c4d968362ecab12a8494aef571']},
@@ -196,6 +197,8 @@
     ];
 
     const applications={
+      'cbd2d4db39ccf6fbcfcffedd1fbad5dac920a8f77895025602de52368f396c54':{grade:'여행사진작가 1급',extras:[]},
+      '1bf25d99cfd717011eaeb400921cc40f1c517867bd9fee3e4150b152965d46e5':{grade:'여행사진작가 2급',extras:['스마트폰사진작가 2급']},
       '60a93cbdd8ad0b398966700be2bbb52007d69049329d3ab1919902a95659bd88':{grade:'여행사진작가 1급',extras:[]},
       '078c438a3e90c797414136906f9e1a2b5c87345c74495f3de47bd818b62302fd':{grade:'여행사진작가 2급',extras:[]},
       '9d76c9e4df5d9aad3080cdeb921c85c4d57ef7adc8569d47de09c7e21c602e12':{grade:'여행사진작가 1급',extras:[]},
@@ -262,6 +265,7 @@
     };
 
     const confirmedFirstGrade=new Set([
+      'cbd2d4db39ccf6fbcfcffedd1fbad5dac920a8f77895025602de52368f396c54',
       '60a93cbdd8ad0b398966700be2bbb52007d69049329d3ab1919902a95659bd88',
       'ab3b0d375362c34ed20be62b9a43ca3de03c9038bc8425e7076eadfcc472f1ec',
       'bc26a6d82c7f32fe1c85f1b61ccc8203cc4008cc1168505a6d6dd491b6f2133d',
