@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스마트미디어아트센터 자격증 진위 조회</title>
+<meta name="description" content="스마트미디어아트센터가 발급한 자격증을 성명과 자격번호로 확인합니다.">
+<meta property="og:title" content="스마트미디어아트센터 자격증 진위 조회">
+<meta property="og:description" content="성명과 자격번호를 입력하면 발급 여부를 바로 확인할 수 있습니다.">
+<style>
+  :root{--bg:#f7f3ec;--card:#fffdf9;--ink:#2b2622;--sub:#6f655c;--line:#e6ddd0;--clay:#c96442;--ok:#2f7d4f;--ok-soft:#e8f4ec;--bad:#b3261e;--bad-soft:#fbe9e7}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Pretendard,"Malgun Gothic",-apple-system,BlinkMacSystemFont,sans-serif;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:48px 16px}
+  .card{width:100%;max-width:480px;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+  .head{padding:30px 28px 22px;border-bottom:1px solid var(--line)}
+  .head small{color:var(--clay);font-weight:700;letter-spacing:.04em;font-size:13px}
+  .head h1{margin:6px 0 6px;font-size:23px}
+  .head p{margin:0;color:var(--sub);font-size:14px}
+  form{padding:22px 28px 26px}
+  label{display:block;font-weight:700;font-size:14px;margin:0 0 6px}
+  input{width:100%;padding:12px 13px;border:1px solid #d9cdbd;border-radius:10px;font:inherit;background:#fff;margin-bottom:16px}
+  input:focus{outline:none;border-color:var(--clay)}
+  .hint{color:var(--sub);font-size:12.5px;margin:-10px 0 16px}
+  button{width:100%;padding:14px;border:0;border-radius:999px;background:var(--clay);color:#fff;font:inherit;font-weight:800;cursor:pointer}
+  button:disabled{opacity:.6;cursor:default}
+  #result{margin:0 28px 26px;display:none;border-radius:12px;padding:16px 18px;font-size:15px}
+  #result.ok{display:block;background:var(--ok-soft);border:1px solid #bfdcc9}
+  #result.no{display:block;background:var(--bad-soft);border:1px solid #f1c8c3;color:var(--bad)}
+  #result h2{margin:0 0 10px;font-size:17px}
+  #result.ok h2{color:var(--ok)}
+  dl{display:grid;grid-template-columns:92px 1fr;gap:6px 10px;margin:0}
+  dt{color:var(--sub)}dd{margin:0;font-weight:600}
+  .foot{padding:14px 28px 22px;color:var(--sub);font-size:12.5px;border-top:1px solid var(--line)}
+  .foot a{color:var(--clay)}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="head">
+    <small>SMART MEDIA ART CENTER</small>
+    <h1>자격증 진위 조회</h1>
+    <p>자격증에 적힌 성명과 자격번호를 입력하면 스마트미디어아트센터 발급 기록과 대조합니다.</p>
+  </div>
+  <form id="f" autocomplete="off">
+    <label for="name">성명</label>
+    <input id="name" required placeholder="예: 홍길동">
+    <label for="no">자격번호</label>
+    <input id="no" required placeholder="예: 제2026-SMAC-0123호">
+    <p class="hint">자격증에 인쇄된 번호를 그대로 넣으면 됩니다. 제와 호, 띄어쓰기는 빼도 됩니다.</p>
+    <button id="go">조회하기</button>
+  </form>
+  <div id="result"></div>
+  <div class="foot">발급 기관 스마트미디어아트센터 · 문의 <a href="https://www.smacedu.kr">smacedu.kr</a><br><span id="upd"></span></div>
+</div>
+<script>
+(function(){
+  var data = null;
+  var f = document.getElementById('f'), out = document.getElementById('result'), btn = document.getElementById('go');
+  function load(){
+    if (data) return Promise.resolve(data);
+    return fetch('/data/cert-verify.json?v=' + Date.now(), {cache:'no-store'}).then(function(r){
+      if (!r.ok) throw new Error('data'); return r.json();
+    }).then(function(j){ data = j; document.getElementById('upd').textContent = '기록 기준일 ' + j.updated; return j; });
+  }
+  function norm(s){ return (s || '').replace(/\s+/g, ''); }
+  function parseNo(s){
+    var t = norm(s).toUpperCase().replace(/^제/, '').replace(/호$/, '');
+    var nums = t.match(/\d+/g); if (!nums) return null;
+    var parts = t.split('-');
+    return {seq: parseInt(nums[nums.length - 1], 10), code: parts.length === 3 ? parts[1] : ''};
+  }
+  function hex(buf){ return Array.prototype.map.call(new Uint8Array(buf), function(b){ return ('0' + b.toString(16)).slice(-2); }).join(''); }
+  function key(name, seq, j){
+    var enc = new TextEncoder();
+    return crypto.subtle.importKey('raw', enc.encode(j.salt + name + '|' + seq), 'PBKDF2', false, ['deriveBits']).then(function(k){
+      return crypto.subtle.deriveBits({name:'PBKDF2', hash:'SHA-256', salt: enc.encode(j.salt), iterations: j.iter}, k, 256);
+    }).then(function(bits){ return hex(bits).slice(0, 32); });
+  }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function fmtDate(d){ if (!d) return '발급 기록 확인'; var p = d.split('-'); return p[0] + '년 ' + (+p[1]) + '월 ' + (+p[2]) + '일'; }
+  function show(ok, html){ out.className = ok ? 'ok' : 'no'; out.innerHTML = html; }
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = norm(document.getElementById('name').value), raw = document.getElementById('no').value, p = parseNo(raw);
+    if (!name || !p){ show(false, '<h2>입력을 확인해 주세요</h2>성명과 자격번호를 모두 넣어 주세요.'); return; }
+    btn.disabled = true; btn.textContent = '조회 중';
+    load().then(function(j){
+      return key(name, p.seq, j).then(function(k){
+        var hits = (j.entries[k] || []).filter(function(x){ return !p.code || !x.k || x.k === p.code; });
+        if (!hits.length){
+          show(false, '<h2>일치하는 발급 기록이 없습니다</h2>성명과 자격번호를 자격증과 같은지 다시 확인해 주세요. 계속 조회되지 않으면 스마트미디어아트센터로 문의해 주세요.');
+          return;
+        }
+        show(true, hits.map(function(x){
+          return '<h2>정상 발급된 자격증입니다</h2><dl>' +
+            '<dt>성명</dt><dd>' + esc(name) + '</dd>' +
+            '<dt>자격종목</dt><dd>' + esc(x.c) + (x.g ? ' ' + esc(x.g) : '') + '</dd>' +
+            '<dt>자격번호</dt><dd>' + esc(x.n ? '제' + x.n + '호' : raw.trim()) + '</dd>' +
+            '<dt>발급일</dt><dd>' + esc(fmtDate(x.d)) + '</dd>' +
+            '<dt>발급기관</dt><dd>스마트미디어아트센터</dd></dl>';
+        }).join('<hr style="border:0;border-top:1px solid #bfdcc9;margin:14px 0">'));
+      });
+    }).catch(function(){
+      show(false, '<h2>잠시 후 다시 시도해 주세요</h2>조회 기록을 불러오지 못했습니다.');
+    }).then(function(){ btn.disabled = false; btn.textContent = '조회하기'; });
+  });
+})();
+</script>
+</body>
+</html>
