@@ -28,11 +28,11 @@ async function readVisibleTranscript() {
   // Only the transcript exposed by YouTube's normal page controls is read.
   document.querySelector('video')?.pause();
   for (let attempt=0; attempt<35; attempt++) {
-    const rows = [...document.querySelectorAll('ytd-transcript-segment-renderer')];
+    const rows = [...document.querySelectorAll('ytd-transcript-segment-renderer, transcript-segment-view-model')];
     if (rows.length) {
       const segments = rows.map(row => {
-        const stamp = row.querySelector('.segment-timestamp')?.textContent.trim() || '';
-        const text = row.querySelector('.segment-text')?.textContent.trim() || '';
+        const stamp = row.querySelector('.segment-timestamp, .ytwTranscriptSegmentViewModelTimestamp')?.textContent.trim() || '';
+        const text = row.querySelector('.segment-text, .ytAttributedStringHost')?.textContent.trim() || '';
         return {start:stamp.split(':').reduce((sum,part)=>sum*60+Number(part),0),duration:0,text};
       }).filter(row=>row.text && Number.isFinite(row.start));
       segments.forEach((row,index)=>row.duration=Math.max(0,(segments[index+1]?.start || row.start)-row.start));
@@ -40,8 +40,8 @@ async function readVisibleTranscript() {
     }
     const buttons = [...document.querySelectorAll('button')];
     const show = buttons.find(button=>/^(스크립트 표시|Show transcript)$/i.test((button.textContent || button.getAttribute('aria-label') || '').trim()));
+    if(attempt===1) document.querySelector('ytd-watch-metadata #expand')?.click();
     if(show) show.click();
-    else if(attempt===1) document.querySelector('ytd-watch-metadata #expand')?.click();
     await delay(700);
   }
   return {error:'이 영상에서 공개 스크립트를 찾지 못했습니다. YouTube에서 스크립트 표시가 가능한지 확인해 주세요.'};
