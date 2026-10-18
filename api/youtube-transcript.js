@@ -114,7 +114,7 @@ async function checkPublicVideo(videoId) {
       signal: AbortSignal.timeout(8000)
     })
     if (response.ok) return true
-    if (response.status === 401 || response.status === 403 || response.status === 404) return false
+    if (response.status === 404) return false
     return null
   } catch {
     return null
@@ -126,7 +126,7 @@ function unavailableError() {
 }
 
 function limitedError() {
-  return Object.assign(new Error('유튜브가 자동 요청을 일시적으로 제한했습니다. 잠시 후 다시 시도해 주세요.'), { statusCode: 503 })
+  return Object.assign(new Error('유튜브가 서버의 자동 요청을 제한했습니다. 아래 브라우저 연결 도구를 설치하거나 스크립트 붙여넣기로 가져와 주세요.'), { statusCode: 503 })
 }
 
 function normalizePlayabilityError(reason) {
@@ -209,7 +209,8 @@ function compactSegments(segments) {
     current.text += (needsSpace ? ' ' : '') + segment.text
     current.duration = Math.max(current.duration, segment.start + segment.duration - current.start)
   }
-  return groups.slice(0, 6000)
+  if (groups.length > 20000) throw new Error('자막 분량이 처리 한도를 넘었습니다. 자막 파일을 나누어 가져와 주세요.')
+  return groups
 }
 
 async function fetchSegments(baseUrl, cookies) {

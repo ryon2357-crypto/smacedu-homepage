@@ -43,7 +43,7 @@
       <section class="hero shell">
         <p class="eyebrow">SMAC MEMBER TOOL</p>
         <h1>영상은 그대로<br>스크립트는 읽기 좋게</h1>
-        <p class="lead">유튜브 링크 하나만 붙여 넣으세요. 유튜브에 공개된 스크립트를 시간표시와 문단으로 정리합니다.</p>
+        <p class="lead">유튜브 스크립트를 시간표시와 문단으로 정리합니다. PC에서는 브라우저 연결 도구로 가져오고, 복사한 자막을 바로 붙여넣을 수도 있습니다.</p>
         <form class="search-card" id="urlForm">
           <div class="url-row">
             <label class="url-wrap" for="urlInput"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="urlInput" type="url" inputmode="url" autocomplete="url" placeholder="https://www.youtube.com/watch?v=..." required></label>
@@ -89,6 +89,9 @@
       if (!value || !state.session) return
       result.hidden = true; submitButton.disabled = true; submitButton.textContent = '가져오는 중'; setStatus('loading', '유튜브에서 공개 스크립트를 확인하고 있습니다.')
       try {
+        const fresh = await window._sbClient.auth.getSession()
+        if (!fresh.data.session) { location.href = 'login.html?redirect=youtube-script.html'; return }
+        state.session = fresh.data.session
         const response = await fetch('/api/youtube-transcript?url=' + encodeURIComponent(value), { headers: { accept: 'application/json', authorization: 'Bearer ' + state.session.access_token } })
         const payload = await response.json().catch(() => ({}))
         if (response.status === 401) { location.href = 'login.html?redirect=youtube-script.html'; return }
