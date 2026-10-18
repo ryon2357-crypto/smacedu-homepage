@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "SMAC 스크립트 연결",
+  "version": "1.0.0",
+  "description": "사용자가 요청한 유튜브 스크립트를 SMAC 회원 도구에 전달합니다.",
+  "permissions": ["scripting"],
+  "host_permissions": ["https://www.youtube.com/*"],
+  "background": {"service_worker": "background.js"},
+  "content_scripts": [{"matches": ["https://www.smacedu.kr/youtube-script*"], "js": ["bridge.js"]}]
+}

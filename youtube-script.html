@@ -123,5 +123,6 @@
     $('#logoutButton').addEventListener('click', async () => { if (window._sbClient) await window._sbClient.auth.signOut(); location.href = 'login.html?redirect=youtube-script.html' })
     initMemberTool().catch(() => { $('#authGate .gate-card p').textContent = '회원 정보를 확인하지 못했습니다. 페이지를 새로고침해 주세요.' })
   </script>
+  <script src="js/transcript-browser.js"></script>
 </body>
 </html>
