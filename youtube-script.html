@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SMAC 회원을 위한 유튜브 공개 스크립트 정리 도구">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#172554">
+  <title>유튜브 스크립트 정리 스마트미디어아트센터</title>
+  <link rel="icon" href="images/logo1.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:light;--navy:#172554;--deep:#111f45;--orange:#f97316;--orange-dark:#df5f0a;--soft:#fff7ed;--paper:#fff;--cream:#f8f6f1;--ink:#253044;--muted:#6b7280;--line:#e5e7eb;--ok:#16724c;--bad:#b6382e;--shadow:0 18px 48px rgba(23,37,84,.1);font-family:"Noto Sans KR",system-ui,sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}body{margin:0;min-height:100vh;background:var(--cream);color:var(--ink)}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid rgba(249,115,22,.3);outline-offset:2px}.shell{width:min(1120px,calc(100% - 32px));margin:0 auto}
+    #authGate{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--cream);color:var(--navy)}.gate-card{text-align:center}.spinner{display:inline-block;width:28px;height:28px;border:3px solid rgba(23,37,84,.18);border-top-color:var(--orange);border-radius:50%;animation:spin .7s linear infinite}.gate-card p{margin:14px 0 0;color:var(--muted);font-size:14px}@keyframes spin{to{transform:rotate(360deg)}}
+    #app[hidden],#result[hidden],.status[hidden]{display:none}
+    header{border-bottom:1px solid var(--line);background:rgba(255,255,255,.94);backdrop-filter:blur(12px)}.header-row{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:10px;color:var(--navy);text-decoration:none}.brand img{height:44px;width:auto}.brand-copy strong{display:block;font-size:15px}.brand-copy span{display:block;margin-top:2px;color:var(--muted);font-size:11px}.member{display:flex;align-items:center;gap:10px;min-width:0}.member-email{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:12px}.member-link,.logout{padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--navy);font-size:12px;font-weight:700;text-decoration:none}.member-link:hover,.logout:hover{border-color:var(--navy)}
+    .hero{padding:54px 0 30px;text-align:center}.eyebrow{margin:0 0 14px;color:var(--orange);font-size:12px;font-weight:900;letter-spacing:.12em}.hero h1{margin:0;color:var(--deep);font-size:clamp(33px,7vw,60px);line-height:1.08;letter-spacing:-.055em}.lead{max-width:650px;margin:19px auto 0;color:var(--muted);font-size:clamp(15px,2.4vw,18px);line-height:1.75;word-break:keep-all}
+    .search-card{max-width:860px;margin:30px auto 0;padding:12px;border:1px solid rgba(23,37,84,.12);border-radius:20px;background:rgba(255,255,255,.94);box-shadow:var(--shadow)}.url-row{display:grid;grid-template-columns:1fr auto;gap:10px}.url-wrap{display:flex;align-items:center;gap:10px;min-width:0;padding:0 16px;border:1px solid var(--line);border-radius:13px;background:#fff}.url-wrap svg{width:20px;flex:0 0 auto;color:var(--muted)}#urlInput{width:100%;min-height:54px;border:0;outline:0;background:transparent;color:var(--ink);font-size:16px}#urlInput::placeholder{color:#9ca3af}.primary{min-height:54px;padding:0 24px;border:0;border-radius:13px;background:var(--orange);color:#fff;font-weight:800;box-shadow:0 9px 20px rgba(249,115,22,.23);transition:.15s ease}.primary:hover{background:var(--orange-dark);transform:translateY(-1px)}.primary:disabled{cursor:wait;opacity:.62;transform:none}.hint{display:flex;justify-content:space-between;gap:16px;margin:10px 4px 0;color:var(--muted);font-size:12px;line-height:1.5;text-align:left}
+    .status{max-width:860px;margin:18px auto 0;padding:14px 16px;border-radius:12px;font-size:14px;line-height:1.55;text-align:left}.status.loading{background:#eef2ff;color:var(--navy)}.status.error{background:#fff0ed;color:var(--bad)}.status.ok{background:#edf8f2;color:var(--ok)}.status .spinner{width:14px;height:14px;margin-right:8px;border-width:2px;vertical-align:-2px}
+    #result{padding:22px 0 64px}.video-card{display:grid;grid-template-columns:220px minmax(0,1fr);gap:22px;align-items:center;padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--paper);box-shadow:0 10px 28px rgba(23,37,84,.06)}.thumb-link{position:relative;display:block;overflow:hidden;aspect-ratio:16/9;border-radius:12px;background:#dbe2e7}.thumb-link img{width:100%;height:100%;object-fit:cover;transition:.25s ease}.thumb-link:hover img{transform:scale(1.025)}.play{position:absolute;inset:0;display:grid;place-items:center}.play i{display:grid;width:48px;height:48px;place-items:center;border-radius:50%;background:rgba(17,31,69,.88);color:#fff;font-style:normal}.video-meta{min-width:0}.kicker{margin:0 0 8px;color:var(--orange);font-size:12px;font-weight:800}.video-meta h2{margin:0;color:var(--deep);font-size:clamp(19px,3vw,27px);line-height:1.35;letter-spacing:-.025em}.meta-line{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px;color:var(--muted);font-size:13px}
+    .toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 12px}.tabs,.actions{display:flex;flex-wrap:wrap;gap:8px}.tab,.ghost{min-height:42px;padding:0 15px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--navy);font-weight:750}.tab[aria-selected="true"]{border-color:var(--navy);background:var(--navy);color:#fff}.ghost:hover{border-color:#aeb6bd;background:#fff}.control-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;margin-bottom:12px}.find-wrap{position:relative}.find-wrap svg{position:absolute;top:50%;left:15px;width:18px;color:var(--muted);transform:translateY(-50%)}#findInput{width:100%;min-height:46px;padding:0 14px 0 43px;border:1px solid var(--line);border-radius:11px;background:var(--paper);color:var(--ink);outline:0}#fontSelect{min-height:46px;padding:0 34px 0 13px;border:1px solid var(--line);border-radius:11px;background:var(--paper);color:var(--ink)}
+    .transcript-card{min-height:320px;padding:clamp(20px,4vw,38px);border:1px solid var(--line);border-radius:18px;background:var(--paper);box-shadow:var(--shadow)}.result-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--line)}.result-head strong{color:var(--deep);font-size:17px}.result-head span{color:var(--muted);font-size:12px}.script-list{margin-top:10px}.script-item{display:grid;grid-template-columns:72px minmax(0,1fr);gap:16px;padding:14px 4px;border-bottom:1px solid #ece8e1}.script-item:last-child{border-bottom:0}.time-link{align-self:start;width:fit-content;padding:4px 7px;border:0;border-radius:7px;background:var(--soft);color:#b84b22;font-size:12px;font-weight:800;text-decoration:none}.time-link:hover{background:#ffe2d2}.script-text{margin:0;line-height:1.82}.plain-text{margin:20px 0 0;white-space:pre-wrap;line-height:1.95;word-break:keep-all}mark{border-radius:3px;background:#ffe098;color:inherit}.empty{padding:50px 16px;color:var(--muted);text-align:center}
+    footer{padding:26px 0 38px;border-top:1px solid rgba(23,37,84,.1);color:var(--muted);font-size:12px;line-height:1.65}footer .shell{display:flex;justify-content:space-between;gap:18px}footer strong{color:var(--navy)}.toast{position:fixed;right:20px;bottom:20px;z-index:20;max-width:min(360px,calc(100% - 40px));padding:13px 16px;border-radius:11px;background:var(--deep);color:#fff;box-shadow:0 15px 40px rgba(17,31,69,.28);font-size:13px;opacity:0;transform:translateY(12px);pointer-events:none;transition:.2s ease}.toast.show{opacity:1;transform:translateY(0)}
+    @media(max-width:760px){.shell{width:min(100% - 22px,1120px)}.header-row{min-height:64px}.brand-copy{display:none}.member-email{display:none}.hero{padding-top:36px}.url-row{grid-template-columns:1fr}.primary{width:100%}.hint{display:block}.hint span:last-child{display:block;margin-top:3px}.video-card{grid-template-columns:1fr}.toolbar{align-items:stretch}.tabs,.actions{width:100%}.tab,.actions .ghost{flex:1}.control-row{grid-template-columns:1fr}.script-item{grid-template-columns:58px minmax(0,1fr);gap:10px}footer .shell{display:block}}
+    @media print{body{background:#fff}header,.hero,.toolbar,.control-row,footer,.toast{display:none!important}#result{padding:0}.shell{width:100%}.video-card,.transcript-card{border:0;box-shadow:none}.video-card{grid-template-columns:130px 1fr}}
+  </style>
+</head>
+<body>
+  <div id="authGate"><div class="gate-card"><span class="spinner" aria-hidden="true"></span><p>회원 정보를 확인하고 있습니다.</p></div></div>
+  <div id="app" hidden>
+    <header>
+      <div class="header-row shell">
+        <a class="brand" href="index.html" aria-label="스마트미디어아트센터 홈">
+          <img src="images/logo1.png" alt="스마트미디어아트센터">
+          <span class="brand-copy"><strong>유튜브 스크립트 정리</strong><span>SMAC 회원 학습 도구</span></span>
+        </a>
+        <div class="member"><span class="member-email" id="memberEmail"></span><a class="member-link" href="my-courses.html">내 강의</a><button class="logout" id="logoutButton" type="button">로그아웃</button></div>
+      </div>
+    </header>
+    <main>
+      <section class="hero shell">
+        <p class="eyebrow">SMAC MEMBER TOOL</p>
+        <h1>영상은 그대로<br>스크립트는 읽기 좋게</h1>
+        <p class="lead">유튜브 링크 하나만 붙여 넣으세요. 유튜브에 공개된 스크립트를 시간표시와 문단으로 정리합니다.</p>
+        <form class="search-card" id="urlForm">
+          <div class="url-row">
+            <label class="url-wrap" for="urlInput"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="urlInput" type="url" inputmode="url" autocomplete="url" placeholder="https://www.youtube.com/watch?v=..." required></label>
+            <button class="primary" id="submitButton" type="submit">스크립트 가져오기</button>
+          </div>
+          <div class="hint"><span>유튜브에서 스크립트 표시가 되는 영상만 지원합니다.</span><span>입력한 링크와 스크립트는 저장하지 않습니다.</span></div>
+        </form>
+        <div class="status" id="status" role="status" aria-live="polite" hidden></div>
+      </section>
+      <section class="shell" id="result" hidden>
+        <article class="video-card"><a class="thumb-link" id="videoLink" target="_blank" rel="noopener noreferrer"><img id="thumbnail" alt="영상 썸네일"><span class="play" aria-hidden="true"><i>▶</i></span></a><div class="video-meta"><p class="kicker">가져온 영상</p><h2 id="videoTitle"></h2><div class="meta-line"><span id="channelName"></span><span id="trackName"></span><span id="segmentCount"></span></div></div></article>
+        <div class="toolbar"><div class="tabs" role="tablist" aria-label="스크립트 보기 방식"><button class="tab" id="timedTab" type="button" role="tab" aria-selected="true">시간표시</button><button class="tab" id="plainTab" type="button" role="tab" aria-selected="false">문단으로 보기</button></div><div class="actions"><button class="ghost" id="copyButton" type="button">전체 복사</button><button class="ghost" id="downloadButton" type="button">텍스트 저장</button><button class="ghost" id="shareButton" type="button">회원 링크 복사</button><button class="ghost" id="printButton" type="button">인쇄</button></div></div>
+        <div class="control-row"><label class="find-wrap" for="findInput"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="findInput" type="search" placeholder="스크립트 안에서 찾기"></label><label><select id="fontSelect" aria-label="글자 크기"><option value="15">작은 글자</option><option value="17" selected>보통 글자</option><option value="20">큰 글자</option><option value="23">아주 큰 글자</option></select></label></div>
+        <article class="transcript-card"><div class="result-head"><strong id="viewTitle">시간표시 스크립트</strong><span id="resultSummary"></span></div><div id="transcriptBody"></div></article>
+      </section>
+    </main>
+    <footer><div class="shell"><span><strong>스마트미디어아트센터</strong><br>회원의 영상 학습을 위한 보조 도구입니다.</span><span>본인 소유 또는 이용 허락을 받은 영상과 학습 목적 범위에서 사용해 주세요.</span></div></footer>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/config.js"></script>
+  <script>
+    const state = { session: null, data: null, mode: 'timed', query: '' }
+    const $ = selector => document.querySelector(selector)
+    const form = $('#urlForm'), urlInput = $('#urlInput'), submitButton = $('#submitButton')
+    const statusBox = $('#status'), result = $('#result'), transcriptBody = $('#transcriptBody')
+
+    function escapeHtml(value) { return String(value || '').replace(/[&<>\"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' })[char]) }
+    function formatTime(value) { const total = Math.max(0, Math.floor(Number(value) || 0)), hours = Math.floor(total / 3600), minutes = Math.floor(total % 3600 / 60), seconds = total % 60; return (hours ? hours + ':' + String(minutes).padStart(2, '0') : String(minutes)) + ':' + String(seconds).padStart(2, '0') }
+    function setStatus(type, message) { statusBox.hidden = !message; statusBox.className = 'status ' + type; statusBox.innerHTML = type === 'loading' ? '<span class="spinner" aria-hidden="true"></span>' + escapeHtml(message) : escapeHtml(message) }
+    function toast(message) { const box = $('#toast'); box.textContent = message; box.classList.add('show'); clearTimeout(toast.timer); toast.timer = setTimeout(() => box.classList.remove('show'), 2200) }
+    function paragraphize(items) { const groups = []; let current = null; items.forEach(item => { const gap = current ? item.start - current.lastEnd : 0, shouldBreak = !current || gap > 3.2 || current.text.length > 210 || /[.!?。！？]$/.test(current.text.trim()); if (shouldBreak) { current = { start: item.start, text: item.text, lastEnd: item.start + item.duration }; groups.push(current) } else { const space = !/[\s]$/.test(current.text) && !/^[,.:;!?。，、！？]/.test(item.text); current.text += (space ? ' ' : '') + item.text; current.lastEnd = item.start + item.duration } }); return groups }
+    function highlight(text, query) { if (!query) return escapeHtml(text); const safe = query.replace(/[.*+?^$()|[\]\\]/g, '\\$&'); return escapeHtml(text).replace(new RegExp(safe, 'gi'), match => '<mark>' + match + '</mark>') }
+    function visibleEntries() { if (!state.data) return []; const entries = state.mode === 'timed' ? state.data.segments : paragraphize(state.data.segments); if (!state.query) return entries; const query = state.query.toLocaleLowerCase('ko'); return entries.filter(item => item.text.toLocaleLowerCase('ko').includes(query)) }
+    function renderTranscript() { if (!state.data) return; const entries = visibleEntries(); transcriptBody.style.fontSize = $('#fontSelect').value + 'px'; $('#viewTitle').textContent = state.mode === 'timed' ? '시간표시 스크립트' : '문단으로 정리한 스크립트'; $('#resultSummary').textContent = state.query ? entries.length + '개 검색 결과' : entries.length + '개 항목'; if (!entries.length) { transcriptBody.innerHTML = '<div class="empty">검색 결과가 없습니다.</div>'; return } if (state.mode === 'plain') { transcriptBody.innerHTML = '<div class="plain-text">' + entries.map(item => highlight(item.text, state.query)).join('\n\n') + '</div>'; return } transcriptBody.innerHTML = '<div class="script-list">' + entries.map(item => { const href = 'https://www.youtube.com/watch?v=' + encodeURIComponent(state.data.videoId) + '&t=' + Math.floor(item.start) + 's'; return '<div class="script-item"><a class="time-link" href="' + href + '" target="_blank" rel="noopener noreferrer" title="이 시점부터 영상 보기">' + formatTime(item.start) + '</a><p class="script-text">' + highlight(item.text, state.query) + '</p></div>' }).join('') + '</div>' }
+    function updateTabs() { $('#timedTab').setAttribute('aria-selected', String(state.mode === 'timed')); $('#plainTab').setAttribute('aria-selected', String(state.mode === 'plain')); renderTranscript() }
+    function fileSafe(value) { return String(value || '유튜브_스크립트').replace(/[\\/:*?\"<>|]/g, '').replace(/\s+/g, '_').slice(0, 80) }
+    function exportText() { if (!state.data) return ''; const head = state.data.title + '\n' + state.data.channel + '\nhttps://www.youtube.com/watch?v=' + state.data.videoId + '\n\n'; return state.mode === 'plain' ? head + paragraphize(state.data.segments).map(item => item.text).join('\n\n') : head + state.data.segments.map(item => '[' + formatTime(item.start) + '] ' + item.text).join('\n') }
+    async function copyText(value, message) { try { await navigator.clipboard.writeText(value); toast(message) } catch { const area = document.createElement('textarea'); area.value = value; document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove(); toast(message) } }
+
+    async function loadTranscript(raw) {
+      const value = String(raw || '').trim()
+      if (!value || !state.session) return
+      result.hidden = true; submitButton.disabled = true; submitButton.textContent = '가져오는 중'; setStatus('loading', '유튜브에서 공개 스크립트를 확인하고 있습니다.')
+      try {
+        const response = await fetch('/api/youtube-transcript?url=' + encodeURIComponent(value), { headers: { accept: 'application/json', authorization: 'Bearer ' + state.session.access_token } })
+        const payload = await response.json().catch(() => ({}))
+        if (response.status === 401) { location.href = 'login.html?redirect=youtube-script.html'; return }
+        if (!response.ok) throw new Error(payload.message || '스크립트를 가져오지 못했습니다.')
+        state.data = payload; state.mode = 'timed'; state.query = ''; $('#findInput').value = ''
+        $('#videoTitle').textContent = payload.title || '제목 없는 영상'; $('#channelName').textContent = payload.channel || '채널 정보 없음'; $('#trackName').textContent = payload.trackLabel; $('#segmentCount').textContent = payload.segments.length + '개 자막'; $('#thumbnail').src = payload.thumbnail; $('#thumbnail').alt = (payload.title || '유튜브 영상') + ' 썸네일'; $('#videoLink').href = 'https://www.youtube.com/watch?v=' + payload.videoId
+        history.replaceState(null, '', '?video=' + encodeURIComponent(payload.videoId)); updateTabs(); result.hidden = false; setStatus('ok', '스크립트를 가져왔습니다. 시간표시를 누르면 해당 영상 시점으로 이동합니다.'); setTimeout(() => result.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80)
+      } catch (error) { setStatus('error', error?.message || '스크립트를 가져오지 못했습니다.') }
+      finally { submitButton.disabled = false; submitButton.textContent = '스크립트 가져오기' }
+    }
+
+    async function initMemberTool() {
+      if (typeof window.supabase === 'undefined' || typeof window.supabase.createClient !== 'function') { $('#authGate .gate-card p').textContent = '로그인 서비스를 불러오지 못했습니다. 페이지를 새로고침해 주세요.'; return }
+      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      window._sbClient = client
+      const { data: { session } } = await client.auth.getSession()
+      if (!session) { location.replace('login.html?redirect=youtube-script.html' + encodeURIComponent(location.search)); return }
+      state.session = session; $('#memberEmail').textContent = session.user.email || '회원'; $('#authGate').remove(); $('#app').hidden = false
+      const initialVideo = new URLSearchParams(location.search).get('video')
+      if (initialVideo && /^[A-Za-z0-9_-]{11}$/.test(initialVideo)) { urlInput.value = 'https://www.youtube.com/watch?v=' + initialVideo; loadTranscript(urlInput.value) }
+    }
+
+    form.addEventListener('submit', event => { event.preventDefault(); loadTranscript(urlInput.value) })
+    $('#timedTab').addEventListener('click', () => { state.mode = 'timed'; updateTabs() })
+    $('#plainTab').addEventListener('click', () => { state.mode = 'plain'; updateTabs() })
+    $('#findInput').addEventListener('input', event => { state.query = event.target.value.trim(); renderTranscript() })
+    $('#fontSelect').addEventListener('change', renderTranscript)
+    $('#copyButton').addEventListener('click', () => copyText(exportText(), '스크립트를 복사했습니다.'))
+    $('#downloadButton').addEventListener('click', () => { if (!state.data) return; const blob = new Blob([exportText()], { type: 'text/plain;charset=utf-8' }), link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = fileSafe(state.data.title) + '_스크립트.txt'; link.click(); setTimeout(() => URL.revokeObjectURL(link.href), 1000); toast('텍스트 파일로 저장했습니다.') })
+    $('#shareButton').addEventListener('click', () => { if (!state.data) return; const shareUrl = location.origin + location.pathname + '?video=' + encodeURIComponent(state.data.videoId); copyText(shareUrl, '회원 전용 주소를 복사했습니다.') })
+    $('#printButton').addEventListener('click', () => window.print())
+    $('#logoutButton').addEventListener('click', async () => { if (window._sbClient) await window._sbClient.auth.signOut(); location.href = 'login.html?redirect=youtube-script.html' })
+    initMemberTool().catch(() => { $('#authGate .gate-card p').textContent = '회원 정보를 확인하지 못했습니다. 페이지를 새로고침해 주세요.' })
+  </script>
+</body>
+</html>
