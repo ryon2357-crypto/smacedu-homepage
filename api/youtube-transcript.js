@@ -105,6 +105,37 @@ function responseCookies(headers) {
     .filter(Boolean)
 }
 
+async function checkPublicVideo(videoId) {
+  try {
+    const watchUrl = `https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}`
+    const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(watchUrl)}&format=json`
+    const response = await fetch(oembedUrl, {
+      headers: { 'user-agent': WEB_UA, 'accept-language': 'ko-KR,ko;q=0.9,en;q=0.5' },
+      signal: AbortSignal.timeout(8000)
+    })
+    if (response.ok) return true
+    if (response.status === 401 || response.status === 403 || response.status === 404) return false
+    return null
+  } catch {
+    return null
+  }
+}
+
+function unavailableError() {
+  return Object.assign(new Error('유튜브에서 공개적으로 열 수 없는 영상입니다. 비공개, 회원 전용, 삭제된 영상 또는 주소 오류인지 확인해 주세요.'), { statusCode: 422 })
+}
+
+function limitedError() {
+  return Object.assign(new Error('유튜브가 자동 요청을 일시적으로 제한했습니다. 잠시 후 다시 시도해 주세요.'), { statusCode: 503 })
+}
+
+function normalizePlayabilityError(reason) {
+  const message = String(reason || '')
+  if (/not a bot|automated quer|sign in to confirm/i.test(message)) return limitedError()
+  if (/unavailable|private|removed|does not exist|not available/i.test(message)) return unavailableError()
+  return Object.assign(new Error(message || '현재 이 영상을 공개적으로 불러올 수 없습니다.'), { statusCode: 422 })
+}
+
 async function fetchPlayer(videoId) {
   const baseCookie = 'PREF=hl=en&tz=UTC; SOCS=CAI'
   const watchUrl = `https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}&bpctr=9999999999&has_verified=1`
@@ -216,13 +247,23 @@ async function fetchSegments(baseUrl, cookies) {
 }
 
 async function getTranscript(videoId, languageCode) {
-  const session = await fetchPlayer(videoId)
+  let session
+  try {
+    session = await fetchPlayer(videoId)
+  } catch (error) {
+    const isPublic = await checkPublicVideo(videoId)
+    if (isPublic === false) throw unavailableError()
+    if (/bot|automated quer|확인하지 못했습니다/i.test(String(error?.message || ''))) throw limitedError()
+    throw error
+  }
   const player = session.player
   if (!player) throw Object.assign(new Error('영상 정보를 읽을 수 없습니다. 잠시 후 다시 시도해 주세요.'), { statusCode: 502 })
 
   const playability = player.playabilityStatus
   if (playability?.status && playability.status !== 'OK') {
-    throw Object.assign(new Error(playability.reason || '공개적으로 볼 수 없는 영상입니다.'), { statusCode: 422 })
+    const isPublic = await checkPublicVideo(videoId)
+    if (isPublic === false) throw unavailableError()
+    throw normalizePlayabilityError(playability.reason)
   }
 
   const tracks = player.captions?.playerCaptionsTracklistRenderer?.captionTracks || []
