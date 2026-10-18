@@ -11,6 +11,10 @@
     }
   ],
   "functions": {
+    "api/youtube-transcript.js": {
+      "maxDuration": 30,
+      "regions": ["icn1"]
+    },
     "api/**/*.js": {
       "maxDuration": 30
     }
