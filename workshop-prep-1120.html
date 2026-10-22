@@ -307,7 +307,7 @@ function logHTML(e){
   return '<div class="log"><time>'+fmt(e.at)+'</time><div><span class="who2">'+who+'</span> '+act+(q?'<q>'+q+'</q>':'')+'</div></div>';
 }
 function renderLog(){
-  var log=(state.log||[]).slice().reverse();var box=$('#logBox');
+  var log=(state.log||[]).filter(function(e){return e.label||labelOf(e.id)!==e.id}).reverse();var box=$('#logBox');
   if(!log.length){box.innerHTML='<div class="log" style="display:block;color:var(--sub)">아직 수정 이력이 없습니다.</div>';$('#logMore').style.display='none';return}
   box.innerHTML=log.slice(0,LOGN).map(logHTML).join('');
   $('#logMore').style.display=log.length>LOGN?'inline-block':'none';
