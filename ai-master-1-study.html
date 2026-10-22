@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AI 실전 마스터 과정 1기 수강생을 위한 한 장 정리. 강의 자료 위치, 자격증 과제, 카페 업로드 방법, 단계별 공부 미션을 모았습니다.">
+  <link rel="canonical" href="https://www.smacedu.kr/ai-master-1-study">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AI 실전 마스터 과정 1기 학습 안내">
+  <meta property="og:description" content="자료는 어디 있는지, 과제는 무엇인지, 무엇부터 공부하면 좋은지 한 페이지로 정리했습니다.">
+  <meta property="og:url" content="https://www.smacedu.kr/ai-master-1-study">
+  <meta property="og:image" content="https://www.smacedu.kr/images/ai-master-class-1/AI실전마스터1기_썸네일_카톡안전영역_시안_v1.png">
+  <title>AI 실전 마스터 과정 1기 학습 안내</title>
+  <style>
+    :root {
+      --ink: #1f2a33;
+      --muted: #5d6973;
+      --navy: #123c63;
+      --blue: #1768d3;
+      --clay: #c96442;
+      --cream: #faf7f2;
+      --paper: #ffffff;
+      --pale: #eef5fb;
+      --soft: #fdf1ea;
+      --line: #e3ddd3;
+      --ok: #1f7a4d;
+      --okbg: #e8f5ee;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      font-size: 18px;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+    a { color: var(--blue); }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 0 16px; }
+
+    header.hero {
+      background: linear-gradient(135deg, #123c63 0%, #1768d3 100%);
+      color: #fff;
+      padding: 56px 0 44px;
+    }
+    .hero .tag {
+      display: inline-block; background: rgba(255,255,255,.16);
+      border-radius: 999px; padding: 4px 14px; font-size: 15px; font-weight: 700;
+    }
+    .hero h1 { font-size: 34px; line-height: 1.35; margin: 14px 0 10px; }
+    .hero p { margin: 0; font-size: 18px; opacity: .92; }
+    .hero .dl-row { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 18px; border-radius: 12px; font-weight: 800; font-size: 17px;
+      text-decoration: none; border: 0; cursor: pointer; font-family: inherit;
+    }
+    .btn-white { background: #fff; color: var(--navy); }
+    .btn-line { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.7); }
+    .btn-blue { background: var(--blue); color: #fff; }
+    .btn-clay { background: var(--clay); color: #fff; }
+
+    nav.toc {
+      position: sticky; top: 0; z-index: 5;
+      background: rgba(250,247,242,.96); backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--line);
+    }
+    nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-top: 10px; padding-bottom: 10px; }
+    nav.toc a {
+      flex: 0 0 auto; text-decoration: none; color: var(--navy); font-weight: 700;
+      font-size: 15px; padding: 6px 12px; border-radius: 999px; background: #fff; border: 1px solid var(--line);
+    }
+
+    section { padding: 40px 0 8px; }
+    h2 { font-size: 27px; line-height: 1.4; margin: 0 0 6px; color: var(--navy); }
+    h2 .num { color: var(--clay); margin-right: 6px; }
+    .lead { color: var(--muted); margin: 0 0 18px; }
+    h3 { font-size: 21px; margin: 0 0 8px; }
+
+    .card {
+      background: var(--paper); border: 1px solid var(--line); border-radius: 16px;
+      padding: 22px; margin-bottom: 14px;
+    }
+    .card.blue { background: var(--pale); border-color: #cfe0f1; }
+    .card.clay { background: var(--soft); border-color: #f1d4c4; }
+    .card.ok { background: var(--okbg); border-color: #c4e5d2; }
+    .card p { margin: 0 0 8px; }
+    .card p:last-child { margin-bottom: 0; }
+    ul, ol { margin: 6px 0 0; padding-left: 22px; }
+    li { margin-bottom: 6px; }
+
+    .steps { counter-reset: s; display: grid; gap: 12px; }
+    .step {
+      background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 18px 18px 18px 72px;
+      position: relative;
+    }
+    .step::before {
+      counter-increment: s; content: counter(s);
+      position: absolute; left: 18px; top: 18px; width: 38px; height: 38px; border-radius: 50%;
+      background: var(--clay); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: 19px;
+    }
+    .step h3 { margin-bottom: 4px; font-size: 20px; }
+    .step p { margin: 0 0 10px; color: var(--muted); }
+    .step .btn { font-size: 16px; padding: 10px 14px; }
+
+    .sched { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .sched .item { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+    .sched .d { font-weight: 800; font-size: 19px; color: var(--navy); }
+    .sched .t { color: var(--muted); font-size: 16px; }
+    .badge { display: inline-block; font-size: 13px; font-weight: 800; border-radius: 6px; padding: 1px 8px; margin-top: 6px; }
+    .badge.done { background: #e9ecef; color: #5d6973; }
+    .badge.next { background: var(--clay); color: #fff; }
+
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .or {
+      text-align: center; font-weight: 800; color: var(--clay); margin: 4px 0 10px; font-size: 17px;
+    }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; }
+    th, td { border-bottom: 1px solid var(--line); padding: 12px 14px; text-align: left; vertical-align: top; }
+    th { background: var(--pale); color: var(--navy); font-size: 16px; }
+    tr:last-child td { border-bottom: 0; }
+
+    .level { border-left: 6px solid var(--blue); }
+    .level.l2 { border-left-color: var(--clay); }
+    .level.l3 { border-left-color: var(--navy); }
+    .level .lv { font-size: 14px; font-weight: 800; color: var(--muted); letter-spacing: .02em; }
+
+    .prompt {
+      display: flex; gap: 10px; align-items: flex-start; justify-content: space-between;
+      background: #f6f3ee; border: 1px dashed #d8cfc2; border-radius: 12px; padding: 12px 14px; margin: 8px 0;
+    }
+    .prompt span { flex: 1; }
+    .copy {
+      flex: 0 0 auto; background: #fff; border: 1px solid var(--line); border-radius: 8px;
+      padding: 4px 10px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; color: var(--navy);
+    }
+    .copy.done { background: var(--okbg); color: var(--ok); border-color: #c4e5d2; }
+
+    details { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 4px 18px; margin-bottom: 10px; }
+    summary { cursor: pointer; font-weight: 800; padding: 12px 0; list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    summary::before { content: "Q"; color: var(--clay); margin-right: 8px; }
+    details p { margin: 0 0 14px; }
+
+    .dl {
+      background: var(--navy); color: #fff; border-radius: 20px; padding: 28px 22px; margin: 40px 0 16px;
+    }
+    .dl h2 { color: #fff; }
+    .dl p { opacity: .9; margin: 0 0 16px; }
+    .dl .row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    footer { color: var(--muted); font-size: 15px; padding: 24px 0 48px; text-align: center; }
+
+    @media (max-width: 720px) {
+      body { font-size: 17px; }
+      .hero h1 { font-size: 27px; }
+      h2 { font-size: 23px; }
+      .sched, .two { grid-template-columns: 1fr; }
+      .step { padding-left: 64px; }
+      .step::before { left: 14px; }
+      th, td { padding: 10px; font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">AI 실전 마스터 과정 1기</span>
+    <h1>자료가 많아 헷갈리셨죠<br>이 페이지 하나만 보시면 됩니다</h1>
+    <p>자료는 어디 있는지, 과제는 무엇인지, 무엇부터 공부하면 좋은지 순서대로 정리했습니다.</p>
+    <div class="dl-row">
+      <a class="btn btn-white" href="/downloads/ai-master-1-study-guide.docx" download>워드 정리본 내려받기</a>
+      <a class="btn btn-line" href="#homework">과제 바로 보기</a>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="목차">
+  <div class="wrap">
+    <a href="#schedule">일정</a>
+    <a href="#materials">자료 보는 순서</a>
+    <a href="#homework">과제</a>
+    <a href="#upload">카페 올리는 법</a>
+    <a href="#study">공부 미션</a>
+    <a href="#faq">자주 묻는 질문</a>
+    <a href="#download">내려받기</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section id="schedule">
+    <h2><span class="num">1</span>강의 일정</h2>
+    <p class="lead">모두 월요일 저녁 9시부터 11시까지 줌으로 진행합니다. 줌 링크는 단톡방 공지를 확인해 주세요.</p>
+    <div class="sched">
+      <div class="item">
+        <div class="d">10월 19일 월</div>
+        <div class="t">AI 프롬프트전문가 1회차</div>
+        <span class="badge done">녹화본 제공 중</span>
+      </div>
+      <div class="item">
+        <div class="d">10월 26일 월</div>
+        <div class="t">AI 프롬프트전문가 2회차</div>
+        <span class="badge next">다음 강의</span>
+      </div>
+      <div class="item">
+        <div class="d">11월 2일 월</div>
+        <div class="t">AI 활용지도사 자격증 과정</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="materials">
+    <h2><span class="num">2</span>자료는 이 순서로 보세요</h2>
+    <p class="lead">위에서부터 하나씩 열어 보시면 됩니다. 모든 주소는 수업이 끝난 뒤에도 계속 볼 수 있습니다.</p>
+    <div class="steps">
+      <div class="step">
+        <h3>강의 녹화본과 자료 페이지</h3>
+        <p>10월 19일 강의 영상과 실습 자료가 한곳에 있습니다. 하나하나 따라 해보세요.</p>
+        <a class="btn btn-blue" href="https://ai-master-recording-20261019.elanvital7.chatgpt.site" target="_blank" rel="noopener">녹화본과 자료 열기</a>
+        <a class="btn btn-white" style="border:1px solid var(--line)" href="https://youtu.be/litoQClQGOM" target="_blank" rel="noopener">유튜브 녹화본만 보기</a>
+      </div>
+      <div class="step">
+        <h3>PPT 내용 정리본</h3>
+        <p>강의 PPT 내용을 웹페이지로 정리했습니다. 영상을 다시 보기 어려울 때 먼저 훑어보세요.</p>
+        <a class="btn btn-blue" href="https://smac.elanvital7.chatgpt.site" target="_blank" rel="noopener">PPT 정리본 열기</a>
+      </div>
+      <div class="step">
+        <h3>매일 한 장 실습 워크북</h3>
+        <p>하루에 한 장씩 따라 하는 실습입니다. 자격증 과제로도 인정됩니다.</p>
+        <a class="btn btn-clay" href="https://smac-ai-daily-workbook.vercel.app/" target="_blank" rel="noopener">워크북 열기</a>
+      </div>
+      <div class="step">
+        <h3>인쇄용 강의 요약본</h3>
+        <p>종이로 보고 싶은 분을 위한 워드 문서입니다. 프롬프트 설계와 이미지, 영상 활용을 정리했습니다.</p>
+        <a class="btn btn-blue" href="/downloads/ai-master-1-lecture-summary-1019.docx" download>강의 요약본 내려받기</a>
+      </div>
+      <div class="step">
+        <h3>더 해보고 싶을 때</h3>
+        <p>필수는 아닙니다. 여유가 있을 때 열어 보세요.</p>
+        <ul>
+          <li><a href="https://smac-free-mp3-transcription.elanvital7.chatgpt.site" target="_blank" rel="noopener">무료 버전에서 MP3 전사하는 방법</a></li>
+          <li><a href="https://cafe.naver.com/elanvital/925" target="_blank" rel="noopener">스마트폰을 나만의 AI 비서로 활용하기</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="homework">
+    <h2><span class="num">3</span>과제는 이것만 하시면 됩니다</h2>
+    <p class="lead">필기시험은 없습니다. 아래 과제를 네이버 카페에 올리면 실기 과제로 인정됩니다.</p>
+
+    <div class="card blue">
+      <h3>AI 프롬프트 전문가 2급</h3>
+      <p>아래 두 가지 방법 중 <b>하나만</b> 하시면 됩니다.</p>
+    </div>
+    <div class="two">
+      <div class="card">
+        <h3>방법 A 정식 과제</h3>
+        <ol>
+          <li><b>프롬프트 개선 사례 3개</b><br>기존 프롬프트와 개선한 프롬프트를 나란히 적기</li>
+          <li><b>AI 이미지 1개</b><br>프롬프트와 만든 이미지</li>
+          <li><b>AI 영상 또는 웹페이지 1개</b> 중 택 1<br>프롬프트와 영상, 또는 프롬프트와 HTML 웹페이지</li>
+        </ol>
+      </div>
+      <div class="card ok">
+        <h3>방법 B 워크북 실습</h3>
+        <p><a href="https://smac-ai-daily-workbook.vercel.app/" target="_blank" rel="noopener">매일 한 장 워크북</a>에서 실습을 <b>3회 이상</b> 하고 결과물을 카페에 올리기</p>
+        <p>아이디어가 없으면 워크북 프롬프트를 그대로 쓰셔도 되고, 내 상황에 맞게 바꾸셔도 됩니다.</p>
+      </div>
+    </div>
+
+    <div class="card clay" style="margin-top:4px">
+      <h3>AI 활용지도사 2급</h3>
+      <p><b>PPT 10장 이상</b>을 만들어 제출해 주세요. 이 과제는 꼭 필요합니다.</p>
+      <p>주제는 자유입니다. 자기소개, 여행, 교육, 업무, 사업 소개 모두 좋습니다.</p>
+    </div>
+
+    <h3 style="margin-top:26px">신청과 발급 일정</h3>
+    <table>
+      <thead><tr><th>구분</th><th>신청 기간</th><th>발급</th></tr></thead>
+      <tbody>
+        <tr><td>신청폼 안내</td><td colspan="2">10월 27일 화요일 단톡방에 별도 신청폼을 안내합니다</td></tr>
+        <tr><td><b>1차</b></td><td>10월 27일 화 ~ 11월 8일 일</td><td>11월 11일 수까지 일괄 발급</td></tr>
+        <tr><td><b>2차</b></td><td>11월 9일 월 ~ 11월 22일 일</td><td>11월 25일 수 일괄 발급</td></tr>
+      </tbody>
+    </table>
+    <p class="lead" style="margin-top:10px">과제는 신청 기간 안에 카페에 올라와 있으면 됩니다. 서두르지 말고 천천히 하세요.</p>
+  </section>
+
+  <section id="upload">
+    <h2><span class="num">4</span>카페에 올리는 방법</h2>
+    <p class="lead"><a href="https://cafe.naver.com/elanvital" target="_blank" rel="noopener">엘란비탈 네이버 카페</a>에 결과물 종류에 맞는 게시판을 골라 올립니다.</p>
+    <table>
+      <thead><tr><th>올릴 것</th><th>게시판</th></tr></thead>
+      <tbody>
+        <tr><td>프롬프트만 있는 글, PPT, HTML 웹페이지</td><td><b>챗GPT</b> 게시판</td></tr>
+        <tr><td>AI로 만든 이미지</td><td><b>AI 이미지</b> 게시판</td></tr>
+        <tr><td>AI로 만든 영상</td><td><b>AI 영상</b> 게시판</td></tr>
+      </tbody>
+    </table>
+    <div class="card" style="margin-top:14px">
+      <ul>
+        <li>이미지와 영상을 올릴 때는 <b>사용한 프롬프트를 함께</b> 적어 주세요.</li>
+        <li>카페에 올리면 AI가 정리해서 보고합니다. <b>단톡방에 따로 알리지 않아도</b> 됩니다.</li>
+        <li>카페 공지에 있는 친구초대 글은 코덱스 강의용입니다. 이 과정에서는 하지 않으셔도 됩니다.</li>
+        <li>챗GPT 결과물 이미지는 공유 링크 대신 <b>휴대폰이나 PC에 저장한 뒤</b> 사진으로 올리면 바로 보입니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="study">
+    <h2><span class="num">5</span>이렇게 공부하세요</h2>
+    <div class="card blue">
+      <p>한 번에 다 마스터하려고 하면 어렵습니다. 프롬프트 종류나 어려운 용어, JSON 프롬프트를 몰라도 괜찮습니다. 중요한 건 <b>내가 무엇을 만들고 싶은지 알고, 그것을 만들어 내는 것</b>입니다.</p>
+      <p>무료 이용자도 매일 사용량이 다시 생기니 하루에 다 하지 말고 하나씩 차근차근 해보세요. 말로 입력해도 됩니다. 정보를 많이 줄수록 결과가 더 정교해집니다.</p>
+    </div>
+
+    <p class="lead" style="margin-top:20px">내 수준에 맞는 미션 하나를 골라 챗GPT에 그대로 넣어 보세요. 복사 버튼을 누르면 바로 복사됩니다.</p>
+
+    <div class="card level">
+      <div class="lv">초보자</div>
+      <h3>인포그래픽 만들기</h3>
+      <div class="prompt"><span>"인포그래픽"이 무엇인지 설명하는 인포그래픽 만들어줘.</span><button class="copy">복사</button></div>
+      <div class="prompt"><span>2박 3일 부산여행 인포그래픽 만들어줘.</span><button class="copy">복사</button></div>
+      <div class="prompt"><span>순두부찌개 만드는 방법 3D 귀여운 실사 이미지로 인포그래픽 만들어줘.</span><button class="copy">복사</button></div>
+      <div class="prompt"><span>윈도우 단축키 인포그래픽 만들어줘.</span><button class="copy">복사</button></div>
+      <p>빈칸에 궁금한 주제를 넣어도 됩니다. 예: <b>[ 주제 ] 무엇인지 설명하는 인포그래픽 만들어줘.</b></p>
+    </div>
+
+    <div class="card level l2">
+      <div class="lv">중급자</div>
+      <h3>HTML 웹페이지 만들기</h3>
+      <div class="prompt"><span>[ 주제 ]을 설명하는 html 만들어줘. 초등학생도 이해할 수 있는 수준으로 만들어줘.</span><button class="copy">복사</button></div>
+      <p>참고할 링크를 붙이거나 자료를 사진으로 찍어 첨부해도 됩니다. 내 정보를 구체적으로 주고 "정리해서 html 만들어줘"라고 해도 좋습니다.</p>
+    </div>
+
+    <div class="card level l3">
+      <div class="lv">고급</div>
+      <h3>질문형 md 파일 만들기</h3>
+      <div class="prompt"><span>내 소개 페이지를 만들 수 있는 질문에 하나하나 답하면 자동으로 html 만들어지는 질문형 md 파일 만들어줘.</span><button class="copy">복사</button></div>
+      <p>md 파일이 만들어지면 그 파일을 다시 대화창에 넣고 그냥 입력 키를 누르거나 "지침대로 실행해줘"라고 하면 됩니다.</p>
+    </div>
+
+    <h3 style="margin-top:26px">강의에서 다룬 10가지 실습</h3>
+    <p class="lead">익숙해지면 하나씩 도전해 보세요. 모두 과제 결과물로 쓸 수 있습니다.</p>
+    <table>
+      <thead><tr><th style="width:110px">종류</th><th>이렇게 말해 보세요</th></tr></thead>
+      <tbody>
+        <tr><td>워드</td><td>내 이력서를 표와 사진이 포함된 문서로 만들어줘.</td></tr>
+        <tr><td>웹페이지</td><td>내 이름과 직업을 이용해 개인 소개 웹페이지를 만들어줘.</td></tr>
+        <tr><td>PPT</td><td>2시간짜리 스마트폰 사진 강의 PPT를 만들어줘.</td></tr>
+        <tr><td>엑셀</td><td>이 엑셀 파일을 분석해 매출 그래프를 만들어줘.</td></tr>
+        <tr><td>이미지</td><td>이 사진을 활용해 광고 포스터를 만들어줘.</td></tr>
+        <tr><td>워드</td><td>내 여행 사진으로 사진전 기획서를 만들어줘.</td></tr>
+        <tr><td>인포그래픽</td><td>커피가 만들어지는 과정을 인포그래픽으로 만들어줘.</td></tr>
+        <tr><td>퀴즈</td><td>스마트폰으로 풀 수 있는 퀴즈 10문제를 만들어줘.</td></tr>
+        <tr><td>블로그와 SNS</td><td>교육과정 홍보용 블로그 글과 SNS 게시물 3개를 만들어줘.</td></tr>
+        <tr><td>HTML</td><td>나의 교육상품 소개 페이지를 HTML로 만들어줘.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="faq">
+    <h2><span class="num">6</span>자주 묻는 질문</h2>
+    <details>
+      <summary>녹화본과 정리본을 내려받을 수 있나요</summary>
+      <p>주소로 접속해서 보시면 됩니다. 수업이 끝난 뒤에도 계속 볼 수 있습니다. 인쇄가 필요하면 위의 워드 요약본을 내려받으세요.</p>
+    </details>
+    <details>
+      <summary>워크북 프롬프트를 똑같이 써야 하나요</summary>
+      <p>아이디어가 없으면 똑같이 하시고, 아이디어가 있으면 내 상황에 맞게 바꿔서 하시면 됩니다.</p>
+    </details>
+    <details>
+      <summary>프롬프트 전문가 과제와 워크북을 모두 해야 하나요</summary>
+      <p>아닙니다. 프롬프트 전문가 2급은 정식 과제(개선 사례 3개, 이미지 1개, 영상 또는 웹페이지 1개)와 워크북 3회 실습 중 하나만 하면 됩니다. 활용지도사 2급은 PPT 10장 이상을 따로 제출해 주세요.</p>
+    </details>
+    <details>
+      <summary>AI 영상 속 글자가 엉터리로 나와요</summary>
+      <p>영상 AI는 한글 글자를 자주 틀립니다. 프롬프트에 "제품 포장과 한글 글자를 원본 그대로 유지", "한글 글자를 왜곡하지 말 것"처럼 지킬 것과 하지 말 것을 함께 적으면 훨씬 나아집니다.</p>
+    </details>
+    <details>
+      <summary>MP3를 넣었더니 무료 버전에서는 안 된다고 나와요</summary>
+      <p>무료 버전은 MP3 첨부와 전사를 지원하지 않습니다. <a href="https://smac-free-mp3-transcription.elanvital7.chatgpt.site" target="_blank" rel="noopener">무료로 전사하는 방법</a> 페이지를 따라 해보세요.</p>
+    </details>
+    <details>
+      <summary>공유받은 링크가 열리지 않거나 로그인하라고 나와요</summary>
+      <p>챗GPT나 구글에 로그인한 상태에서 다시 열어 보세요. 계정 권한 문제라면 다른 계정으로 시도하면 열리는 경우가 많습니다.</p>
+    </details>
+    <details>
+      <summary>강의를 따라가기가 너무 어려웠어요</summary>
+      <p>먼저 워크북을 보고 한 장씩 따라 해보세요. 그래도 어려우면 엘란비탈 박성욱 작가에게 개인톡을 주세요. 늦은 시간 단톡방 메시지는 자제해 주세요.</p>
+    </details>
+  </section>
+
+  <section id="download">
+    <div class="dl">
+      <h2>내려받기</h2>
+      <p>이 페이지 내용을 워드 문서로 담았습니다. 인쇄해서 체크하면서 공부하세요.</p>
+      <div class="row">
+        <a class="btn btn-white" href="/downloads/ai-master-1-study-guide.docx" download>학습 안내 정리본 워드</a>
+        <a class="btn btn-line" href="/downloads/ai-master-1-lecture-summary-1019.docx" download>10월 19일 강의 요약본 워드</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  스마트미디어아트센터 · 엘란비탈 박성욱 작가
+</footer>
+
+<script>
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.parentElement.querySelector('span').innerText;
+      var done = function () {
+        btn.textContent = '복사됨'; btn.classList.add('done');
+        setTimeout(function () { btn.textContent = '복사'; btn.classList.remove('done'); }, 1600);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(done).catch(function () {});
+      } else {
+        var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+        ta.select(); try { document.execCommand('copy'); done(); } catch (e) {} document.body.removeChild(ta);
+      }
+    });
+  });
+</script>
+</body>
+</html>
