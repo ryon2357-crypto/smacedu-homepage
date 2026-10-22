@@ -3,7 +3,7 @@
 다시 만들 때: python scripts/build_members_api.py <대시보드 html 경로>"""
 import json, re, sys, pathlib
 
-KEEP = ["촬영 팁", "계절·장소별 촬영 팁", "보정·앱", "촬영 장비", "영상 촬영·편집", "촬영 사례·출사기"]
+KEEP = ["촬영 팁", "계절·장소별 촬영 팁", "보정·앱", "영상 촬영·편집", "촬영 사례·출사기"]
 src = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")
 rows = json.loads(re.search(r"const DATA=(\[.*?\]);\n", src, re.S).group(1))
 posts = [{"id": r["id"], "title": " ".join(r["title"].split()), "date": r["date"], "type": r["type"], "sum": (r.get("sum") or "").strip()}
