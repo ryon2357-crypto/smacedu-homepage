@@ -301,7 +301,7 @@ function render(){
   $('#sampleItems').innerHTML=SAMPLE.map(function(x){return itemHTML(x.id,x.q,x.d,false)}).join('');
   var n=$('#notes');if(document.activeElement!==n)n.value=state.notes||'';
   $('#notesMeta').textContent='';
-  progress();renderLog();renderLog();
+  progress();renderLog();
 }
 var LOGN=30;
 function labelOf(id,fallback){
@@ -321,7 +321,7 @@ function logHTML(e){
   else if(e.kind==='notes'){act='공용 메모 수정';q=(e.from?'이전: '+esc(e.from)+'\n':'')+'변경: '+(e.to?esc(e.to):'(삭제)')}
   else if(e.kind==='add')act='항목 추가 '+esc(e.label||'');
   else if(e.kind==='del')act='항목 삭제 '+esc(e.label||'');
-  return '<div class="log"><time>'+fmt(e.at)+'</time><div><span class="who2">'+who+'</span> '+act+(q?'<q>'+q+'</q>':'')+'</div></div>';
+  return '<div class="log"><time>'+fmt(e.at)+'</time><div>'+act+(q?'<q>'+q+'</q>':'')+'</div></div>';
 }
 function renderLog(){
   var log=(state.log||[]).filter(function(e){return e.label||labelOf(e.id)!==e.id}).reverse();var box=$('#logBox');
