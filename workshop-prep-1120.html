@@ -99,7 +99,7 @@ footer{color:var(--sub);font-size:13px;margin-top:40px;border-top:1px solid var(
   <p class="lead">담당자와 강사가 같이 보고 같이 고치는 페이지입니다. 체크, 담당, 메모를 바꾸면 바로 저장되고 상대 화면에도 반영됩니다.</p>
 </header>
 
-<nav class="nav"><a href="#overview">행사 개요</a><a href="#checklist">체크리스트</a><a href="#share">공유 페이지 예시</a><a href="#videos">샘플 영상</a><a href="#capcut">캡컷 시안</a><a href="#ideas-sec">과제 아이디어</a><a href="#memo">공용 메모</a><a class="opt" href="/workshop-prep-1120-pre">사전 촬영 안내 (선택, 별도 페이지)</a></nav>
+<nav class="nav"><a href="#overview">행사 개요</a><a href="#checklist">체크리스트</a><a href="#share">공유 페이지 예시</a><a href="#videos">샘플 영상</a><a href="#capcut">캡컷 시안</a><a href="#ideas-sec">과제 아이디어</a><a href="#memo">공용 메모</a><a class="opt" href="/workshop-day-1120">당일 강의 체크리스트 (별도 페이지)</a><a class="opt" href="/workshop-prep-1120-pre">사전 촬영 안내 (선택, 별도 페이지)</a></nav>
 <div class="bar"><div class="bar-in">
     <div class="status" id="status">불러오는 중</div>
 </div>
@@ -210,9 +210,6 @@ var GROUPS=[
   {id:'d6',q:'계약서 작성 여부',d:'계약서를 작성하는지, 작성한다면 방식과 시점 확인'},
   {id:'d3',q:'결과 영상 대외 게시 방식',d:'대외 게시는 사무처 검수 후 결정. 기관 SNS 게시 여부와 영상 전달 방법'},
   {id:'d4',q:'현장 사전 점검 가능 시간',d:'행사 전 장비와 네트워크 점검 및 리허설 시간'}
- ]},
- {k:'E',t:'당일 강의 체크리스트 (미팅에서 정하지 않음)',items:[
-  {id:'b5',q:'조별 과제 주제 범위',d:'당일 강의에서 정합니다. 수정안은 지역 평화통일 활동, 현장 행사, K컬처와 평화통일 공공외교 등에서 팀별 선택이고, 결과물은 60~90초 기준, 화면 방향과 비율은 팀별입니다. 아래 영상 과제 아이디어를 활용할지 현장에서 정하기'}
  ]}
 ];
 var IDEAS=[
@@ -258,7 +255,7 @@ function render(){
     h+='</div>';
   });
   var ex=state.extra.filter(function(x){return !GROUPS.some(function(g){return g.k===x.group})});
-  h+='<div class="group"><h3>F. 추가 항목</h3>';
+  h+='<div class="group"><h3>E. 추가 항목</h3>';
   ex.forEach(function(x){h+=itemHTML(x.id,x.text,'',true)});
   h+='<div class="add"><input id="addText" maxlength="200" placeholder="확인할 내용을 추가하세요"><button class="btn" id="addBtn">추가</button></div></div>';
   $('#groups').innerHTML=h;
@@ -302,7 +299,7 @@ document.addEventListener('input',function(e){
 });
 document.addEventListener('click',function(e){
   var t=e.target;
-  if(t.id==='addBtn'){var v=$('#addText').value.trim();if(!v)return;send({op:'addItem',group:'F',text:v}).then(render,function(){})}
+  if(t.id==='addBtn'){var v=$('#addText').value.trim();if(!v)return;send({op:'addItem',group:'E',text:v}).then(render,function(){})}
   else if(t.getAttribute&&t.getAttribute('data-del')){if(confirm('이 항목을 삭제할까요?'))send({op:'delItem',id:t.getAttribute('data-del')}).then(render,function(){})}
 });
 function pull(){
