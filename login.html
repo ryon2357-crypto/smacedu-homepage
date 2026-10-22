@@ -130,7 +130,9 @@
     const form     = document.getElementById('loginForm')
     const btn      = document.getElementById('submitBtn')
     const msg      = document.getElementById('msg')
-    const redirect = new URLSearchParams(location.search).get('redirect') || 'replay.html'
+    const wantedRedirect = new URLSearchParams(location.search).get('redirect');
+    const redirect = wantedRedirect && /^\/(?![\/\\])/.test(wantedRedirect) ? wantedRedirect : 'replay.html'
+    document.querySelectorAll('a[href="signup.html"]').forEach(a=>a.href='signup.html?redirect='+encodeURIComponent(redirect))
 
     function showMsg(text, type) {
         msg.textContent = text

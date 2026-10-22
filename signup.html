@@ -119,6 +119,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="js/config.js"></script>
 <script>
+    const wantedRedirect = new URLSearchParams(location.search).get('redirect');
+    const redirect = wantedRedirect && /^\/(?![\/\\])/.test(wantedRedirect) ? wantedRedirect : 'replay.html';
+    const loginDestination='login.html?redirect='+encodeURIComponent(redirect);
+    document.querySelectorAll('a[href="login.html"]').forEach(a=>a.href=loginDestination);
     const form = document.getElementById('signupForm')
     const btn  = document.getElementById('submitBtn')
     const msg  = document.getElementById('msg')
@@ -177,9 +181,10 @@
                         const _p = new URLSearchParams({ sheetType: 'member', name, email })
                         fetch(`https://script.google.com/macros/s/AKfycbzy1Qb1k1k_HMwYrQTHoGPbhWFs0r9J6bC6iGkvL0o7SEaJwQr4d72tZKATbIdTvojWnQ/exec?${_p}`, { mode: 'no-cors' }).catch(() => {})
                         msg.innerHTML = '가입 완료! <a href="login.html" style="color:#10b981;font-weight:700;">로그인하기 →</a>'
+                        msg.querySelector('a').href=loginDestination
                         msg.className = 'msg success'
                         btn.textContent = '가입 완료'
-                        setTimeout(function() { location.href = 'login.html' }, 1500)
+                        setTimeout(function() { location.href = loginDestination }, 1500)
                     }
                 } catch(e) {
                     showMsg('오류: ' + e.message, 'error')
