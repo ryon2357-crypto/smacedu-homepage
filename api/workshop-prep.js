@@ -93,6 +93,8 @@ function applyOp(state, op) {
     cur.by = by
     cur.at = stamp
     state.items[id] = cur
+    // 모두 비어 있으면 항목 기록을 지운다
+    if (!cur.done && !cur.memo && !cur.owner) delete state.items[id]
   } else if (op.op === 'notes') {
     state.notes = clean(op.text, 8000)
     state.notesBy = by
