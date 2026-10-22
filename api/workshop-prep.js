@@ -3,7 +3,7 @@
 const { createClient } = require('@supabase/supabase-js')
 
 const BUCKET = 'shared-docs'
-const FILE = 'workshop-prep-1120.json'
+const DIR = 'workshop-prep-1120'
 const MAX_ITEMS = 120
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY, {
@@ -23,37 +23,59 @@ async function ensureBucket() {
   if (error && !/exist/i.test(error.message || '')) throw error
 }
 
+// 저장소가 같은 이름의 덮어쓰기 파일을 캐시로 오래된 값으로 돌려주므로,
+// 저장할 때마다 새 이름의 파일을 만들고 읽을 때는 목록의 가장 최신 파일을 쓴다.
+async function latestName() {
+  const { data, error } = await supabase.storage.from(BUCKET).list(DIR, {
+    limit: 1,
+    sortBy: { column: 'name', order: 'desc' },
+  })
+  if (error || !data || !data.length) return null
+  return data[0].name
+}
+
 async function load() {
-  // 저장소 CDN 캐시를 피하려고 서명 URL에 시각값을 붙여 직접 읽는다.
-  const { data: signed, error: signErr } = await supabase.storage.from(BUCKET).createSignedUrl(FILE, 60)
-  if (signErr || !signed) return emptyState()
-  const response = await fetch(`${signed.signedUrl}&t=${Date.now()}`, { cache: 'no-store' })
-  if (!response.ok) return emptyState()
+  const name = await latestName()
+  if (!name) return emptyState()
+  const { data, error } = await supabase.storage.from(BUCKET).download(`${DIR}/${name}`)
+  if (error || !data) return emptyState()
   try {
-    return Object.assign(emptyState(), await response.json())
+    return Object.assign(emptyState(), JSON.parse(await data.text()))
   } catch (e) {
     return emptyState()
   }
+}
+
+async function upload(name, body) {
+  return supabase.storage.from(BUCKET).upload(`${DIR}/${name}`, body, {
+    contentType: 'application/json',
+    cacheControl: '0',
+    upsert: false,
+  })
 }
 
 async function save(state) {
   state.rev += 1
   state.updatedAt = new Date().toISOString()
   const body = Buffer.from(JSON.stringify(state), 'utf8')
-  let { error } = await supabase.storage.from(BUCKET).upload(FILE, body, {
-    contentType: 'application/json',
-    cacheControl: '0',
-    upsert: true,
-  })
+  const name = `${String(Date.now()).padStart(15, '0')}-${Math.random().toString(36).slice(2, 6)}.json`
+  let { error } = await upload(name, body)
   if (error && /bucket/i.test(error.message || '')) {
     await ensureBucket()
-    ;({ error } = await supabase.storage.from(BUCKET).upload(FILE, body, {
-      contentType: 'application/json',
-      cacheControl: '0',
-      upsert: true,
-    }))
+    ;({ error } = await upload(name, body))
   }
   if (error) throw error
+  // 오래된 저장본 정리(최근 8개만 유지)
+  try {
+    const { data } = await supabase.storage.from(BUCKET).list(DIR, {
+      limit: 100,
+      sortBy: { column: 'name', order: 'desc' },
+    })
+    const old = (data || []).slice(8).map((f) => `${DIR}/${f.name}`)
+    if (old.length) await supabase.storage.from(BUCKET).remove(old)
+  } catch (e) {
+    console.error('저장본 정리 오류:', e)
+  }
   return state
 }
 
