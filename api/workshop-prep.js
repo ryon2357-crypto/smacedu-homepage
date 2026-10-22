@@ -24,10 +24,13 @@ async function ensureBucket() {
 }
 
 async function load() {
-  const { data, error } = await supabase.storage.from(BUCKET).download(FILE)
-  if (error || !data) return emptyState()
+  // 저장소 CDN 캐시를 피하려고 서명 URL에 시각값을 붙여 직접 읽는다.
+  const { data: signed, error: signErr } = await supabase.storage.from(BUCKET).createSignedUrl(FILE, 60)
+  if (signErr || !signed) return emptyState()
+  const response = await fetch(`${signed.signedUrl}&t=${Date.now()}`, { cache: 'no-store' })
+  if (!response.ok) return emptyState()
   try {
-    return Object.assign(emptyState(), JSON.parse(await data.text()))
+    return Object.assign(emptyState(), await response.json())
   } catch (e) {
     return emptyState()
   }
@@ -39,12 +42,14 @@ async function save(state) {
   const body = Buffer.from(JSON.stringify(state), 'utf8')
   let { error } = await supabase.storage.from(BUCKET).upload(FILE, body, {
     contentType: 'application/json',
+    cacheControl: '0',
     upsert: true,
   })
   if (error && /bucket/i.test(error.message || '')) {
     await ensureBucket()
     ;({ error } = await supabase.storage.from(BUCKET).upload(FILE, body, {
       contentType: 'application/json',
+      cacheControl: '0',
       upsert: true,
     }))
   }
