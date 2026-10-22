@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>강의 자료 내려받기 스마트미디어아트센터 회원 전용</title>
+<meta name="description" content="무료 특강에서 쓴 실습자료와 템플릿을 회원 로그인 후 내려받을 수 있습니다.">
+<meta property="og:title" content="강의 자료 내려받기">
+<meta property="og:description" content="무료 특강 실습자료와 템플릿을 모은 스마트미디어아트센터 회원 전용 자료실">
+<meta property="og:url" content="https://www.smacedu.kr/member-downloads">
+<meta property="og:image" content="https://www.smacedu.kr/images/logo1.png?v=1">
+<meta name="theme-color" content="#c2623f">
+<style>
+:root{color-scheme:light;--bg:#f6f1e7;--card:#fffdf8;--ink:#2b2622;--mute:#7a6f63;--line:#e4dccb;--clay:#c2623f;--clay2:#f3dccf;--sage:#5f7a63;--sage2:#e1ebe0;--gold2:#f5e8c6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 Pretendard,"Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+a{color:inherit;text-decoration:none}button{font:inherit}
+#bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--clay);z-index:9}
+header{background:linear-gradient(135deg,#2b2622,#4a3a30);color:#fff;padding:44px 16px 40px}
+.in{max-width:1000px;margin:0 auto}
+.crumb{font-size:13px;color:#e6d6c6;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.crumb a:hover{text-decoration:underline}
+.eyebrow{margin-top:22px;font-size:12px;letter-spacing:3px;color:#f0b89f;font-weight:700}
+h1{font-size:34px;letter-spacing:-1.2px;margin:8px 0 8px;word-break:keep-all}
+header p{margin:0;color:#e9ddd1;word-break:keep-all;max-width:620px}
+main{max-width:1000px;margin:0 auto;padding:26px 16px 80px}
+.gate{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--clay);border-radius:16px;padding:22px 24px;margin-bottom:22px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.gate h2{margin:0 0 4px;font-size:19px;word-break:keep-all}.gate p{margin:0;color:var(--mute);word-break:keep-all}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-block;border-radius:24px;padding:11px 20px;font-weight:700;font-size:14px;border:1px solid var(--clay);color:var(--clay);background:#fff;cursor:pointer}
+.btn.main{background:var(--clay);color:#fff;animation:breathe 2.8s ease-in-out infinite}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(194,98,63,.35)}50%{box-shadow:0 0 0 9px rgba(194,98,63,0)}}
+.list{display:flex;flex-direction:column;gap:14px}
+.file{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;display:grid;grid-template-columns:64px 1fr auto;gap:18px;align-items:center;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s,box-shadow .25s,border-color .25s}
+.file.show{opacity:1;transform:none}
+.file:hover{box-shadow:0 12px 28px rgba(70,50,30,.1);border-color:#d9b8a6}
+.type{width:64px;height:64px;border-radius:16px;background:var(--gold2);color:#7a5a12;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;letter-spacing:.5px}
+.file h3{margin:0 0 4px;font-size:17px;word-break:keep-all}
+.file p{margin:0;font-size:14px;color:#5c534a;word-break:keep-all}
+.meta{margin-top:6px;font-size:12px;color:var(--mute)}
+.dl{border:0;background:var(--clay);color:#fff;border-radius:22px;padding:10px 18px;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap}
+.dl.lockd{background:var(--ink)}
+.dl:disabled{opacity:.6;cursor:wait}
+.note{margin-top:24px;font-size:13px;color:var(--mute);text-align:center;word-break:keep-all}
+#status{font-size:13px;color:var(--clay);margin:8px 0 0}
+@media(max-width:600px){h1{font-size:27px}.gate{padding:18px}.btns{width:100%}.btn{flex:1;text-align:center}.file{grid-template-columns:52px 1fr;padding:18px}.type{width:52px;height:52px;font-size:12px}.dl{grid-column:1/-1;width:100%}}
+@media(prefers-reduced-motion:reduce){.file{transition:none;opacity:1;transform:none}.btn.main{animation:none}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<header><div class="in">
+  <div class="crumb"><a href="/members">회원 전용 자료실로 돌아가기</a><a href="/">스마트미디어아트센터 홈</a></div>
+  <div class="eyebrow">MEMBERS LIBRARY</div>
+  <h1>강의 자료 내려받기</h1>
+  <p>무료 특강에서 쓴 실습자료와 템플릿을 모았습니다. 특강을 놓쳤어도 자료로 그대로 따라 해 볼 수 있습니다.</p>
+</div></header>
+<main>
+  <section class="gate" id="gate" hidden>
+    <div><h2>회원 로그인 후 내려받을 수 있습니다</h2><p>목록은 누구나 볼 수 있고, 내려받기는 무료 회원에게 열립니다.</p></div>
+    <div class="btns"><a class="btn main" href="/signup?redirect=%2Fmember-downloads">무료 회원가입</a><a class="btn" href="/login?redirect=%2Fmember-downloads">로그인</a></div>
+  </section>
+  <p id="status" role="status"></p>
+  <div class="list" id="list"></div>
+  <p class="note">새 특강 자료가 생기면 이곳에 계속 추가합니다.</p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let session=null;
+addEventListener('scroll',()=>{const h=document.documentElement;$('bar').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight||1)*100)+'%'});
+const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.08}):null;
+function render(D){
+  $('gate').hidden=D.member;
+  $('list').innerHTML=D.files.map(f=>`<div class="file"><div class="type">${esc(f.type)}</div><div><h3>${esc(f.title)}</h3><p>${esc(f.desc)}</p><div class="meta">${esc(f.from)} · ${esc(f.size)}</div></div>${D.member?`<button class="dl" data-k="${esc(f.key)}">내려받기</button>`:`<a class="dl lockd" href="/signup?redirect=%2Fmember-downloads">회원가입 후 받기</a>`}</div>`).join('');
+  document.querySelectorAll('.file').forEach((c,i)=>{c.style.transitionDelay=(i%6)*70+'ms';io?io.observe(c):c.classList.add('show')});
+  document.querySelectorAll('button.dl').forEach(b=>b.onclick=async()=>{
+    b.disabled=true;$('status').textContent='';
+    try{
+      const r=await fetch('/api/members?item=download&file='+encodeURIComponent(b.dataset.k),{headers:{Authorization:'Bearer '+session.access_token},cache:'no-store'});
+      const d=await r.json();
+      if(!r.ok)throw new Error(d.error||'내려받지 못했습니다.');
+      location.href=d.url;
+    }catch(e){$('status').textContent=e.message||'내려받지 못했습니다. 잠시 후 다시 시도해 주세요.'}
+    finally{setTimeout(()=>b.disabled=false,1500)}
+  });
+}
+async function load(){
+  try{
+    const r=await fetch('/api/members?item=downloads',{headers:session?{Authorization:'Bearer '+session.access_token}:{},cache:'no-store'});
+    if(r.status===401&&session){session=null;$('status').textContent='로그인이 만료되었습니다. 다시 로그인해 주세요.';return load()}
+    if(!r.ok)throw new Error();
+    render(await r.json());
+  }catch(e){$('status').textContent='목록을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.'}
+}
+(async()=>{
+  try{if(window.supabase&&typeof SUPABASE_URL!=='undefined'){const c=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);session=(await c.auth.getSession()).data.session}}catch(e){}
+  load();
+})();
+</script>
+</body>
+</html>

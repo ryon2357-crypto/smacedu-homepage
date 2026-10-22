@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 프롬프트 모음 스마트미디어아트센터 회원 전용</title>
+<meta name="description" content="챗GPT 첫걸음부터 사진, 글쓰기, 업무 문서, 코덱스 작업 지시까지 그대로 복사해 쓰는 프롬프트를 모았습니다. 회원 로그인 후 전체를 볼 수 있습니다.">
+<meta property="og:title" content="AI 프롬프트 모음">
+<meta property="og:description" content="그대로 복사해서 대괄호만 바꿔 쓰는 엘란비탈 박성욱 작가의 AI 프롬프트 모음, 회원 전용 자료실">
+<meta property="og:url" content="https://www.smacedu.kr/prompt-library">
+<meta property="og:image" content="https://www.smacedu.kr/images/logo1.png?v=1">
+<meta name="theme-color" content="#c2623f">
+<style>
+:root{color-scheme:light;--bg:#f6f1e7;--card:#fffdf8;--ink:#2b2622;--mute:#7a6f63;--line:#e4dccb;--clay:#c2623f;--clay2:#f3dccf;--sage:#5f7a63;--sage2:#e1ebe0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 Pretendard,"Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+a{color:inherit;text-decoration:none}button,input{font:inherit}
+#bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--clay);z-index:9}
+header{background:linear-gradient(135deg,#2b2622,#4a3a30);color:#fff;padding:44px 16px 40px}
+.in{max-width:1080px;margin:0 auto}
+.crumb{font-size:13px;color:#e6d6c6;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.crumb a:hover{text-decoration:underline}
+.eyebrow{margin-top:22px;font-size:12px;letter-spacing:3px;color:#f0b89f;font-weight:700}
+h1{font-size:34px;letter-spacing:-1.2px;margin:8px 0 8px;word-break:keep-all}
+header p{margin:0;color:#e9ddd1;word-break:keep-all;max-width:640px}
+main{max-width:1080px;margin:0 auto;padding:26px 16px 80px}
+.gate{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--clay);border-radius:16px;padding:22px 24px;margin-bottom:22px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.gate h2{margin:0 0 4px;font-size:19px;word-break:keep-all}.gate p{margin:0;color:var(--mute);word-break:keep-all}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-block;border-radius:24px;padding:11px 20px;font-weight:700;font-size:14px;border:1px solid var(--clay);color:var(--clay);background:#fff;cursor:pointer}
+.btn.main{background:var(--clay);color:#fff;animation:breathe 2.8s ease-in-out infinite}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(194,98,63,.35)}50%{box-shadow:0 0 0 9px rgba(194,98,63,0)}}
+.intro{background:var(--sage2);color:#3f5a43;border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:14px;word-break:keep-all}
+.tools{display:flex;gap:10px;margin-bottom:12px}
+.tools input{flex:1;padding:11px 14px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 14px;cursor:pointer;font-size:14px}
+.chip small{margin-left:6px;color:var(--mute)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}.chip.on small{color:#d8cfc4}
+h3.g{font-size:18px;margin:26px 0 12px;letter-spacing:-.4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s,box-shadow .25s,border-color .25s}
+.card.show{opacity:1;transform:none}
+.card:hover{box-shadow:0 12px 28px rgba(70,50,30,.1);border-color:#d9b8a6}
+.ttl{font-weight:700;font-size:16px;word-break:keep-all}
+.when{font-size:13px;color:var(--mute);word-break:keep-all}
+pre{margin:0;white-space:pre-wrap;word-break:break-word;background:#f8f3ea;border:1px solid #efe6d6;border-radius:10px;padding:12px 14px;font:14px/1.65 Pretendard,"Malgun Gothic",sans-serif;color:#3a332c}
+pre mark{background:var(--clay2);color:#8a3f22;border-radius:4px;padding:0 2px}
+.copy{align-self:flex-start;border:1px solid var(--clay);background:#fff;color:var(--clay);border-radius:18px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer}
+.copy.done{background:var(--sage);border-color:var(--sage);color:#fff}
+.lock{position:relative}
+.lock pre,.lock .ttl{filter:blur(5px);user-select:none}
+.lock:after{content:"회원 전용";position:absolute;right:14px;top:14px;background:var(--ink);color:#fff;font-size:12px;border-radius:12px;padding:3px 10px}
+.empty{text-align:center;color:var(--mute);padding:40px 0}
+#status{font-size:13px;color:var(--mute);margin:8px 0 0}
+@media(max-width:540px){h1{font-size:27px}.gate{padding:18px}.btns{width:100%}.btn{flex:1;text-align:center}.grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.card{transition:none;opacity:1;transform:none}.btn.main{animation:none}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<header><div class="in">
+  <div class="crumb"><a href="/members">회원 전용 자료실로 돌아가기</a><a href="/">스마트미디어아트센터 홈</a></div>
+  <div class="eyebrow">MEMBERS LIBRARY</div>
+  <h1>AI 프롬프트 모음</h1>
+  <p>엘란비탈 박성욱 작가가 강의에서 쓰는 방식대로 정리한 프롬프트입니다. 복사 버튼을 누르고 AI 대화창에 붙여 넣은 뒤 대괄호 안만 바꾸면 됩니다.</p>
+</div></header>
+<main>
+  <section class="gate" id="gate" hidden>
+    <div><h2>지금은 묶음마다 1개씩 미리 보고 있습니다</h2><p>무료 회원가입 후 로그인하면 <b id="gateTotal">전체</b> 프롬프트를 복사해 쓸 수 있습니다.</p><p id="status" role="status"></p></div>
+    <div class="btns"><a class="btn main" href="/signup?redirect=%2Fprompt-library">무료 회원가입</a><a class="btn" href="/login?redirect=%2Fprompt-library">로그인</a></div>
+  </section>
+  <div class="intro" id="intro"></div>
+  <div class="tools"><input id="q" type="search" placeholder="예: 블로그, 사진 평가, 회의록" aria-label="프롬프트 검색"></div>
+  <div class="chips" id="chips"></div>
+  <div id="list"></div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const mark=s=>esc(s).replace(/\[([^\]]+)\]/g,'<mark>[$1]</mark>');
+let D={member:false,total:0,intro:'',groups:[]};const st={g:'전체',q:''};
+addEventListener('scroll',()=>{const h=document.documentElement;$('bar').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight||1)*100)+'%'});
+const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.08}):null;
+function render(){
+  $('gate').hidden=D.member;$('gateTotal').textContent=D.total+'개';$('intro').textContent=D.intro;
+  $('chips').innerHTML=['전체',...D.groups.map(g=>g.name)].map(n=>`<button class="chip ${st.g===n?'on':''}" data-g="${esc(n)}">${esc(n)}<small>${n==='전체'?D.total:D.groups.find(g=>g.name===n).count}</small></button>`).join('');
+  document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{st.g=b.dataset.g;render()});
+  const q=st.q.trim().toLowerCase();let html='',idx=0;
+  for(const g of D.groups){
+    if(st.g!=='전체'&&st.g!==g.name)continue;
+    const items=g.items.filter(p=>!q||(p.title+' '+p.when+' '+p.text).toLowerCase().includes(q));
+    const locked=D.member||q?0:g.count-items.length;
+    if(!items.length&&!locked)continue;
+    html+=`<h3 class="g">${esc(g.name)}</h3><div class="grid">`+items.map(p=>`<div class="card"><div class="ttl">${esc(p.title)}</div><div class="when">${esc(p.when)}</div><pre data-i="${idx++}">${mark(p.text)}</pre><button class="copy" type="button">복사하기</button></div>`).join('')
+      +Array.from({length:Math.min(locked,3)},()=>`<a class="card lock" href="/signup?redirect=%2Fprompt-library"><div class="ttl">로그인하면 보이는 프롬프트</div><div class="when">무료 회원가입 후 로그인하면 이 묶음의 프롬프트를 모두 볼 수 있습니다.</div><pre>회원 전용 프롬프트가 이 자리에 보입니다. 대괄호 안만 바꿔서 그대로 쓰면 됩니다.</pre></a>`).join('')+`</div>`;
+  }
+  $('list').innerHTML=html||'<div class="empty">조건에 맞는 프롬프트가 없습니다.</div>';
+  document.querySelectorAll('.copy').forEach(b=>b.onclick=async()=>{
+    const t=b.previousElementSibling.textContent;
+    try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}
+    b.textContent='복사했습니다';b.classList.add('done');setTimeout(()=>{b.textContent='복사하기';b.classList.remove('done')},1600);
+  });
+  document.querySelectorAll('.card').forEach((c,i)=>{c.style.transitionDelay=(i%6)*70+'ms';io?io.observe(c):c.classList.add('show')});
+}
+async function load(session){
+  $('status').textContent=session?'회원 정보를 확인하고 있습니다.':'';
+  try{
+    const r=await fetch('/api/members?item=prompts',{headers:session?{Authorization:'Bearer '+session.access_token}:{},cache:'no-store'});
+    if(r.status===401&&session){$('status').textContent='로그인이 만료되었습니다. 다시 로그인해 주세요.';return load(null)}
+    if(!r.ok)throw new Error();
+    D=await r.json();$('status').textContent='';render();
+  }catch(e){$('gate').hidden=false;$('status').textContent='목록을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.'}
+}
+$('q').oninput=e=>{st.q=e.target.value;render()};
+(async()=>{
+  let session=null;
+  try{if(window.supabase&&typeof SUPABASE_URL!=='undefined'){const c=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);session=(await c.auth.getSession()).data.session}}catch(e){}
+  load(session);
+})();
+</script>
+</body>
+</html>
