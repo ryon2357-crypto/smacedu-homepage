@@ -1,0 +1,105 @@
+// 민주평통 청년기자단 워크숍 준비 체크리스트 — 공용 편집 저장소
+// 상태 JSON 한 개를 Supabase Storage(비공개 버킷)에 저장한다. 별도 DB 표 불필요.
+const { createClient } = require('@supabase/supabase-js')
+
+const BUCKET = 'shared-docs'
+const FILE = 'workshop-prep-1120.json'
+const MAX_ITEMS = 120
+
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY, {
+  auth: { persistSession: false },
+})
+
+function clean(value, max) {
+  return typeof value === 'string' ? value.slice(0, max) : ''
+}
+
+function emptyState() {
+  return { rev: 0, items: {}, extra: [], notes: '', notesBy: '', updatedAt: null }
+}
+
+async function ensureBucket() {
+  const { error } = await supabase.storage.createBucket(BUCKET, { public: false })
+  if (error && !/exist/i.test(error.message || '')) throw error
+}
+
+async function load() {
+  const { data, error } = await supabase.storage.from(BUCKET).download(FILE)
+  if (error || !data) return emptyState()
+  try {
+    return Object.assign(emptyState(), JSON.parse(await data.text()))
+  } catch (e) {
+    return emptyState()
+  }
+}
+
+async function save(state) {
+  state.rev += 1
+  state.updatedAt = new Date().toISOString()
+  const body = Buffer.from(JSON.stringify(state), 'utf8')
+  let { error } = await supabase.storage.from(BUCKET).upload(FILE, body, {
+    contentType: 'application/json',
+    upsert: true,
+  })
+  if (error && /bucket/i.test(error.message || '')) {
+    await ensureBucket()
+    ;({ error } = await supabase.storage.from(BUCKET).upload(FILE, body, {
+      contentType: 'application/json',
+      upsert: true,
+    }))
+  }
+  if (error) throw error
+  return state
+}
+
+function applyOp(state, op) {
+  const by = clean(op.by, 30)
+  const stamp = new Date().toISOString()
+  if (op.op === 'set') {
+    const id = clean(op.id, 40)
+    if (!id) throw new Error('id 누락')
+    const cur = state.items[id] || {}
+    const f = op.fields || {}
+    if (typeof f.done === 'boolean') cur.done = f.done
+    if (typeof f.memo === 'string') cur.memo = clean(f.memo, 2000)
+    if (typeof f.owner === 'string') cur.owner = clean(f.owner, 10)
+    cur.by = by
+    cur.at = stamp
+    state.items[id] = cur
+  } else if (op.op === 'notes') {
+    state.notes = clean(op.text, 8000)
+    state.notesBy = by
+  } else if (op.op === 'addItem') {
+    const text = clean(op.text, 200).trim()
+    if (!text) throw new Error('내용 누락')
+    if (state.extra.length >= MAX_ITEMS) throw new Error('항목이 너무 많습니다')
+    const id = 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5)
+    state.extra.push({ id, group: clean(op.group, 2) || 'E', text, by, at: stamp })
+  } else if (op.op === 'delItem') {
+    const id = clean(op.id, 40)
+    state.extra = state.extra.filter((x) => x.id !== id)
+    delete state.items[id]
+  } else {
+    throw new Error('알 수 없는 요청')
+  }
+}
+
+module.exports = async function handler(req, res) {
+  res.setHeader('Cache-Control', 'no-store, max-age=0')
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow')
+  try {
+    if (req.method === 'GET') {
+      return res.status(200).json(await load())
+    }
+    if (req.method === 'POST') {
+      const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {}
+      const state = await load()
+      applyOp(state, body)
+      return res.status(200).json(await save(state))
+    }
+    return res.status(405).json({ error: 'Method not allowed' })
+  } catch (error) {
+    console.error('workshop-prep 오류:', error)
+    return res.status(500).json({ error: String((error && error.message) || error) })
+  }
+}
