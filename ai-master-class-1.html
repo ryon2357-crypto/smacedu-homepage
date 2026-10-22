@@ -268,6 +268,40 @@
     .price-card .price { margin: 4px 0 12px; font-size: 38px; font-weight: 950; color: var(--blue); letter-spacing: -.05em; }
     .price-card p { margin: 0; color: #536575; }
     .track { margin-top: 18px; padding: 18px 22px; border-radius: 16px; background: #e8f2ff; color: #173d66; }
+    .cert-conditions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .cert-condition {
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: white;
+      box-shadow: 0 12px 40px rgba(22,62,99,.07);
+    }
+    .cert-condition .label { color: var(--blue); font-size: 13px; font-weight: 900; letter-spacing: .05em; }
+    .cert-condition ol { margin: 20px 0 0; padding: 0; list-style: none; counter-reset: steps; }
+    .cert-condition li { position: relative; margin-top: 14px; padding: 0 0 14px 42px; border-bottom: 1px solid #e7edf2; color: #46596b; }
+    .cert-condition li:last-child { padding-bottom: 0; border-bottom: 0; }
+    .cert-condition li::before {
+      counter-increment: steps;
+      content: counter(steps);
+      position: absolute;
+      left: 0;
+      top: -2px;
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--navy);
+      color: white;
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .cert-condition li strong { display: block; color: var(--ink); }
+    .cert-result { margin-top: 18px; padding: 14px 16px; border-radius: 12px; background: #eef6fb; color: #173d66; font-weight: 800; }
+    .cert-process { margin-top: 22px; padding: 22px 24px; border-radius: 18px; background: #0e3154; color: #dbe8f2; }
+    .cert-process strong { color: #ffe27c; }
+    .reference-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .reference-links a { padding: 9px 13px; border: 1px solid #cbdbe8; border-radius: 999px; background: white; color: var(--navy); text-decoration: none; font-size: 13px; font-weight: 800; }
     .objection {
       padding: 56px;
       border-radius: 28px;
@@ -362,6 +396,7 @@
       .audience, .apply, .objection { padding: 34px 24px; }
       .objection-grid { grid-template-columns: 1fr; }
       .pricing, .notes { grid-template-columns: 1fr; }
+      .cert-conditions { grid-template-columns: 1fr; }
       .price-card { padding: 28px 24px; }
       .time-row { grid-template-columns: 58px 1fr; gap: 12px; padding: 16px; }
       .mobile-cta { display: flex; }
@@ -386,7 +421,7 @@
         <div class="hero-badges" aria-label="과정 핵심 정보">
           <span>총 3회 ZOOM 라이브</span>
           <span>매 회차 녹화본 제공</span>
-          <span>🎁 1기만 자격증 발급비 0원</span>
+          <span>검정 합격 후 자격증 발급</span>
           <span>슈퍼얼리버드 10/18(일) 밤까지</span>
         </div>
         <div class="hero-actions">
@@ -484,8 +519,48 @@
             </ul>
           </article>
         </div>
-        <div class="track"><strong>강의 2회(1·2강)</strong>만으로도 AI프롬프트전문가 2급 과정이 완성되고 이미지·영상·소개 페이지·PPT 결과물 4가지가 남습니다. <strong>강의 3회</strong>까지 들으면 AI활용지도사 2급까지 자격증이 2개입니다.</div>
+        <div class="track"><strong>1·2강</strong>은 AI프롬프트전문가 2급 교육 이수 과정이며, <strong>3강</strong>까지 참여하면 AI활용지도사 2급 교육 이수 과정도 충족합니다. 교육 이수 후에는 종목별 검정에 응시해야 하며, 합격자에게 자격증을 발급합니다.</div>
         <div class="bonus"><strong>보너스</strong> · AI 활용 자동 메일·일정 관리 사례 · AI 실전 마스터 과정 1기 동기 단톡방</div>
+      </div>
+    </section>
+
+    <section class="section" id="certificate-conditions">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">CERTIFICATE REQUIREMENTS</p>
+          <h2>두 자격증의 2급 취득 조건</h2>
+          <p class="lead">수업 참여만으로 자격증이 자동 발급되지는 않습니다. 필요한 교육을 이수하고 종목별 검정에 합격해야 합니다.</p>
+        </div>
+        <div class="cert-conditions">
+          <article class="cert-condition">
+            <div class="label">프롬프트 설계와 결과 개선 역량</div>
+            <h3>AI프롬프트전문가 2급</h3>
+            <ol>
+              <li><strong>응시 자격</strong>연령과 학력 제한 없이 초보자도 응시할 수 있습니다.</li>
+              <li><strong>교육 이수</strong>10월 19일과 26일 수업에서 프롬프트 작성, 결과 생성, 조정과 수정 과정을 실습합니다.</li>
+              <li><strong>검정 내용</strong>주어진 목적에 맞는 프롬프트로 텍스트, 이미지, 요약문, 기획안 등의 결과물을 생성합니다.</li>
+              <li><strong>평가 역량</strong>생성 결과를 검토하고 사용 목적에 맞게 조건을 조정하여 결과물을 수정하고 개선합니다.</li>
+            </ol>
+            <div class="cert-result">교육 이수와 검정 합격을 모두 충족한 뒤 자격증 발급</div>
+          </article>
+          <article class="cert-condition">
+            <div class="label">AI 기초 기능 설명과 실습 지도 역량</div>
+            <h3>AI활용지도사 2급</h3>
+            <ol>
+              <li><strong>응시 자격</strong>연령과 학력 제한 없이 초보자도 응시할 수 있습니다.</li>
+              <li><strong>교육 이수</strong>10월 19일과 26일, 11월 2일 수업에서 AI 도구 활용과 교육 실습 과정을 이수합니다.</li>
+              <li><strong>검정 내용</strong>텍스트 생성과 이미지 제작 등 AI 도구의 기초 기능을 이해하기 쉽게 설명하고 직접 시연합니다.</li>
+              <li><strong>평가 역량</strong>학습자의 수준에 맞춰 실습 순서를 안내하고 결과물을 일상이나 업무에 적용하도록 지도합니다.</li>
+            </ol>
+            <div class="cert-result">교육 이수와 검정 합격을 모두 충족한 뒤 자격증 발급</div>
+          </article>
+        </div>
+        <div class="cert-process"><strong>취득 절차</strong> · 교육 이수 → 종목별 검정 → 합격 확인 → 자격증 발급. 검정 일정, 제출 방식과 세부 평가 기준은 시행 전에 별도로 안내합니다.</div>
+        <div class="reference-links" aria-label="자격 관련 참고 링크">
+          <a href="https://www.smacedu.kr/certificates" target="_blank" rel="noopener">스마트미디어아트센터 자격 안내</a>
+          <a href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129695" target="_blank" rel="noopener">AI프롬프트전문가 공식 등록정보</a>
+          <a href="https://www.pqi.or.kr/inf/qul/infQulBasDetail.do?qulId=129691" target="_blank" rel="noopener">AI활용지도사 공식 등록정보</a>
+        </div>
       </div>
     </section>
 
@@ -546,24 +621,24 @@
           <p class="kicker">SUPER EARLY BIRD</p>
           <h2>1기 슈퍼얼리버드 수강료</h2>
         </div>
-        <div class="fee-free">🎁 강의만 들으면 <strong>자격증 발급비 0원</strong> — 이번 1기뿐입니다. 다음 기수부터는 자격증 발급비를 별도로 내야 합니다.</div>
+        <div class="fee-free">이번 1기 수강료에는 검정료와 자격증 발급 비용이 포함됩니다. 종목별 검정에 합격한 분에게 자격증을 발급합니다.</div>
         <div class="pricing">
           <article class="price-card featured">
             <h3>강의 3회 + 자격증 2개</h3>
             <p>AI프롬프트전문가 2급 + AI활용지도사 2급</p>
             <div class="old">정상가 30만원</div>
             <div class="price">10만원</div>
-            <p>1·2·3강 전체 · 20만원 할인</p>
+            <p>1·2·3강 전체 · 종목별 검정 합격 시 발급</p>
           </article>
           <article class="price-card">
             <h3>강의 2회 + 자격증 1개</h3>
             <p>AI프롬프트전문가 2급</p>
             <div class="old">정상가 20만원</div>
             <div class="price">5만원</div>
-            <p>1·2강 · 결과물 4가지 완성 · 15만원 할인</p>
+            <p>1·2강 · 결과물 4가지 완성 · 검정 합격 시 발급</p>
           </article>
         </div>
-        <p class="price-diff">두 과정 차이는 5만원 — 그 5만원으로 정상가 10만원짜리 AI활용지도사 2급이 하나 더 붙습니다.</p>
+        <p class="price-diff">두 과정의 차이는 5만원이며, 3강 교육과 AI활용지도사 2급 검정 과정이 추가됩니다.</p>
         <div class="deadline">슈퍼얼리버드 마감: 2026년 10월 18일(일) 밤 · 입금 계좌: 신한은행 110-050-892636 박성욱</div>
       </div>
     </section>
