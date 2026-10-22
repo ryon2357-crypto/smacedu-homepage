@@ -15,7 +15,7 @@ function clean(value, max) {
 }
 
 function emptyState() {
-  return { rev: 0, items: {}, extra: [], notes: '', notesBy: '', updatedAt: null, log: [] }
+  return { rev: 0, items: {}, extra: [], notes: '', notesBy: '', updatedAt: null }
 }
 
 async function ensureBucket() {
@@ -55,6 +55,7 @@ async function upload(name, body) {
 }
 
 async function save(state) {
+  delete state.log
   state.rev += 1
   state.updatedAt = new Date().toISOString()
   const body = Buffer.from(JSON.stringify(state), 'utf8')
@@ -79,29 +80,6 @@ async function save(state) {
   return state
 }
 
-const MAX_LOG = 400
-const COALESCE_MS = 90 * 1000
-
-// 수정 이력 기록. 같은 사람이 같은 항목의 같은 종류를 연달아 고치면 한 줄로 합친다.
-function pushLog(state, entry) {
-  if (!Array.isArray(state.log)) state.log = []
-  const last = state.log[state.log.length - 1]
-  if (
-    last &&
-    last.by === entry.by &&
-    last.id === entry.id &&
-    last.kind === entry.kind &&
-    ['memo', 'notes'].includes(entry.kind) &&
-    Date.parse(entry.at) - Date.parse(last.at) < COALESCE_MS
-  ) {
-    last.to = entry.to
-    last.at = entry.at
-    return
-  }
-  state.log.push(entry)
-  if (state.log.length > MAX_LOG) state.log = state.log.slice(-MAX_LOG)
-}
-
 function applyOp(state, op) {
   const by = clean(op.by, 30)
   const stamp = new Date().toISOString()
@@ -109,7 +87,6 @@ function applyOp(state, op) {
     const id = clean(op.id, 40)
     if (!id) throw new Error('id 누락')
     const cur = state.items[id] || {}
-    const before = { done: !!cur.done, memo: cur.memo || '', owner: cur.owner || '' }
     const f = op.fields || {}
     if (typeof f.done === 'boolean') cur.done = f.done
     if (typeof f.memo === 'string') cur.memo = clean(f.memo, 2000)
@@ -117,29 +94,19 @@ function applyOp(state, op) {
     cur.by = by
     cur.at = stamp
     state.items[id] = cur
-    if (!!cur.done !== before.done) pushLog(state, { at: stamp, by, id, kind: 'done', to: !!cur.done })
-    if ((cur.memo || '') !== before.memo)
-      pushLog(state, { at: stamp, by, id, kind: 'memo', from: before.memo.slice(0, 300), to: (cur.memo || '').slice(0, 300) })
-    if ((cur.owner || '') !== before.owner) pushLog(state, { at: stamp, by, id, kind: 'owner', to: cur.owner || '' })
     // 모두 비어 있으면 항목 기록을 지운다
     if (!cur.done && !cur.memo && !cur.owner) delete state.items[id]
   } else if (op.op === 'notes') {
-    const prev = state.notes || ''
     state.notes = clean(op.text, 8000)
     state.notesBy = by
-    if (state.notes !== prev)
-      pushLog(state, { at: stamp, by, id: 'notes', kind: 'notes', from: prev.slice(0, 300), to: state.notes.slice(0, 300) })
   } else if (op.op === 'addItem') {
     const text = clean(op.text, 200).trim()
     if (!text) throw new Error('내용 누락')
     if (state.extra.length >= MAX_ITEMS) throw new Error('항목이 너무 많습니다')
     const id = 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5)
     state.extra.push({ id, group: clean(op.group, 2) || 'E', text, by, at: stamp })
-    pushLog(state, { at: stamp, by, id, kind: 'add', label: text })
   } else if (op.op === 'delItem') {
     const id = clean(op.id, 40)
-    const gone = state.extra.find((x) => x.id === id)
-    if (gone) pushLog(state, { at: stamp, by, id, kind: 'del', label: gone.text })
     state.extra = state.extra.filter((x) => x.id !== id)
     delete state.items[id]
   } else {
