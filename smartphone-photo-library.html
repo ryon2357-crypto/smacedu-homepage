@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>스마트폰 사진 글 모아보기 스마트미디어아트센터 회원 전용</title>
+<meta name="description" content="엘란비탈 박성욱 작가가 쓴 스마트폰 사진 촬영 팁, 보정, 장비, 출사기 글을 주제별로 모았습니다. 회원 로그인 후 전체를 볼 수 있습니다.">
+<meta property="og:title" content="스마트폰 사진 글 모아보기">
+<meta property="og:description" content="촬영 팁부터 보정과 출사기까지 엘란비탈 박성욱 작가의 스마트폰 사진 글을 주제별로 정리한 회원 전용 자료실">
+<meta property="og:url" content="https://www.smacedu.kr/smartphone-photo-library">
+<meta property="og:image" content="https://www.smacedu.kr/images/logo1.png?v=1">
+<meta name="theme-color" content="#c2623f">
+<style>
+:root{color-scheme:light;--bg:#f6f1e7;--card:#fffdf8;--ink:#2b2622;--mute:#7a6f63;--line:#e4dccb;--clay:#c2623f;--clay2:#f3dccf;--sage:#5f7a63;--sage2:#e1ebe0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 Pretendard,"Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+a{color:inherit;text-decoration:none}button,input,select{font:inherit}
+#bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--clay);z-index:9}
+header{background:linear-gradient(135deg,#2b2622,#4a3a30);color:#fff;padding:44px 16px 40px}
+.in{max-width:1180px;margin:0 auto}
+.crumb{font-size:13px;color:#e6d6c6;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.crumb a:hover{text-decoration:underline}
+.eyebrow{margin-top:22px;font-size:12px;letter-spacing:3px;color:#f0b89f;font-weight:700}
+h1{font-size:34px;letter-spacing:-1.2px;margin:8px 0 8px;word-break:keep-all}
+header p{margin:0;color:#e9ddd1;word-break:keep-all;max-width:640px}
+main{max-width:1180px;margin:0 auto;padding:26px 16px 80px}
+.gate{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--clay);border-radius:16px;padding:22px 24px;margin-bottom:22px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.gate h2{margin:0 0 4px;font-size:19px}.gate p{margin:0;color:var(--mute);word-break:keep-all}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-block;border-radius:24px;padding:11px 20px;font-weight:700;font-size:14px;border:1px solid var(--clay);color:var(--clay);background:#fff}
+.btn.main{background:var(--clay);color:#fff;animation:breathe 2.8s ease-in-out infinite}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(194,98,63,.35)}50%{box-shadow:0 0 0 9px rgba(194,98,63,0)}}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.tile b{display:block;font-size:28px;color:var(--clay);line-height:1.2}.tile span{font-size:13px;color:var(--mute)}
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.tools input{flex:1;min-width:200px;padding:11px 14px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.tools select{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 14px;cursor:pointer;font-size:14px}
+.chip small{margin-left:6px;color:var(--mute)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}.chip.on small{color:#d8cfc4}
+#count{font-size:13px;color:var(--mute);margin-bottom:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s,box-shadow .25s,border-color .25s}
+.card.show{opacity:1;transform:none}
+a.card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(70,50,30,.12);border-color:#d9b8a6}
+.meta{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--mute)}
+.tag{background:var(--clay2);color:#8a3f22;border-radius:6px;padding:2px 8px;font-weight:700}
+.ttl{font-weight:700;font-size:16px;line-height:1.45;word-break:keep-all}
+.sm{font-size:13.5px;color:#5c534a;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.go{margin-top:auto;font-size:13px;color:var(--clay);font-weight:700}
+.lock{position:relative;overflow:hidden}
+.lock .ttl,.lock .sm{filter:blur(5px);user-select:none}
+.lock:after{content:"회원 전용";position:absolute;right:14px;top:14px;background:var(--ink);color:#fff;font-size:12px;border-radius:12px;padding:3px 10px}
+.empty{grid-column:1/-1;text-align:center;color:var(--mute);padding:40px 0}
+#status{font-size:13px;color:var(--mute);margin:8px 0 0}
+@media(max-width:540px){h1{font-size:27px}.gate{padding:18px}.btns{width:100%}.btn{flex:1;text-align:center}.grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.card{transition:none;opacity:1;transform:none}.btn.main{animation:none}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<header><div class="in">
+  <div class="crumb"><a href="/members">회원 전용 자료실로 돌아가기</a><a href="/" >스마트미디어아트센터 홈</a></div>
+  <div class="eyebrow">MEMBERS LIBRARY</div>
+  <h1>스마트폰 사진 글 모아보기</h1>
+  <p>엘란비탈 박성욱 작가가 블로그에 써 온 촬영 팁, 계절별 촬영법, 보정 앱, 장비, 출사기를 주제별로 모았습니다. 찍고 싶은 장면을 검색하면 바로 찾을 수 있습니다.</p>
+</div></header>
+<main>
+  <section class="gate" id="gate">
+    <div><h2>지금은 분류마다 2편씩 미리 보고 있습니다</h2><p>무료 회원가입 후 로그인하면 <b id="gateTotal">전체</b> 글을 검색하고 주제별로 볼 수 있습니다.</p><p id="status" role="status"></p></div>
+    <div class="btns"><a class="btn main" href="/signup?redirect=%2Fsmartphone-photo-library">무료 회원가입</a><a class="btn" href="/login?redirect=%2Fsmartphone-photo-library">로그인</a></div>
+  </section>
+  <section class="tiles" id="tiles"></section>
+  <div class="tools"><input id="q" type="search" placeholder="예: 야경, 인물, 역광, 스냅시드" aria-label="글 검색"><select id="sort" aria-label="정렬"><option value="new">최신순</option><option value="old">오래된순</option></select></div>
+  <div class="chips" id="chips"></div>
+  <div id="count"></div>
+  <div class="grid" id="grid"></div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let D={member:false,total:0,types:[],counts:{},posts:[]};
+const st={type:'전체',q:'',sort:'new'};
+addEventListener('scroll',()=>{const h=document.documentElement;$('bar').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight||1)*100)+'%'});
+const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.08}):null;
+function reveal(){document.querySelectorAll('.card').forEach((c,i)=>{c.style.transitionDelay=(i%6)*70+'ms';io?io.observe(c):c.classList.add('show')})}
+function render(){
+  $('gate').hidden=D.member;
+  $('gateTotal').textContent=D.total+'편';
+  $('tiles').innerHTML=`<div class="tile"><b>${D.total}</b><span>전체 글</span></div>`+D.types.map(t=>`<div class="tile"><b>${D.counts[t]||0}</b><span>${t}</span></div>`).join('');
+  $('chips').innerHTML=['전체',...D.types].map(t=>`<button class="chip ${st.type===t?'on':''}" data-t="${t}">${t}<small>${t==='전체'?D.total:(D.counts[t]||0)}</small></button>`).join('');
+  document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{st.type=b.dataset.t;render()});
+  const q=st.q.trim().toLowerCase();
+  let L=D.posts.filter(p=>(st.type==='전체'||p.type===st.type)&&(!q||(p.title+' '+p.sum).toLowerCase().includes(q)));
+  L.sort((a,b)=>st.sort==='old'?a.date.localeCompare(b.date):b.date.localeCompare(a.date));
+  let html=L.map(p=>`<a class="card" href="https://blog.naver.com/elanvital7/${encodeURIComponent(p.id)}" target="_blank" rel="noopener"><div class="meta"><span class="tag">${esc(p.type)}</span><span>${p.date.replace(/-/g,'.')}</span></div><div class="ttl">${esc(p.title)}</div><div class="sm">${esc(p.sum)}</div><div class="go">글 읽기</div></a>`).join('');
+  if(!D.member){
+    const hidden=(st.type==='전체'?D.total:(D.counts[st.type]||0))-L.length;
+    if(!q&&hidden>0) html+=Array.from({length:Math.min(hidden,6)},()=>`<a class="card lock" href="/signup?redirect=%2Fsmartphone-photo-library"><div class="meta"><span class="tag">회원 전용</span></div><div class="ttl">로그인하면 이 자리에 글 제목이 보입니다</div><div class="sm">무료 회원가입 후 로그인하면 전체 글의 제목과 요약을 볼 수 있습니다.</div><div class="go">회원가입하고 보기</div></a>`).join('');
+    $('count').textContent=`미리보기 ${L.length}편 표시 · 로그인하면 ${st.type==='전체'?D.total:(D.counts[st.type]||0)}편`;
+  }else $('count').textContent=`${L.length}편 표시`;
+  $('grid').innerHTML=html||'<div class="empty">조건에 맞는 글이 없습니다.</div>';
+  reveal();
+}
+async function load(session){
+  $('status').textContent=session?'회원 정보를 확인하고 있습니다.':'';
+  try{
+    const r=await fetch('/api/members?item=photo-posts',{headers:session?{Authorization:'Bearer '+session.access_token}:{},cache:'no-store'});
+    if(r.status===401&&session){$('status').textContent='로그인이 만료되었습니다. 다시 로그인해 주세요.';return load(null)}
+    if(!r.ok)throw new Error();
+    D=await r.json();$('status').textContent='';render();
+  }catch(e){$('status').textContent='목록을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.'}
+}
+$('q').oninput=e=>{st.q=e.target.value;render()};
+$('sort').onchange=e=>{st.sort=e.target.value;render()};
+(async()=>{
+  let session=null;
+  try{if(window.supabase&&typeof SUPABASE_URL!=='undefined'){const c=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);session=(await c.auth.getSession()).data.session}}catch(e){}
+  load(session);
+})();
+</script>
+</body>
+</html>

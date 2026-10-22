@@ -62,6 +62,7 @@
         <li class="nav-dropdown">
             <button type="button" class="nav-dropdown-toggle">자료실 <span class="caret">▾</span></button>
             <ul class="nav-dropdown-menu">
+                <li><a href="members.html">회원 전용 자료실</a></li>
                 <li><a href="lecturer-jobs.html">강사모집 공고</a></li>
                 <li><a href="instructor-apply.html">강사 등록</a></li>
                 <li><a href="smartphone-video-editing.html">스마트폰 영상 촬영·편집</a></li>
@@ -69,6 +70,7 @@
         </li>`
 
     const resourcesMobile = `
+        <li><a href="members.html">회원 전용 자료실</a></li>
         <li><a href="lecturer-jobs.html">강사모집 공고</a></li>
         <li><a href="instructor-apply.html">강사 등록</a></li>
         <li><a href="smartphone-video-editing.html">스마트폰 영상 촬영·편집</a></li>`
@@ -189,8 +191,8 @@
                 client.auth.signOut().then(() => location.reload())
             })
         } else {
-            area.innerHTML    = `<a href="login.html?redirect=replay.html" class="btn-nav-login">로그인</a>`
-            areaMob.innerHTML = `<a href="login.html?redirect=replay.html">로그인</a>`
+            area.innerHTML    = `<a href="login.html?redirect=%2Fmembers" class="btn-nav-login">로그인</a>`
+            areaMob.innerHTML = `<a href="login.html?redirect=%2Fmembers">로그인</a>`
         }
         areaMob.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMob))
     })

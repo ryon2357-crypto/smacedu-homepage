@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>회원 전용 자료실 스마트미디어아트센터</title>
+<meta name="description" content="스마트미디어아트센터 무료 회원에게 열리는 강의 다시보기, 스마트폰 사진 글 모음, 유튜브 스크립트 정리 도구를 한곳에 모았습니다.">
+<meta property="og:title" content="회원 전용 자료실">
+<meta property="og:description" content="무료 회원가입만 하면 니콘 강의 48편, 스마트폰 사진 글 모음, 유튜브 스크립트 정리 도구가 열립니다">
+<meta property="og:url" content="https://www.smacedu.kr/members">
+<meta property="og:image" content="https://www.smacedu.kr/images/logo1.png?v=1">
+<meta name="theme-color" content="#c2623f">
+<style>
+:root{color-scheme:light;--bg:#f6f1e7;--card:#fffdf8;--ink:#2b2622;--mute:#7a6f63;--line:#e4dccb;--clay:#c2623f;--clay2:#f3dccf;--sage:#5f7a63;--sage2:#e1ebe0;--gold2:#f5e8c6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 Pretendard,"Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+a{color:inherit;text-decoration:none}
+#bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--clay);z-index:9}
+header{position:relative;overflow:hidden;background:linear-gradient(135deg,#2b2622,#4a3a30);color:#fff;padding:46px 16px 56px}
+header:before{content:"";position:absolute;width:520px;height:520px;right:-160px;top:-220px;border-radius:50%;background:radial-gradient(circle,rgba(194,98,63,.45),transparent 65%);animation:float 9s ease-in-out infinite}
+@keyframes float{50%{transform:translate(-40px,30px)}}
+.in{position:relative;max-width:1080px;margin:0 auto}
+.crumb{font-size:13px;color:#e6d6c6;display:flex;justify-content:space-between;gap:12px}
+.crumb a:hover{text-decoration:underline}
+.eyebrow{margin-top:26px;font-size:12px;letter-spacing:3px;color:#f0b89f;font-weight:700}
+h1{font-size:38px;letter-spacing:-1.4px;margin:8px 0 10px;word-break:keep-all}
+header p{margin:0;color:#e9ddd1;max-width:620px;word-break:keep-all}
+main{max-width:1080px;margin:-28px auto 0;padding:0 16px 80px;position:relative}
+.state{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;box-shadow:0 10px 30px rgba(60,40,20,.08)}
+.state h2{margin:0 0 4px;font-size:19px;word-break:keep-all}.state p{margin:0;color:var(--mute);word-break:keep-all}
+.state.on{border-left:6px solid var(--sage)}.state.off{border-left:6px solid var(--clay)}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-block;border-radius:24px;padding:11px 20px;font-weight:700;font-size:14px;border:1px solid var(--clay);color:var(--clay);background:#fff;cursor:pointer}
+.btn.main{background:var(--clay);color:#fff;animation:breathe 2.8s ease-in-out infinite}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(194,98,63,.35)}50%{box-shadow:0 0 0 9px rgba(194,98,63,0)}}
+h3.sec{font-size:20px;margin:40px 0 14px;letter-spacing:-.5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(16px);transition:opacity .55s,transform .55s,box-shadow .25s,border-color .25s}
+.card.show{opacity:1;transform:none}
+.card:hover{transform:translateY(-5px);box-shadow:0 16px 34px rgba(70,50,30,.13);border-color:#d9b8a6}
+.ico{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.c1 .ico{background:var(--sage2)}.c2 .ico{background:var(--clay2)}.c3 .ico{background:var(--gold2)}
+.card h4{margin:2px 0 0;font-size:19px;letter-spacing:-.4px;word-break:keep-all}
+.card p{margin:0;color:#5c534a;font-size:14px;word-break:keep-all}
+.badges{display:flex;gap:6px;flex-wrap:wrap;font-size:12px}
+.badges span{border-radius:8px;padding:3px 9px;background:#f1ebe0;color:#6a5f53;font-weight:700}
+.badges .free{background:var(--sage2);color:#3f5a43}
+.badges .lockb{background:var(--ink);color:#fff}
+.go{margin-top:auto;padding-top:6px;color:var(--clay);font-weight:700;font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.step{background:var(--card);border:1px dashed #d8ccb8;border-radius:16px;padding:18px}
+.step b{display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--clay);color:#fff;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.step p{margin:0;font-size:14px;color:#5c534a;word-break:keep-all}
+.note{margin-top:28px;font-size:13px;color:var(--mute);text-align:center}
+@media(max-width:640px){h1{font-size:29px}.steps{grid-template-columns:1fr}.state{padding:18px}.btns{width:100%}.btn{flex:1;text-align:center}.grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.card{transition:none;opacity:1;transform:none}.btn.main{animation:none}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<header><div class="in">
+  <div class="crumb"><a href="/">스마트미디어아트센터 홈</a><a href="/mypage" id="topLink">로그인</a></div>
+  <div class="eyebrow">MEMBERS ONLY</div>
+  <h1>회원 전용 자료실</h1>
+  <p>무료 회원가입만 하면 엘란비탈 박성욱 작가의 강의 다시보기와 사진 자료, 강의 도구가 모두 열립니다. 자료는 계속 늘어납니다.</p>
+</div></header>
+<main>
+  <section class="state off" id="state">
+    <div><h2 id="stateTitle">회원 정보를 확인하고 있습니다</h2><p id="stateText">잠시만 기다려 주세요.</p></div>
+    <div class="btns" id="stateBtns"></div>
+  </section>
+
+  <h3 class="sec">지금 열려 있는 자료</h3>
+  <div class="grid">
+    <a class="card c1" href="/nikon-lectures">
+      <div class="ico">📷</div>
+      <h4>니콘 스쿨 온라인 강의 다시보기</h4>
+      <p>2023년부터 진행한 니콘 스쿨 라이브 강의 48편을 날짜별, 조회수별로 찾아봅니다. 노출, 렌즈, 계절 사진, 야경까지 한 번에.</p>
+      <div class="badges"><span>48편</span><span class="free">비회원 인기 3편</span><span class="lockb">회원 전체</span></div>
+      <div class="go">강의 목록 보기</div>
+    </a>
+    <a class="card c2" href="/smartphone-photo-library">
+      <div class="ico">📱</div>
+      <h4>스마트폰 사진 글 모아보기</h4>
+      <p>블로그에 써 온 촬영 팁, 계절별 촬영법, 보정 앱, 장비, 출사기를 주제별로 정리했습니다. 찍고 싶은 장면을 검색해 바로 찾습니다.</p>
+      <div class="badges"><span id="photoCount">123편</span><span class="free">분류마다 2편 미리보기</span><span class="lockb">회원 전체</span></div>
+      <div class="go">글 모아보기</div>
+    </a>
+    <a class="card c3" href="/youtube-script">
+      <div class="ico">📝</div>
+      <h4>유튜브 스크립트 정리 도구</h4>
+      <p>유튜브 영상의 스크립트를 시간표시와 문단으로 읽기 좋게 정리합니다. 강의 복습 노트나 블로그 글 초안을 만들 때 씁니다.</p>
+      <div class="badges"><span>도구</span><span class="lockb">회원 전용</span></div>
+      <div class="go">도구 열기</div>
+    </a>
+  </div>
+
+  <h3 class="sec">이용 방법</h3>
+  <div class="steps">
+    <div class="step"><b>1</b><p>이메일, 구글, 카카오 계정으로 무료 회원가입을 합니다.</p></div>
+    <div class="step"><b>2</b><p>로그인하면 이 페이지의 자료가 모두 열립니다.</p></div>
+    <div class="step"><b>3</b><p>새 자료가 올라오면 이 자료실에 계속 추가됩니다.</p></div>
+  </div>
+  <p class="note">회원가입은 무료이며 결제 정보를 받지 않습니다.</p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+addEventListener('scroll',()=>{const h=document.documentElement;$('bar').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight||1)*100)+'%'});
+const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.08}):null;
+document.querySelectorAll('.card').forEach((c,i)=>{c.style.transitionDelay=(i%6)*70+'ms';io?io.observe(c):c.classList.add('show')});
+function guest(){
+  $('state').className='state off';
+  $('stateTitle').textContent='무료 회원가입하고 전체 자료를 열어 보세요';
+  $('stateText').textContent='지금은 미리보기만 보입니다. 로그인하면 아래 자료가 모두 열립니다.';
+  $('stateBtns').innerHTML='<a class="btn main" href="/signup?redirect=%2Fmembers">무료 회원가입</a><a class="btn" href="/login?redirect=%2Fmembers">로그인</a>';
+  $('topLink').textContent='로그인';$('topLink').href='/login?redirect=%2Fmembers';
+}
+function member(user,client){
+  const name=(user.user_metadata&&user.user_metadata.full_name)||'';
+  $('state').className='state on';
+  $('stateTitle').textContent=(name?name+' 회원님, ':'')+'모든 자료가 열려 있습니다';
+  $('stateText').textContent='아래 자료를 눌러 바로 이용하세요.';
+  $('stateBtns').innerHTML='<a class="btn" href="/mypage">마이페이지</a><button class="btn" id="out">로그아웃</button>';
+  $('out').onclick=()=>client.auth.signOut().then(()=>location.reload());
+  $('topLink').textContent='마이페이지';$('topLink').href='/mypage';
+}
+(async()=>{
+  fetch('/api/members?item=photo-posts',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(d&&d.total)$('photoCount').textContent=d.total+'편'}).catch(()=>{});
+  try{
+    if(!window.supabase||typeof SUPABASE_URL==='undefined')return guest();
+    const c=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+    const s=(await c.auth.getSession()).data.session;
+    s&&s.user&&!s.user.is_anonymous?member(s.user,c):guest();
+  }catch(e){guest()}
+})();
+</script>
+</body>
+</html>
