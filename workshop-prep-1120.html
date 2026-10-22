@@ -16,7 +16,7 @@ header{padding:36px 0 20px}
 h1{margin:6px 0 8px;font-size:28px;line-height:1.3}
 .lead{color:var(--sub);margin:0}
 .bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 0;margin-bottom:18px}
-.bar-in{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.bar-in{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:flex-end}
 .who{display:flex;gap:8px;align-items:center;font-size:14px}
 .who input{padding:7px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;width:130px;background:#fff}
 .status{font-size:13px;color:var(--sub)}
@@ -62,6 +62,12 @@ summary small{display:block;font-weight:400;color:var(--sub);font-size:14px}
 .pick input{width:20px;height:20px;accent-color:var(--clay)}
 .note{background:var(--clay-l);border-radius:10px;padding:10px 14px;font-size:14.5px;margin-top:10px}
 #notes{width:100%;min-height:160px;padding:12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff;resize:vertical}
+.log{display:grid;grid-template-columns:104px 1fr;gap:2px 12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.log:last-child{border-bottom:0}
+.log time{color:var(--sub);font-size:13px}
+.log .who2{font-weight:700}
+.log q{display:block;color:var(--sub);font-size:13.5px;quotes:none;margin-top:2px;white-space:pre-wrap;word-break:break-word}
+@media(max-width:560px){.log{grid-template-columns:1fr}}
 footer{color:var(--sub);font-size:13px;margin-top:40px;border-top:1px solid var(--line);padding-top:14px}
 @media(max-width:560px){h1{font-size:23px}.facts{grid-template-columns:1fr}.who input{width:100px}th:nth-child(1),td:nth-child(1){white-space:nowrap}}
 </style>
@@ -71,12 +77,11 @@ footer{color:var(--sub);font-size:13px;margin-top:40px;border-top:1px solid var(
 <header>
   <div class="kicker">스마트미디어아트센터</div>
   <h1>민주평통 청년기자단 워크숍 준비 체크리스트</h1>
-  <p class="lead">담당자와 강사가 같이 보고 같이 고치는 페이지입니다. 체크, 담당, 메모를 바꾸면 바로 저장되고 상대 화면에도 반영됩니다.</p>
+  <p class="lead">담당자와 강사가 같이 보고 같이 고치는 페이지입니다. 체크, 담당, 메모를 바꾸면 바로 저장되고 상대 화면에도 반영되며, 아래 수정 이력에 시각과 함께 남습니다.</p>
 </header>
 
 <div class="bar"><div class="bar-in">
-  <div class="who"><label for="me">내 이름</label><input id="me" maxlength="20" placeholder="수정자 표시"></div>
-  <div class="status" id="status">불러오는 중</div>
+    <div class="status" id="status">불러오는 중</div>
 </div>
 <div class="prog" aria-hidden="true"><i id="pb"></i></div>
 <div class="status" id="count" style="margin-top:4px"></div>
@@ -161,6 +166,13 @@ footer{color:var(--sub);font-size:13px;margin-top:40px;border-top:1px solid var(
   <div class="meta" id="notesMeta"></div>
 </section>
 
+<section>
+  <h2>수정 이력</h2>
+  <p class="hint">체크, 담당, 메모, 항목 추가와 삭제가 시각과 함께 기록됩니다. 최신순입니다.</p>
+  <div class="card" id="logBox" style="padding:6px 14px"></div>
+  <button class="btn" id="logMore" style="display:none;margin-top:8px">이력 더 보기</button>
+</section>
+
 <footer>이 페이지는 주소를 아는 사람만 열 수 있고 검색에 노출되지 않습니다. 행사 준비가 끝나면 닫습니다.</footer>
 </div>
 
@@ -223,12 +235,9 @@ var SAMPLE=[
 ];
 var API='/api/workshop-prep';
 var state={items:{},extra:[],notes:'',notesBy:'',rev:0};
-var me='';var timers={};var busy=0;
+var timers={};var busy=0;
 function $(s){return document.querySelector(s)}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-try{me=localStorage.getItem('wp_me')||''}catch(e){}
-$('#me').value=me;
-$('#me').addEventListener('input',function(){me=this.value.trim();try{localStorage.setItem('wp_me',me)}catch(e){}});
 
 function setStatus(t,err){var s=$('#status');s.textContent=t;s.className='status'+(err?' err':'')}
 function fmt(iso){if(!iso)return '';var d=new Date(iso);return (d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
@@ -239,7 +248,7 @@ function itemHTML(id,q,d,del){
   return '<div class="item'+(s.done?' done':'')+'" data-id="'+id+'"><div class="row"><input type="checkbox" '+(s.done?'checked':'')+' aria-label="완료"><div style="flex:1"><div class="q">'+esc(q)+(del?' <button class="del" data-del="'+id+'">삭제</button>':'')+'</div>'+(d?'<div class="d">'+d+'</div>':'')+'</div></div>'+
    '<div class="ctl"><select data-f="owner" aria-label="담당"><option value="">담당 미정</option><option'+(s.owner==='센터'?' selected':'')+'>센터</option><option'+(s.owner==='기관'?' selected':'')+'>기관</option><option'+(s.owner==='공동'?' selected':'')+'>공동</option></select>'+
    '<textarea data-f="memo" placeholder="메모" aria-label="메모">'+esc(s.memo||'')+'</textarea></div>'+
-   (s.at?'<div class="meta">'+esc(s.by||'')+' '+fmt(s.at)+' 수정</div>':'')+'</div>';
+   (s.at?'<div class="meta">'+fmt(s.at)+' 수정</div>':'')+'</div>';
 }
 function render(){
   var ae=document.activeElement;var keep=ae&&ae.closest?ae.closest('[data-id]'):null;
@@ -262,17 +271,43 @@ function render(){
     var s=it(x.id);
     ih+='<details class="'+(s.done?'done':'')+'" data-id="'+x.id+'"><summary><span class="tag">'+x.n+'</span><span>'+esc(x.t)+(s.done?' · 선택됨':'')+'<small>'+esc(x.s)+'</small></span></summary><div class="idea-body"><table><tr><th>시간</th><th>화면</th><th>질문과 자막</th></tr>'+
      x.rows.map(function(r){return '<tr><td>'+esc(r[0])+'</td><td>'+esc(r[1])+'</td><td>'+esc(r[2])+'</td></tr>'}).join('')+'</table>'+(x.f?'<div class="d" style="margin-top:8px">'+esc(x.f)+'</div>':'')+
-     '<label class="pick"><input type="checkbox" '+(s.done?'checked':'')+'> 이번 과제로 선택</label><div class="ctl"><textarea data-f="memo" placeholder="메모">'+esc(s.memo||'')+'</textarea></div>'+(s.at?'<div class="meta">'+esc(s.by||'')+' '+fmt(s.at)+' 수정</div>':'')+'</div></details>';
+     '<label class="pick"><input type="checkbox" '+(s.done?'checked':'')+'> 이번 과제로 선택</label><div class="ctl"><textarea data-f="memo" placeholder="메모">'+esc(s.memo||'')+'</textarea></div>'+(s.at?'<div class="meta">'+fmt(s.at)+' 수정</div>':'')+'</div></details>';
   });
   var open={};document.querySelectorAll('#ideas details[open]').forEach(function(d){open[d.getAttribute('data-id')]=1});
   $('#ideas').innerHTML=ih;
   document.querySelectorAll('#ideas details').forEach(function(d){if(open[d.getAttribute('data-id')])d.open=true});
   $('#sampleItems').innerHTML=SAMPLE.map(function(x){return itemHTML(x.id,x.q,x.d,false)}).join('');
   var n=$('#notes');if(document.activeElement!==n)n.value=state.notes||'';
-  $('#notesMeta').textContent=state.notesBy?('마지막 수정 '+state.notesBy):'';
-  progress();
+  $('#notesMeta').textContent='';
+  progress();renderLog();renderLog();
 }
-function partial(){progress()}
+var LOGN=30;
+function labelOf(id,fallback){
+  if(id==='notes')return '공용 메모';
+  var f='';
+  GROUPS.forEach(function(g){g.items.forEach(function(x){if(x.id===id)f='['+g.k+'] '+x.q})});
+  SAMPLE.forEach(function(x){if(x.id===id)f='[샘플] '+x.q});
+  IDEAS.forEach(function(x){if(x.id===id)f='[아이디어 '+x.n+'] '+x.t});
+  state.extra.forEach(function(x){if(x.id===id)f='[추가] '+x.text});
+  return f||fallback||id;
+}
+function logHTML(e){
+  var lab=esc(labelOf(e.id,e.label)),act='',q='';
+  if(e.kind==='done')act=lab+' '+(e.to?'완료로 체크':'체크 해제');
+  else if(e.kind==='owner')act=lab+' 담당을 '+esc(e.to||'미정')+'으로 변경';
+  else if(e.kind==='memo'){act=lab+' 메모 수정';q=(e.from?'이전: '+esc(e.from)+'\n':'')+'변경: '+(e.to?esc(e.to):'(삭제)')}
+  else if(e.kind==='notes'){act='공용 메모 수정';q=(e.from?'이전: '+esc(e.from)+'\n':'')+'변경: '+(e.to?esc(e.to):'(삭제)')}
+  else if(e.kind==='add')act='항목 추가 '+esc(e.label||'');
+  else if(e.kind==='del')act='항목 삭제 '+esc(e.label||'');
+  return '<div class="log"><time>'+fmt(e.at)+'</time><div><span class="who2">'+who+'</span> '+act+(q?'<q>'+q+'</q>':'')+'</div></div>';
+}
+function renderLog(){
+  var log=(state.log||[]).slice().reverse();var box=$('#logBox');
+  if(!log.length){box.innerHTML='<div class="log" style="display:block;color:var(--sub)">아직 수정 이력이 없습니다.</div>';$('#logMore').style.display='none';return}
+  box.innerHTML=log.slice(0,LOGN).map(logHTML).join('');
+  $('#logMore').style.display=log.length>LOGN?'inline-block':'none';
+}
+function partial(){progress();renderLog()}
 function progress(){
   var ids=[];GROUPS.forEach(function(g){g.items.forEach(function(x){ids.push(x.id)})});state.extra.forEach(function(x){ids.push(x.id)});
   var done=ids.filter(function(i){return it(i).done}).length;
@@ -280,12 +315,12 @@ function progress(){
   $('#count').textContent='체크리스트 '+ids.length+'개 중 '+done+'개 완료';
 }
 function send(op){
-  op.by=me||'이름 없음';busy++;setStatus('저장 중');
+  op.by='';busy++;setStatus('저장 중');
   return fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(op)}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||r.status);return j})}).then(function(j){
     busy--;state=j;setStatus('저장됨 '+fmt(j.updatedAt));return j;
   }).catch(function(e){busy--;setStatus('저장 연결 실패, 잠시 후 다시 시도해 주세요',true);throw e});
 }
-function setLocal(id,f){var c=state.items[id]||{};for(var k in f)c[k]=f[k];c.by=me;c.at=new Date().toISOString();state.items[id]=c}
+function setLocal(id,f){var c=state.items[id]||{};for(var k in f)c[k]=f[k];c.at=new Date().toISOString();state.items[id]=c}
 document.addEventListener('change',function(e){
   var t=e.target,box=t.closest('[data-id]');if(!box)return;var id=box.getAttribute('data-id');
   if(t.type==='checkbox'){setLocal(id,{done:t.checked});render();send({op:'set',id:id,fields:{done:t.checked}}).then(render,function(){})}
@@ -298,6 +333,7 @@ document.addEventListener('input',function(e){
 });
 document.addEventListener('click',function(e){
   var t=e.target;
+  if(t.id==='logMore'){LOGN+=30;renderLog();return}
   if(t.id==='addBtn'){var v=$('#addText').value.trim();if(!v)return;send({op:'addItem',group:'E',text:v}).then(render,function(){})}
   else if(t.getAttribute&&t.getAttribute('data-del')){if(confirm('이 항목을 삭제할까요?'))send({op:'delItem',id:t.getAttribute('data-del')}).then(render,function(){})}
 });
