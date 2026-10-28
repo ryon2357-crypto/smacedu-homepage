@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive">
-<title>민주평통 청년기자단 워크숍 준비 체크리스트</title>
+<title>민주평통 청년기자단 워크숍 운영 준비안</title>
 <meta property="og:type" content="website">
-<meta property="og:title" content="민주평통 청년기자단 워크숍 준비 체크리스트">
-<meta property="og:description" content="함께 확인하고 함께 편집하는 공유 페이지">
+<meta property="og:title" content="민주평통 청년기자단 워크숍 운영 준비안">
+<meta property="og:description" content="스마트폰 취재와 캡컷 모바일 편집으로 완성하는 조별 숏폼 워크숍 운영안">
 <meta property="og:url" content="https://www.smacedu.kr/workshop-prep-1120">
 <meta property="og:image" content="https://www.smacedu.kr/workshop-prep-assets/og_workshop_prep.jpg">
 <meta property="og:image:width" content="1200">
@@ -15,91 +15,93 @@
 <meta name="twitter:card" content="summary_large_image">
 
 <style>
-:root{--bg:#faf5ec;--card:#fffdf8;--ink:#2b2622;--sub:#6f655b;--line:#e6dccb;--clay:#b85c38;--clay-d:#8f4527;--clay-l:#f6e4d8;--ok:#4f7a4f;--ok-l:#e5f0e2;--hl:#fff1cf}
+:root{--bg:#f4f7fb;--card:#ffffff;--ink:#17243b;--sub:#5f6f86;--line:#dbe3ee;--navy:#173b69;--blue:#1b6ca8;--sky:#eaf4fb;--gold:#d89920;--gold-l:#fff5d8;--ok:#2f7453;--ok-l:#e7f5ed;--danger:#a63b32;--shadow:0 14px 34px rgba(32,55,88,.08)}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.65;font-size:16px}
-.wrap{max-width:860px;margin:0 auto;padding:0 16px 80px}
-header{padding:36px 0 20px}
-.kicker{color:var(--clay-d);font-weight:700;font-size:14px;letter-spacing:.02em}
-h1{margin:6px 0 8px;font-size:28px;line-height:1.3}
-.lead{color:var(--sub);margin:0}
-.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 0;margin-bottom:18px}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#edf3fa 0,#f7f9fc 340px);color:var(--ink);font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.65;font-size:16px}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px 88px}
+header{padding:48px 0 24px}
+.kicker{color:var(--blue);font-weight:800;font-size:14px;letter-spacing:.04em}
+h1{margin:8px 0 10px;font-size:34px;line-height:1.25;letter-spacing:-.04em}
+.lead{color:var(--sub);margin:0;max-width:720px;font-size:18px}
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.quick span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:14px;font-weight:800;color:var(--navy);box-shadow:0 4px 14px rgba(32,55,88,.05)}
+.nav{display:flex;flex-wrap:wrap;gap:7px;margin:4px 0 14px}
+.nav a{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:6px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.nav a:hover{border-color:var(--blue);color:var(--blue)}
+.bar{position:sticky;top:0;z-index:5;background:rgba(244,247,251,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:10px 0;margin-bottom:20px}
 .bar-in{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:flex-end}
-.who{display:flex;gap:8px;align-items:center;font-size:14px}
-.who input{padding:7px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;width:130px;background:#fff}
 .status{font-size:13px;color:var(--sub)}
-.status.err{color:#b3261e;font-weight:700}
-.prog{height:8px;background:var(--line);border-radius:8px;overflow:hidden;margin-top:8px}
-.prog i{display:block;height:100%;width:0;background:var(--clay);transition:width .3s}
-section{margin:30px 0}
-h2{font-size:21px;margin:0 0 4px}
-.hint{color:var(--sub);font-size:14px;margin:0 0 14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px}
-.facts{display:grid;grid-template-columns:90px 1fr;gap:6px 12px;margin:0}
-.facts dt{color:var(--sub);font-weight:700}
+.status.err{color:var(--danger);font-weight:700}
+.prog{height:7px;background:var(--line);border-radius:8px;overflow:hidden;margin-top:8px}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),#46a7be);transition:width .3s}
+section{margin:38px 0;scroll-margin-top:74px}
+h2{font-size:24px;margin:0 0 5px;letter-spacing:-.03em}
+h3{letter-spacing:-.02em}
+.hint{color:var(--sub);font-size:14px;margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:12px;box-shadow:var(--shadow)}
+.facts{display:grid;grid-template-columns:90px 1fr;gap:7px 14px;margin:0}
+.facts dt{color:var(--sub);font-weight:800}
 .facts dd{margin:0}
-table{width:100%;border-collapse:collapse;font-size:14.5px}
-th,td{border-bottom:1px solid var(--line);padding:8px 8px;text-align:left;vertical-align:top}
-th{color:var(--sub);font-size:13px}
-tr.mine td{background:var(--hl)}
-.tag{display:inline-block;background:var(--clay-l);color:var(--clay-d);border-radius:20px;padding:1px 9px;font-size:12px;font-weight:700}
-.group h3{margin:22px 0 8px;font-size:17px;color:var(--clay-d)}
-.item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
-.item.done{background:var(--ok-l);border-color:#c7dcc3}
-.row{display:flex;gap:10px;align-items:flex-start}
-.row input[type=checkbox]{width:22px;height:22px;margin-top:3px;accent-color:var(--clay);flex:none}
-.q{font-weight:700}
+.decision-grid,.role-grid,.lesson-grid,.supply-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.decision,.role,.lesson,.supply{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.decision strong,.role strong,.lesson strong,.supply strong{display:block;color:var(--navy);font-size:16px;margin-bottom:4px}
+.decision p,.role p,.lesson p,.supply p{margin:0;color:var(--sub);font-size:14.5px}
+.decision.full,.supply.full{grid-column:1/-1}
+.callout{background:linear-gradient(135deg,var(--navy),#225a92);color:#fff;border-radius:18px;padding:20px 22px;margin:14px 0;box-shadow:0 16px 36px rgba(23,59,105,.2)}
+.callout strong{display:block;font-size:18px;margin-bottom:4px}
+.callout p{margin:0;color:#e6eff9}
+.table-card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow-x:auto;box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:650px}
+th,td{border-bottom:1px solid var(--line);padding:11px 12px;text-align:left;vertical-align:top}
+th{color:var(--sub);font-size:13px;background:#f8fafc}
+tr:last-child td{border-bottom:0}
+tr.mine td{background:#eef6fc}
+.time{font-weight:800;color:var(--navy);white-space:nowrap}
+.tag{display:inline-block;background:var(--sky);color:var(--blue);border-radius:20px;padding:2px 9px;font-size:12px;font-weight:800}
+.tag.gold{background:var(--gold-l);color:#8d5e00}
+.group h3{margin:24px 0 9px;font-size:18px;color:var(--navy)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:13px 15px;margin-bottom:10px}
+.item.done{background:var(--ok-l);border-color:#bfdfce}
+.row{display:flex;gap:11px;align-items:flex-start}
+.row input[type=checkbox]{width:22px;height:22px;margin-top:3px;accent-color:var(--blue);flex:none}
+.q{font-weight:800}
 .d{color:var(--sub);font-size:14px;margin-top:2px}
-.d ul{margin:4px 0 0;padding-left:20px}
-.ctl{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:flex-start}
+.d ul{margin:5px 0 0;padding-left:20px}
+.ctl{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap;align-items:flex-start}
 .ctl select{padding:7px 8px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:14px;background:#fff}
 .ctl textarea{flex:1;min-width:220px;min-height:44px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:14.5px;resize:vertical;background:#fff}
 .meta{font-size:12px;color:var(--sub);margin-top:4px}
-.del{border:0;background:none;color:#b3261e;cursor:pointer;font-size:13px}
+.del{border:0;background:none;color:var(--danger);cursor:pointer;font-size:13px}
 .add{display:flex;gap:8px;margin-top:8px}
 .add input{flex:1;padding:9px 11px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
-button.btn{background:var(--clay);color:#fff;border:0;border-radius:8px;padding:9px 16px;font:inherit;font-weight:700;cursor:pointer}
-button.btn:hover{background:var(--clay-d)}
-details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
-details.done{background:var(--ok-l);border-color:#c7dcc3}
-summary{cursor:pointer;font-weight:700;list-style:none;display:flex;gap:8px;align-items:flex-start}
+button.btn{background:var(--blue);color:#fff;border:0;border-radius:8px;padding:9px 16px;font:inherit;font-weight:800;cursor:pointer}
+button.btn:hover{background:var(--navy)}
+details{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:13px 15px;margin-bottom:10px}
+details.done{background:var(--ok-l);border-color:#bfdfce}
+summary{cursor:pointer;font-weight:800;list-style:none;display:flex;gap:9px;align-items:flex-start}
 summary::-webkit-details-marker{display:none}
 summary small{display:block;font-weight:400;color:var(--sub);font-size:14px}
 .idea-body{margin-top:10px;overflow-x:auto}
-.pick{display:flex;gap:8px;align-items:center;margin-top:10px;font-weight:700}
-.pick input{width:20px;height:20px;accent-color:var(--clay)}
-.note{background:var(--clay-l);border-radius:10px;padding:10px 14px;font-size:14.5px;margin-top:10px}
-#notes{width:100%;min-height:160px;padding:12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff;resize:vertical}
-.vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-a.vid{display:flex;flex-direction:column;gap:3px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;text-decoration:none;color:var(--ink)}
-a.vid img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;background:var(--line)}
-a.vid .vt{font-weight:700;margin-top:4px}
-a.vid .vs{font-size:12.5px;color:var(--clay-d)}
-a.vid .vd{font-size:13.5px;color:var(--sub)}
-a.vid:hover{border-color:var(--clay)}
-.nav{display:flex;flex-wrap:wrap;gap:6px 8px;margin:4px 0 14px}
-.nav a{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:5px 12px;font-size:14px;color:var(--ink);text-decoration:none}
-.nav a:hover{border-color:var(--clay);color:var(--clay-d)}
-.nav a.opt{background:var(--clay-l);border-color:#ebcdb9;color:var(--clay-d);font-weight:700}
-section{scroll-margin-top:70px}
-.c5s{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:10px}
-figure.c5{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px}
-figure.c5 img{width:100%;border-radius:6px;display:block}
-figure.c5 figcaption{font-size:12.5px;color:var(--sub);padding:4px 2px 0}
-footer{color:var(--sub);font-size:13px;margin-top:40px;border-top:1px solid var(--line);padding-top:14px}
-@media(max-width:560px){h1{font-size:23px}.facts{grid-template-columns:1fr}.who input{width:100px}th:nth-child(1),td:nth-child(1){white-space:nowrap}}
+.pick{display:flex;gap:8px;align-items:center;margin-top:10px;font-weight:800}
+.pick input{width:20px;height:20px;accent-color:var(--blue)}
+.note{background:var(--gold-l);border:1px solid #efd89d;border-radius:12px;padding:12px 15px;font-size:14.5px;margin-top:12px}
+.plain-list{margin:0;padding-left:20px}.plain-list li+li{margin-top:5px}
+#notes{width:100%;min-height:150px;padding:12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff;resize:vertical}
+footer{color:var(--sub);font-size:13px;margin-top:44px;border-top:1px solid var(--line);padding-top:16px}
+@media(max-width:700px){h1{font-size:27px}.lead{font-size:16px}.decision-grid,.role-grid,.lesson-grid,.supply-grid{grid-template-columns:1fr}.decision.full,.supply.full{grid-column:auto}.facts{grid-template-columns:1fr}.wrap{padding-left:15px;padding-right:15px}.card{padding:16px}table{font-size:13.5px;min-width:610px}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-  <div class="kicker">스마트미디어아트센터</div>
-  <h1>민주평통 청년기자단 워크숍 준비 체크리스트</h1>
-  <p class="lead">담당자와 강사가 같이 보고 같이 고치는 페이지입니다. 체크, 담당, 메모를 바꾸면 바로 저장되고 상대 화면에도 반영됩니다.</p>
+  <div class="kicker">2026년 11월 20일 운영 준비안</div>
+  <h1>민주평통 청년기자단 워크숍 운영 준비안</h1>
+  <p class="lead">스마트폰으로 현장을 취재하고 캡컷 모바일로 90초 세로 숏폼을 완성하는 실습 중심 워크숍입니다.</p>
+  <div class="quick"><span>5명 1조</span><span>캡컷 모바일</span><span>세로 90초 이내</span><span>18시 폐회</span></div>
 </header>
 
-<nav class="nav"><a href="#overview">행사 개요</a><a href="#checklist">체크리스트</a><a href="#share">공유 페이지 예시</a><a href="#videos">샘플 영상</a><a href="#capcut">캡컷 시안</a><a href="#ideas-sec">과제 아이디어</a><a href="#memo">공용 메모</a><a class="opt" href="/workshop-day-1120">당일 강의 체크리스트 (별도 페이지)</a><a class="opt" href="/workshop-prep-1120-pre">사전 촬영 안내 (선택, 별도 페이지)</a></nav>
+<nav class="nav"><a href="#overview">행사 개요</a><a href="#principles">확정 운영안</a><a href="#schedule">시간표</a><a href="#teams">조 편성과 역할</a><a href="#checklist">주최측 체크</a><a href="#lesson">교육 핵심</a><a href="#support">제공 자료</a><a href="#ideas-sec">지원용 과제</a><a href="#memo">공용 메모</a></nav>
 <div class="bar"><div class="bar-in">
     <div class="status" id="status">불러오는 중</div>
 </div>
@@ -109,124 +111,166 @@ footer{color:var(--sub);font-size:13px;margin-top:40px;border-top:1px solid var(
 
 <section id="overview">
   <h2>행사 개요</h2>
-  <p class="hint">주최 측 추진계획안(안) 기준입니다. 세부 일정은 바뀔 수 있습니다.</p>
+  <p class="hint">10월 23일 사전 미팅 결과와 최종 협의 내용을 반영한 운영 기준입니다.</p>
   <div class="card"><dl class="facts">
     <dt>행사</dt><dd>2026 민주평통 청년기자단 역량강화 워크숍</dd>
     <dt>일시</dt><dd>2026년 11월 20일(금)</dd>
     <dt>장소</dt><dd>호텔스카이파크 킹스타운 동대문점 킹스홀</dd>
-    <dt>대상</dt><dd>청년기자 168명(국내 134명, 해외 34명), 화상중계 병행 예정<br><span style="color:var(--sub);font-size:14px">1차 설문(9/16) 기준 현장 참석 60명 예상, 변동 가능</span></dd>
+    <dt>대상</dt><dd>청년기자 168명 가운데 현장 약 60명 예상, 해외 참가자는 온라인으로 참여</dd>
+    <dt>진행</dt><dd>주강사 스마트미디어아트센터 박성욱 대표와 보조강사 2명</dd>
+    <dt>결과물</dt><dd>마지막 3초 공통 로고 영상을 포함한 9대16 세로 숏폼 90초 이내</dd>
   </dl></div>
-  <div class="card" style="padding:6px 10px">
-  <table>
-    <tr><th>시간</th><th>내용</th><th>비고</th></tr>
-    <tr><td>10:30~10:35</td><td>국민의례</td><td></td></tr>
-    <tr><td>10:35~10:45</td><td>인사말씀</td><td>사무처장</td></tr>
-    <tr><td>10:45~10:55</td><td>우수기자 시상</td><td>사무처장</td></tr>
-    <tr><td>10:55~11:10</td><td>우수기자 사례 발표</td><td>청년기자</td></tr>
-    <tr><td>11:10~12:00</td><td>강연 한반도 평화공존을 위한 청년기자단의 역할 및 정책 홍보 방향</td><td>이현희 전문위원</td></tr>
-    <tr><td>12:00~13:10</td><td>오찬</td><td></td></tr>
-    <tr class="mine"><td>13:10~14:00</td><td>숏폼 영상 편집·실습강의</td><td><span class="tag">전문 강사</span></td></tr>
-    <tr class="mine"><td>14:00~16:00</td><td>조별 영상 과제 토의·실습</td><td><span class="tag">전문 강사</span></td></tr>
-    <tr class="mine"><td>16:20~17:20</td><td>조별 영상 과제 발표 및 피드백, 시상</td><td><span class="tag">전문 강사</span></td></tr>
-    <tr><td>17:20~17:30</td><td>기념촬영 및 폐회</td><td>필요시 17:50~18:00 조정 가능</td></tr>
+</section>
+
+<section id="principles">
+  <h2>확정 운영안</h2>
+  <p class="hint">준비와 당일 운영에서 흔들리지 않도록 핵심 결정을 먼저 모았습니다.</p>
+  <div class="decision-grid">
+    <article class="decision"><strong>노트북은 준비하지 않습니다</strong><p>태블릿은 주최측에서 준비 가능한지 확인합니다. 준비되지 않으면 참가자의 충전된 스마트폰으로 촬영과 편집을 진행합니다.</p></article>
+    <article class="decision"><strong>편집은 캡컷 모바일로 통일합니다</strong><p>각 조에 캡컷 모바일 사용 경험자가 최소 1명 있도록 주최측이 사전에 확인하고 분산 배치합니다.</p></article>
+    <article class="decision"><strong>해외 참가자는 온라인으로 참여합니다</strong><p>강의와 작품 상영을 시청하고 채팅으로 질문합니다. 질문은 마지막 질의응답에서 정리해 답변합니다.</p></article>
+    <article class="decision"><strong>결과물은 세로 90초 이내입니다</strong><p>9대16 세로 숏폼으로 제작하고 마지막 약 3초에는 주최측 공통 로고 영상을 넣습니다.</p></article>
+    <article class="decision"><strong>영상은 강사 이메일로 제출합니다</strong><p><a href="mailto:ryon2357@gmail.com">ryon2357@gmail.com</a>으로 받은 뒤 스마트미디어아트센터가 구글 드라이브에 정리해 주최측에 제공합니다.</p></article>
+    <article class="decision"><strong>평가는 카카오톡 투표로 진행합니다</strong><p>별도 심사위원 없이 투표 결과를 100퍼센트 반영합니다. 동률이면 영상 완성도로 결정하고 스마트미디어아트센터가 최종 결과를 발표합니다.</p></article>
+  </div>
+  <div class="callout"><strong>폐회는 18시입니다</strong><p>16시 40분부터 17시 50분까지 영상 상영과 피드백, 시상을 진행하고 기념촬영 후 18시에 폐회합니다.</p></div>
+</section>
+
+<section id="schedule">
+  <h2>실제 운영 시간표</h2>
+  <p class="hint">촬영은 15시 20분까지 진행하고 촬영을 마친 조부터 바로 편집을 시작합니다. 캡컷 모바일 편집은 15시 20분부터 40분 동안 집중 운영합니다.</p>
+  <div class="table-card"><table>
+    <tr><th>시간</th><th>단계</th><th>운영 내용</th></tr>
+    <tr><td class="time">12:00~13:10</td><td>오찬과 조별 착석</td><td>주최측이 미리 정한 5명 조 편성표에 따라 같은 조끼리 앉고 조장을 정합니다.</td></tr>
+    <tr class="mine"><td class="time">13:10~14:10</td><td>현장 취재 영상 핵심 강의</td><td>행사와 공연, 정보, 기획, 인터뷰를 기자가 무엇을 어떻게 촬영할지 바로 써먹는 기준을 익힙니다. 캡컷 모바일 편집 흐름과 자막 가이드를 다루고 취재 준비에 AI를 활용하는 방법도 짧게 소개합니다.</td></tr>
+    <tr class="mine"><td class="time">14:10~14:20</td><td>역할 확정</td><td>조장, 내레이션과 오디오, 리포터, 촬영감독, 편집감독을 정합니다. 결원이 있으면 겸임할 수 있습니다.</td></tr>
+    <tr class="mine"><td class="time">14:20~14:30</td><td>기획</td><td>질문 하나, 결론 한 문장, 필요한 장면을 정하고 즉시 촬영을 시작합니다.</td></tr>
+    <tr class="mine"><td class="time">14:30~15:20</td><td>촬영 실습</td><td>행사장 실내에서 전경, 활동, 인물, 인터뷰, 연결 장면을 확보합니다. 먼저 촬영을 마친 조는 바로 편집으로 넘어갑니다.</td></tr>
+    <tr class="mine"><td class="time">15:20~16:00</td><td>편집 실습</td><td>캡컷 모바일에서 클립 연결, 자막, 음성 싱크, 배경음악, 공통 로고 엔딩을 완성합니다. 촬영이 부족하면 필요한 장면만 보충합니다.</td></tr>
+    <tr class="mine"><td class="time">16:00~16:20</td><td>최종 검수와 이메일 제출</td><td>클립 누락, 검은 화면, 음성 싱크, 자막 오탈자와 가독성을 확인한 뒤 MP4로 내보내 강사 이메일로 제출합니다.</td></tr>
+    <tr><td class="time">16:20~16:40</td><td>휴식 및 커피 브레이크</td><td>참가자는 휴식하고 스마트미디어아트센터가 제출 영상을 확인하고 상영 순서를 준비합니다.</td></tr>
+    <tr class="mine"><td class="time">16:40~17:50</td><td>영상 상영과 피드백 및 시상</td><td>참가자의 별도 발표 없이 조별 영상을 상영하고 피드백을 진행합니다. 카카오톡 투표 결과를 100퍼센트 반영하며 동률이면 완성도로 결정합니다. 스마트미디어아트센터가 최종 결과를 발표한 뒤 시상합니다.</td></tr>
+    <tr><td class="time">17:50~18:00</td><td>기념촬영과 폐회</td><td>기념촬영 후 18시에 폐회합니다.</td></tr>
   </table></div>
-<h3 style="font-size:17px;color:var(--clay-d);margin:20px 0 8px">강사 구간 세부 진행안 (협의용)</h3><p class="hint" style="margin-bottom:8px">13:10~17:20 총 250분. 교육과 실습 170분, 휴식과 상영 준비 20분, 발표와 피드백 60분입니다.</p><div class="card" style="padding:6px 10px"><table><tr><th>시간</th><th>소요</th><th>단계</th><th>주요 내용</th></tr><tr><td>13:10~13:35</td><td>25분</td><td>숏폼 기획과 촬영 핵심</td><td>현장 리포트 사례 비교, 첫 5초 질문과 결론 정하기, 5장면 이상 촬영표 작성. 화면 구성, 구도, 밝기, 손떨림, 인터뷰 소음 점검</td></tr><tr><td>13:35~14:00</td><td>25분</td><td>캡컷 편집 시연</td><td>영상 불러오기, 컷 자르기와 순서, 자막, 음량 조절, MP4 저장까지 한 흐름으로 시연. AI 영상과 음악은 준비된 예시로 짧게 소개</td></tr><tr><td>14:00~14:15</td><td>15분</td><td>팀별 기획과 역할 분담</td><td>질문 하나와 결론 한 문장 확정. 촬영, 인터뷰, 편집, 발표 역할을 나누고 촬영표 점검</td></tr><tr><td>14:15~14:45</td><td>30분</td><td>팀별 촬영 실습</td><td>전경, 활동 2장면, 인물, 인터뷰 등 5장면 이상 확보. 사전 촬영 영상이 있는 팀은 선별 후 부족한 장면만 보충</td></tr><tr><td>14:45~15:35</td><td>50분</td><td>팀별 편집과 순회 지도</td><td>목표 길이에 맞춰 컷편집하고 질문, 핵심 답변, 결론 자막 구성. 인터뷰 음량과 배경음악 점검. 지속적 멘토링</td></tr><tr><td>15:35~16:00</td><td>25분</td><td>검수와 영상 제출</td><td>자막 오탈자, 소리, 화면비, 사용 동의 확인. MP4 내보내기와 제출, 재생 점검. 저장 오류 팀 우선 지원</td></tr><tr><td>16:00~16:20</td><td>20분</td><td>휴식과 상영 준비</td><td>참가자 휴식. 운영진은 제출 파일 취합, 상영 순서와 재생 상태 확인 (제안 구간)</td></tr><tr><td>16:20~17:20</td><td>60분</td><td>발표와 작품 피드백</td><td>조별 영상 상영, 발표, 피드백과 종합평가, 시상. 투표 여부와 시상 방식은 주최측과 협의</td></tr></table></div>
+</section>
+
+<section id="teams">
+  <h2>조 편성과 역할</h2>
+  <p class="hint">주최측이 행사 전에 5명씩 편성합니다. 캡컷 모바일 사용 경험자는 편집감독으로 우선 배치합니다.</p>
+  <div class="role-grid">
+    <article class="role"><strong>조장</strong><p>기획과 총괄, 시간 관리, 역할 조정을 맡습니다.</p></article>
+    <article class="role"><strong>내레이션과 오디오</strong><p>내레이션 녹음과 인터뷰 음량, 배경음악을 점검합니다.</p></article>
+    <article class="role"><strong>리포터</strong><p>현장 소개와 인터뷰 질문, 화면 출연을 맡습니다.</p></article>
+    <article class="role"><strong>촬영감독</strong><p>세로 화면, 구도, 밝기, 흔들림, 필요한 장면을 관리합니다.</p></article>
+    <article class="role"><strong>편집감독</strong><p>캡컷 모바일에서 클립과 자막, 싱크, 내보내기를 책임집니다.</p></article>
+    <article class="role"><strong>결원이 있을 때</strong><p>한 사람이 두 역할을 겸할 수 있습니다. 편집감독은 가능한 한 다른 역할과 분리합니다.</p></article>
+  </div>
 </section>
 
 <section id="checklist">
-  <h2>준비 체크리스트</h2>
-  <p class="hint">정해진 항목은 체크하고, 담당과 메모를 남겨 주세요. 하단에서 항목을 직접 추가할 수 있습니다.</p>
+  <h2>주최측 준비 체크리스트</h2>
+  <p class="hint">확인한 항목은 체크하고 담당과 메모를 남겨 주세요. 변경 내용은 이 페이지에 바로 저장됩니다.</p>
   <div id="groups"></div>
 </section>
 
-<section id="share">
-  <h2>행사 당일 참가자 공유 페이지 예시</h2>
-  <p class="hint">행사 당일 참가자에게 공유할 페이지는 이런 형태로 만듭니다. 링크를 눌러 구성을 확인해 주세요.</p>
-  <div class="card"><ul style="margin:0;padding-left:20px"><li><a href="https://www.smacedu.kr/smartphone-video-editing" target="_blank" rel="noopener">쉽고 빠른 스마트폰 영상 촬영과 편집</a> 인천교육연수원 7급 과정에서 만든 영상 촬영과 편집 안내 페이지</li></ul></div>
+<section id="lesson">
+  <h2>첫 60분 교육 핵심</h2>
+  <p class="hint">기능을 길게 나열하지 않고 취재 현장에 나가 바로 사용할 수 있는 판단 기준과 최소 편집 흐름을 다룹니다. AI는 취재 준비를 돕는 수준으로 짧게 활용합니다.</p>
+  <div class="lesson-grid">
+    <article class="lesson"><strong>행사와 공연 취재</strong><p>전체를 계속 찍지 않고 시작, 핵심 장면, 반응, 마무리를 골라 짧게 기록합니다.</p></article>
+    <article class="lesson"><strong>정보와 기획 영상</strong><p>첫 장면에서 질문을 보여주고 핵심 정보와 결론이 한 흐름으로 이어지게 촬영합니다.</p></article>
+    <article class="lesson"><strong>인터뷰 촬영</strong><p>질문을 짧게 하고 답변은 한 문장씩 받습니다. 배경 소음과 목소리 크기를 촬영 현장에서 확인합니다.</p></article>
+    <article class="lesson"><strong>자막 가이드</strong><p>화면 하단 인터페이스에 가리지 않는 위치, 충분한 크기, 배경과 구분되는 외곽선, 짧은 문장을 적용합니다.</p></article>
+    <article class="lesson"><strong>클립 연결과 싱크</strong><p>붙지 않은 클립과 불필요한 검은 화면을 없애고 말이 시작되는 시점과 자막을 맞춥니다.</p></article>
+    <article class="lesson"><strong>AI 활용 팁</strong><p>취재 주제와 인터뷰 질문, 자막 초안을 빠르게 정리하는 방법을 짧게 소개합니다. 별도 생성 실습은 진행하지 않습니다.</p></article>
+    <article class="lesson"><strong>최종 검수</strong><p>세로 화면, 90초 이내, 자막 오탈자, 음량, 공통 로고 엔딩, 재생 여부를 제출 전에 확인합니다.</p></article>
+  </div>
 </section>
 
-<section id="videos">
-  <h2>샘플 영상</h2>
-  <p class="hint">과제 아이디어를 보기 전에 먼저 보여줄 60초 안팎의 참고 영상입니다. 제목을 누르면 원본 영상이 열립니다.</p>
-  <div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=yWIeXvFp3k0" target="_blank" rel="noopener"><img loading="lazy" src="https://img.youtube.com/vi/yWIeXvFp3k0/hqdefault.jpg" alt=""><span class="vt">충북을 60초 안에 여행할 수 있을까</span><span class="vs">2022 충청북도 60초 영상 공모전 최우수작</span><span class="vd">수업에서는 행사장 안에서 확보할 수 있는 장면으로 적용합니다.</span></a><a class="vid" href="https://www.youtube.com/watch?v=CtK_kkvhDnw" target="_blank" rel="noopener"><img loading="lazy" src="https://img.youtube.com/vi/CtK_kkvhDnw/hqdefault.jpg" alt=""><span class="vt">농업인에게 물었습니다</span><span class="vs">2023 KOAT 60초 영상공모전, 약 58초</span><span class="vd">인물의 답변과 짧은 자막으로 전하는 인터뷰형입니다. 조원에게 질문하고 답변 3개와 활동 장면 2개를 연결합니다.</span></a><a class="vid" href="https://www.youtube.com/watch?v=rd7ENHXxhR4" target="_blank" rel="noopener"><img loading="lazy" src="https://img.youtube.com/vi/rd7ENHXxhR4/hqdefault.jpg" alt=""><span class="vt">50대 붓으로 여는 새로운 세상</span><span class="vs">2025 멈추지 않는 커리어 60초 영상 공모전 장려상, 약 52초</span><span class="vd">작업 과정을 보여주는 활동 기록형입니다. 질문 카드 쓰기와 토론 장면을 4~5컷으로 촬영합니다.</span></a><a class="vid" href="https://www.youtube.com/watch?v=FWOS4p099Y4" target="_blank" rel="noopener"><img loading="lazy" src="https://img.youtube.com/vi/FWOS4p099Y4/hqdefault.jpg" alt=""><span class="vt">도대체 청렴이 뭐야</span><span class="vs">경기도교육청 청렴 60초 영상 공모전 우수작, 약 59초</span><span class="vd">짧은 상황극으로 설명하는 형식입니다. 연기와 재촬영이 필요해 난도가 높은 선택 예시입니다.</span></a><a class="vid" href="https://www.youtube.com/watch?v=q6HW6PI2_Kk" target="_blank" rel="noopener"><img loading="lazy" src="https://img.youtube.com/vi/q6HW6PI2_Kk/hqdefault.jpg" alt=""><span class="vt">커리어를 지키는 나의 작지만 강한 습관들</span><span class="vs">2025 멈추지 않는 커리어 60초 영상 공모전 장려상, 약 26초</span><span class="vd">카드 화면과 사진을 이어 붙이는 구성입니다. 카드 서식을 미리 제공할 때 적합합니다.</span></a></div>
-</section>
-
-<section id="capcut">
-  <h2>캡컷 서식 시안</h2>
-  <p class="hint">사진 3장과 문구만 바꿔 완성하는 26초 카드 영상 서식입니다. 카드 5장으로 구성되고, 아래 영상은 완성 미리보기입니다.</p>
-  <div class="card" style="padding:10px"><video controls preload="metadata" playsinline poster="/workshop-prep-assets/card_1.jpg" src="/workshop-prep-assets/capcut_preview.mp4" style="width:100%;border-radius:10px;display:block"></video></div>
-  <div class="c5s"><figure class="c5"><img loading="lazy" src="/workshop-prep-assets/card_1.jpg" alt="캡컷 서식 카드 1"><figcaption>카드 1</figcaption></figure><figure class="c5"><img loading="lazy" src="/workshop-prep-assets/card_2.jpg" alt="캡컷 서식 카드 2"><figcaption>카드 2</figcaption></figure><figure class="c5"><img loading="lazy" src="/workshop-prep-assets/card_3.jpg" alt="캡컷 서식 카드 3"><figcaption>카드 3</figcaption></figure><figure class="c5"><img loading="lazy" src="/workshop-prep-assets/card_4.jpg" alt="캡컷 서식 카드 4"><figcaption>카드 4</figcaption></figure><figure class="c5"><img loading="lazy" src="/workshop-prep-assets/card_5.jpg" alt="캡컷 서식 카드 5"><figcaption>카드 5</figcaption></figure></div>
+<section id="support">
+  <h2>스마트미디어아트센터 제공 자료</h2>
+  <p class="hint">참가자가 당일 완성하고 이후에도 다시 적용할 수 있도록 필요한 자료만 제공합니다.</p>
+  <div class="supply-grid">
+    <article class="supply"><strong>강의 PPT</strong><p>현장 취재와 촬영, 캡컷 모바일 편집의 핵심 내용을 제공합니다.</p></article>
+    <article class="supply"><strong>모바일 안내 사이트</strong><p>행사일로부터 한 달 동안 열어 두고 필요한 항목을 검색해 확인할 수 있게 합니다.</p></article>
+    <article class="supply"><strong>자막 가이드와 검수표</strong><p>자막 위치, 크기, 색상, 외곽선, 오탈자와 음성 싱크 확인 기준을 제공합니다.</p></article>
+    <article class="supply"><strong>지원용 시나리오와 서식</strong><p>기획이 막히거나 편집이 어려운 조에만 세로 영상 시나리오 또는 캡컷 모바일 서식을 제공합니다.</p></article>
+    <article class="supply full"><strong>영상 취합과 전달</strong><p>제출 영상을 이메일로 받은 뒤 구글 드라이브에 정리해 주최측에 제공합니다. 결과 영상 활용 전에는 참가자 촬영과 초상권 안내 내용을 함께 확인합니다.</p></article>
+  </div>
 </section>
 
 <section id="ideas-sec">
-  <h2>영상 과제 아이디어</h2>
-  <p class="hint">조별 영상 과제 후보입니다. 결과물 길이는 협의로 정하며 3분 내외가 적당합니다. 아래 4안은 60초 기준 예시 구성이고 길이에 맞게 늘이거나 줄여 쓸 수 있습니다. 열어서 구성을 보고, 이번 과제로 쓸 안에 선택 표시와 메모를 남겨 주세요.</p>
+  <h2>어려운 조를 위한 지원용 과제</h2>
+  <p class="hint">조별 기획을 먼저 진행하고 막힌 조에만 서로 다른 시나리오를 제공합니다. 모든 결과물은 9대16 세로 90초 이내이며 마지막 3초 공통 로고 영상을 포함합니다.</p>
   <div id="ideas"></div>
-  <div class="note"><b>강사 의견</b> 기본 과제는 1번이 가장 적합합니다. 팀별 결과가 서로 다르게 나오면서도 촬영 구조가 같아 지도하기 쉽습니다. 2번은 청년기자단의 정체성이 가장 잘 드러나고, 4번은 촬영 시간이 부족한 팀도 완성할 수 있습니다.</div>
+  <div class="note"><b>제공 원칙</b> 시나리오와 서식은 처음부터 전체에 배포하지 않습니다. 조별 아이디어를 우선 살리고 진행이 막힌 조에만 선택적으로 제공합니다.</div>
 </section>
 
 <section id="memo">
   <h2>공용 메모</h2>
-  <p class="hint">미팅 중 결정사항과 다음 할 일을 자유롭게 적어 주세요. 입력을 멈추면 저장됩니다.</p>
-  <textarea id="notes" placeholder="예) 인원 확정 마감: 11월 10일 / 노트북 휴대 안내문 발송 담당: 기관"></textarea>
+  <p class="hint">남은 확인 사항과 담당 일정을 적어 주세요. 입력을 멈추면 저장됩니다.</p>
+  <textarea id="notes" placeholder="예시 최종 인원 확정일과 조 편성표 전달일"></textarea>
   <div class="meta" id="notesMeta"></div>
 </section>
 
-<footer>이 페이지는 주소를 아는 사람만 열 수 있고 검색에 노출되지 않습니다. 행사 준비가 끝나면 닫습니다.</footer>
+<footer>이 페이지는 행사 운영 협의를 위한 공유 페이지이며 검색에 노출되지 않습니다.</footer>
 </div>
 
 <script>
 (function(){
 var GROUPS=[
- {k:'A',t:'참가자와 장비',items:[
-  {id:'a1',q:'현장 참석 인원 확정 시점',d:'168명 중 현장 참석은 9/16 설문 기준 약 60명 예상입니다. 최종 인원이 확정되는 날짜와 전달 방법'},
-  {id:'a2',q:'참가자 노트북 휴대 여부',d:'노트북이 있으면 각자 영상 촬영, 음악 제작, AI 영상 생성까지 실습할 수 있습니다. 수정안은 핵심 실습을 스마트폰 시연 기준으로 진행하고, 노트북 팀은 캡컷 PC를 쓰는 구성입니다.'},
-  {id:'a3',q:'노트북이 없는 참가자의 참여 방법',d:'조별로 노트북 최소 1대 확보, 나머지는 스마트폰으로 촬영'},
-  {id:'a4',q:'팀별 주 편집 기기와 캡컷 PC 사용 가능자 조사',d:'팀마다 주 편집 기기 1대를 정합니다. 조원 중 캡컷 PC 사용 가능자가 한 명이라도 있으면 PC 설명 시간을 줄일 수 있습니다.'},
-  {id:'a5',q:'해외 34명과 온라인 참여자의 실습 방식',d:'수정안은 공통 강의와 작품 상영을 시청하고, 준비한 영상으로 개별 편집 실습을 하는 구성입니다. 조 편성과 발표 참여 범위, 접속·제출 안내와 질의 취합을 맡을 온라인 운영 담당자 확정'},
-  {id:'a6',q:'현장 환경 확인',d:'마이크, 빔프로젝터와 스크린, 음향, Wi-Fi, 조별 촬영 공간, 콘센트와 멀티탭, 조별 테이블 배치'},
-  {id:'a7',q:'사전 설치와 준비물 안내',d:'행사 전에 안내가 가능하면 미리 안내하고, 어려우면 강의 시간에 안내합니다. 충전된 스마트폰, 충전기 또는 보조 배터리, 저장 공간, 캡컷 설치와 영상 불러오기·저장 확인이 필요하고, 계정은 구글 계정만 있으면 됩니다. 유료 기능은 필수 실습에서 제외'},
-  {id:'a8',q:'영상 제출 경로',d:'MP4 제출 폴더 또는 제출 링크 준비와 담당(15:35부터 저장과 제출 우선)'}
+ {k:'A',t:'참가자 안내와 조 편성',items:[
+  {id:'p1',q:'최종 현장 참석 인원과 명단 확정',d:'현장 참석 예상 인원을 확인하고 최종 명단과 전달 날짜를 정합니다.'},
+  {id:'p2',q:'주최측 태블릿 준비 여부 확인',d:'주최측에서 태블릿을 준비할 수 있는지 확인합니다. 준비되지 않으면 참가자 스마트폰으로 진행합니다. 노트북은 준비하지 않습니다.'},
+  {id:'p3',q:'캡컷 모바일 사용 경험 조사',d:'모바일 캡컷으로 영상을 편집해 본 참가자를 확인합니다.'},
+  {id:'p4',q:'5명씩 조 편성 완료',d:'주최측이 미리 조를 편성하고 캡컷 모바일 경험자가 각 조에 최소 1명씩 들어가도록 배치합니다.'},
+  {id:'p5',q:'점심시간 조별 착석과 조장 선정 안내',d:'점심시간에 같은 조끼리 앉고 조장을 정하도록 참가자에게 미리 안내합니다.'},
+  {id:'p6',q:'14시 10분 역할 분담 안내',d:'14시 10분부터 10분 동안 조장, 내레이션과 오디오, 리포터, 촬영감독, 편집감독을 확정합니다. 결원 시 겸임할 수 있습니다.'},
+  {id:'p7',q:'참가자 준비물 안내',d:'충전된 스마트폰, 충분한 저장 공간, 캡컷 모바일 설치와 구글 로그인을 사전에 안내합니다. 보조배터리는 가능하면 준비하도록 안내합니다.'},
+  {id:'p8',q:'촬영과 초상권 안내',d:'행사 촬영과 결과 영상 활용 범위를 참가자 안내문에 짧게 포함합니다.'}
  ]},
- {k:'B',t:'프로그램 구성',items:[
-  {id:'b1',q:'강의 시간 50분 확정',d:'계획안 13:10~14:00 50분으로 진행합니다. 25분 두 블록(숏폼 기획과 촬영 핵심, 캡컷 편집 시연)으로 나눴습니다.'},
-  {id:'b2',q:'강의 내용 확정',d:'<ul><li>13:10~13:35 숏폼 기획과 촬영 핵심: 현장 리포트 사례 비교, 첫 5초 질문과 결론 정하기, 5장면 이상 촬영표, 촬영 시 주의할 점</li><li>13:35~14:00 캡컷 편집 시연: 불러오기, 컷 자르기와 순서, 자막, 음량, MP4 저장</li><li>많은 클립을 찍어서 편집하는 방법과 캡컷 템플릿 활용법</li></ul>'},
-  {id:'b8',q:'AI 활용을 어디까지 다룰지',d:'수정안은 AI 영상과 음악을 강사 준비 예시로 짧게 소개하고 직접 생성은 필수 과제에서 제외합니다. 아이디어 내는 방법, AI 이미지와 영상 생성 실습을 노트북 팀 선택 과제로 넣을지 협의'},
-  {id:'b3',q:'실습 구간 운영 방식',d:'<ul><li>14:00~14:15 팀별 기획과 역할 분담</li><li>14:15~14:45 촬영 실습(전경, 활동 2장면, 인물, 인터뷰 등 5장면 이상)</li><li>14:45~15:35 편집과 순회 지도(지속적 멘토링)</li><li>15:35~16:00 검수와 영상 제출</li></ul>'},
-  {id:'b9',q:'강사와 보조강사 배치',d:'주강사 1명과 보조강사 2명(촬영 지원, 편집 지원)은 센터에서 파견합니다. 사전 미팅에서 확정할 것은 팀별 배치입니다. 주최측 운영진은 팀 편성, 송출, 제출 경로, 시상 진행을 별도로 담당'},
-  {id:'b4',q:'조 편성',d:'조 편성이 정해져 있는지, 정해져 있다면 편성표를 받을 시점'},
-  {id:'b11',q:'캡컷 서식을 참가자에게 제공할지',d:'사진 3장과 문구만 바꿔 완성하는 26초 카드 영상 서식입니다. 아래 캡컷 서식 시안을 보고 정하기'},
-  {id:'b10',q:'16:00~16:20 휴식과 상영 준비 구간',d:'수정안이 제안하는 구간입니다. 참가자는 휴식, 운영진은 제출 파일 취합과 상영 순서, 재생 상태 확인'},
-  {id:'b6',q:'발표와 피드백 방식',d:'조별 상영, 발표, 피드백 방식과 종합평가, 시상. 조별 발표 시간은 조 수를 확인한 뒤 정하고, 투표 여부와 시상 방식은 주최측과 협의'},
-  {id:'b7',q:'폐회 시간 조정',d:'행사 시간에 따라 조절할 수 있습니다. 계획안 기준 필요시 17:50~18:00까지 조정 가능'}
+ {k:'B',t:'현장과 온라인 운영',items:[
+  {id:'v1',q:'공통 로고 엔딩 파일 전달',d:'모든 영상 마지막에 넣을 약 3초 분량의 민주평통 로고 영상을 스마트미디어아트센터에 전달합니다.'},
+  {id:'v2',q:'강사 노트북과 상영 장비 연결 확인',d:'HDMI, 빔프로젝터, 스크린, 음향, 마이크, 와이파이와 온라인 중계 화면 공유를 확인합니다.'},
+  {id:'v3',q:'조별 실내 촬영 공간 확인',d:'호텔과 연결된 실내 공간에서만 촬영할 수 있도록 동선과 촬영 가능 구역을 안내합니다.'},
+  {id:'v4',q:'해외 참가자 채팅 담당자 지정',d:'해외 참가자는 강의와 작품 상영을 시청하고 채팅으로 질문합니다. 마지막 질의응답 전에 질문을 모을 담당자를 정합니다.'},
+  {id:'v5',q:'카카오톡 투표하기 기능 사전 점검',d:'별도 심사위원 없이 카카오톡 투표 결과를 100퍼센트 반영하므로 투표방, 보기 항목과 집계 방식을 미리 테스트합니다.'},
+  {id:'v6',q:'시상 물품과 수여 담당 확정',d:'수상 조 수, 상품과 상장, 주최측 수여 담당을 미리 정합니다.'},
+  {id:'v7',q:'폐회 시간 운영 기준 공유',d:'17시 50분까지 상영과 피드백, 시상을 마치고 기념촬영 후 18시에 폐회합니다.'}
  ]},
- {k:'C',t:'심사와 시상',items:[
-  {id:'c1',q:'심사위원을 모실 수 있는지',d:'가능 여부와 인원, 기관 인사 또는 외부 인사'},
-  {id:'c2',q:'심사 기준',d:'수정안의 검수 기준(질문과 결론의 명확성, 장면 연결, 자막 가독성, 인터뷰 음량)을 바탕으로 정하기'},
-  {id:'c3',q:'시상 구성과 준비',d:'수상 팀 수, 상장과 상품 준비 담당, 투표 방식 여부'}
+ {k:'C',t:'스마트미디어아트센터 준비',items:[
+  {id:'s1',q:'현장 취재 중심 60분 강의 PPT 준비',d:'행사와 공연, 정보, 기획, 인터뷰를 기자가 무엇을 어떻게 촬영할지 바로 적용할 수 있게 구성하고 취재 준비에 AI를 활용하는 팁을 짧게 포함합니다.'},
+  {id:'s2',q:'자막 가이드와 최종 검수표 준비',d:'자막 위치, 크기, 색상, 외곽선, 오탈자, 클립 연결, 음성 싱크와 검은 화면을 확인하는 기준입니다.'},
+  {id:'s3',q:'지원용 시나리오와 세로 서식 준비',d:'잘 진행하지 못하는 조에만 제공할 시나리오와 9대16 캡컷 모바일 서식을 준비합니다.'},
+  {id:'s4',q:'참가자용 모바일 안내 사이트 준비',d:'행사일로부터 한 달 동안 열어 두고 촬영과 편집 방법을 검색할 수 있게 합니다.'},
+  {id:'s5',q:'영상 제출과 구글 드라이브 전달 준비',d:'ryon2357@gmail.com으로 영상을 받고 파일을 확인한 뒤 구글 드라이브에 정리해 주최측에 제공합니다.'},
+  {id:'s6',q:'상영과 최종 결과 발표 준비',d:'제출 영상을 순서대로 상영하고 카카오톡 투표 결과를 확인해 스마트미디어아트센터가 최종 결과를 발표합니다.'}
  ]},
- {k:'D',t:'사전과 사후',items:[
-  {id:'d2',q:'촬영과 초상권 활용 동의 방식',d:'인물 촬영 동의와 음악·이미지 사용 조건 점검. 현장 촬영 영상의 활용 범위와 동의서 수령 방법'},
-  {id:'d6',q:'계약서 작성 여부',d:'계약서를 작성하는지, 작성한다면 방식과 시점 확인'},
-  {id:'d3',q:'결과 영상 대외 게시 방식',d:'대외 게시는 사무처 검수 후 결정. 기관 SNS 게시 여부와 영상 전달 방법'},
-  {id:'d4',q:'현장 사전 점검 가능 시간',d:'행사 전 장비와 네트워크 점검 및 리허설 시간'}
+ {k:'D',t:'당일 완성 관문',items:[
+  {id:'g1',q:'조별 역할 분담 완료',d:'14시 10분부터 14시 20분까지 5개 역할을 확정합니다.'},
+  {id:'g2',q:'촬영과 편집 흐름 연결',d:'촬영은 15시 20분까지 진행하고 촬영을 마친 조부터 바로 편집합니다. 편집 집중 실습은 15시 20분부터 16시까지입니다.'},
+  {id:'g3',q:'세로 90초 규격 확인',d:'9대16 세로 화면, 90초 이내, 마지막 약 3초 공통 로고 영상을 확인합니다.'},
+  {id:'g4',q:'클립과 자막 최종 검수',d:'클립 연결, 검은 화면, 음성 싱크, 자막 오탈자와 가독성을 확인합니다.'},
+  {id:'g5',q:'16시 20분까지 강사 이메일 제출 완료',d:'최종 검수한 MP4 파일을 ryon2357@gmail.com으로 보내고 실제 재생되는지 확인합니다.'},
+  {id:'g6',q:'상영과 피드백 및 시상 완료',d:'참가자의 별도 발표 없이 16시 40분부터 모든 영상을 상영하고 피드백과 카카오톡 투표, 최종 결과 발표와 시상을 진행합니다.'}
  ]}
 ];
 var IDEAS=[
- {id:'i1',n:'1',t:'청년에게 통일은 무엇일까',s:'조원과 행사 참가자에게 같은 질문을 던지는 인터뷰형. 촬영과 편집이 가장 쉬워 기본 실습으로 좋습니다.',
-  rows:[['0~5초','한반도 그림이나 질문 카드를 보여준다','“청년에게 통일은 무엇일까요?”'],['5~15초','첫 번째 참가자 답변','“아직은 조금 멀게 느껴지는 이야기입니다.”'],['15~25초','두 번째 참가자 답변','“자유롭게 오갈 수 있는 미래라고 생각합니다.”'],['25~35초','세 번째 참가자 답변','“서로를 알아가는 과정이라고 생각합니다.”'],['35~45초','네 번째 참가자 답변','“다음 세대에게 남겨줄 새로운 가능성입니다.”'],['45~54초','답변을 메모하고 촬영하는 청년기자단 모습','“생각은 달라도 질문은 계속됩니다.”'],['54~60초','참가자들이 함께 카메라를 바라본다','“청년의 목소리로 평화와 통일을 기록합니다.”']],
-  f:'답변은 정답을 정해주지 않고 참가자가 직접 말하게 합니다. 한 사람의 답변은 7초 정도로 제한합니다.'},
- {id:'i2',n:'2',t:'통일이 되면 가장 먼저 취재하고 싶은 것',s:'청년기자단의 역할과 통일 주제를 함께 보여주는 영상. 질문이 구체적이라 자연스러운 답변을 얻기 쉽습니다.',
-  rows:[['0~5초','카메라나 휴대전화를 든 조원이 등장한다','“통일이 된다면 무엇을 가장 먼저 취재하고 싶나요?”'],['5~14초','첫 번째 조원','“북한 청년들이 어떤 음악을 듣는지 궁금합니다.”'],['14~23초','두 번째 조원','“남과 북의 청년들이 함께 일하는 현장을 취재하고 싶습니다.”'],['23~32초','세 번째 조원','“기차를 타고 북쪽 도시를 여행하며 사람들을 만나고 싶습니다.”'],['32~41초','네 번째 조원','“서로 다른 말과 문화가 어떻게 가까워지는지 기록하고 싶습니다.”'],['41~52초','질문하고 메모하고 촬영하는 모습을 빠르게 연결한다','“미래를 상상하면 새로운 질문이 시작됩니다.”'],['52~60초','조원들이 카메라를 들고 앞으로 걸어간다','“그 질문을 기록하는 민주평통 청년기자단”']],
-  f:'실제 북한 상황을 단정하는 내용이 아니라 통일 이후 취재하고 싶은 대상을 상상하는 구성입니다.'},
- {id:'i3',n:'3',t:'2035년 어느 날의 평화뉴스',s:'미래의 뉴스를 상상하는 짧은 뉴스 형식. 출연자 두 명과 스마트폰 한 대면 만들 수 있습니다.',
-  rows:[['0~6초','진행자가 책상 앞에 앉아 있다','“2035년 평화뉴스입니다.”'],['6~16초','진행자 정면','“오늘 남과 북의 청년들이 함께 만든 사진전이 열렸습니다.”'],['16~28초','조원들이 사진이나 휴대전화 화면을 함께 보는 모습','“청년들은 서로의 일상과 문화를 사진으로 소개했습니다.”'],['28~40초','현장 기자가 참가자에게 질문한다','“함께 준비해보니 어땠나요?”'],['40~49초','참가자 답변','“다른 점보다 함께 좋아하는 것이 더 많았습니다.”'],['49~56초','진행자 화면으로 돌아온다','“작은 만남이 새로운 이야기를 만들고 있습니다.”'],['56~60초','제목 카드','“우리가 상상하는 평화로운 미래”']],
-  f:'뉴스 내용이 실제 사건처럼 오해되지 않도록 첫 화면에 “우리가 상상한 2035년”이라고 표시합니다.'},
- {id:'i4',n:'4',t:'민주평통 청년기자단의 세 가지 동사',s:'행사 현장을 촬영하면서 청년기자단의 역할을 보여주는 활동 기록형. 별도의 연기나 긴 인터뷰가 필요 없습니다.',
-  rows:[['0~6초','명찰이나 행사 안내판','“민주평통 청년기자단은 무엇을 할까요?”'],['6~18초','참가자의 말을 듣는 모습','“듣다”'],['18~30초','질문하는 모습','“묻다”'],['30~42초','메모하고 촬영하는 모습','“기록하다”'],['42~52초','촬영한 영상을 함께 확인하는 모습','“그리고 청년의 언어로 전하다”'],['52~60초','조원 전체 모습','“평화와 통일을 잇는 청년의 기록”']],
-  f:''}
+ {id:'i1',n:'1',t:'청년에게 통일은 무엇일까',s:'같은 질문에 대한 여러 답변을 연결하는 인터뷰형으로 촬영과 편집이 가장 단순합니다.',
+  rows:[['0~6초','질문 카드를 세로 화면 가득 보여준다','청년에게 통일은 무엇일까요'],['6~20초','첫 번째 참가자 답변과 표정','핵심 답변 한 문장'],['20~34초','두 번째 참가자 답변과 관련 장면','핵심 답변 한 문장'],['34~48초','세 번째 참가자 답변과 관련 장면','핵심 답변 한 문장'],['48~62초','네 번째 참가자 답변과 관련 장면','핵심 답변 한 문장'],['62~76초','메모하고 촬영하는 청년기자단 모습','생각은 달라도 질문은 계속됩니다'],['76~87초','조원 전체 또는 마무리 활동 장면','청년의 목소리로 평화와 통일을 기록합니다'],['87~90초','주최측 공통 영상','민주평통 로고 엔딩']],
+  f:'답변은 참가자가 직접 말하게 하고 한 사람의 핵심 답변은 10초 안팎으로 정리합니다.'},
+ {id:'i2',n:'2',t:'통일이 되면 가장 먼저 취재하고 싶은 것',s:'청년기자단의 역할과 통일 이후의 모습을 함께 보여주는 인터뷰형입니다.',
+  rows:[['0~7초','카메라를 든 리포터가 질문한다','통일이 된다면 무엇을 가장 먼저 취재하고 싶나요'],['7~21초','첫 번째 조원과 관련 장면','문화에 관한 답변'],['21~35초','두 번째 조원과 관련 장면','청년의 일과 생활에 관한 답변'],['35~49초','세 번째 조원과 관련 장면','여행과 교류에 관한 답변'],['49~63초','네 번째 조원과 관련 장면','서로의 일상을 알아가는 답변'],['63~76초','질문하고 메모하고 촬영하는 장면','미래를 상상하면 새로운 질문이 시작됩니다'],['76~87초','조원들이 촬영을 이어가는 장면','그 질문을 기록하는 민주평통 청년기자단'],['87~90초','주최측 공통 영상','민주평통 로고 엔딩']],
+  f:'실제 상황을 단정하지 않고 통일 이후 취재하고 싶은 대상과 문화를 상상하는 구성입니다.'},
+ {id:'i3',n:'3',t:'2035년 어느 날의 평화뉴스',s:'통일 이후의 문화와 일상을 상상하는 뉴스 형식입니다.',
+  rows:[['0~7초','진행자가 뉴스 시작을 알린다','우리가 상상한 2035년 평화뉴스입니다'],['7~22초','뉴스 진행자 정면','남과 북의 청년들이 함께 만든 문화 행사를 소개합니다'],['22~39초','사진과 휴대전화 화면을 함께 보는 장면','서로의 일상과 문화를 나누는 모습을 설명합니다'],['39~55초','현장 리포터가 참가자에게 질문한다','함께 준비해보니 어땠나요'],['55~69초','참가자 답변','서로의 공통점을 발견한 답변'],['69~78초','행사 전경과 참여 장면','작은 만남이 새로운 이야기를 만듭니다'],['78~87초','진행자 마무리','우리가 상상하는 평화로운 미래'],['87~90초','주최측 공통 영상','민주평통 로고 엔딩']],
+  f:'실제 뉴스로 오해되지 않도록 첫 화면에 상상한 미래 뉴스임을 분명히 표시합니다.'},
+ {id:'i4',n:'4',t:'민주평통 청년기자단의 다섯 장면',s:'행사 현장을 촬영하면서 청년기자단의 역할을 보여주는 활동 기록형입니다.',
+  rows:[['0~7초','명찰이나 행사 안내판','민주평통 청년기자단은 무엇을 할까요'],['7~21초','참가자의 말을 듣는 장면','듣다'],['21~35초','질문하는 장면','묻다'],['35~49초','메모하는 장면','기록하다'],['49~63초','스마트폰으로 촬영하는 장면','촬영하다'],['63~76초','캡컷 모바일로 편집하는 장면','청년의 언어로 전하다'],['76~87초','조원 전체와 행사 전경','평화와 통일을 잇는 청년의 기록'],['87~90초','주최측 공통 영상','민주평통 로고 엔딩']],
+  f:'별도 연기 없이 행사장에서 실제로 하는 활동을 촬영해 만들 수 있습니다.'}
 ];
 var API='/api/workshop-prep';
+var IS_PREVIEW=location.protocol==='file:';
 var state={items:{},extra:[],notes:'',notesBy:'',rev:0};
 var timers={};var busy=0;
 function $(s){return document.querySelector(s)}
@@ -239,7 +283,7 @@ function it(id){return state.items[id]||{}}
 function itemHTML(id,q,d,del){
   var s=it(id);
   return '<div class="item'+(s.done?' done':'')+'" data-id="'+id+'"><div class="row"><input type="checkbox" '+(s.done?'checked':'')+' aria-label="완료"><div style="flex:1"><div class="q">'+esc(q)+(del?' <button class="del" data-del="'+id+'">삭제</button>':'')+'</div>'+(d?'<div class="d">'+d+'</div>':'')+'</div></div>'+
-   '<div class="ctl"><select data-f="owner" aria-label="담당"><option value="">담당 미정</option><option'+(s.owner==='센터'?' selected':'')+'>센터</option><option'+(s.owner==='기관'?' selected':'')+'>기관</option><option'+(s.owner==='공동'?' selected':'')+'>공동</option></select>'+
+   '<div class="ctl"><select data-f="owner" aria-label="담당"><option value="">담당 미정</option><option'+(s.owner==='SMAC'?' selected':'')+'>SMAC</option><option'+(s.owner==='주최측'?' selected':'')+'>주최측</option><option'+(s.owner==='공동'?' selected':'')+'>공동</option></select>'+
    '<textarea data-f="memo" placeholder="메모" aria-label="메모">'+esc(s.memo||'')+'</textarea></div>'+
    (s.at?'<div class="meta">'+fmt(s.at)+' 수정</div>':'')+'</div>';
 }
@@ -281,6 +325,7 @@ function progress(){
   $('#count').textContent='체크리스트 '+ids.length+'개 중 '+done+'개 완료';
 }
 function send(op){
+  if(IS_PREVIEW){setStatus('시안 보기 · 저장 안 됨');return Promise.resolve(state)}
   op.by='';busy++;setStatus('저장 중');
   return fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(op)}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||r.status);return j})}).then(function(j){
     busy--;state=j;setStatus('저장됨 '+fmt(j.updatedAt));return j;
@@ -303,11 +348,12 @@ document.addEventListener('click',function(e){
   else if(t.getAttribute&&t.getAttribute('data-del')){if(confirm('이 항목을 삭제할까요?'))send({op:'delItem',id:t.getAttribute('data-del')}).then(render,function(){})}
 });
 function pull(){
+  if(IS_PREVIEW){setStatus('시안 보기 · 저장 안 됨');return}
   if(busy||Object.keys(timers).some(function(k){return false}))return;
   var ae=document.activeElement;if(ae&&(ae.tagName==='TEXTAREA'||ae.tagName==='INPUT'&&ae.type==='text'))return;
   fetch(API,{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(j&&typeof j.rev==='number'&&j.rev!==state.rev){state=j;render()}setStatus('연결됨 '+(j.updatedAt?'· 마지막 수정 '+fmt(j.updatedAt):''))}).catch(function(){setStatus('저장 연결 실패, 잠시 후 다시 시도해 주세요',true)});
 }
-render();pull();setInterval(pull,12000);
+render();pull();if(!IS_PREVIEW)setInterval(pull,12000);
 document.addEventListener('visibilitychange',function(){if(!document.hidden)pull()});
 })();
 </script>
