@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "requiredRoutes": [
+    {
+      "route": "/prompt-studio",
+      "file": "prompt-studio.html",
+      "contains": "프롬프트 스튜디오",
+      "assets": [
+        "prompt-studio-lesson.js"
+      ]
+    }
+  ],
+  "allowedDeploymentDrift": [
+    {
+      "path": "landing-interview-apps-script.gs",
+      "sha256": "0110aefa807de9096fd939ad0287ccb73df0cec8e90c02411857736b4ff7b2b1"
+    },
+    {
+      "path": "sitemap.xml",
+      "sha256": "8da17bfe0b9144ee1b1c2ac79d910b20dd357af3a6394d9ef2b4aedad88f6850"
+    },
+    {
+      "path": "smartphone-photo-class.html",
+      "sha256": "87b4226cc36ec51bccd5c7e01cd774798a4dae488f92f0224e0e0b3574be3c6c"
+    },
+    {
+      "path": "vip-1on1-landing.html",
+      "sha256": "7cef4f341774de0df238a31527f058e959d6327739123dab7a693cf1e446035b"
+    },
+    {
+      "path": "api/vip-submit.js",
+      "sha256": "d9218a8da39871fbc8bd639a355ec9f5cff002d147eecdfe2cb1408b937000c6"
+    },
+    {
+      "path": "email-preview.html",
+      "sha256": "df5c9134976552f9d1a01aaeffdb144a24083809ed26fddaee8420b24f4ac5fb"
+    },
+    {
+      "path": "images/sns-master-curriculum-evergreen.png",
+      "sha256": "fc2d9aee9b9258d2af125f35083afec05007df659c3978ed5bf4180bbd18ee64"
+    },
+    {
+      "path": "instructor-course-teaser.html",
+      "sha256": "3b8d34607c7646348b534067569d1947ce46a83e7abfb4d0b94cfa41d220717f"
+    },
+    {
+      "path": "workshop-prep-assets/og_workshop_prep.png",
+      "sha256": "48299925f0f9756339c7d4ad14b1da55389c21b10dedb12e97ccd8fba530a711"
+    }
+  ]
+}

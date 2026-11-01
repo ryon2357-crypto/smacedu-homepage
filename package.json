@@ -2,6 +2,9 @@
   "name": "smacedu-homepage",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "vercel-build": "node scripts/verify-required-routes.mjs"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.47.0"
   }
